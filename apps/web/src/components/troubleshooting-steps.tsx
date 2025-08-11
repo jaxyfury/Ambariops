@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, Skeleton } from '@amberops/ui';
-import { ai } from '@amberops/api/ai';
+import { suggestTroubleshootingSteps } from '@/app/actions';
 import type { Alert } from '@amberops/lib';
 import { Bot } from 'lucide-react';
 
@@ -18,7 +18,7 @@ export function TroubleshootingSteps({ alert }: TroubleshootingStepsProps) {
     async function getSteps() {
       try {
         setLoading(true);
-        const result = await ai.suggestTroubleshootingSteps({
+        const result = await suggestTroubleshootingSteps({
           alertDescription: alert.description,
           relatedLogs: alert.relatedLogs,
         });
