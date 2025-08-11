@@ -30,17 +30,12 @@ echo "Installing and using Node.js v20.x..."
 nvm install 20
 nvm use 20
 
-# --- 2. Check for pnpm ---
-echo "--- Checking for pnpm ---"
-if command -v pnpm &> /dev/null; then
-  echo "pnpm is already installed."
-else
-  echo "pnpm not found. Installing pnpm globally..."
-  # Install pnpm using corepack (the recommended way with modern Node.js)
-  corepack enable
-  corepack prepare pnpm@latest --activate
-  echo "pnpm installed successfully."
-fi
+# --- 2. Enable pnpm with Corepack ---
+echo "--- Enabling pnpm ---"
+# Use corepack (the recommended way with modern Node.js) to manage pnpm
+corepack enable
+corepack prepare pnpm@latest --activate
+echo "pnpm is enabled."
 
 # --- 3. Install Dependencies ---
 echo "--- Installing project dependencies with pnpm ---"
