@@ -38,7 +38,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@amberops/ui"
-import { FileDown, SlidersHorizontal, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react"
+import { FileDown, SlidersHorizontal, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Broom } from "lucide-react"
 import jsPDF from "jspdf"
 import autoTable from "jspdf-autotable"
 import * as XLSX from "xlsx"
@@ -148,11 +148,13 @@ export function DataTable<TData, TValue>({
     XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
     XLSX.writeFile(workbook, "table_data.xlsx");
   };
+  
+  const isFiltered = table.getState().columnFilters.length > 0;
 
 
   return (
     <div className="w-full">
-        <div className="flex items-center py-4">
+        <div className="flex items-center py-4 gap-2">
         {filterKey && <Input
           placeholder={`Filter by ${filterKey}...`}
           value={(table.getColumn(filterKey)?.getFilterValue() as string) ?? ""}
@@ -161,6 +163,16 @@ export function DataTable<TData, TValue>({
           }
           className="max-w-sm"
         /> }
+        {isFiltered && (
+            <Button
+                variant="ghost"
+                onClick={() => table.resetColumnFilters()}
+                className="h-8 px-2 lg:px-3"
+            >
+                Reset
+                <Broom className="ml-2 h-4 w-4" />
+            </Button>
+        )}
         <div className="ml-auto flex items-center gap-2">
             <DropdownMenu>
             <DropdownMenuTrigger asChild>
