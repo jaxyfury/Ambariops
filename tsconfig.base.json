@@ -1,0 +1,26 @@
+
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "baseUrl": ".",
+    "paths": {
+      "@amberops/ui/*": ["packages/ui/src/*"],
+      "@amberops/api/*": ["packages/api/src/*"],
+      "@amberops/design-tokens/*": ["packages/design-tokens/*"]
+    }
+  },
+  "exclude": ["node_modules"]
+}
