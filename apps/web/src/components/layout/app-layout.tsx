@@ -1,18 +1,20 @@
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "@amberops/ui/components/ui/sidebar";
-import { SidebarNav } from "@amberops/ui/components/layout/sidebar-nav";
+import { SidebarNav } from "./sidebar-nav";
 import { Avatar, AvatarFallback, AvatarImage } from "@amberops/ui/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@amberops/ui/components/ui/dropdown-menu";
 import { Button } from "@amberops/ui/components/ui/button";
-import { ThemeToggle } from "@amberops/ui/components/theme-toggle";
+import { ThemeToggle } from "../theme-toggle";
+import { LanguageSwitcher } from "../language-switcher";
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
       <SidebarNav />
       <SidebarInset>
-        <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background/80 backdrop-blur-lg px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6 py-2">
+        <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background/80 px-4 backdrop-blur-lg sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6 py-2">
           <SidebarTrigger className="sm:hidden" />
           <div className="ml-auto flex items-center gap-2">
+            <LanguageSwitcher />
             <ThemeToggle />
              <DropdownMenu>
               <DropdownMenuTrigger asChild>
