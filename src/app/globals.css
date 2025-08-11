@@ -2,10 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  font-family: Arial, Helvetica, sans-serif;
-}
-
 @layer base {
   :root {
     --background: 25 67% 94%;
@@ -20,7 +16,7 @@ body {
     --secondary-foreground: 224 10% 10%;
     --muted: 25 60% 90%;
     --muted-foreground: 224 5% 65%;
-    --accent: 16 100% 42%;
+    --accent: 15 100% 42%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
@@ -84,6 +80,9 @@ body {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-body;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-headline;
   }
 }

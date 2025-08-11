@@ -12,24 +12,30 @@ import {
   ScrollText,
   Settings,
   AlertCircle,
+  Laptop,
 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
+import {
   Sidebar,
-  SidebarGroup,
-  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
 } from '@/components/ui/sidebar';
 import { AmberOpsLogo } from '@/components/icons';
+import { Button } from '../ui/button';
 
 const navItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/clusters', label: 'Clusters', icon: Server },
   { href: '/services', label: 'Services', icon: HardDrive },
-  { href: '/hosts', label: 'Hosts', icon: HardDrive },
+  { href: '/hosts', label: 'Hosts', icon: Laptop },
   {
     label: 'Alerts',
     icon: Siren,
@@ -52,6 +58,7 @@ export function SidebarNav() {
   const pathname = usePathname();
 
   const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
+  const isAlertsActive = isActive('/alerts');
 
   return (
     <Sidebar>
@@ -64,22 +71,40 @@ export function SidebarNav() {
           {navItems.map((item) => (
             <SidebarMenuItem key={item.label}>
               {item.subItems ? (
-                 <SidebarGroup>
-                    <SidebarMenuButton
-                      asChild
-                      isActive={item.subItems.some(sub => isActive(sub.href))}
-                    >
-                        <span>
-                            <item.icon className="w-4 h-4" />
-                            {item.label}
-                        </span>
-                    </SidebarMenuButton>
-                 </SidebarGroup>
+                 <Accordion type="single" collapsible defaultValue={isAlertsActive ? "alerts" : undefined}>
+                    <AccordionItem value="alerts" className="border-b-0">
+                      <AccordionTrigger
+                        asChild
+                        className={cn(
+                          "w-full justify-start h-auto py-2 px-3 text-sm hover:bg-sidebar-accent rounded-md",
+                          isAlertsActive && "bg-sidebar-accent text-sidebar-accent-foreground"
+                        )}
+                      ><div className="flex items-center gap-2">
+                         <item.icon className="w-4 h-4" />
+                         {item.label}
+                      </div></AccordionTrigger>
+                      <AccordionContent className="p-0 pl-7 pt-1">
+                        <ul className="space-y-1">
+                          {item.subItems.map(subItem => (
+                            <li key={subItem.href}>
+                              <Link href={subItem.href}>
+                                 <SidebarMenuButton size="sm" isActive={pathname === subItem.href}>
+                                  <span>{subItem.label}</span>
+                                </SidebarMenuButton>
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </AccordionContent>
+                    </AccordionItem>
+                 </Accordion>
               ) : (
-                <Link href={item.href}>
-                  <SidebarMenuButton isActive={isActive(item.href)}>
-                    <item.icon className="w-4 h-4" />
-                    <span>{item.label}</span>
+                <Link href={item.href} passHref>
+                  <SidebarMenuButton isActive={isActive(item.href)} asChild>
+                    <Link href={item.href}>
+                      <item.icon className="w-4 h-4" />
+                      <span>{item.label}</span>
+                    </Link>
                   </SidebarMenuButton>
                 </Link>
               )}
