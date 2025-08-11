@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { PageHeader } from '@/components/page-header';
 import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, Checkbox } from '@amberops/ui';
 import { mockServices } from '@amberops/api';
-import { ArrowUpRight, CheckCircle2, XCircle, Clock, HardDrive, MoreHorizontal, Play, Square, RefreshCw } from 'lucide-react';
+import { ArrowUpRight, CheckCircle2, XCircle, Clock, HardDrive, MoreHorizontal, Play, Square, RefreshCw, ArrowUpDown } from 'lucide-react';
 import { DataTable } from '@/components/data-table';
 import { type ColumnDef } from '@tanstack/react-table';
 import type { Service } from '@amberops/lib';
@@ -47,7 +47,15 @@ export const columns: ColumnDef<Service>[] = [
     },
     {
         accessorKey: 'name',
-        header: 'Name',
+        header: ({ column }) => (
+            <Button
+                variant="ghost"
+                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            >
+                Name
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+        ),
         cell: ({ row }) => (
             <div className="font-medium flex items-center gap-2">
                 <HardDrive className="h-4 w-4 text-muted-foreground" />
@@ -57,7 +65,15 @@ export const columns: ColumnDef<Service>[] = [
     },
     {
         accessorKey: 'status',
-        header: 'Status',
+        header: ({ column }) => (
+            <Button
+                variant="ghost"
+                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            >
+                Status
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+        ),
         cell: ({ row }) => (
             <div className="flex items-center gap-2">
                 {getServiceStatusIcon(row.original.status)}
@@ -67,7 +83,15 @@ export const columns: ColumnDef<Service>[] = [
     },
     {
         accessorKey: 'clusterName',
-        header: 'Cluster',
+        header: ({ column }) => (
+            <Button
+                variant="ghost"
+                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            >
+                Cluster
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+        ),
         cell: ({ row }) => (
             <Link href={`/clusters/${row.original.clusterId}`} className="hover:underline">
                 {row.original.clusterName}
@@ -76,11 +100,27 @@ export const columns: ColumnDef<Service>[] = [
     },
     {
         accessorKey: 'version',
-        header: 'Version',
+        header: ({ column }) => (
+            <Button
+                variant="ghost"
+                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            >
+                Version
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+        ),
     },
     {
         accessorKey: 'runningHosts',
-        header: 'Running Hosts',
+        header: ({ column }) => (
+            <Button
+                variant="ghost"
+                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            >
+                Running Hosts
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+        ),
         cell: ({ row }) => `${row.original.runningHosts} / ${row.original.totalHosts}`,
     },
     {

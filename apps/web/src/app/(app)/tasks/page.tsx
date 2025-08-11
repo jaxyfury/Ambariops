@@ -4,12 +4,13 @@
 import { PageHeader } from '@/components/page-header';
 import { Progress, Badge, Checkbox } from '@amberops/ui';
 import { mockTasks } from '@amberops/api';
-import { CheckCircle, XCircle, Loader, CircleDotDashed } from 'lucide-react';
+import { CheckCircle, XCircle, Loader, CircleDotDashed, ArrowUpDown } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { DataTable } from '@/components/data-table';
 import { type ColumnDef } from '@tanstack/react-table';
 import type { Task } from '@amberops/lib';
 import { useState, useEffect } from 'react';
+import { Button } from '@amberops/ui';
 
 function getStatusIcon(status: 'running' | 'completed' | 'failed' | 'pending') {
   switch (status) {
@@ -61,17 +62,41 @@ export const columns: ColumnDef<Task>[] = [
     },
     {
         accessorKey: 'id',
-        header: 'Task ID',
+        header: ({ column }) => (
+            <Button
+                variant="ghost"
+                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            >
+                Task ID
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+        ),
         cell: ({ row }) => <span className="font-mono text-xs text-muted-foreground">#{row.original.id}</span>
     },
     {
         accessorKey: 'name',
-        header: 'Name',
+        header: ({ column }) => (
+            <Button
+                variant="ghost"
+                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            >
+                Name
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+        ),
         cell: ({ row }) => <span className="font-medium">{row.original.name}</span>,
     },
     {
         accessorKey: 'status',
-        header: 'Status',
+        header: ({ column }) => (
+            <Button
+                variant="ghost"
+                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            >
+                Status
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+        ),
         cell: ({ row }) => (
             <Badge variant={getStatusBadgeVariant(row.original.status)} className="capitalize">
                 <div className="flex items-center gap-2">
@@ -83,7 +108,15 @@ export const columns: ColumnDef<Task>[] = [
     },
     {
         accessorKey: 'progress',
-        header: 'Progress',
+        header: ({ column }) => (
+            <Button
+                variant="ghost"
+                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            >
+                Progress
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+        ),
         cell: ({ row }) => (
             <div className="flex items-center gap-2">
                 <Progress value={row.original.progress} className="h-2 w-32" />
@@ -93,15 +126,39 @@ export const columns: ColumnDef<Task>[] = [
     },
     {
         accessorKey: 'user',
-        header: 'User',
+        header: ({ column }) => (
+            <Button
+                variant="ghost"
+                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            >
+                User
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+        ),
     },
     {
         accessorKey: 'duration',
-        header: 'Duration',
+        header: ({ column }) => (
+            <Button
+                variant="ghost"
+                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            >
+                Duration
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+        ),
     },
     {
         accessorKey: 'startTime',
-        header: 'Start Time',
+        header: ({ column }) => (
+            <Button
+                variant="ghost"
+                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            >
+                Start Time
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+        ),
         cell: ({ row }) => formatDistanceToNow(new Date(row.original.startTime), { addSuffix: true }),
     },
 ]

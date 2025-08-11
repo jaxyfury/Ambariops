@@ -62,7 +62,15 @@ export const columns: ColumnDef<Cluster>[] = [
   },
   {
     accessorKey: 'status',
-    header: 'Status',
+    header: ({ column }) => (
+        <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+            Status
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+    ),
     cell: ({ row }) => (
       <Badge variant={getStatusBadgeVariant(row.original.status)} className="capitalize">
         {row.original.status}
@@ -71,15 +79,39 @@ export const columns: ColumnDef<Cluster>[] = [
   },
   {
     accessorKey: 'hostCount',
-    header: 'Hosts',
+    header: ({ column }) => (
+        <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+            Hosts
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+    ),
   },
   {
     accessorKey: 'serviceCount',
-    header: 'Services',
+    header: ({ column }) => (
+        <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+            Services
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+    ),
   },
   {
     accessorKey: 'alertCount',
-    header: 'Active Alerts',
+    header: ({ column }) => (
+        <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+            Active Alerts
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+    ),
   },
   {
     id: 'actions',

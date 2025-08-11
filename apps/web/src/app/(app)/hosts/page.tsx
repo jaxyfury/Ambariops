@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { PageHeader } from '@/components/page-header';
 import { Button, Badge, Checkbox } from '@amberops/ui';
 import { mockHosts } from '@amberops/api';
-import { ArrowUpRight, PlusCircle, Server } from 'lucide-react';
+import { ArrowUpRight, PlusCircle, Server, ArrowUpDown } from 'lucide-react';
 import { DataTable } from '@/components/data-table';
 import { type ColumnDef } from '@tanstack/react-table';
 import type { Host } from '@amberops/lib';
@@ -48,7 +48,15 @@ export const columns: ColumnDef<Host>[] = [
     },
     {
         accessorKey: 'name',
-        header: 'Name',
+        header: ({ column }) => (
+            <Button
+                variant="ghost"
+                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            >
+                Name
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+        ),
         cell: ({ row }) => (
             <div className="font-medium flex items-center gap-2">
                 <Server className="h-4 w-4 text-muted-foreground" />
@@ -58,7 +66,15 @@ export const columns: ColumnDef<Host>[] = [
     },
     {
         accessorKey: 'status',
-        header: 'Status',
+        header: ({ column }) => (
+            <Button
+                variant="ghost"
+                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            >
+                Status
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+        ),
         cell: ({ row }) => (
             <Badge variant={getStatusBadgeVariant(row.original.status)} className="capitalize">
                 {row.original.status}
@@ -67,11 +83,27 @@ export const columns: ColumnDef<Host>[] = [
     },
     {
         accessorKey: 'ip',
-        header: 'IP Address',
+        header: ({ column }) => (
+            <Button
+                variant="ghost"
+                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            >
+                IP Address
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+        ),
     },
     {
         accessorKey: 'clusterName',
-        header: 'Cluster',
+        header: ({ column }) => (
+            <Button
+                variant="ghost"
+                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            >
+                Cluster
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+        ),
         cell: ({ row }) => (
             <Link href={`/clusters/${row.original.clusterId}`} className="hover:underline">
                 {row.original.clusterName}
@@ -80,11 +112,27 @@ export const columns: ColumnDef<Host>[] = [
     },
     {
         accessorKey: 'os',
-        header: 'OS',
+        header: ({ column }) => (
+            <Button
+                variant="ghost"
+                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            >
+                OS
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+        ),
     },
     {
         accessorKey: 'lastHeartbeat',
-        header: 'Last Heartbeat',
+        header: ({ column }) => (
+            <Button
+                variant="ghost"
+                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            >
+                Last Heartbeat
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+        ),
     },
     {
         id: 'actions',

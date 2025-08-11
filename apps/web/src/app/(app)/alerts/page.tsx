@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { PageHeader } from '@/components/page-header';
 import { Button, Badge, Checkbox } from '@amberops/ui';
 import { mockAlerts } from '@amberops/api';
-import { ArrowUpRight, Siren } from 'lucide-react';
+import { ArrowUpRight, Siren, ArrowUpDown } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { DataTable } from '@/components/data-table';
 import { type ColumnDef } from '@tanstack/react-table';
@@ -61,7 +61,15 @@ export const columns: ColumnDef<Alert>[] = [
     },
     {
         accessorKey: 'name',
-        header: 'Alert Name',
+        header: ({ column }) => (
+            <Button
+                variant="ghost"
+                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            >
+                Alert Name
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+        ),
         cell: ({ row }) => (
             <div className="font-medium flex items-center gap-2">
                 <Siren className="h-4 w-4 text-muted-foreground" />
@@ -71,7 +79,15 @@ export const columns: ColumnDef<Alert>[] = [
     },
     {
         accessorKey: 'severity',
-        header: 'Severity',
+        header: ({ column }) => (
+            <Button
+                variant="ghost"
+                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            >
+                Severity
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+        ),
         cell: ({ row }) => (
             <Badge variant={getSeverityBadgeVariant(row.original.severity)} className="capitalize">
                 {row.original.severity}
@@ -80,7 +96,15 @@ export const columns: ColumnDef<Alert>[] = [
     },
     {
         accessorKey: 'status',
-        header: 'Status',
+        header: ({ column }) => (
+            <Button
+                variant="ghost"
+                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            >
+                Status
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+        ),
         cell: ({ row }) => (
             <Badge variant={getStatusBadgeVariant(row.original.status)} className="capitalize">
                 {row.original.status}
@@ -89,7 +113,15 @@ export const columns: ColumnDef<Alert>[] = [
     },
     {
         accessorKey: 'clusterName',
-        header: 'Cluster',
+        header: ({ column }) => (
+            <Button
+                variant="ghost"
+                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            >
+                Cluster
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+        ),
         cell: ({ row }) => (
             <Link href={`/clusters/${row.original.clusterId}`} className="hover:underline">
                 {row.original.clusterName}
@@ -98,11 +130,27 @@ export const columns: ColumnDef<Alert>[] = [
     },
     {
         accessorKey: 'serviceName',
-        header: 'Service',
+        header: ({ column }) => (
+            <Button
+                variant="ghost"
+                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            >
+                Service
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+        ),
     },
     {
         accessorKey: 'timestamp',
-        header: 'Timestamp',
+        header: ({ column }) => (
+            <Button
+                variant="ghost"
+                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            >
+                Timestamp
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+        ),
         cell: ({ row }) => formatDistanceToNow(new Date(row.original.timestamp), { addSuffix: true }),
     },
     {

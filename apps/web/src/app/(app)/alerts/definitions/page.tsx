@@ -4,7 +4,7 @@
 import { PageHeader } from '@/components/page-header';
 import { Button, Switch, Badge, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, Checkbox } from '@amberops/ui';
 import { mockAlertDefinitions } from '@amberops/api';
-import { PlusCircle, MoreHorizontal } from 'lucide-react';
+import { PlusCircle, MoreHorizontal, ArrowUpDown } from 'lucide-react';
 import { DataTable } from '@/components/data-table';
 import { type ColumnDef } from '@tanstack/react-table';
 import type { AlertDefinition } from '@amberops/lib';
@@ -35,23 +35,55 @@ export const columns: ColumnDef<AlertDefinition>[] = [
     },
     {
         accessorKey: 'enabled',
-        header: 'Enabled',
+        header: ({ column }) => (
+            <Button
+                variant="ghost"
+                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            >
+                Enabled
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+        ),
         cell: ({ row }) => (
             <Switch checked={row.original.enabled} aria-label={`Enable ${row.original.name}`} />
         ),
     },
     {
         accessorKey: 'name',
-        header: 'Name',
+        header: ({ column }) => (
+            <Button
+                variant="ghost"
+                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            >
+                Name
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+        ),
         cell: ({ row }) => <span className="font-medium">{row.original.name}</span>,
     },
     {
         accessorKey: 'service',
-        header: 'Service',
+        header: ({ column }) => (
+            <Button
+                variant="ghost"
+                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            >
+                Service
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+        ),
     },
     {
         accessorKey: 'type',
-        header: 'Type',
+        header: ({ column }) => (
+            <Button
+                variant="ghost"
+                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            >
+                Type
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+        ),
         cell: ({ row }) => <Badge variant="outline">{row.original.type}</Badge>,
     },
     {
