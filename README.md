@@ -93,3 +93,4 @@ The project has achieved its initial MVP goals. The core architecture is in plac
 - `pnpm test`: Runs all unit and integration tests.
 - `pnpm test:e2e`: Runs all Playwright E2E tests.
 - `pnpm storybook`: Starts the Storybook server for UI component development.
+# Ambariops
