@@ -1,8 +1,14 @@
+
+'use client';
+
 import Link from 'next/link';
 import { PageHeader } from '@/components/page-header';
-import { Button, Card, CardContent, Table, TableBody, TableCell, TableHead, TableHeader, TableRow, Badge, Progress } from '@amberops/ui';
+import { Button, Badge } from '@amberops/ui';
 import { mockClusters } from '@amberops/api';
 import { ArrowUpRight, PlusCircle } from 'lucide-react';
+import { DataTable } from '@/components/data-table';
+import { type ColumnDef } from '@tanstack/react-table';
+import type { Cluster } from '@amberops/lib';
 
 function getStatusBadgeVariant(status: 'healthy' | 'unhealthy' | 'degraded'): 'default' | 'destructive' | 'secondary' {
   switch (status) {
@@ -14,6 +20,46 @@ function getStatusBadgeVariant(status: 'healthy' | 'unhealthy' | 'degraded'): 'd
       return 'destructive';
   }
 }
+
+export const columns: ColumnDef<Cluster>[] = [
+  {
+    accessorKey: 'name',
+    header: 'Name',
+    cell: ({ row }) => <span className="font-medium">{row.original.name}</span>,
+  },
+  {
+    accessorKey: 'status',
+    header: 'Status',
+    cell: ({ row }) => (
+      <Badge variant={getStatusBadgeVariant(row.original.status)} className="capitalize">
+        {row.original.status}
+      </Badge>
+    ),
+  },
+  {
+    accessorKey: 'hostCount',
+    header: 'Hosts',
+  },
+  {
+    accessorKey: 'serviceCount',
+    header: 'Services',
+  },
+  {
+    accessorKey: 'alertCount',
+    header: 'Active Alerts',
+  },
+  {
+    id: 'actions',
+    cell: ({ row }) => (
+      <Button asChild variant="ghost" size="sm">
+        <Link href={`/clusters/${row.original.id}`}>
+          View Details <ArrowUpRight className="ml-2 h-4 w-4" />
+        </Link>
+      </Button>
+    ),
+  },
+];
+
 
 export default function ClustersPage() {
   return (
@@ -27,58 +73,7 @@ export default function ClustersPage() {
           Add Cluster
         </Button>
       </PageHeader>
-      <Card>
-        <CardContent className="pt-6">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Hosts</TableHead>
-                <TableHead>Services</TableHead>
-                <TableHead>Active Alerts</TableHead>
-                <TableHead>CPU Usage</TableHead>
-                <TableHead>Memory Usage</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {mockClusters.map((cluster) => (
-                <TableRow key={cluster.id}>
-                  <TableCell className="font-medium">{cluster.name}</TableCell>
-                  <TableCell>
-                    <Badge variant={getStatusBadgeVariant(cluster.status)} className="capitalize">
-                      {cluster.status}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>{cluster.hostCount}</TableCell>
-                  <TableCell>{cluster.serviceCount}</TableCell>
-                  <TableCell>{cluster.alertCount}</TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <Progress value={cluster.cpuUsage} className="h-2 w-24" />
-                      <span>{cluster.cpuUsage}%</span>
-                    </div>
-                  </TableCell>
-                   <TableCell>
-                    <div className="flex items-center gap-2">
-                      <Progress value={cluster.memoryUsage} className="h-2 w-24" />
-                      <span>{cluster.memoryUsage}%</span>
-                    </div>
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <Button asChild variant="ghost" size="sm">
-                      <Link href={`/clusters/${cluster.id}`}>
-                        View Details <ArrowUpRight className="ml-2 h-4 w-4" />
-                      </Link>
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
+      <DataTable columns={columns} data={mockClusters} />
     </div>
   );
 }
