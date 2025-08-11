@@ -74,17 +74,18 @@ export function SidebarNav() {
               {item.subItems ? (
                  <Accordion type="single" collapsible defaultValue={isAlertsActive ? "alerts" : undefined} disabled={sidebarState === 'collapsed'}>
                     <AccordionItem value="alerts" className="border-b-0">
-                      <AccordionTrigger
+                      <SidebarMenuButton
                         asChild
-                        className={cn(
-                           isAlertsActive && "bg-sidebar-accent text-sidebar-accent-foreground"
-                        )}
+                        isActive={isAlertsActive}
+                        className="[&>svg:last-child]:hidden"
                       >
-                         <SidebarMenuButton tooltip={item.tooltip} >
-                           <item.icon />
-                           <span>{item.label}</span>
-                         </SidebarMenuButton>
-                      </AccordionTrigger>
+                         <AccordionTrigger>
+                           <div className="flex items-center gap-2">
+                            <item.icon />
+                            <span>{item.label}</span>
+                           </div>
+                         </AccordionTrigger>
+                      </SidebarMenuButton>
                       <AccordionContent className="p-0 pl-7 pt-1">
                         <ul className="space-y-1">
                           {item.subItems.map(subItem => (
