@@ -1,9 +1,14 @@
 
+'use client';
+
 import { PageHeader } from '@/components/page-header';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, Progress, Table, TableBody, TableCell, TableHead, TableHeader, TableRow, Badge } from '@amberops/ui';
+import { Progress, Badge } from '@amberops/ui';
 import { mockTasks } from '@amberops/api';
-import { CheckCircle, XCircle, Loader, CircleDotDashed, ListChecks } from 'lucide-react';
+import { CheckCircle, XCircle, Loader, CircleDotDashed } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
+import { DataTable } from '@/components/data-table';
+import { type ColumnDef } from '@tanstack/react-table';
+import type { Task } from '@amberops/lib';
 
 function getStatusIcon(status: 'running' | 'completed' | 'failed' | 'pending') {
   switch (status) {
@@ -30,6 +35,53 @@ function getStatusBadgeVariant(status: 'running' | 'completed' | 'failed' | 'pen
     }
 }
 
+export const columns: ColumnDef<Task>[] = [
+    {
+        accessorKey: 'id',
+        header: 'Task ID',
+        cell: ({ row }) => <span className="font-mono text-xs text-muted-foreground">#{row.original.id}</span>
+    },
+    {
+        accessorKey: 'name',
+        header: 'Name',
+        cell: ({ row }) => <span className="font-medium">{row.original.name}</span>,
+    },
+    {
+        accessorKey: 'status',
+        header: 'Status',
+        cell: ({ row }) => (
+            <Badge variant={getStatusBadgeVariant(row.original.status)} className="capitalize">
+                <div className="flex items-center gap-2">
+                {getStatusIcon(row.original.status)}
+                <span>{row.original.status}</span>
+                </div>
+            </Badge>
+        ),
+    },
+    {
+        accessorKey: 'progress',
+        header: 'Progress',
+        cell: ({ row }) => (
+            <div className="flex items-center gap-2">
+                <Progress value={row.original.progress} className="h-2 w-32" />
+                <span className="text-muted-foreground text-sm">{row.original.progress}%</span>
+            </div>
+        )
+    },
+    {
+        accessorKey: 'user',
+        header: 'User',
+    },
+    {
+        accessorKey: 'duration',
+        header: 'Duration',
+    },
+    {
+        accessorKey: 'startTime',
+        header: 'Start Time',
+        cell: ({ row }) => formatDistanceToNow(new Date(row.original.startTime), { addSuffix: true }),
+    },
+]
 
 export default function TasksPage() {
   return (
@@ -38,55 +90,7 @@ export default function TasksPage() {
         title="Tasks & Operations"
         description="Track background operations and service checks."
       />
-      <Card>
-        <CardHeader>
-            <div className="flex items-center gap-2">
-                <ListChecks className="h-6 w-6"/>
-                <CardTitle>Operations Log</CardTitle>
-            </div>
-            <CardDescription>A log of all recent background tasks and their status.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[100px]">Task ID</TableHead>
-                <TableHead>Name</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Progress</TableHead>
-                <TableHead>User</TableHead>
-                <TableHead>Duration</TableHead>
-                <TableHead>Start Time</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {mockTasks.map((task) => (
-                <TableRow key={task.id}>
-                  <TableCell className="font-mono text-xs text-muted-foreground">#{task.id}</TableCell>
-                  <TableCell className="font-medium">{task.name}</TableCell>
-                  <TableCell>
-                    <Badge variant={getStatusBadgeVariant(task.status)} className="capitalize">
-                      <div className="flex items-center gap-2">
-                        {getStatusIcon(task.status)}
-                        <span>{task.status}</span>
-                      </div>
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                        <Progress value={task.progress} className="h-2 w-32" />
-                        <span className="text-muted-foreground text-sm">{task.progress}%</span>
-                    </div>
-                  </TableCell>
-                  <TableCell>{task.user}</TableCell>
-                  <TableCell>{task.duration}</TableCell>
-                  <TableCell>{formatDistanceToNow(new Date(task.startTime), { addSuffix: true })}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
+      <DataTable columns={columns} data={mockTasks} filterKey="name" />
     </div>
   );
 }

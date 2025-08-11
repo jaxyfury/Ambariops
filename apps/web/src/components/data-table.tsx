@@ -1,4 +1,5 @@
 
+
 "use client"
 
 import * as React from "react"
@@ -22,14 +23,19 @@ import {
   TableHeader,
   TableRow,
   Button,
-  Checkbox,
   Input,
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
-  DropdownMenuCheckboxItem
+  DropdownMenuCheckboxItem,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
 } from "@amberops/ui"
 import { FileDown, SlidersHorizontal } from "lucide-react"
+import jsPDF from "jspdf"
+import autoTable from "jspdf-autotable"
+import * as XLSX from "xlsx"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -66,6 +72,60 @@ export function DataTable<TData, TValue>({
       rowSelection,
     },
   })
+
+  const getHeaderFromColumn = (column: any): string => {
+    if (typeof column.header === 'string') {
+        return column.header;
+    }
+    // Attempt to find a string in the header render function
+    // This is a heuristic and might need adjustment for complex headers
+    if (typeof column.header === 'function') {
+        // Try to find a 'name' prop in a rendered component, or just use accessorKey
+        return column.id || column.accessorKey || '';
+    }
+    return column.id || column.accessorKey || '';
+  };
+
+  const exportToPDF = () => {
+    const doc = new jsPDF();
+    const tableHeaders = table.getVisibleFlatColumns().map(col => getHeaderFromColumn(col.columnDef));
+    const tableData = table.getRowModel().rows.map(row => {
+        return row.getVisibleCells().map(cell => {
+            const context = cell.getContext();
+            const cellValue = context.getValue();
+            if (typeof cellValue === 'object' && cellValue !== null) {
+                return JSON.stringify(cellValue);
+            }
+            return String(cellValue ?? '');
+        });
+    });
+
+    autoTable(doc, {
+        head: [tableHeaders],
+        body: tableData,
+    });
+    doc.save("table_data.pdf");
+  };
+
+  const exportToExcel = () => {
+    const tableHeaders = table.getVisibleFlatColumns().map(col => getHeaderFromColumn(col.columnDef));
+    const tableData = table.getRowModel().rows.map(row => {
+        const rowData: { [key: string]: any } = {};
+        row.getVisibleCells().forEach(cell => {
+            const colDef = cell.column.columnDef as any;
+            const header = getHeaderFromColumn(colDef);
+            const context = cell.getContext();
+            rowData[header] = context.getValue();
+        });
+        return rowData;
+    });
+
+    const worksheet = XLSX.utils.json_to_sheet(tableData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+    XLSX.writeFile(workbook, "table_data.xlsx");
+  };
+
 
   return (
     <div className="w-full">
@@ -105,9 +165,19 @@ export function DataTable<TData, TValue>({
                 })}
             </DropdownMenuContent>
             </DropdownMenu>
-             <Button variant="outline">
-                <FileDown className="mr-2 h-4 w-4" /> Export
-            </Button>
+             <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" data-testid="export-button">
+                  <FileDown className="mr-2 h-4 w-4" /> Export
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>Export As</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={exportToExcel} data-testid="export-excel">Excel (.xlsx)</DropdownMenuItem>
+                <DropdownMenuItem onClick={exportToPDF} data-testid="export-pdf">PDF (.pdf)</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
         </div>
       </div>
       <div className="rounded-md border">

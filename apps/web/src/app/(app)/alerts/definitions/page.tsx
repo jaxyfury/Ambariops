@@ -1,7 +1,61 @@
+
+'use client';
+
 import { PageHeader } from '@/components/page-header';
-import { Button, Card, CardContent, Table, TableBody, TableCell, TableHead, TableHeader, TableRow, Switch, Badge, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@amberops/ui';
+import { Button, Switch, Badge, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@amberops/ui';
 import { mockAlertDefinitions } from '@amberops/api';
 import { PlusCircle, MoreHorizontal } from 'lucide-react';
+import { DataTable } from '@/components/data-table';
+import { type ColumnDef } from '@tanstack/react-table';
+import type { AlertDefinition } from '@amberops/lib';
+
+export const columns: ColumnDef<AlertDefinition>[] = [
+    {
+        accessorKey: 'enabled',
+        header: 'Enabled',
+        cell: ({ row }) => (
+            <Switch checked={row.original.enabled} aria-label={`Enable ${row.original.name}`} />
+        ),
+    },
+    {
+        accessorKey: 'name',
+        header: 'Name',
+        cell: ({ row }) => <span className="font-medium">{row.original.name}</span>,
+    },
+    {
+        accessorKey: 'service',
+        header: 'Service',
+    },
+    {
+        accessorKey: 'type',
+        header: 'Type',
+        cell: ({ row }) => <Badge variant="outline">{row.original.type}</Badge>,
+    },
+    {
+        accessorKey: 'description',
+        header: 'Description',
+        cell: ({ row }) => <span className="text-muted-foreground">{row.original.description}</span>,
+    },
+    {
+        id: 'actions',
+        cell: ({ row }) => (
+            <div className="text-right">
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="icon">
+                        <MoreHorizontal className="h-4 w-4" />
+                    </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                    <DropdownMenuItem>Edit</DropdownMenuItem>
+                    <DropdownMenuItem>Duplicate</DropdownMenuItem>
+                    <DropdownMenuItem className="text-red-500">Delete</DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            </div>
+        ),
+    },
+];
 
 export default function AlertDefinitionsPage() {
   return (
@@ -15,49 +69,7 @@ export default function AlertDefinitionsPage() {
           New Definition
         </Button>
       </PageHeader>
-      <Card>
-        <CardContent className="pt-6">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Enabled</TableHead>
-                <TableHead>Name</TableHead>
-                <TableHead>Service</TableHead>
-                <TableHead>Type</TableHead>
-                <TableHead className="w-[40%]">Description</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {mockAlertDefinitions.map((def) => (
-                <TableRow key={def.id}>
-                  <TableCell>
-                    <Switch checked={def.enabled} aria-label={`Enable ${def.name}`} />
-                  </TableCell>
-                  <TableCell className="font-medium">{def.name}</TableCell>
-                  <TableCell>{def.service}</TableCell>
-                  <TableCell><Badge variant="outline">{def.type}</Badge></TableCell>
-                  <TableCell className="text-muted-foreground">{def.description}</TableCell>
-                  <TableCell className="text-right">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon">
-                          <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem>Edit</DropdownMenuItem>
-                        <DropdownMenuItem>Duplicate</DropdownMenuItem>
-                        <DropdownMenuItem className="text-red-500">Delete</DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
+      <DataTable columns={columns} data={mockAlertDefinitions} filterKey="name" />
     </div>
   );
 }
