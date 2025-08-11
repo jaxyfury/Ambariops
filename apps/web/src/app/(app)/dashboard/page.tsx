@@ -4,7 +4,7 @@ import { Button } from "@amberops/ui/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@amberops/ui/components/ui/card";
 import { Progress } from "@amberops/ui/components/ui/progress";
 import { mockClusters, mockAlerts } from "@amberops/api/mock-data";
-import { ArrowUpRight, BarChart, Cpu, HardDrive, MemoryStick, Server, Siren } from "lucide-react";
+import { ArrowUpRight, Cpu, MemoryStick, Server, Siren } from "lucide-react";
 import Link from 'next/link';
 import {
   Table,

@@ -11,6 +11,7 @@
     "typecheck": "pnpm --filter '*' typecheck",
     "storybook": "pnpm --filter ui storybook",
     "build-storybook": "pnpm --filter ui build-storybook",
+    "test": "pnpm --filter '*' test",
     "test:e2e": "pnpm --filter web test:e2e"
   },
   "devDependencies": {
@@ -18,12 +19,16 @@
     "@commitlint/config-conventional": "^19.2.2",
     "@playwright/test": "^1.44.1",
     "@types/node": "^20",
+    "@types/jest": "^29.5.12",
     "eslint-config-prettier": "^9.1.0",
     "husky": "^9.0.11",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
     "lint-staged": "^15.2.7",
     "prettier": "^3.3.2",
     "prettier-plugin-tailwindcss": "^0.6.5",
-    "typescript": "^5"
+    "typescript": "^5",
+    "ts-jest": "^29.1.2"
   },
   "packageManager": "pnpm@9.1.0"
 }
