@@ -27,31 +27,27 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
   Skeleton,
-} from '@amberops/ui';
-import {
+  Input,
+  Label,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
   Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@amberops/ui/dialog';
-import { Input } from '@amberops/ui/input';
-import { Label } from '@amberops/ui/label';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@amberops/ui/select';
+} from '@amberops/ui';
 import {
   fetchUsers,
   addUser,
   updateUser,
   deleteUser,
 } from '@/lib/api/services';
-import { MoreHorizontal, PlusCircle, UserPlus, Trash, Edit } from 'lucide-react';
+import { MoreHorizontal, UserPlus, Trash, Edit } from 'lucide-react';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
