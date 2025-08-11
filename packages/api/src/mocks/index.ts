@@ -1,4 +1,3 @@
-
 export async function enableMocking() {
   if (typeof window === 'undefined') {
     const { server } = await import('./server');

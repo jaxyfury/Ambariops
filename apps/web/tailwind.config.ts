@@ -1,4 +1,3 @@
-
 import type {Config} from 'tailwindcss';
 import sharedConfig from '@amberops/design-tokens/tailwind.config';
 

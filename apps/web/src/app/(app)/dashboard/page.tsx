@@ -1,10 +1,9 @@
-
-import { PageHeader } from "@amberops/ui/components/page-header";
-import { Button } from "@amberops/ui/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@amberops/ui/components/ui/card";
-import { Progress } from "@amberops/ui/components/ui/progress";
-import { mockClusters, mockAlerts } from "@amberops/api/mock-data";
-import { ArrowUpRight, Cpu, MemoryStick, Server, Siren } from "lucide-react";
+import { PageHeader } from "../../../components/page-header";
+import { Button } from "../../../components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../../../components/ui/card";
+import { Progress } from "../../../components/ui/progress";
+import { mockClusters, mockAlerts } from "../../../lib/mock-data";
+import { ArrowUpRight, BarChart, Cpu, HardDrive, MemoryStick, Server, Siren } from "lucide-react";
 import Link from 'next/link';
 import {
   Table,
@@ -13,9 +12,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@amberops/ui/components/ui/table"
-import { Badge } from "@amberops/ui/components/ui/badge";
-import { ClusterHealthSummary } from '@amberops/ui/components/cluster-health-summary';
+} from "../../../components/ui/table"
+import { Badge } from "../../../components/ui/badge";
+import { ClusterHealthSummary } from "../../../components/cluster-health-summary";
 
 function getStatusColor(status: 'healthy' | 'unhealthy' | 'degraded') {
   switch (status) {
