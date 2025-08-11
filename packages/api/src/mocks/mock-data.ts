@@ -1,4 +1,4 @@
-import type { Cluster, Service, Host, Alert, AlertDefinition, ConfigVersion, Task, LogEntry, User } from '@amberops/lib/types';
+import type { Cluster, Service, Host, Alert, AlertDefinition, ConfigVersion, Task, LogEntry, User, ActivityLog } from '@amberops/lib/types';
 
 const generateHistoricalData = (days: number, cpuMax: number, memMax: number, diskMax: number, netMax: number) => {
   const data = [];
@@ -128,4 +128,12 @@ export const mockUsers: User[] = [
   { id: 'u2', name: 'Bob Operator', email: 'bob@amberops.io', role: 'Operator', lastLogin: '2024-05-21T11:30:00Z', avatar: 'https://avatar.vercel.sh/bob' },
   { id: 'u3', name: 'Charlie Viewer', email: 'charlie@amberops.io', role: 'Viewer', lastLogin: '2024-05-20T09:00:00Z', avatar: 'https://avatar.vercel.sh/charlie' },
   { id: 'u4', name: 'Diana Deploy', email: 'diana@amberops.io', role: 'Operator', lastLogin: '2024-05-21T12:01:00Z', avatar: 'https://avatar.vercel.sh/diana' },
+];
+
+export const mockActivityLogs: ActivityLog[] = [
+    { id: 'act-1', user: mockUsers[0], action: 'RESTART', details: 'Restarted HDFS on Production Cluster', timestamp: new Date(Date.now() - 1000 * 60 * 5).toISOString() },
+    { id: 'act-2', user: mockUsers[1], action: 'ACKNOWLEDGE', details: 'Acknowledged Alert: Node Manager Health', timestamp: new Date(Date.now() - 1000 * 60 * 22).toISOString() },
+    { id: 'act-3', user: mockUsers[0], action: 'LOGIN', details: 'User alice@amberops.io logged in', timestamp: new Date(Date.now() - 1000 * 60 * 60).toISOString() },
+    { id: 'act-4', user: mockUsers[3], action: 'UPDATE', details: 'Updated user role for charlie@amberops.io to Viewer', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 3).toISOString() },
+    { id: 'act-5', user: mockUsers[0], action: 'DELETE', details: 'Deleted cluster: temp-cluster-5', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 25).toISOString() },
 ];

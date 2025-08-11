@@ -13,6 +13,7 @@ import {
   Settings,
   AlertCircle,
   Laptop,
+  History,
 } from 'lucide-react';
 
 import {
@@ -51,6 +52,7 @@ export function SidebarNav() {
     },
     { href: '/config', label: 'Configuration', icon: FileText, tooltip: 'Configuration' },
     { href: '/tasks', label: 'Tasks / Ops', icon: ListChecks, tooltip: 'Tasks & Ops' },
+    { href: '/activity', label: 'Activity', icon: History, tooltip: 'Activity Log' },
     { href: '/logs', label: 'Logs', icon: ScrollText, tooltip: 'Logs' },
   ];
 

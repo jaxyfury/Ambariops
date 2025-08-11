@@ -10,6 +10,7 @@ import {
   mockTasks,
   mockLogEntries,
   mockUsers,
+  mockActivityLogs,
 } from './mock-data';
 import type { User, Task } from '@amberops/lib';
 
@@ -119,6 +120,11 @@ export const handlers = [
     return HttpResponse.json(mockLogEntries);
   }),
 
+  // Activity
+  http.get('/api/v1/activity', () => {
+    return HttpResponse.json(mockActivityLogs);
+  }),
+  
   // Users
   http.get('/api/v1/users', () => {
     return HttpResponse.json(mockUsers);

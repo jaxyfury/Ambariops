@@ -106,3 +106,11 @@ export type User = {
   lastLogin: string;
   avatar: string;
 };
+
+export type ActivityLog = {
+    id: string;
+    user: User;
+    action: 'LOGIN' | 'CREATE' | 'UPDATE' | 'DELETE' | 'RESTART' | 'ACKNOWLEDGE';
+    details: string;
+    timestamp: string;
+};
