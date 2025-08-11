@@ -6,7 +6,23 @@
  * server-side AI code into the client bundle.
  */
 
-export {
-  suggestTroubleshootingSteps,
-  summarizeClusterHealth,
+import {
+  suggestTroubleshootingSteps as suggestTroubleshootingStepsFlow,
+  summarizeClusterHealth as summarizeClusterHealthFlow,
+  type SuggestTroubleshootingStepsInput,
+  type SuggestTroubleshootingStepsOutput,
+  type SummarizeClusterHealthInput,
+  type SummarizeClusterHealthOutput,
 } from '@amberops/api/ai';
+
+export async function suggestTroubleshootingSteps(
+  input: SuggestTroubleshootingStepsInput,
+): Promise<SuggestTroubleshootingStepsOutput> {
+  return suggestTroubleshootingStepsFlow(input);
+}
+
+export async function summarizeClusterHealth(
+  input: SummarizeClusterHealthInput,
+): Promise<SummarizeClusterHealthOutput> {
+  return summarizeClusterHealthFlow(input);
+}
