@@ -1,8 +1,14 @@
+
+'use client';
+
 import Link from 'next/link';
 import { PageHeader } from '@/components/page-header';
-import { Button, Card, CardContent, Table, TableBody, TableCell, TableHead, TableHeader, TableRow, Badge } from '@amberops/ui';
+import { Button, Badge } from '@amberops/ui';
 import { mockHosts } from '@amberops/api';
 import { ArrowUpRight, PlusCircle, Server } from 'lucide-react';
+import { DataTable } from '@/components/data-table';
+import { type ColumnDef } from '@tanstack/react-table';
+import type { Host } from '@amberops/lib';
 
 function getStatusBadgeVariant(status: 'healthy' | 'unhealthy' | 'restarting' | 'maintenance'): 'default' | 'destructive' | 'secondary' {
   switch (status) {
@@ -16,6 +22,62 @@ function getStatusBadgeVariant(status: 'healthy' | 'unhealthy' | 'restarting' | 
   }
 }
 
+export const columns: ColumnDef<Host>[] = [
+    {
+        accessorKey: 'name',
+        header: 'Name',
+        cell: ({ row }) => (
+            <div className="font-medium flex items-center gap-2">
+                <Server className="h-4 w-4 text-muted-foreground" />
+                {row.original.name}
+            </div>
+        ),
+    },
+    {
+        accessorKey: 'status',
+        header: 'Status',
+        cell: ({ row }) => (
+            <Badge variant={getStatusBadgeVariant(row.original.status)} className="capitalize">
+                {row.original.status}
+            </Badge>
+        ),
+    },
+    {
+        accessorKey: 'ip',
+        header: 'IP Address',
+    },
+    {
+        accessorKey: 'clusterName',
+        header: 'Cluster',
+        cell: ({ row }) => (
+            <Link href={`/clusters/${row.original.clusterId}`} className="hover:underline">
+                {row.original.clusterName}
+            </Link>
+        ),
+    },
+    {
+        accessorKey: 'os',
+        header: 'OS',
+    },
+    {
+        accessorKey: 'lastHeartbeat',
+        header: 'Last Heartbeat',
+    },
+    {
+        id: 'actions',
+        cell: ({ row }) => (
+             <div className="text-right">
+                <Button asChild variant="ghost" size="sm">
+                  <Link href={`/hosts/${row.original.id}`}>
+                    View Details <ArrowUpRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+            </div>
+        ),
+    },
+];
+
+
 export default function HostsPage() {
   return (
     <div>
@@ -28,53 +90,7 @@ export default function HostsPage() {
           Add Host
         </Button>
       </PageHeader>
-       <Card>
-        <CardContent className="pt-6">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>IP Address</TableHead>
-                <TableHead>Cluster</TableHead>
-                <TableHead>OS</TableHead>
-                <TableHead>Last Heartbeat</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {mockHosts.map((host) => (
-                <TableRow key={host.id}>
-                  <TableCell className="font-medium flex items-center gap-2">
-                    <Server className="h-4 w-4 text-muted-foreground" />
-                    {host.name}
-                  </TableCell>
-                  <TableCell>
-                    <Badge variant={getStatusBadgeVariant(host.status)} className="capitalize">
-                      {host.status}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>{host.ip}</TableCell>
-                   <TableCell>
-                    <Link href={`/clusters/${host.clusterId}`} className="hover:underline">
-                      {host.clusterName}
-                    </Link>
-                  </TableCell>
-                  <TableCell>{host.os}</TableCell>
-                  <TableCell>{host.lastHeartbeat}</TableCell>
-                  <TableCell className="text-right">
-                    <Button asChild variant="ghost" size="sm">
-                      <Link href={`/hosts/${host.id}`}>
-                        View Details <ArrowUpRight className="ml-2 h-4 w-4" />
-                      </Link>
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
+       <DataTable columns={columns} data={mockHosts} filterKey="name" />
     </div>
   );
 }
