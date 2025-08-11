@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  /* config options here */
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -23,7 +22,7 @@ const nextConfig = {
       },
     ],
   },
-  transpilePackages: ['@amberops/ui', '@amberops/api', '@amberops/design-tokens', '@amberops/lib'],
+  transpilePackages: ['@amberops/ui', '@amberops/api', '@amberops/lib'],
 };
 
 export default nextConfig;

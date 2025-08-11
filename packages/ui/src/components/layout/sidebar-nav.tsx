@@ -15,21 +15,19 @@ import {
   Laptop,
 } from 'lucide-react';
 
-import { cn } from '@amberops/lib/utils';
+import { cn } from '@amberops/lib';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@amberops/ui/components/ui/accordion';
-import {
   Sidebar,
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
   useSidebar,
-} from '@amberops/ui/components/ui/sidebar';
-import { AmberOpsLogo } from '@amberops/ui/components/icons';
+  AmberOpsLogo,
+} from '@amberops/ui';
 
 export function SidebarNav() {
   const pathname = usePathname();

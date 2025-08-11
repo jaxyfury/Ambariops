@@ -1,4 +1,4 @@
-import { cn } from "@amberops/lib";
+import { cn } from "@/lib/utils";
 
 interface PageHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
     title: string;
