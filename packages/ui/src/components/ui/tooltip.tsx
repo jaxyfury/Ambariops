@@ -8,14 +8,7 @@ import { cn } from "@amberops/lib"
 
 const TooltipProvider = TooltipPrimitive.Provider
 
-const Tooltip = ({
-  ...props
-}: React.ComponentProps<typeof TooltipPrimitive.Root>) => (
-  <TooltipProvider>
-    <TooltipPrimitive.Root {...props} />
-  </TooltipProvider>
-);
-
+const Tooltip = TooltipPrimitive.Root
 
 const TooltipTrigger = TooltipPrimitive.Trigger
 

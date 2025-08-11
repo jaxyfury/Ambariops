@@ -98,6 +98,7 @@ export const columns: ColumnDef<Cluster>[] = [
             <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
     ),
+    cell: ({ row }) => <div className="text-center">{row.original.hostCount}</div>,
   },
   {
     accessorKey: 'serviceCount',
@@ -110,6 +111,7 @@ export const columns: ColumnDef<Cluster>[] = [
             <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
     ),
+     cell: ({ row }) => <div className="text-center">{row.original.serviceCount}</div>,
   },
   {
     accessorKey: 'alertCount',
@@ -122,15 +124,25 @@ export const columns: ColumnDef<Cluster>[] = [
             <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
     ),
+     cell: ({ row }) => <div className="text-center">{row.original.alertCount}</div>,
   },
   {
     id: 'actions',
     cell: ({ row }) => (
-      <Button asChild variant="ghost" size="sm">
-        <Link href={`/clusters/${row.original.id}`}>
-          View Details <ArrowUpRight className="ml-2 h-4 w-4" />
-        </Link>
-      </Button>
+      <div className="text-right">
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button asChild variant="ghost" size="sm">
+              <Link href={`/clusters/${row.original.id}`}>
+                View Details <ArrowUpRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>View cluster details</p>
+          </TooltipContent>
+        </Tooltip>
+      </div>
     ),
   },
 ];
@@ -148,7 +160,8 @@ export default function ClustersPage() {
   }, []);
 
   const handleAddCluster = () => {
-    toast.success('New cluster added!');
+    // In a real app, you'd handle form submission here
+    toast.success('New cluster registration process initiated!');
     setIsModalOpen(false);
   }
 
@@ -169,7 +182,7 @@ export default function ClustersPage() {
                 <DialogHeader>
                     <DialogTitle>Add New Cluster</DialogTitle>
                     <DialogDescription>
-                        Enter the details for the new cluster.
+                        Enter the details for the new cluster. This will begin the registration process.
                     </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
