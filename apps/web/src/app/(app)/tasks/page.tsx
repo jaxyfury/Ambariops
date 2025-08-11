@@ -1,16 +1,6 @@
-import { PageHeader } from '../../../components/page-header';
-import { Card, CardContent } from '../../../components/ui/card';
-import { Progress } from '../../../components/ui/progress';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '../../../components/ui/table';
-import { mockTasks } from '../../../lib/mock-data';
-import { Badge } from '../../../components/ui/badge';
+import { PageHeader } from '@/components/page-header';
+import { Card, CardContent, Progress, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@amberops/ui';
+import { mockTasks } from '@amberops/api';
 import { CheckCircle, XCircle, Loader, CircleDotDashed } from 'lucide-react';
 
 function getStatusIcon(status: 'running' | 'completed' | 'failed' | 'pending') {

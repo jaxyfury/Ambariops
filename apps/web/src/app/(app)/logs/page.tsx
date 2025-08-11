@@ -1,17 +1,6 @@
-import { PageHeader } from '../../../components/page-header';
-import { Button } from '../../../components/ui/button';
-import { Input } from '../../../components/ui/input';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '../../../components/ui/table';
-import { Card, CardContent, CardHeader, CardTitle } from '../../../components/ui/card';
-import { mockLogEntries } from '../../../lib/mock-data';
-import { Badge } from '../../../components/ui/badge';
+import { PageHeader } from '@/components/page-header';
+import { Button, Input, Table, TableBody, TableCell, TableHead, TableHeader, TableRow, Card, CardContent, Badge } from '@amberops/ui';
+import { mockLogEntries } from '@amberops/api';
 import { Search, PlayCircle } from 'lucide-react';
 
 function getLevelBadgeVariant(level: 'INFO' | 'WARN' | 'ERROR' | 'DEBUG'): 'default' | 'destructive' | 'secondary' {

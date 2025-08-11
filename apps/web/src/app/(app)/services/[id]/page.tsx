@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
-import { PageHeader } from '../../../../components/page-header';
-import { Button } from '../../../../components/ui/button';
-import { mockServices } from '../../../../lib/mock-data';
+import { PageHeader } from '@/components/page-header';
+import { Button } from '@amberops/ui';
+import { mockServices } from '@amberops/api';
 
 export default function ServiceDetailPage({ params }: { params: { id: string } }) {
   const service = mockServices.find((s) => s.id === params.id);

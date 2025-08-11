@@ -1,17 +1,6 @@
-import { PageHeader } from '../../../components/page-header';
-import { Button } from '../../../components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../components/ui/card';
-import { Textarea } from '../../../components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../components/ui/select';
-import { mockConfigVersions } from '../../../lib/mock-data';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '../../../components/ui/table';
+import { PageHeader } from '@/components/page-header';
+import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle, Textarea, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@amberops/ui';
+import { mockConfigVersions } from '@amberops/api';
 import { format } from 'date-fns';
 import { Save, History } from 'lucide-react';
 

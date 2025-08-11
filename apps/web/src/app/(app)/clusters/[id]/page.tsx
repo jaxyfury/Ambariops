@@ -1,18 +1,8 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { PageHeader } from '../../../../components/page-header';
-import { Button } from '../../../../components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../../components/ui/card';
-import { mockClusters, mockServices, mockHosts, mockAlerts } from '../../../../lib/mock-data';
-import { Badge } from '../../../../components/ui/badge';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '../../../../components/ui/table';
+import { PageHeader } from '@/components/page-header';
+import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle, Badge, Table, TableBody, TableCell, TableHead, TableHeader, TableRow, ChartContainer, ChartTooltip, ChartTooltipContent } from '@amberops/ui';
+import { mockClusters, mockServices, mockHosts, mockAlerts } from '@amberops/api';
 import {
   AlertTriangle,
   ArrowUpRight,
@@ -25,11 +15,6 @@ import {
   XCircle,
   Clock,
 } from 'lucide-react';
-import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "../../../../components/ui/chart"
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
 
 
@@ -68,7 +53,7 @@ const chartConfig = {
     label: "Desktop",
     color: "hsl(var(--chart-1))",
   },
-} satisfies import("../../../../components/ui/chart").ChartConfig
+} satisfies import("@amberops/ui").ChartConfig
 
 
 export default function ClusterDetailPage({ params }: { params: { id: string } }) {

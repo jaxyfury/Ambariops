@@ -1,18 +1,8 @@
 import Link from 'next/link';
-import { PageHeader } from '../../../components/page-header';
-import { Button } from '../../../components/ui/button';
-import { Card, CardContent } from '../../../components/ui/card';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '../../../components/ui/table';
-import { mockHosts } from '../../../lib/mock-data';
+import { PageHeader } from '@/components/page-header';
+import { Button, Card, CardContent, Table, TableBody, TableCell, TableHead, TableHeader, TableRow, Badge } from '@amberops/ui';
+import { mockHosts } from '@amberops/api';
 import { ArrowUpRight, PlusCircle, Server } from 'lucide-react';
-import { Badge } from '../../../components/ui/badge';
 
 function getStatusBadgeVariant(status: 'healthy' | 'unhealthy' | 'restarting' | 'maintenance'): 'default' | 'destructive' | 'secondary' {
   switch (status) {

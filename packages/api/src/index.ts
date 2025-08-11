@@ -1,2 +1,3 @@
 export * as ai from './ai';
-export * as mocks from './mocks';
+export * from './mocks/mock-data';
+export * from './mocks';

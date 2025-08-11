@@ -1,9 +1,9 @@
 import { PageHeader } from "@/components/page-header";
 import { Button, Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle, Progress, Table, TableBody, TableCell, TableHead, TableHeader, TableRow, Badge } from "@amberops/ui";
-import { mockClusters, mockAlerts } from "../../../lib/mock-data";
+import { mockClusters, mockAlerts } from "@amberops/api";
 import { ArrowUpRight, Cpu, MemoryStick, Server, Siren } from "lucide-react";
 import Link from 'next/link';
-import { ClusterHealthSummary } from "../../../components/cluster-health-summary";
+import { ClusterHealthSummary } from "@/components/cluster-health-summary";
 
 function getStatusColor(status: 'healthy' | 'unhealthy' | 'degraded') {
   switch (status) {

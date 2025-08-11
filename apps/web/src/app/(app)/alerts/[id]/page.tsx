@@ -1,13 +1,13 @@
 import { notFound } from 'next/navigation';
-import { PageHeader } from '../../../../components/page-header';
-import { Button } from '../../../../components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../../components/ui/card';
-import { mockAlerts } from '../../../../lib/mock-data';
-import { Badge } from '../../../../components/ui/badge';
+import { PageHeader } from '@/components/page-header';
+import { Button } from '@amberops/ui';
+import { Card, CardContent, CardHeader, CardTitle } from '@amberops/ui';
+import { mockAlerts } from '@amberops/api';
+import { Badge } from '@amberops/ui';
 import { formatDistanceToNow } from 'date-fns';
-import { AlertTriangle, Server, HardDrive, User, Clock } from 'lucide-react';
+import { AlertTriangle, Server, HardDrive, Clock } from 'lucide-react';
 import Link from 'next/link';
-import { TroubleshootingSteps } from '../../../../components/troubleshooting-steps';
+import { TroubleshootingSteps } from '@/components/troubleshooting-steps';
 
 function getSeverityBadgeVariant(severity: 'critical' | 'warning' | 'info'): 'destructive' | 'secondary' | 'default' {
     switch (severity) {

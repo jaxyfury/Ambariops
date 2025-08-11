@@ -2,9 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, Skeleton } from '@amberops/ui';
-import { summarizeClusterHealth } from '@amberops/api/ai';
+import { ai, mockAlerts } from '@amberops/api';
 import type { Cluster } from '@amberops/lib';
-import { mockAlerts } from '@amberops/api/mocks';
 import { Bot } from 'lucide-react';
 
 interface ClusterHealthSummaryProps {
@@ -20,7 +19,7 @@ export function ClusterHealthSummary({ cluster }: ClusterHealthSummaryProps) {
       try {
         setLoading(true);
         const clusterAlerts = mockAlerts.filter((a) => a.clusterId === cluster.id);
-        const result = await summarizeClusterHealth({
+        const result = await ai.summarizeClusterHealth({
           clusterName: cluster.name,
           healthMetrics: JSON.stringify(cluster.healthMetrics),
           alerts: JSON.stringify(clusterAlerts),

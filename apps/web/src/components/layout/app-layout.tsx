@@ -1,7 +1,7 @@
 import { SidebarProvider, SidebarInset, SidebarTrigger, Avatar, AvatarFallback, AvatarImage, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, Button } from "@amberops/ui";
 import { SidebarNav } from "./sidebar-nav";
-import { ThemeToggle } from "../theme-toggle";
-import { LanguageSwitcher } from "../language-switcher";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { LanguageSwitcher } from "@/components/language-switcher";
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
   return (

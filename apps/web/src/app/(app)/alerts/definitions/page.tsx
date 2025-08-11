@@ -1,25 +1,7 @@
-import { PageHeader } from '../../../../components/page-header';
-import { Button } from '../../../../components/ui/button';
-import { Card, CardContent } from '../../../../components/ui/card';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '../../../../components/ui/table';
-import { Switch } from '../../../../components/ui/switch';
-import { mockAlertDefinitions } from '../../../../lib/mock-data';
+import { PageHeader } from '@/components/page-header';
+import { Button, Card, CardContent, Table, TableBody, TableCell, TableHead, TableHeader, TableRow, Switch, Badge, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@amberops/ui';
+import { mockAlertDefinitions } from '@amberops/api';
 import { PlusCircle, MoreHorizontal } from 'lucide-react';
-import { Badge } from '../../../../components/ui/badge';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '../../../../components/ui/dropdown-menu';
-
 
 export default function AlertDefinitionsPage() {
   return (

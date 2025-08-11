@@ -1,6 +1,6 @@
 "use client"
 
-import { useToast } from "../../hooks/use-toast"
+import { useToast } from "@amberops/ui"
 import {
   Toast,
   ToastClose,
@@ -8,7 +8,7 @@ import {
   ToastProvider,
   ToastTitle,
   ToastViewport,
-} from "./toast"
+} from "@amberops/ui"
 
 export function Toaster() {
   const { toasts } = useToast()

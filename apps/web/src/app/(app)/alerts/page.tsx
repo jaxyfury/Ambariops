@@ -1,18 +1,8 @@
 import Link from 'next/link';
-import { PageHeader } from '../../../components/page-header';
-import { Button } from '../../../components/ui/button';
-import { Card, CardContent } from '../../../components/ui/card';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '../../../components/ui/table';
-import { mockAlerts } from '../../../lib/mock-data';
+import { PageHeader } from '@/components/page-header';
+import { Button, Card, CardContent, Table, TableBody, TableCell, TableHead, TableHeader, TableRow, Badge } from '@amberops/ui';
+import { mockAlerts } from '@amberops/api';
 import { ArrowUpRight, Siren } from 'lucide-react';
-import { Badge } from '../../../components/ui/badge';
 import { formatDistanceToNow } from 'date-fns';
 
 function getSeverityBadgeVariant(severity: 'critical' | 'warning' | 'info'): 'destructive' | 'secondary' | 'default' {

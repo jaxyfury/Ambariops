@@ -1,16 +1,7 @@
 import Link from 'next/link';
-import { PageHeader } from '../../../components/page-header';
-import { Button } from '../../../components/ui/button';
-import { Card, CardContent } from '../../../components/ui/card';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '../../../components/ui/table';
-import { mockServices } from '../../../lib/mock-data';
+import { PageHeader } from '@/components/page-header';
+import { Button, Card, CardContent, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@amberops/ui';
+import { mockServices } from '@amberops/api';
 import { ArrowUpRight, CheckCircle2, XCircle, Clock, HardDrive } from 'lucide-react';
 
 function getServiceStatusIcon(status: 'started' | 'stopped' | 'maintenance') {

@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
-import { PageHeader } from '../../../../components/page-header';
-import { Button } from '../../../../components/ui/button';
-import { mockHosts } from '../../../../lib/mock-data';
+import { PageHeader } from '@/components/page-header';
+import { Button } from '@amberops/ui';
+import { mockHosts } from '@amberops/api';
 
 export default function HostDetailPage({ params }: { params: { id: string } }) {
   const host = mockHosts.find((h) => h.id === params.id);
