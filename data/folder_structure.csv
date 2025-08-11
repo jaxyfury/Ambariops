@@ -1,0 +1,18 @@
+path,type,description
+/.github,directory,Contains GitHub Actions workflows and templates.
+/.husky,directory,Contains Git hooks configuration for pre-commit checks.
+/.storybook,directory,Configuration files for Storybook.
+/data,directory,Project management data and reports.
+/src,directory,Main application source code.
+/src/app,directory,Next.js App Router pages and layouts.
+/src/app/(app),directory,Layout and pages for the main authenticated application shell.
+/src/app/api,directory,Server-side API routes (currently for Genkit).
+/src/components,directory,Shared React components.
+/src/components/ui,directory,Core UI components from ShadCN.
+/src/components/layout,directory,Layout-specific components like Sidebar and AppLayout.
+/src/ai,directory,Genkit AI flows and configuration.
+/src/hooks,directory,Custom React hooks.
+/src/lib,directory,Core libraries, utilities, and type definitions.
+/src/stories,directory,Storybook stories for all components.
+/src/stories/components/ui,directory,Stories for the base UI components.
+/tests,directory,End-to-end tests using Playwright.
