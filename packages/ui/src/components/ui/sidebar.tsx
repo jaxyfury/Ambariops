@@ -311,7 +311,7 @@ export const SidebarInset = React.forwardRef<
         "relative flex min-h-svh flex-1 flex-col bg-background transition-all duration-300 ease-in-out",
         "peer-data-[variant=inset]:min-h-[calc(100svh-theme(spacing.4))] md:peer-data-[variant=inset]:m-2 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow",
          "md:pl-[var(--sidebar-width-icon)]",
-         state === 'expanded' && "md:pl-[var(--sidebar-width)]",
+         state === 'expanded' && "md:pl-[var(--sidebar-width-icon)]",
         className
       )}
       {...props}
