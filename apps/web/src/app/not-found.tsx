@@ -1,6 +1,5 @@
 import Link from 'next/link'
-import { Button } from '@amberops/ui/button'
-import { AmberOpsLogo } from '@amberops/ui/icons'
+import { Button, AmberOpsLogo } from '@amberops/ui'
 
 export default function NotFound() {
   return (

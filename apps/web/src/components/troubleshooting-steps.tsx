@@ -1,11 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@amberops/ui/card';
-import { suggestTroubleshootingSteps } from '@amberops/api/ai/flows/suggest-troubleshooting-steps';
-import type { Alert } from '@amberops/lib/types';
-import { Skeleton } from '@amberops/ui/skeleton';
-import { Bot, ListOrdered } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, Skeleton } from '@amberops/ui';
+import { suggestTroubleshootingSteps } from '@amberops/api/ai';
+import type { Alert } from '@amberops/lib';
+import { Bot } from 'lucide-react';
 
 interface TroubleshootingStepsProps {
   alert: Alert;

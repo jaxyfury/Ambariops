@@ -2,7 +2,10 @@
   "name": "@amberops/ui",
   "version": "0.1.0",
   "private": true,
-  "main": "src/index.ts",
+  "main": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
   "scripts": {
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "typecheck": "tsc --noEmit",
@@ -42,7 +45,8 @@
     "recharts": "^2.12.7",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
-    "@amberops/design-tokens": "workspace:*"
+    "@amberops/design-tokens": "workspace:*",
+    "@amberops/lib": "workspace:*"
   },
   "devDependencies": {
     "@storybook/addon-a11y": "^8.1.11",

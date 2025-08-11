@@ -16,10 +16,10 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@amberops/ui/*": ["packages/ui/src/*"],
+      "@amberops/ui": ["packages/ui/src"],
       "@amberops/api/*": ["packages/api/src/*"],
       "@amberops/design-tokens/*": ["packages/design-tokens/*"],
-      "@amberops/lib/*": ["packages/lib/src/*"]
+      "@amberops/lib": ["packages/lib/src"]
     }
   },
   "exclude": ["node_modules"]
