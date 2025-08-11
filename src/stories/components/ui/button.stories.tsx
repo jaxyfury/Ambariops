@@ -69,19 +69,21 @@ export const Link: Story = {
 };
 
 export const WithIcon: Story = {
-  args: {
-    children: (
-      <>
+    render: (args) => (
+      <Button {...args}>
         <PlusCircle className="mr-2 h-4 w-4" /> Add New
-      </>
+      </Button>
     ),
-  },
 };
 
 export const IconOnly: Story = {
     args: {
-        children: <PlusCircle />,
         size: 'icon',
         variant: 'outline',
-    }
+    },
+    render: (args) => (
+        <Button {...args}>
+            <PlusCircle />
+        </Button>
+    )
 }

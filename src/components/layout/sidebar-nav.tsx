@@ -73,16 +73,15 @@ export function SidebarNav() {
                  <Accordion type="single" collapsible defaultValue={isAlertsActive ? "alerts" : undefined}>
                     <AccordionItem value="alerts" className="border-b-0">
                       <AccordionTrigger
-                        asChild
                         className={cn(
-                          "w-full justify-start h-auto py-2 px-3 text-sm hover:bg-sidebar-accent rounded-md",
-                          isAlertsActive && "bg-sidebar-accent text-sidebar-accent-foreground"
+                          "flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-none ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground",
+                           isAlertsActive && "bg-sidebar-accent text-sidebar-accent-foreground"
                         )}
                       >
-                        <div className='flex items-center gap-2'>
-                         <item.icon className="w-4 h-4" />
-                         <span>{item.label}</span>
-                        </div>
+                         <div className='flex items-center gap-2'>
+                           <item.icon className="w-4 h-4" />
+                           <span>{item.label}</span>
+                         </div>
                       </AccordionTrigger>
                       <AccordionContent className="p-0 pl-7 pt-1">
                         <ul className="space-y-1">
