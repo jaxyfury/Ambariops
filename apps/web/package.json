@@ -12,9 +12,13 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "typecheck": "tsc --noEmit",
     "test": "jest",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "postinstall": "patch-package"
   },
   "dependencies": {
+    "@amberops/api": "workspace:*",
+    "@amberops/design-tokens": "workspace:*",
+    "@amberops/ui": "workspace:*",
     "@genkit-ai/googleai": "^1.14.1",
     "@genkit-ai/next": "^1.14.1",
     "@hookform/resolvers": "^3.4.2",
@@ -39,6 +43,7 @@
     "@radix-ui/react-tabs": "^1.0.4",
     "@radix-ui/react-toast": "^1.1.5",
     "@radix-ui/react-tooltip": "^1.0.7",
+    "@tanstack/react-query": "^5.45.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
@@ -62,9 +67,7 @@
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.23.8",
-    "@amberops/ui": "workspace:*",
-    "@amberops/api": "workspace:*",
-    "@amberops/design-tokens": "workspace:*"
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@playwright/test": "^1.44.1",

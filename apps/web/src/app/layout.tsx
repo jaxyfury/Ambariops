@@ -1,10 +1,13 @@
 
-import type { Metadata } from 'next';
+'use client';
+
 import { Inter, Space_Grotesk } from 'next/font/google';
 import '@amberops/design-tokens/globals.css';
 import { cn } from '@amberops/ui/lib/utils';
 import { ThemeProvider } from '@amberops/ui/components/theme-provider';
 import { Toaster } from '@amberops/ui/components/ui/toaster';
+import { useEffect } from 'react';
+import { enableMocking } from '@amberops/api/mocks';
 
 const fontBody = Inter({
   subsets: ['latin'],
@@ -16,16 +19,17 @@ const fontHeadline = Space_Grotesk({
   variable: '--font-headline',
 });
 
-export const metadata: Metadata = {
-  title: 'AmberOps Console',
-  description: 'A modern management console for your operations.',
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'development') {
+      enableMocking();
+    }
+  }, []);
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body
