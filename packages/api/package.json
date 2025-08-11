@@ -2,11 +2,11 @@
   "name": "@amberops/api",
   "version": "0.1.0",
   "private": true,
-  "main": "src/index.ts",
+  "main": "./src/index.ts",
   "exports": {
     ".": "./src/index.ts",
     "./ai": "./src/ai/index.ts",
-    "./mocks": "./src/mocks/index.ts",
+    "./mocks/browser": "./src/mocks/browser.ts",
     "./mock-data": "./src/mocks/mock-data.ts"
   },
   "scripts": {
