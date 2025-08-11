@@ -8,6 +8,7 @@ test.describe('Other Application Pages', () => {
     { name: 'Tasks & Operations', url: '/tasks' },
     { name: 'Log Search', url: '/logs' },
     { name: 'Settings', url: '/settings' },
+    { name: 'Help & Support', url: '/help' },
   ];
 
   for (const pageInfo of pages) {

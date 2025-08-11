@@ -1,5 +1,5 @@
 import { PageHeader } from '@/components/page-header';
-import { Button, Input, Table, TableBody, TableCell, TableHead, TableHeader, TableRow, Card, CardContent, Badge } from '@amberops/ui';
+import { Button, Input, Table, TableBody, TableCell, TableHead, TableHeader, TableRow, Card, CardContent, Badge, ScrollArea } from '@amberops/ui';
 import { mockLogEntries } from '@amberops/api';
 import { Search, PlayCircle } from 'lucide-react';
 
@@ -31,30 +31,32 @@ export default function LogsPage() {
         <Button>Search</Button>
         <Button variant="outline"><PlayCircle className="h-4 w-4 mr-2" />Live Tail</Button>
       </div>
-      <Card className="flex-grow">
-        <CardContent className="pt-6">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[180px]">Timestamp</TableHead>
-                <TableHead className="w-[80px]">Level</TableHead>
-                <TableHead className="w-[150px]">Host</TableHead>
-                <TableHead className="w-[180px]">Component</TableHead>
-                <TableHead>Message</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {mockLogEntries.map((log, index) => (
-                <TableRow key={index}>
-                  <TableCell className="font-mono text-xs">{new Date(log.timestamp).toISOString()}</TableCell>
-                  <TableCell><Badge variant={getLevelBadgeVariant(log.level)}>{log.level}</Badge></TableCell>
-                  <TableCell className="font-mono text-xs">{log.host}</TableCell>
-                  <TableCell className="font-mono text-xs">{log.component}</TableCell>
-                  <TableCell className="font-mono text-sm">{log.message}</TableCell>
+      <Card className="flex-grow flex flex-col">
+        <CardContent className="pt-6 flex-grow">
+          <ScrollArea className="h-full">
+            <Table>
+              <TableHeader className="sticky top-0 bg-card">
+                <TableRow>
+                  <TableHead className="w-[180px]">Timestamp</TableHead>
+                  <TableHead className="w-[80px]">Level</TableHead>
+                  <TableHead className="w-[150px]">Host</TableHead>
+                  <TableHead className="w-[180px]">Component</TableHead>
+                  <TableHead>Message</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {mockLogEntries.map((log, index) => (
+                  <TableRow key={index}>
+                    <TableCell className="font-mono text-xs">{new Date(log.timestamp).toISOString()}</TableCell>
+                    <TableCell><Badge variant={getLevelBadgeVariant(log.level)}>{log.level}</Badge></TableCell>
+                    <TableCell className="font-mono text-xs">{log.host}</TableCell>
+                    <TableCell className="font-mono text-xs">{log.component}</TableCell>
+                    <TableCell className="font-mono text-sm">{log.message}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </ScrollArea>
         </CardContent>
       </Card>
     </div>

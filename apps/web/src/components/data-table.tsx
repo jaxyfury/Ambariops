@@ -40,7 +40,7 @@ import * as XLSX from "xlsx"
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
-  filterKey: string
+  filterKey?: string
 }
 
 export function DataTable<TData, TValue>({
@@ -130,14 +130,14 @@ export function DataTable<TData, TValue>({
   return (
     <div className="w-full">
         <div className="flex items-center py-4">
-        <Input
+        {filterKey && <Input
           placeholder={`Filter by ${filterKey}...`}
           value={(table.getColumn(filterKey)?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn(filterKey)?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
-        />
+        /> }
         <div className="ml-auto flex items-center gap-2">
             <DropdownMenu>
             <DropdownMenuTrigger asChild>
