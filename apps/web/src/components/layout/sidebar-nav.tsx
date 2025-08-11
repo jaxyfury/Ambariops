@@ -21,15 +21,15 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@amberops/ui/components/ui/accordion';
+} from '@amberops/ui/accordion';
 import {
   Sidebar,
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
   useSidebar,
-} from '@amberops/ui/components/ui/sidebar';
-import { AmberOpsLogo } from '@amberops/ui/components/icons';
+} from '@amberops/ui/sidebar';
+import { AmberOpsLogo } from '@amberops/ui/icons';
 
 export function SidebarNav() {
   const pathname = usePathname();

@@ -22,6 +22,7 @@ const nextConfig = {
       },
     ],
   },
+  transpilePackages: ['@amberops/ui', '@amberops/api', '@amberops/design-tokens', '@amberops/lib'],
 };
 
 export default nextConfig;

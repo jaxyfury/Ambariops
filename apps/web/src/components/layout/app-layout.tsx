@@ -1,8 +1,8 @@
-import { SidebarProvider, SidebarInset, SidebarTrigger } from "@amberops/ui/components/ui/sidebar";
+import { SidebarProvider, SidebarInset, SidebarTrigger } from "@amberops/ui/sidebar";
 import { SidebarNav } from "./sidebar-nav";
-import { Avatar, AvatarFallback, AvatarImage } from "@amberops/ui/components/ui/avatar";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@amberops/ui/components/ui/dropdown-menu";
-import { Button } from "@amberops/ui/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@amberops/ui/avatar";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@amberops/ui/dropdown-menu";
+import { Button } from "@amberops/ui/button";
 import { ThemeToggle } from "../theme-toggle";
 import { LanguageSwitcher } from "../language-switcher";
 

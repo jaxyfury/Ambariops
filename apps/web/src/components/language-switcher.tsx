@@ -1,13 +1,13 @@
 'use client';
 
 import { useTranslation } from 'react-i18next';
-import { Button } from '@amberops/ui/components/ui/button';
+import { Button } from '@amberops/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@amberops/ui/components/ui/dropdown-menu';
+} from '@amberops/ui/dropdown-menu';
 import { Languages } from 'lucide-react';
 
 export function LanguageSwitcher() {
