@@ -15,7 +15,6 @@ import {
   Laptop,
 } from 'lucide-react';
 
-import { cn } from '@amberops/lib';
 import {
   Accordion,
   AccordionContent,
@@ -27,6 +26,9 @@ import {
   SidebarMenuButton,
   useSidebar,
   AmberOpsLogo,
+  SidebarHeader,
+  SidebarContent,
+  SidebarFooter,
 } from '@amberops/ui';
 
 export function SidebarNav() {
@@ -63,11 +65,13 @@ export function SidebarNav() {
 
   return (
     <Sidebar>
-      <div className="flex flex-col h-full">
-        <div className="p-4 flex items-center gap-2">
+      <SidebarHeader>
+        <div className="flex items-center gap-2">
             <AmberOpsLogo className="w-8 h-8"/>
             {sidebarState === 'expanded' && <h1 className="text-xl font-headline font-semibold">AmberOps</h1>}
         </div>
+      </SidebarHeader>
+      <SidebarContent>
         <SidebarMenu className="flex-1 p-2">
           {navItems.map((item) => (
             <SidebarMenuItem key={item.label}>
@@ -79,7 +83,7 @@ export function SidebarNav() {
                         isActive={isAlertsActive}
                         className="[&>svg:last-child]:hidden"
                       >
-                         <AccordionTrigger>
+                         <AccordionTrigger className="w-full">
                            <div className="flex items-center gap-2">
                             <item.icon />
                             <span>{item.label}</span>
@@ -112,7 +116,9 @@ export function SidebarNav() {
             </SidebarMenuItem>
           ))}
         </SidebarMenu>
-        <SidebarMenu className="p-2 mt-auto">
+      </SidebarContent>
+      <SidebarFooter>
+        <SidebarMenu className="p-2">
           {bottomNavItems.map((item) => (
             <SidebarMenuItem key={item.label}>
               <SidebarMenuButton isActive={isActive(item.href)} asChild tooltip={item.tooltip}>
@@ -124,7 +130,7 @@ export function SidebarNav() {
             </SidebarMenuItem>
           ))}
         </SidebarMenu>
-      </div>
+      </SidebarFooter>
     </Sidebar>
   );
 }
