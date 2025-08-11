@@ -9,8 +9,8 @@
     "lint": "pnpm --filter '*' lint",
     "format": "prettier --write .",
     "typecheck": "pnpm --filter '*' typecheck",
-    "storybook": "pnpm --filter ui storybook",
-    "build-storybook": "pnpm --filter ui build-storybook",
+    "storybook": "pnpm --filter @amberops/ui storybook",
+    "build-storybook": "pnpm --filter @amberops/ui build-storybook",
     "test": "pnpm --filter '*' test",
     "test:e2e": "pnpm --filter web test:e2e"
   },
