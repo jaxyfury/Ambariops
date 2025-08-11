@@ -5,33 +5,45 @@ This repository contains the source code for the AmberOps Console, a modern mana
 ## Folder Structure Overview
 
 This project is a monorepo managed by `pnpm` workspaces.
-
-```
+````
 /
-├── .github/              # GitHub Actions workflows and templates
-├── .husky/               # Git hooks for pre-commit checks
+├── .github/              # GitHub Actions workflows and issue/PR templates
+├── .husky/               # Git hooks for pre-commit linting and commit message checks
+├── .idx/                 # Custom project-related tooling/config (optional)
+├── .next/                # Next.js build and cache output (auto-generated)
 ├── apps/
-│   └── web/              # Main Next.js frontend application
-│       ├── public/       # Static assets, including i18n locale files
+│   └── web/              # Main Next.js frontend app with React components, pages, and localization
+│       ├── public/       # Static assets like locale JSON files for i18n
 │       └── src/
-│           ├── app/      # Next.js App Router pages and layouts
-│           ├── components/ # App-specific components (e.g., page-header)
-│           └── lib/        # App-specific utilities and i18n setup
-├── packages/
-│   ├── api/              # API client and MSW mocking layer
-│   ├── design-tokens/    # Shared theme, colors, and Tailwind config
-│   ├── lib/              # Shared utilities and types
-│   └── ui/               # Shared React component library
-│       ├── .storybook/   # Storybook configuration
-│       └── src/
-│           ├── components/ # Reusable UI components
-│           └── stories/    # Storybook stories for components
-├── tests/                # End-to-end tests using Playwright
-├── README.md             # This file
-├── package.json          # Root package.json managing workspaces
-├── pnpm-workspace.yaml   # pnpm workspace configuration
-└── tsconfig.base.json    # Base TypeScript configuration
-```
+│           ├── app/      # Next.js App Router pages and layout definitions
+│           ├── components/ # App-specific React components (headers, layout, widgets)
+│           ├── hooks/    # Custom React hooks used by the web app
+│           └── lib/      # Utilities, i18n setup, types specific to the web app
+├── data/                 # Project metadata, tracking files, CSVs for progress and structure
+├── docs/                 # Documentation and architectural blueprints
+├── node_modules/         # Installed dependencies (auto-generated)
+├── packages/             # Shared libraries and tools across apps
+│   ├── api/              # API client, mocking (MSW), and Genkit AI flows for backend simulation
+│   ├── design-tokens/    # Tailwind CSS configuration, theme tokens, and global styles
+│   ├── lib/              # Shared TypeScript types and utility functions
+│   └── ui/               # Reusable React UI components with Storybook stories and Radix primitives
+├── tests/                # Playwright end-to-end tests covering main user workflows
+├── .env                  # Environment variables configuration (not committed)
+├── .eslintrc.json        # ESLint config enforcing code quality and style
+├── .gitignore            # Specifies untracked files for git
+├── .lintstagedrc.js      # Lint-staged config to run linting on staged files
+├── .prettierrc           # Prettier config for consistent code formatting
+├── commitlint.config.js  # Commit message linting rules
+├── next.config.ts        # Next.js build and runtime configuration for the web app
+├── package.json          # Root package manifest managing pnpm workspaces and scripts
+├── playwright.config.ts  # Playwright test runner configuration
+├── pnpm-workspace.yaml   # Defines pnpm workspace packages
+├── postcss.config.mjs    # PostCSS config for styling
+├── tailwind.config.ts    # Tailwind CSS config at repo root
+├── tsconfig.base.json    # Base TypeScript config shared across the monorepo
+├── tsconfig.json         # Root TypeScript config extending base config
+└── README.md             # Project README file (this document)
+````
 
 ### Key Folders
 
