@@ -2,7 +2,7 @@
 
 import { Inter, Space_Grotesk } from 'next/font/google';
 import '@amberops/design-tokens/globals.css';
-import { cn } from '@amberops/ui/lib/utils';
+import { cn } from '@amberops/lib/utils';
 import { ThemeProvider } from '@amberops/ui/components/theme-provider';
 import { Toaster } from '@amberops/ui/components/ui/toaster';
 import { useEffect } from 'react';

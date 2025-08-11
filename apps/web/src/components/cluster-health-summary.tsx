@@ -1,11 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
-import { summarizeClusterHealth } from '../ai/flows/summarize-cluster-health';
-import type { Cluster } from '../lib/types';
-import { mockAlerts } from '../lib/mock-data';
-import { Skeleton } from './ui/skeleton';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@amberops/ui/components/ui/card';
+import { summarizeClusterHealth } from '@amberops/api/ai/flows/summarize-cluster-health';
+import type { Cluster } from '@amberops/lib/types';
+import { mockAlerts } from '@amberops/api/mocks/mock-data';
+import { Skeleton } from '@amberops/ui/components/ui/skeleton';
 import { Bot } from 'lucide-react';
 
 interface ClusterHealthSummaryProps {

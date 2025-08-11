@@ -1,8 +1,8 @@
-import { SidebarProvider, Sidebar, SidebarInset, SidebarTrigger, SidebarHeader } from "../ui/sidebar";
+import { SidebarProvider, Sidebar, SidebarInset, SidebarTrigger, SidebarHeader } from "@amberops/ui/components/ui/sidebar";
 import { SidebarNav } from "./sidebar-nav";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
-import { Button } from "../ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@amberops/ui/components/ui/avatar";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@amberops/ui/components/ui/dropdown-menu";
+import { Button } from "@amberops/ui/components/ui/button";
 import { ThemeToggle } from "../theme-toggle";
 
 export function AppLayout({ children }: { children: React.ReactNode }) {

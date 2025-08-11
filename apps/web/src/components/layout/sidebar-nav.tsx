@@ -15,20 +15,20 @@ import {
   Laptop,
 } from 'lucide-react';
 
-import { cn } from '../../lib/utils';
+import { cn } from '@amberops/lib/utils';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '../ui/accordion';
+} from '@amberops/ui/components/ui/accordion';
 import {
   Sidebar,
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
-} from '../ui/sidebar';
-import { AmberOpsLogo } from '../icons';
+} from '@amberops/ui/components/ui/sidebar';
+import { AmberOpsLogo } from '@amberops/ui/components/icons';
 
 const navItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
