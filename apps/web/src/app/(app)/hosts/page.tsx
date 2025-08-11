@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { PageHeader } from '@/components/page-header';
-import { Button, Badge } from '@amberops/ui';
+import { Button, Badge, Checkbox } from '@amberops/ui';
 import { mockHosts } from '@amberops/api';
 import { ArrowUpRight, PlusCircle, Server } from 'lucide-react';
 import { DataTable } from '@/components/data-table';
@@ -24,6 +24,28 @@ function getStatusBadgeVariant(status: 'healthy' | 'unhealthy' | 'restarting' | 
 }
 
 export const columns: ColumnDef<Host>[] = [
+    {
+        id: 'select',
+        header: ({ table }) => (
+        <Checkbox
+            checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && 'indeterminate')
+            }
+            onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+            aria-label="Select all"
+        />
+        ),
+        cell: ({ row }) => (
+        <Checkbox
+            checked={row.getIsSelected()}
+            onCheckedChange={(value) => row.toggleSelected(!!value)}
+            aria-label="Select row"
+        />
+        ),
+        enableSorting: false,
+        enableHiding: false,
+    },
     {
         accessorKey: 'name',
         header: 'Name',

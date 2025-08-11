@@ -2,7 +2,7 @@
 'use client';
 
 import { PageHeader } from '@/components/page-header';
-import { Progress, Badge } from '@amberops/ui';
+import { Progress, Badge, Checkbox } from '@amberops/ui';
 import { mockTasks } from '@amberops/api';
 import { CheckCircle, XCircle, Loader, CircleDotDashed } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
@@ -37,6 +37,28 @@ function getStatusBadgeVariant(status: 'running' | 'completed' | 'failed' | 'pen
 }
 
 export const columns: ColumnDef<Task>[] = [
+    {
+        id: 'select',
+        header: ({ table }) => (
+        <Checkbox
+            checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && 'indeterminate')
+            }
+            onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+            aria-label="Select all"
+        />
+        ),
+        cell: ({ row }) => (
+        <Checkbox
+            checked={row.getIsSelected()}
+            onCheckedChange={(value) => row.toggleSelected(!!value)}
+            aria-label="Select row"
+        />
+        ),
+        enableSorting: false,
+        enableHiding: false,
+    },
     {
         accessorKey: 'id',
         header: 'Task ID',

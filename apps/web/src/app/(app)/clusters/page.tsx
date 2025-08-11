@@ -3,9 +3,9 @@
 
 import Link from 'next/link';
 import { PageHeader } from '@/components/page-header';
-import { Button, Badge } from '@amberops/ui';
+import { Button, Badge, Checkbox } from '@amberops/ui';
 import { mockClusters } from '@amberops/api';
-import { ArrowUpRight, PlusCircle } from 'lucide-react';
+import { ArrowUpRight, PlusCircle, ArrowUpDown } from 'lucide-react';
 import { DataTable } from '@/components/data-table';
 import { type ColumnDef } from '@tanstack/react-table';
 import type { Cluster } from '@amberops/lib';
@@ -24,8 +24,40 @@ function getStatusBadgeVariant(status: 'healthy' | 'unhealthy' | 'degraded'): 'd
 
 export const columns: ColumnDef<Cluster>[] = [
   {
+    id: 'select',
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && 'indeterminate')
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
     accessorKey: 'name',
-    header: 'Name',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Name
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
     cell: ({ row }) => <span className="font-medium">{row.original.name}</span>,
   },
   {
@@ -83,7 +115,7 @@ export default function ClustersPage() {
           Add Cluster
         </Button>
       </PageHeader>
-      <DataTable columns={columns} data={mockClusters} isLoading={isLoading} />
+      <DataTable columns={columns} data={mockClusters} isLoading={isLoading} filterKey="name" />
     </div>
   );
 }

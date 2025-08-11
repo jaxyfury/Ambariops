@@ -1,5 +1,6 @@
 
 
+
 "use client"
 
 import * as React from "react"
@@ -81,6 +82,8 @@ export function DataTable<TData, TValue>({
         return column.header;
     }
     if (typeof column.header === 'function') {
+        // Attempt to render the header if it's a function, but this can be complex.
+        // For simplicity, we'll fall back to id or accessorKey.
         return column.id || column.accessorKey || '';
     }
     return column.id || column.accessorKey || '';
@@ -88,16 +91,24 @@ export function DataTable<TData, TValue>({
 
   const exportToPDF = () => {
     const doc = new jsPDF();
-    const tableHeaders = table.getVisibleFlatColumns().map(col => getHeaderFromColumn(col.columnDef));
+    const tableHeaders = table.getVisibleFlatColumns()
+        .map(col => getHeaderFromColumn(col.columnDef))
+        .filter(header => header && header !== 'select' && header !== 'actions');
+    
     const tableData = table.getRowModel().rows.map(row => {
-        return row.getVisibleCells().map(cell => {
-            const context = cell.getContext();
-            const cellValue = context.getValue();
-            if (typeof cellValue === 'object' && cellValue !== null) {
-                return JSON.stringify(cellValue);
-            }
-            return String(cellValue ?? '');
-        });
+        return row.getVisibleCells()
+            .filter(cell => {
+                const colDef = cell.column.columnDef as any;
+                return colDef.id !== 'select' && colDef.id !== 'actions';
+            })
+            .map(cell => {
+                const context = cell.getContext();
+                const cellValue = context.getValue();
+                if (typeof cellValue === 'object' && cellValue !== null) {
+                    return JSON.stringify(cellValue);
+                }
+                return String(cellValue ?? '');
+            });
     });
 
     autoTable(doc, {
@@ -108,14 +119,19 @@ export function DataTable<TData, TValue>({
   };
 
   const exportToExcel = () => {
-    const tableHeaders = table.getVisibleFlatColumns().map(col => getHeaderFromColumn(col.columnDef));
+    const tableHeaders = table.getVisibleFlatColumns()
+        .map(col => getHeaderFromColumn(col.columnDef))
+        .filter(header => header && header !== 'select' && header !== 'actions');
+
     const tableData = table.getRowModel().rows.map(row => {
         const rowData: { [key: string]: any } = {};
         row.getVisibleCells().forEach(cell => {
             const colDef = cell.column.columnDef as any;
-            const header = getHeaderFromColumn(colDef);
-            const context = cell.getContext();
-            rowData[header] = context.getValue();
+            if (colDef.id !== 'select' && colDef.id !== 'actions') {
+                const header = getHeaderFromColumn(colDef);
+                const context = cell.getContext();
+                rowData[header] = context.getValue();
+            }
         });
         return rowData;
     });
@@ -146,6 +162,8 @@ export function DataTable<TData, TValue>({
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
+                 <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
+                <DropdownMenuSeparator />
                 {table
                 .getAllColumns()
                 .filter((column) => column.getCanHide())

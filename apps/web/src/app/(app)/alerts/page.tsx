@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { PageHeader } from '@/components/page-header';
-import { Button, Badge } from '@amberops/ui';
+import { Button, Badge, Checkbox } from '@amberops/ui';
 import { mockAlerts } from '@amberops/api';
 import { ArrowUpRight, Siren } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
@@ -37,6 +37,28 @@ function getStatusBadgeVariant(status: 'triggered' | 'acknowledged' | 'resolved'
 }
 
 export const columns: ColumnDef<Alert>[] = [
+    {
+        id: 'select',
+        header: ({ table }) => (
+        <Checkbox
+            checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && 'indeterminate')
+            }
+            onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+            aria-label="Select all"
+        />
+        ),
+        cell: ({ row }) => (
+        <Checkbox
+            checked={row.getIsSelected()}
+            onCheckedChange={(value) => row.toggleSelected(!!value)}
+            aria-label="Select row"
+        />
+        ),
+        enableSorting: false,
+        enableHiding: false,
+    },
     {
         accessorKey: 'name',
         header: 'Alert Name',
