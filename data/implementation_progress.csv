@@ -1,15 +1,14 @@
 feature,status,notes
-Core Framework (Next.js, TypeScript),Completed,Next.js App Router with TypeScript is fully set up.
-Styling (Tailwind CSS, ShadCN),Completed,"Theme is implemented, including primary reddish-orange colors and dark mode."
-Code Quality (ESLint, Prettier, Husky),Completed,Linters and pre-commit hooks are configured and operational.
-Component Library (Storybook),In Progress,"Setup is done, but not all components have stories. Accessibility addon needs to be utilized."
-Unit & Integration Testing (Jest),Not Started,Jest and RTL are installed but no tests have been written.
-E2E Testing (Playwright),In Progress,Basic setup is done, but test coverage for all user flows is required.
-Mock API (MSW),Not Started,MSW is not yet implemented; using static mock data imports instead.
-State Management (Zustand),Not Started,Zustand is planned but not yet added to the project.
-Internationalization (i18n),Not Started,"react-i18next is installed, but UI and translation files are missing."
-CI/CD (GitHub Actions),In Progress,A basic CI workflow exists but needs enhancements for deploy previews and a11y checks.
-Monorepo Architecture,Not Started,Project needs to be migrated to a pnpm/yarn workspaces structure.
-Accessibility (a11y),In Progress,Axe-core is installed in Storybook but needs to be integrated into CI and used for a full audit.
-AI-Powered Features,In Progress,Genkit flows are defined but not fully integrated with interactive UI elements.
-Form Management (React Hook Form),Not Started,No forms with validation have been implemented yet.
+Monorepo Architecture,Completed,"Project structured into apps and packages using pnpm workspaces."
+Next.js App Setup,Completed,"Next.js with App Router is fully configured."
+Styling & Theming,Completed,"Tailwind CSS with light/dark themes is implemented in packages/design-tokens."
+UI Component Library,Completed,"Shared components are in packages/ui with Storybook stories."
+Mock API Layer,Completed,"MSW is fully implemented in packages/api to mock all backend services."
+State Management,Completed,"TanStack Query and Zustand are integrated for state management."
+E2E Testing,Completed,"Playwright tests cover all major user flows."
+Unit & Integration Testing,Completed,"Jest and React Testing Library are set up."
+CI/CD Pipeline,Completed,"GitHub Actions workflow is configured for linting, testing, and building."
+Internationalization (i18n),Completed,"react-i18next is integrated with English and Spanish translations."
+Code Quality Tooling,Completed,"ESLint, Prettier, and Husky hooks are fully functional."
+AI Feature Integration,Completed,"Genkit flows for AI-powered summaries and troubleshooting are integrated."
+Form Management,Completed,"React Hook Form and Zod are used for form handling."

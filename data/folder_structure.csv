@@ -1,18 +1,34 @@
 path,type,description
-/.github,directory,Contains GitHub Actions workflows and templates.
-/.husky,directory,Contains Git hooks configuration for pre-commit checks.
-/.storybook,directory,Configuration files for Storybook.
-/data,directory,Project management data and reports.
-/src,directory,Main application source code.
-/src/app,directory,Next.js App Router pages and layouts.
-/src/app/(app),directory,Layout and pages for the main authenticated application shell.
-/src/app/api,directory,Server-side API routes (currently for Genkit).
-/src/components,directory,Shared React components.
-/src/components/ui,directory,Core UI components from ShadCN.
-/src/components/layout,directory,Layout-specific components like Sidebar and AppLayout.
-/src/ai,directory,Genkit AI flows and configuration.
-/src/hooks,directory,Custom React hooks.
-/src/lib,directory,Core libraries, utilities, and type definitions.
-/src/stories,directory,Storybook stories for all components.
-/src/stories/components/ui,directory,Stories for the base UI components.
+/.github,directory,Contains GitHub Actions workflows for CI/CD.
+/apps,directory,Contains the main applications of the monorepo.
+/apps/web,directory,The main Next.js frontend application.
+/apps/web/public,directory,Static assets for the web app, including locales for i18n.
+/apps/web/src,directory,Source code for the web application.
+/apps/web/src/app,directory,Next.js App Router pages and layouts.
+/apps/web/src/components,directory,Components specific to the web application.
+/apps/web/src/hooks,directory,Custom React hooks for the web application.
+/apps/web/src/lib,directory,Utilities and i18n configuration specific to the web app.
+/data,directory,Project metadata and tracking files.
+/packages,directory,Shared packages used across the monorepo.
+/packages/api,directory,Handles API mocking (MSW) and AI flows (Genkit).
+/packages/api/src,directory,Source code for the API package.
+/packages/api/src/ai,directory,Contains Genkit AI flow definitions.
+/packages/api/src/mocks,directory,Contains MSW handlers and mock data.
+/packages/design-tokens,directory,Shared design tokens, Tailwind CSS configuration, and global styles.
+/packages/lib,directory,Shared utilities and TypeScript types.
+/packages/lib/src,directory,Source code for the lib package.
+/packages/ui,directory,Shared React component library and Storybook stories.
+/packages/ui/.storybook,directory,Storybook configuration files.
+/packages/ui/src,directory,Source code for the UI package.
+/packages/ui/src/components,directory,Reusable UI components built with ShadCN/Radix.
+/packages/ui/src/stories,directory,Storybook stories for UI components.
 /tests,directory,End-to-end tests using Playwright.
+/.github/workflows/ci.yml,file,Defines the Continuous Integration pipeline.
+/apps/web/next.config.ts,file,Next.js configuration for the web app.
+/apps/web/package.json,file,Package manifest for the web app.
+/apps/web/tailwind.config.ts,file,Tailwind CSS configuration for the web app.
+/apps/web/tsconfig.json,file,TypeScript configuration for the web app.
+/package.json,file,Root package.json managing pnpm workspaces.
+/pnpm-workspace.yaml,file,Defines the pnpm workspaces.
+/README.md,file,The main README file for the project.
+/tsconfig.base.json,file,Base TypeScript configuration shared across the monorepo.
