@@ -1,21 +1,23 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { PageHeader } from '@/components/page-header';
-import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle, Badge, Table, TableBody, TableCell, TableHead, TableHeader, TableRow, ChartContainer, ChartTooltip, ChartTooltipContent } from '@amberops/ui';
+import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle, Badge, Table, TableBody, TableCell, TableHead, TableHeader, TableRow, ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from '@amberops/ui';
 import { mockClusters, mockServices, mockHosts, mockAlerts } from '@amberops/api';
 import {
   AlertTriangle,
   ArrowUpRight,
   Cpu,
+  Database,
   HardDrive,
   MemoryStick,
+  Network,
   Server,
   Siren,
   CheckCircle2,
   XCircle,
   Clock,
 } from 'lucide-react';
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
+import { Area, AreaChart, Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
 import type { ChartConfig } from '@amberops/ui';
 
 function getStatusBadgeVariant(status: 'healthy' | 'unhealthy' | 'degraded'): 'default' | 'destructive' | 'secondary' {
@@ -40,19 +42,14 @@ function getServiceStatusIcon(status: 'started' | 'stopped' | 'maintenance') {
   }
 }
 
-const chartData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
-]
-const chartConfig = {
-  desktop: {
-    label: "Desktop",
-    color: "hsl(var(--chart-1))",
-  },
+const resourceChartConfig = {
+  cpu: { label: "CPU", color: "hsl(var(--chart-1))" },
+  memory: { label: "Memory", color: "hsl(var(--chart-2))" },
+} satisfies ChartConfig
+
+const ioChartConfig = {
+    disk: { label: "Disk I/O", color: "hsl(var(--chart-3))" },
+    network: { label: "Network I/O", color: "hsl(var(--chart-4))" },
 } satisfies ChartConfig
 
 
@@ -77,7 +74,7 @@ export default function ClusterDetailPage({ params }: { params: { id: string } }
         <Button>Run Service Check</Button>
       </PageHeader>
       
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-6">
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-5 mb-6">
         <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Status</CardTitle>
@@ -105,6 +102,15 @@ export default function ClusterDetailPage({ params }: { params: { id: string } }
                 <div className="text-2xl font-bold">{cluster.memoryUsage}%</div>
             </CardContent>
         </Card>
+         <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Storage Usage</CardTitle>
+                <Database className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+                <div className="text-2xl font-bold">{cluster.storageUsage}%</div>
+            </CardContent>
+        </Card>
         <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Active Alerts</CardTitle>
@@ -116,63 +122,121 @@ export default function ClusterDetailPage({ params }: { params: { id: string } }
         </Card>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="grid gap-6 lg:grid-cols-5">
+        <Card className="lg:col-span-3">
+            <CardHeader>
+                <CardTitle>Resource Utilization (Last 30 Days)</CardTitle>
+                <CardDescription>CPU and Memory usage trends.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                 <ChartContainer config={resourceChartConfig} className="min-h-[300px] w-full">
+                    <AreaChart
+                        accessibilityLayer
+                        data={cluster.historicalData}
+                        margin={{ left: 12, right: 12 }}
+                    >
+                        <CartesianGrid vertical={false} />
+                        <XAxis
+                        dataKey="date"
+                        tickLine={false}
+                        axisLine={false}
+                        tickMargin={8}
+                        tickFormatter={(value) => value.slice(0, 3)}
+                        />
+                        <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="dot" />} />
+                        <Area
+                            dataKey="memory"
+                            type="natural"
+                            fill="var(--color-memory)"
+                            fillOpacity={0.4}
+                            stroke="var(--color-memory)"
+                            stackId="a"
+                        />
+                        <Area
+                            dataKey="cpu"
+                            type="natural"
+                            fill="var(--color-cpu)"
+                            fillOpacity={0.4}
+                            stroke="var(--color-cpu)"
+                            stackId="a"
+                        />
+                        <ChartLegend content={<ChartLegendContent />} />
+                    </AreaChart>
+                </ChartContainer>
+            </CardContent>
+        </Card>
         <Card className="lg:col-span-2">
           <CardHeader>
-            <CardTitle>CPU Usage Over Time</CardTitle>
-          </CardHeader>
-          <CardContent>
-             <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
-              <BarChart accessibilityLayer data={chartData}>
-                <CartesianGrid vertical={false} />
-                <XAxis
-                  dataKey="month"
-                  tickLine={false}
-                  tickMargin={10}
-                  axisLine={false}
-                />
-                 <YAxis
-                    tickLine={false}
-                    axisLine={false}
-                    tickMargin={10}
-                    tickFormatter={(value) => `${value}%`}
-                />
-                <ChartTooltip
-                  cursor={false}
-                  content={<ChartTooltipContent indicator="dot" />}
-                />
-                <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
-              </BarChart>
-            </ChartContainer>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader>
             <CardTitle>Active Alerts</CardTitle>
-             <CardDescription>{alerts.length} active alerts</CardDescription>
+             <CardDescription>{alerts.length} active alerts require attention.</CardDescription>
           </CardHeader>
           <CardContent>
             {alerts.length === 0 ? (
-                <div className="flex flex-col items-center justify-center h-full text-center">
+                <div className="flex flex-col items-center justify-center h-full text-center py-8">
                     <CheckCircle2 className="h-12 w-12 text-green-500 mb-2"/>
                     <p className="font-semibold">No Active Alerts</p>
                     <p className="text-sm text-muted-foreground">This cluster is healthy.</p>
                 </div>
             ) : (
-                <ul className="space-y-2">
+                <ul className="space-y-3">
                 {alerts.map(alert => (
-                    <li key={alert.id} className="flex items-start gap-2">
-                        <AlertTriangle className="h-4 w-4 text-yellow-500 mt-1"/>
+                    <li key={alert.id} className="flex items-start gap-3">
+                        <AlertTriangle className="h-4 w-4 text-yellow-500 mt-1 flex-shrink-0"/>
                         <div>
                             <Link href={`/alerts/${alert.id}`} className="font-semibold hover:underline">{alert.name}</Link>
-                            <p className="text-sm text-muted-foreground">{alert.description}</p>
+                            <p className="text-sm text-muted-foreground line-clamp-2">{alert.description}</p>
                         </div>
                     </li>
                 ))}
             </ul>
             )}
           </CardContent>
+        </Card>
+         <Card className="lg:col-span-5">
+            <CardHeader>
+                <CardTitle>I/O Performance (Last 30 Days)</CardTitle>
+                <CardDescription>Disk and Network I/O trends.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                 <ChartContainer config={ioChartConfig} className="min-h-[300px] w-full">
+                    <AreaChart
+                        accessibilityLayer
+                        data={cluster.historicalData}
+                        margin={{ left: 12, right: 12 }}
+                    >
+                        <CartesianGrid vertical={false} />
+                        <XAxis
+                        dataKey="date"
+                        tickLine={false}
+                        axisLine={false}
+                        tickMargin={8}
+                        tickFormatter={(value) => value.slice(0, 3)}
+                        />
+                        <YAxis
+                            tickLine={false}
+                            axisLine={false}
+                            tickMargin={8}
+                            tickFormatter={(value) => `${value} MB/s`}
+                        />
+                        <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line" />} />
+                        <Area
+                            dataKey="disk"
+                            type="natural"
+                            fill="var(--color-disk)"
+                            fillOpacity={0.4}
+                            stroke="var(--color-disk)"
+                        />
+                        <Area
+                            dataKey="network"
+                            type="natural"
+                            fill="var(--color-network)"
+                            fillOpacity={0.4}
+                            stroke="var(--color-network)"
+                        />
+                         <ChartLegend content={<ChartLegendContent />} />
+                    </AreaChart>
+                </ChartContainer>
+            </CardContent>
         </Card>
         
         <Card className="lg:col-span-3">
@@ -217,7 +281,7 @@ export default function ClusterDetailPage({ params }: { params: { id: string } }
           </CardContent>
         </Card>
 
-        <Card className="lg:col-span-3">
+        <Card className="lg:col-span-2">
           <CardHeader>
             <CardTitle>Hosts</CardTitle>
             <CardDescription>{hosts.length} hosts in this cluster.</CardDescription>
@@ -229,7 +293,6 @@ export default function ClusterDetailPage({ params }: { params: { id: string } }
                   <TableHead>Host</TableHead>
                   <TableHead>IP</TableHead>
                   <TableHead>Status</TableHead>
-                  <TableHead>OS</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -239,7 +302,6 @@ export default function ClusterDetailPage({ params }: { params: { id: string } }
                     <TableCell className="font-medium">{host.name}</TableCell>
                     <TableCell>{host.ip}</TableCell>
                     <TableCell><Badge variant={host.status === 'healthy' ? 'default' : 'destructive'} className="capitalize">{host.status}</Badge></TableCell>
-                    <TableCell>{host.os}</TableCell>
                     <TableCell className="text-right">
                        <Button asChild variant="ghost" size="sm">
                           <Link href={`/hosts/${host.id}`}>

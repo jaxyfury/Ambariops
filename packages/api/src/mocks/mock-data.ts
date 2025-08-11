@@ -1,5 +1,22 @@
 import type { Cluster, Service, Host, Alert, AlertDefinition, ConfigVersion, Task, LogEntry, User } from '@amberops/lib/types';
 
+const generateHistoricalData = (days: number, cpuMax: number, memMax: number, diskMax: number, netMax: number) => {
+  const data = [];
+  for (let i = days - 1; i >= 0; i--) {
+    const date = new Date();
+    date.setDate(date.getDate() - i);
+    data.push({
+      date: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+      cpu: Math.floor(Math.random() * (cpuMax - 20) + 20),
+      memory: Math.floor(Math.random() * (memMax - 20) + 20),
+      disk: Math.floor(Math.random() * (diskMax - 10) + 10),
+      network: Math.floor(Math.random() * (netMax - 5) + 5),
+    });
+  }
+  return data;
+};
+
+
 export const mockClusters: Cluster[] = [
   {
     id: 'prod-cluster-1',
@@ -11,11 +28,13 @@ export const mockClusters: Cluster[] = [
     cpuUsage: 45,
     memoryUsage: 60,
     storageUsage: 75,
+    networkUsage: 30,
     healthMetrics: {
       cpu: { value: 45, trend: 'stable' },
       memory: { value: 60, trend: 'up' },
       disk: { value: 75, trend: 'stable' },
     },
+    historicalData: generateHistoricalData(30, 60, 70, 80, 40),
   },
   {
     id: 'dev-cluster-2',
@@ -27,11 +46,13 @@ export const mockClusters: Cluster[] = [
     cpuUsage: 88,
     memoryUsage: 72,
     storageUsage: 50,
+    networkUsage: 15,
     healthMetrics: {
       cpu: { value: 88, trend: 'up' },
       memory: { value: 72, trend: 'down' },
       disk: { value: 50, trend: 'stable' },
     },
+    historicalData: generateHistoricalData(30, 95, 80, 60, 25),
   },
   {
     id: 'staging-cluster-3',
@@ -43,11 +64,13 @@ export const mockClusters: Cluster[] = [
     cpuUsage: 95,
     memoryUsage: 85,
     storageUsage: 90,
+    networkUsage: 70,
      healthMetrics: {
       cpu: { value: 95, trend: 'up' },
       memory: { value: 85, trend: 'up' },
       disk: { value: 90, trend: 'up' },
     },
+    historicalData: generateHistoricalData(30, 100, 90, 95, 80),
   },
 ];
 

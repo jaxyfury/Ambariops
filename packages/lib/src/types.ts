@@ -8,11 +8,19 @@ export type Cluster = {
   cpuUsage: number;
   memoryUsage: number;
   storageUsage: number;
+  networkUsage: number;
   healthMetrics: {
     cpu: { value: number; trend: 'up' | 'down' | 'stable' };
     memory: { value: number; trend: 'up' | 'down' | 'stable' };
     disk: { value: number; trend: 'up' | 'down' | 'stable' };
   };
+  historicalData: {
+    date: string;
+    cpu: number;
+    memory: number;
+    disk: number;
+    network: number;
+  }[];
 };
 
 export type Service = {
