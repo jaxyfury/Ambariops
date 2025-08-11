@@ -3,7 +3,7 @@ import { SidebarNav } from "./sidebar-nav";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
-import { ThemeToggle } from "@amberops/ui/components/theme-toggle";
+import { ThemeToggle } from "../theme-toggle";
 import { LanguageSwitcher } from "../../../../apps/web/src/components/language-switcher";
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
