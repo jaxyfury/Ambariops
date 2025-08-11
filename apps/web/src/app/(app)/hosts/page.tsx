@@ -9,6 +9,7 @@ import { ArrowUpRight, PlusCircle, Server } from 'lucide-react';
 import { DataTable } from '@/components/data-table';
 import { type ColumnDef } from '@tanstack/react-table';
 import type { Host } from '@amberops/lib';
+import { useState, useEffect } from 'react';
 
 function getStatusBadgeVariant(status: 'healthy' | 'unhealthy' | 'restarting' | 'maintenance'): 'default' | 'destructive' | 'secondary' {
   switch (status) {
@@ -79,6 +80,15 @@ export const columns: ColumnDef<Host>[] = [
 
 
 export default function HostsPage() {
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+        setIsLoading(false);
+        }, 1500); 
+        return () => clearTimeout(timer);
+    }, []);
+
   return (
     <div>
       <PageHeader
@@ -90,7 +100,7 @@ export default function HostsPage() {
           Add Host
         </Button>
       </PageHeader>
-       <DataTable columns={columns} data={mockHosts} filterKey="name" />
+       <DataTable columns={columns} data={mockHosts} filterKey="name" isLoading={isLoading}/>
     </div>
   );
 }

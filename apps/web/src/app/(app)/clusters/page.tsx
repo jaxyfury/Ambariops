@@ -9,6 +9,7 @@ import { ArrowUpRight, PlusCircle } from 'lucide-react';
 import { DataTable } from '@/components/data-table';
 import { type ColumnDef } from '@tanstack/react-table';
 import type { Cluster } from '@amberops/lib';
+import { useState, useEffect } from 'react';
 
 function getStatusBadgeVariant(status: 'healthy' | 'unhealthy' | 'degraded'): 'default' | 'destructive' | 'secondary' {
   switch (status) {
@@ -62,6 +63,15 @@ export const columns: ColumnDef<Cluster>[] = [
 
 
 export default function ClustersPage() {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500); 
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div>
       <PageHeader
@@ -73,7 +83,7 @@ export default function ClustersPage() {
           Add Cluster
         </Button>
       </PageHeader>
-      <DataTable columns={columns} data={mockClusters} />
+      <DataTable columns={columns} data={mockClusters} isLoading={isLoading} />
     </div>
   );
 }

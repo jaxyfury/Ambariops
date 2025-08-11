@@ -10,6 +10,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { DataTable } from '@/components/data-table';
 import { type ColumnDef } from '@tanstack/react-table';
 import type { Alert } from '@amberops/lib';
+import { useState, useEffect } from 'react';
 
 function getSeverityBadgeVariant(severity: 'critical' | 'warning' | 'info'): 'destructive' | 'secondary' | 'default' {
     switch (severity) {
@@ -97,13 +98,22 @@ export const columns: ColumnDef<Alert>[] = [
 ];
 
 export default function AlertsPage() {
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+        setIsLoading(false);
+        }, 1500);
+        return () => clearTimeout(timer);
+    }, []);
+
   return (
     <div>
       <PageHeader
         title="Alerts"
         description="View and manage all alerts across your infrastructure."
       />
-      <DataTable columns={columns} data={mockAlerts} filterKey="name" />
+      <DataTable columns={columns} data={mockAlerts} filterKey="name" isLoading={isLoading} />
     </div>
   );
 }

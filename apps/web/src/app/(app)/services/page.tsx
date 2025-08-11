@@ -9,6 +9,7 @@ import { ArrowUpRight, CheckCircle2, XCircle, Clock, HardDrive, MoreHorizontal, 
 import { DataTable } from '@/components/data-table';
 import { type ColumnDef } from '@tanstack/react-table';
 import type { Service } from '@amberops/lib';
+import { useState, useEffect } from 'react';
 
 function getServiceStatusIcon(status: 'started' | 'stopped' | 'maintenance') {
   switch (status) {
@@ -98,13 +99,22 @@ export const columns: ColumnDef<Service>[] = [
 ];
 
 export default function ServicesPage() {
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+        setIsLoading(false);
+        }, 1500); 
+        return () => clearTimeout(timer);
+    }, []);
+
   return (
     <div>
       <PageHeader
         title="Services"
         description="A list of all services running across your clusters."
       />
-      <DataTable columns={columns} data={mockServices} filterKey="name" />
+      <DataTable columns={columns} data={mockServices} filterKey="name" isLoading={isLoading} />
     </div>
   );
 }

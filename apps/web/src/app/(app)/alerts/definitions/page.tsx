@@ -8,6 +8,7 @@ import { PlusCircle, MoreHorizontal } from 'lucide-react';
 import { DataTable } from '@/components/data-table';
 import { type ColumnDef } from '@tanstack/react-table';
 import type { AlertDefinition } from '@amberops/lib';
+import { useState, useEffect } from 'react';
 
 export const columns: ColumnDef<AlertDefinition>[] = [
     {
@@ -58,6 +59,15 @@ export const columns: ColumnDef<AlertDefinition>[] = [
 ];
 
 export default function AlertDefinitionsPage() {
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+        setIsLoading(false);
+        }, 1500);
+        return () => clearTimeout(timer);
+    }, []);
+
   return (
     <div>
       <PageHeader
@@ -69,7 +79,7 @@ export default function AlertDefinitionsPage() {
           New Definition
         </Button>
       </PageHeader>
-      <DataTable columns={columns} data={mockAlertDefinitions} filterKey="name" />
+      <DataTable columns={columns} data={mockAlertDefinitions} filterKey="name" isLoading={isLoading} />
     </div>
   );
 }

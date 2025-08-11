@@ -9,6 +9,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { DataTable } from '@/components/data-table';
 import { type ColumnDef } from '@tanstack/react-table';
 import type { Task } from '@amberops/lib';
+import { useState, useEffect } from 'react';
 
 function getStatusIcon(status: 'running' | 'completed' | 'failed' | 'pending') {
   switch (status) {
@@ -84,13 +85,22 @@ export const columns: ColumnDef<Task>[] = [
 ]
 
 export default function TasksPage() {
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+        setIsLoading(false);
+        }, 1500); 
+        return () => clearTimeout(timer);
+    }, []);
+
   return (
     <div>
       <PageHeader
         title="Tasks & Operations"
         description="Track background operations and service checks."
       />
-      <DataTable columns={columns} data={mockTasks} filterKey="name" />
+      <DataTable columns={columns} data={mockTasks} filterKey="name" isLoading={isLoading}/>
     </div>
   );
 }

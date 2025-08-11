@@ -31,6 +31,7 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
+  Skeleton,
 } from "@amberops/ui"
 import { FileDown, SlidersHorizontal } from "lucide-react"
 import jsPDF from "jspdf"
@@ -41,12 +42,14 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   filterKey?: string
+  isLoading?: boolean
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   filterKey,
+  isLoading = false,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
@@ -77,10 +80,7 @@ export function DataTable<TData, TValue>({
     if (typeof column.header === 'string') {
         return column.header;
     }
-    // Attempt to find a string in the header render function
-    // This is a heuristic and might need adjustment for complex headers
     if (typeof column.header === 'function') {
-        // Try to find a 'name' prop in a rendered component, or just use accessorKey
         return column.id || column.accessorKey || '';
     }
     return column.id || column.accessorKey || '';
@@ -201,7 +201,17 @@ export function DataTable<TData, TValue>({
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {isLoading ? (
+                Array.from({ length: 10 }).map((_, i) => (
+                    <TableRow key={i}>
+                        {columns.map((column, j) => (
+                            <TableCell key={j}>
+                                <Skeleton className="h-6 w-full" />
+                            </TableCell>
+                        ))}
+                    </TableRow>
+                ))
+            ) : table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
