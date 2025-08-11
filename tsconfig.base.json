@@ -1,3 +1,4 @@
+
 {
   "compilerOptions": {
     "target": "es5",
@@ -16,9 +17,9 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["apps/web/src/*"],
       "@amberops/ui": ["packages/ui/src/index.ts"],
       "@amberops/api": ["packages/api/src/index.ts"],
+      "@amberops/api/*": ["packages/api/src/*"],
       "@amberops/design-tokens/*": ["packages/design-tokens/*"],
       "@amberops/lib": ["packages/lib/src/index.ts"]
     }
