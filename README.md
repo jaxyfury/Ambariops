@@ -68,22 +68,25 @@ The project has achieved its initial MVP goals. The core architecture is in plac
 
 ## Getting Started
 
-1.  **Install dependencies:**
-    ```bash
-    pnpm install
-    ```
+Follow this two-step process to set up and run the project.
 
-2.  **Run the development server:**
-    ```bash
-    pnpm dev
-    ```
-    The web app will be available at `http://localhost:3000`.
+### 1. Build the Workspace (One-Time Setup)
 
-3.  **Run Storybook:**
-    ```bash
-    pnpm storybook
-    ```
-    Storybook will be available at `http://localhost:6006`.
+This command will install all the necessary tools and dependencies, then build and test the entire project to ensure your environment is set up correctly.
+
+```bash
+sh build-workspace.sh
+```
+
+### 2. Run the Development Server
+
+After the initial setup, use this command to start the local development server.
+
+```bash
+sh run.sh
+```
+
+The web app will be available at `http://localhost:3000`.
 
 ## Available Scripts
 
