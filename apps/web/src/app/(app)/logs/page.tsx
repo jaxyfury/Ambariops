@@ -1,7 +1,11 @@
+
+'use client';
+
 import { PageHeader } from '@/components/page-header';
 import { Button, Input, Table, TableBody, TableCell, TableHead, TableHeader, TableRow, Card, CardContent, Badge, ScrollArea } from '@amberops/ui';
 import { mockLogEntries } from '@amberops/api';
 import { Search, PlayCircle } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 function getLevelBadgeVariant(level: 'INFO' | 'WARN' | 'ERROR' | 'DEBUG'): 'default' | 'destructive' | 'secondary' {
   switch (level) {
@@ -28,8 +32,10 @@ export default function LogsPage() {
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input placeholder="Search logs... (e.g., component:HDFS AND level:ERROR)" className="pl-8" />
         </div>
-        <Button>Search</Button>
-        <Button variant="outline"><PlayCircle className="h-4 w-4 mr-2" />Live Tail</Button>
+        <Button onClick={() => toast.success('Search results updated.')}>Search</Button>
+        <Button variant="outline" onClick={() => toast.info('Live tail feature coming soon!')}>
+          <PlayCircle className="h-4 w-4 mr-2" />Live Tail
+        </Button>
       </div>
       <Card className="flex-grow flex flex-col">
         <CardContent className="pt-0 flex-grow overflow-hidden">

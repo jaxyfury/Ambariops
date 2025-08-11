@@ -1,3 +1,6 @@
+
+'use client';
+
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { PageHeader } from '@/components/page-header';
@@ -19,6 +22,7 @@ import {
 } from 'lucide-react';
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
 import type { ChartConfig } from '@amberops/ui';
+import toast from 'react-hot-toast';
 
 function getStatusBadgeVariant(status: 'healthy' | 'unhealthy' | 'degraded'): 'default' | 'destructive' | 'secondary' {
   switch (status) {
@@ -64,14 +68,18 @@ export default function ClusterDetailPage({ params }: { params: { id: string } }
   const hosts = mockHosts.filter((h) => h.clusterId === cluster.id);
   const alerts = mockAlerts.filter((a) => a.clusterId === cluster.id && a.status === 'triggered');
 
+  const handleRunServiceCheck = () => {
+    toast.success('Service check initiated successfully!');
+  };
+
   return (
     <div>
       <PageHeader
         title={cluster.name}
         description={`Details for cluster ID: ${cluster.id}`}
       >
-        <Button variant="outline">Actions</Button>
-        <Button>Run Service Check</Button>
+        <Button variant="outline" onClick={() => toast.info('Actions dropdown coming soon!')}>Actions</Button>
+        <Button onClick={handleRunServiceCheck}>Run Service Check</Button>
       </PageHeader>
       
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-5 mb-6">

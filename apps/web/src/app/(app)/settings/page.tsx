@@ -7,6 +7,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
   Tabs,
@@ -15,6 +16,7 @@ import {
   TabsTrigger,
 } from '@amberops/ui';
 import { UserManagement } from '@/components/user-management';
+import toast from 'react-hot-toast';
 
 export default function SettingsPage() {
   return (
@@ -39,8 +41,11 @@ export default function SettingsPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <p>Coming soon...</p>
+              <p>This section is under development. Please check back later for general settings options.</p>
             </CardContent>
+            <CardFooter>
+                 <Button disabled>Save Changes</Button>
+            </CardFooter>
           </Card>
         </TabsContent>
         <TabsContent value="users">
@@ -55,8 +60,11 @@ export default function SettingsPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <p>Coming soon...</p>
+              <p>This section is under development. Please check back later to manage integrations.</p>
             </CardContent>
+             <CardFooter>
+                <Button disabled>Add Integration</Button>
+            </CardFooter>
           </Card>
         </TabsContent>
         <TabsContent value="api">
@@ -64,12 +72,15 @@ export default function SettingsPage() {
             <CardHeader>
               <CardTitle>API Access</CardTitle>
               <CardDescription>
-                Manage API keys and access tokens.
+                Manage API keys and access tokens for programmatic access.
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <p>Coming soon...</p>
+              <p>This section is under development. Please check back later to generate and manage API keys.</p>
             </CardContent>
+             <CardFooter>
+                <Button disabled>Generate New Key</Button>
+            </CardFooter>
           </Card>
         </TabsContent>
       </Tabs>

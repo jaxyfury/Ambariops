@@ -2,9 +2,9 @@
 'use client';
 
 import { PageHeader } from "@/components/page-header";
-import { Button, Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle, Progress, Table, TableBody, TableCell, TableHead, TableHeader, TableRow, Badge, Select, SelectTrigger, SelectContent, SelectValue, SelectItem } from "@amberops/ui";
+import { Button, Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle, Progress, Table, TableBody, TableCell, TableHead, TableHeader, TableRow, Badge, Select, SelectTrigger, SelectContent, SelectValue, SelectItem, Tooltip, TooltipTrigger, TooltipContent } from "@amberops/ui";
 import { mockClusters, mockAlerts } from "@amberops/api";
-import { ArrowUpRight, Cpu, MemoryStick, Server, Siren } from "lucide-react";
+import { ArrowUpRight, Cpu, MemoryStick, Server, Siren, PlusCircle } from "lucide-react";
 import Link from 'next/link';
 import { ClusterHealthSummary } from "@/components/cluster-health-summary";
 import { useState } from "react";
@@ -53,7 +53,12 @@ export default function DashboardPage() {
                 title="Dashboard"
                 description="Welcome to your AmberOps Console."
             >
-                <Button>Create New Cluster</Button>
+                 <Button asChild>
+                    <Link href="/clusters">
+                        <PlusCircle className="mr-2 h-4 w-4" />
+                        Create New Cluster
+                    </Link>
+                </Button>
             </PageHeader>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
                 <Card>
@@ -118,15 +123,29 @@ export default function DashboardPage() {
                                 {mockClusters.map((cluster) => (
                                 <TableRow key={cluster.id}>
                                     <TableCell>
-                                        <div className="flex items-center gap-2">
-                                            <span className={`h-2.5 w-2.5 rounded-full ${getStatusColor(cluster.status)}`} />
-                                            <span className="capitalize">{cluster.status}</span>
-                                        </div>
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <div className="flex items-center gap-2">
+                                                    <span className={`h-2.5 w-2.5 rounded-full ${getStatusColor(cluster.status)}`} />
+                                                    <span className="capitalize">{cluster.status}</span>
+                                                </div>
+                                            </TooltipTrigger>
+                                            <TooltipContent>
+                                                <p>Cluster status: {cluster.status}</p>
+                                            </TooltipContent>
+                                        </Tooltip>
                                     </TableCell>
                                     <TableCell>
-                                        <Link href={`/clusters/${cluster.id}`} className="font-medium hover:underline">
-                                            {cluster.name}
-                                        </Link>
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <Link href={`/clusters/${cluster.id}`} className="font-medium hover:underline truncate block max-w-[150px]">
+                                                    {cluster.name}
+                                                </Link>
+                                            </TooltipTrigger>
+                                            <TooltipContent>
+                                                <p>{cluster.name}</p>
+                                            </TooltipContent>
+                                        </Tooltip>
                                     </TableCell>
                                     <TableCell>{cluster.hostCount}</TableCell>
                                     <TableCell>{cluster.alertCount}</TableCell>
@@ -158,11 +177,27 @@ export default function DashboardPage() {
                                         <Badge variant={getSeverityBadgeVariant(alert.severity)}>{alert.severity}</Badge>
                                     </TableCell>
                                     <TableCell>
-                                         <Link href={`/alerts/${alert.id}`} className="font-medium hover:underline">
-                                            {alert.name}
-                                        </Link>
+                                         <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <Link href={`/alerts/${alert.id}`} className="font-medium hover:underline truncate block max-w-[150px]">
+                                                    {alert.name}
+                                                </Link>
+                                            </TooltipTrigger>
+                                            <TooltipContent>
+                                                <p>{alert.name}</p>
+                                            </TooltipContent>
+                                        </Tooltip>
                                     </TableCell>
-                                    <TableCell>{alert.clusterName}</TableCell>
+                                    <TableCell>
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <span className="truncate block max-w-[150px]">{alert.clusterName}</span>
+                                            </TooltipTrigger>
+                                            <TooltipContent>
+                                                <p>{alert.clusterName}</p>
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </TableCell>
                                 </TableRow>
                                 ))}
                             </TableBody>

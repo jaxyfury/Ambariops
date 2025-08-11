@@ -10,6 +10,7 @@ import { DataTable } from '@/components/data-table';
 import { type ColumnDef } from '@tanstack/react-table';
 import type { Service } from '@amberops/lib';
 import { useState, useEffect } from 'react';
+import toast from 'react-hot-toast';
 
 function getServiceStatusIcon(status: 'started' | 'stopped' | 'maintenance') {
   switch (status) {
@@ -21,6 +22,11 @@ function getServiceStatusIcon(status: 'started' | 'stopped' | 'maintenance') {
       return <Clock className="h-4 w-4 text-yellow-500" />;
   }
 }
+
+const handleAction = (serviceName: string, action: string) => {
+    toast.success(`Task to ${action} ${serviceName} created successfully.`);
+};
+
 
 export const columns: ColumnDef<Service>[] = [
     {
@@ -172,15 +178,15 @@ export const columns: ColumnDef<Service>[] = [
                             </TooltipContent>
                         </Tooltip>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleAction(row.original.name, 'start')}>
                             <Play className="mr-2 h-4 w-4" />
                             Start
                         </DropdownMenuItem>
-                        <DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleAction(row.original.name, 'stop')}>
                             <Square className="mr-2 h-4 w-4" />
                             Stop
                         </DropdownMenuItem>
-                        <DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleAction(row.original.name, 'restart')}>
                             <RefreshCw className="mr-2 h-4 w-4" />
                             Restart
                         </DropdownMenuItem>

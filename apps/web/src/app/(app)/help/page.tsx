@@ -1,3 +1,6 @@
+
+'use client';
+
 import {
   Accordion,
   AccordionContent,
@@ -12,6 +15,7 @@ import {
 } from '@amberops/ui';
 import { LifeBuoy, Mail } from 'lucide-react';
 import { PageHeader } from '@/components/page-header';
+import toast from 'react-hot-toast';
 
 const faqs = [
   {
@@ -37,6 +41,10 @@ const faqs = [
 ];
 
 export default function HelpPage() {
+  const handleContactSupport = () => {
+    toast.success('Support request sent! We will get back to you shortly.');
+  };
+
   return (
     <div>
       <PageHeader
@@ -72,7 +80,7 @@ export default function HelpPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button className="w-full">
+              <Button className="w-full" onClick={handleContactSupport}>
                 <Mail className="mr-2 h-4 w-4" />
                 Contact Support
               </Button>

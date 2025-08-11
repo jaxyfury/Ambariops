@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Inter, Space_Grotesk } from 'next/font/google';
@@ -23,15 +24,16 @@ const fontHeadline = Space_Grotesk({
 
 const queryClient = new QueryClient();
 
-if (process.env.NODE_ENV === 'development') {
-  enableMocking();
-}
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'development') {
+      enableMocking();
+    }
+  }, []);
 
   return (
     <html lang="en" suppressHydrationWarning>
