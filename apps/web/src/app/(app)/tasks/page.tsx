@@ -1,7 +1,9 @@
+
 import { PageHeader } from '@/components/page-header';
-import { Card, CardContent, Progress, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@amberops/ui';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, Progress, Table, TableBody, TableCell, TableHead, TableHeader, TableRow, Badge } from '@amberops/ui';
 import { mockTasks } from '@amberops/api';
-import { CheckCircle, XCircle, Loader, CircleDotDashed } from 'lucide-react';
+import { CheckCircle, XCircle, Loader, CircleDotDashed, ListChecks } from 'lucide-react';
+import { formatDistanceToNow } from 'date-fns';
 
 function getStatusIcon(status: 'running' | 'completed' | 'failed' | 'pending') {
   switch (status) {
@@ -16,6 +18,19 @@ function getStatusIcon(status: 'running' | 'completed' | 'failed' | 'pending') {
   }
 }
 
+function getStatusBadgeVariant(status: 'running' | 'completed' | 'failed' | 'pending'): 'default' | 'destructive' | 'secondary' {
+    switch (status) {
+        case 'completed':
+            return 'default';
+        case 'failed':
+            return 'destructive';
+        case 'running':
+        case 'pending':
+            return 'secondary';
+    }
+}
+
+
 export default function TasksPage() {
   return (
     <div>
@@ -24,11 +39,18 @@ export default function TasksPage() {
         description="Track background operations and service checks."
       />
       <Card>
-        <CardContent className="pt-6">
+        <CardHeader>
+            <div className="flex items-center gap-2">
+                <ListChecks className="h-6 w-6"/>
+                <CardTitle>Operations Log</CardTitle>
+            </div>
+            <CardDescription>A log of all recent background tasks and their status.</CardDescription>
+        </CardHeader>
+        <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Task ID</TableHead>
+                <TableHead className="w-[100px]">Task ID</TableHead>
                 <TableHead>Name</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>Progress</TableHead>
@@ -40,20 +62,25 @@ export default function TasksPage() {
             <TableBody>
               {mockTasks.map((task) => (
                 <TableRow key={task.id}>
-                  <TableCell className="font-mono">{task.id}</TableCell>
+                  <TableCell className="font-mono text-xs text-muted-foreground">#{task.id}</TableCell>
                   <TableCell className="font-medium">{task.name}</TableCell>
                   <TableCell>
-                    <div className="flex items-center gap-2">
-                      {getStatusIcon(task.status)}
-                      <span className="capitalize">{task.status}</span>
-                    </div>
+                    <Badge variant={getStatusBadgeVariant(task.status)} className="capitalize">
+                      <div className="flex items-center gap-2">
+                        {getStatusIcon(task.status)}
+                        <span>{task.status}</span>
+                      </div>
+                    </Badge>
                   </TableCell>
                   <TableCell>
-                    <Progress value={task.progress} className="h-2 w-32" />
+                    <div className="flex items-center gap-2">
+                        <Progress value={task.progress} className="h-2 w-32" />
+                        <span className="text-muted-foreground text-sm">{task.progress}%</span>
+                    </div>
                   </TableCell>
                   <TableCell>{task.user}</TableCell>
                   <TableCell>{task.duration}</TableCell>
-                  <TableCell>{new Date(task.startTime).toLocaleTimeString()}</TableCell>
+                  <TableCell>{formatDistanceToNow(new Date(task.startTime), { addSuffix: true })}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

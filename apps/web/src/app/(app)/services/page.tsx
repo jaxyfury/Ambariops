@@ -1,8 +1,9 @@
+
 import Link from 'next/link';
 import { PageHeader } from '@/components/page-header';
-import { Button, Card, CardContent, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@amberops/ui';
+import { Button, Card, CardContent, Table, TableBody, TableCell, TableHead, TableHeader, TableRow, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@amberops/ui';
 import { mockServices } from '@amberops/api';
-import { ArrowUpRight, CheckCircle2, XCircle, Clock, HardDrive } from 'lucide-react';
+import { ArrowUpRight, CheckCircle2, XCircle, Clock, HardDrive, MoreHorizontal, Play, Square, RefreshCw } from 'lucide-react';
 
 function getServiceStatusIcon(status: 'started' | 'stopped' | 'maintenance') {
   switch (status) {
@@ -56,11 +57,34 @@ export default function ServicesPage() {
                   <TableCell>{service.version}</TableCell>
                   <TableCell>{service.runningHosts} / {service.totalHosts}</TableCell>
                   <TableCell className="text-right">
-                    <Button asChild variant="ghost" size="sm">
-                      <Link href={`/services/${service.id}`}>
-                        View Details <ArrowUpRight className="ml-2 h-4 w-4" />
-                      </Link>
-                    </Button>
+                    <div className="flex items-center justify-end gap-2">
+                        <Button asChild variant="ghost" size="sm">
+                          <Link href={`/services/${service.id}`}>
+                            View <ArrowUpRight className="ml-2 h-4 w-4" />
+                          </Link>
+                        </Button>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="icon">
+                              <MoreHorizontal className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem>
+                                <Play className="mr-2 h-4 w-4" />
+                                Start
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                                <Square className="mr-2 h-4 w-4" />
+                                Stop
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                                <RefreshCw className="mr-2 h-4 w-4" />
+                                Restart
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                    </div>
                   </TableCell>
                 </TableRow>
               ))}

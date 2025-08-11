@@ -11,7 +11,20 @@ import {
   mockLogEntries,
   mockUsers,
 } from './mock-data';
-import type { User } from '@amberops/lib';
+import type { User, Task } from '@amberops/lib';
+
+let taskIdCounter = mockTasks.length > 0 ? Math.max(...mockTasks.map(t => t.id)) + 1 : 1;
+
+const createNewTask = (name: string): Task => ({
+    id: taskIdCounter++,
+    name,
+    status: 'pending',
+    progress: 0,
+    startTime: new Date().toISOString(),
+    duration: '0s',
+    user: 'admin',
+});
+
 
 export const handlers = [
   // Clusters
@@ -39,6 +52,28 @@ export const handlers = [
       ? HttpResponse.json(service)
       : new HttpResponse(null, { status: 404 });
   }),
+  http.post('/api/v1/services/:id/start', ({params}) => {
+    const service = mockServices.find(s => s.id === params.id);
+    if (!service) return new HttpResponse(null, { status: 404 });
+    const task = createNewTask(`Start ${service.name}`);
+    mockTasks.unshift(task);
+    return HttpResponse.json(task, { status: 202 });
+  }),
+  http.post('/api/v1/services/:id/stop', ({params}) => {
+    const service = mockServices.find(s => s.id === params.id);
+    if (!service) return new HttpResponse(null, { status: 404 });
+    const task = createNewTask(`Stop ${service.name}`);
+    mockTasks.unshift(task);
+    return HttpResponse.json(task, { status: 202 });
+  }),
+   http.post('/api/v1/services/:id/restart', ({params}) => {
+    const service = mockServices.find(s => s.id === params.id);
+    if (!service) return new HttpResponse(null, { status: 404 });
+    const task = createNewTask(`Restart ${service.name}`);
+    mockTasks.unshift(task);
+    return HttpResponse.json(task, { status: 202 });
+  }),
+
 
   // Hosts
   http.get('/api/v1/hosts', () => HttpResponse.json(mockHosts)),
