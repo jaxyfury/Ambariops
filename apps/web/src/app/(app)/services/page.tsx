@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { PageHeader } from '@/components/page-header';
-import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, Checkbox } from '@amberops/ui';
+import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, Checkbox, Tooltip, TooltipTrigger, TooltipContent } from '@amberops/ui';
 import { mockServices } from '@amberops/api';
 import { ArrowUpRight, CheckCircle2, XCircle, Clock, HardDrive, MoreHorizontal, Play, Square, RefreshCw, ArrowUpDown } from 'lucide-react';
 import { DataTable } from '@/components/data-table';
@@ -125,20 +125,28 @@ export const columns: ColumnDef<Service>[] = [
     },
     {
         id: 'actions',
-        cell: ({ row }) => (
+        cell: () => (
             <div className="text-right">
                 <div className="flex items-center justify-end gap-2">
                     <Button asChild variant="ghost" size="sm">
-                      <Link href={`/services/${row.original.id}`}>
+                      <Link href={`/services/service-1`}>
                         View <ArrowUpRight className="ml-2 h-4 w-4" />
                       </Link>
                     </Button>
                     <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon">
-                          <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" size="icon">
+                                    <MoreHorizontal className="h-4 w-4" />
+                                     <span className="sr-only">Open actions</span>
+                                </Button>
+                                </DropdownMenuTrigger>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                <p>Open actions</p>
+                            </TooltipContent>
+                        </Tooltip>
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem>
                             <Play className="mr-2 h-4 w-4" />

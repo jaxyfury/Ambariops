@@ -2,7 +2,7 @@
 'use client';
 
 import { PageHeader } from '@/components/page-header';
-import { Button, Switch, Badge, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, Checkbox } from '@amberops/ui';
+import { Button, Switch, Badge, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, Checkbox, Tooltip, TooltipContent, TooltipTrigger } from '@amberops/ui';
 import { mockAlertDefinitions } from '@amberops/api';
 import { PlusCircle, MoreHorizontal, ArrowUpDown } from 'lucide-react';
 import { DataTable } from '@/components/data-table';
@@ -93,14 +93,22 @@ export const columns: ColumnDef<AlertDefinition>[] = [
     },
     {
         id: 'actions',
-        cell: ({ row }) => (
+        cell: () => (
             <div className="text-right">
                 <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon">
-                        <MoreHorizontal className="h-4 w-4" />
-                    </Button>
-                    </DropdownMenuTrigger>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="icon">
+                                <MoreHorizontal className="h-4 w-4" />
+                                <span className="sr-only">Open actions</span>
+                            </Button>
+                            </DropdownMenuTrigger>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p>Open actions</p>
+                        </TooltipContent>
+                    </Tooltip>
                     <DropdownMenuContent align="end">
                     <DropdownMenuItem>Edit</DropdownMenuItem>
                     <DropdownMenuItem>Duplicate</DropdownMenuItem>

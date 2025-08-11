@@ -13,6 +13,7 @@ import {
   Settings,
   AlertCircle,
   Laptop,
+  History,
 } from 'lucide-react';
 
 import {
@@ -51,6 +52,7 @@ export function SidebarNav() {
     },
     { href: '/config', label: 'Configuration', icon: FileText, tooltip: 'Configuration' },
     { href: '/tasks', label: 'Tasks / Ops', icon: ListChecks, tooltip: 'Tasks & Ops' },
+    { href: '/activity', label: 'Activity', icon: History, tooltip: 'Activity Log' },
     { href: '/logs', label: 'Logs', icon: ScrollText, tooltip: 'Logs' },
   ];
 
@@ -68,11 +70,11 @@ export function SidebarNav() {
       <SidebarHeader>
         <div className="flex items-center gap-2">
             <AmberOpsLogo className="w-8 h-8"/>
-            <h1 className="text-xl font-headline font-semibold group-data-[state=collapsed]:hidden">AmberOps</h1>
+            {sidebarState === 'expanded' && <h1 className="text-xl font-headline font-semibold">AmberOps</h1>}
         </div>
       </SidebarHeader>
       <SidebarContent>
-        <SidebarMenu className="p-2">
+        <SidebarMenu className="flex-1 p-2">
           {navItems.map((item) => (
             <SidebarMenuItem key={item.label}>
               {item.subItems ? (
@@ -91,7 +93,7 @@ export function SidebarNav() {
                            </div>
                          </AccordionTrigger>
                       </SidebarMenuButton>
-                      <AccordionContent className="p-0 pl-7 pt-1 group-data-[state=collapsed]:hidden">
+                      <AccordionContent className="p-0 pl-7 pt-1">
                         <ul className="space-y-1">
                           {item.subItems.map(subItem => (
                             <li key={subItem.href}>
