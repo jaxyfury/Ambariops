@@ -10,6 +10,7 @@ import { DataTable } from '@/components/data-table';
 import { type ColumnDef } from '@tanstack/react-table';
 import type { Cluster } from '@amberops/lib';
 import { useState, useEffect } from 'react';
+import toast from 'react-hot-toast';
 
 function getStatusBadgeVariant(status: 'healthy' | 'unhealthy' | 'degraded'): 'default' | 'destructive' | 'secondary' {
   switch (status) {
@@ -137,6 +138,7 @@ export const columns: ColumnDef<Cluster>[] = [
 
 export default function ClustersPage() {
   const [isLoading, setIsLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -145,13 +147,18 @@ export default function ClustersPage() {
     return () => clearTimeout(timer);
   }, []);
 
+  const handleAddCluster = () => {
+    toast.success('New cluster added!');
+    setIsModalOpen(false);
+  }
+
   return (
     <div>
       <PageHeader
         title="Clusters"
         description="Manage your clusters and view their health status."
       >
-        <Dialog>
+        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
             <DialogTrigger asChild>
                 <Button>
                     <PlusCircle className="mr-2 h-4 w-4" />
@@ -180,7 +187,8 @@ export default function ClustersPage() {
                     </div>
                 </div>
                 <DialogFooter>
-                    <Button type="submit">Add Cluster</Button>
+                    <Button variant="outline" onClick={() => setIsModalOpen(false)}>Cancel</Button>
+                    <Button onClick={handleAddCluster}>Add Cluster</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

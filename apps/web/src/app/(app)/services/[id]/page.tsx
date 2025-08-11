@@ -40,6 +40,15 @@ export default function ServiceDetailPage({ params }: { params: { id: string } }
       }, 2000);
   };
 
+  const handleRunServiceCheck = () => {
+    toast.loading(`Running service check for ${service.name}...`, {
+      duration: 2000,
+    });
+    setTimeout(() => {
+      toast.success(`Service check for ${service.name} initiated.`);
+      router.push('/tasks');
+    }, 2000);
+  }
 
   return (
     <div>
@@ -71,9 +80,9 @@ export default function ServiceDetailPage({ params }: { params: { id: string } }
                     <CardTitle>Quick Links</CardTitle>
                 </CardHeader>
                 <CardContent className="flex flex-col space-y-2">
-                   <Button variant="link" className="justify-start p-0 h-auto">View Configurations</Button>
-                   <Button variant="link" className="justify-start p-0 h-auto">Run Service Check</Button>
-                   <Button variant="link" className="justify-start p-0 h-auto">View Metrics</Button>
+                   <Button asChild variant="link" className="justify-start p-0 h-auto"><Link href="/config">View Configurations</Link></Button>
+                   <Button variant="link" className="justify-start p-0 h-auto" onClick={handleRunServiceCheck}>Run Service Check</Button>
+                   <Button variant="link" className="justify-start p-0 h-auto" onClick={() => toast.info('Metrics view coming soon!')}>View Metrics</Button>
                 </CardContent>
             </Card>
         </div>

@@ -9,6 +9,7 @@ import { DataTable } from '@/components/data-table';
 import { type ColumnDef } from '@tanstack/react-table';
 import type { AlertDefinition } from '@amberops/lib';
 import { useState, useEffect } from 'react';
+import toast from 'react-hot-toast';
 
 export const columns: ColumnDef<AlertDefinition>[] = [
     {
@@ -150,6 +151,7 @@ export const columns: ColumnDef<AlertDefinition>[] = [
 
 export default function AlertDefinitionsPage() {
     const [isLoading, setIsLoading] = useState(true);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -158,13 +160,18 @@ export default function AlertDefinitionsPage() {
         return () => clearTimeout(timer);
     }, []);
 
+  const handleCreateDefinition = () => {
+    toast.success('New alert definition created!');
+    setIsModalOpen(false);
+  }
+
   return (
     <div>
       <PageHeader
         title="Alert Definitions"
         description="Create and manage alert definitions for your services."
       >
-        <Dialog>
+        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
             <DialogTrigger asChild>
                 <Button>
                     <PlusCircle className="mr-2 h-4 w-4" />
@@ -212,7 +219,8 @@ export default function AlertDefinitionsPage() {
                     </div>
                 </div>
                 <DialogFooter>
-                    <Button type="submit">Create Definition</Button>
+                    <Button variant="outline" onClick={() => setIsModalOpen(false)}>Cancel</Button>
+                    <Button onClick={handleCreateDefinition}>Create Definition</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

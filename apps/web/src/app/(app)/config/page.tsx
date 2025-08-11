@@ -1,8 +1,12 @@
+
+'use client';
+
 import { PageHeader } from '@/components/page-header';
 import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle, Textarea, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@amberops/ui';
 import { mockConfigVersions } from '@amberops/api';
 import { format } from 'date-fns';
 import { Save, History } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 
 export default function ConfigPage() {
@@ -19,6 +23,14 @@ export default function ConfigPage() {
 </configuration>
 `;
 
+  const handleSaveChanges = () => {
+    toast.success('Configuration saved successfully!');
+  };
+
+  const handleRollback = (version: number) => {
+    toast.success(`Successfully rolled back to version ${version}.`);
+  };
+
   return (
     <div>
       <PageHeader
@@ -34,8 +46,8 @@ export default function ConfigPage() {
                         <CardDescription>Editing for Production Cluster</CardDescription>
                     </div>
                     <div className="flex gap-2">
-                        <Button variant="outline">Compare Versions</Button>
-                        <Button><Save className="h-4 w-4 mr-2"/>Save Changes</Button>
+                        <Button variant="outline" onClick={() => toast.info('Compare feature coming soon!')}>Compare Versions</Button>
+                        <Button onClick={handleSaveChanges}><Save className="h-4 w-4 mr-2"/>Save Changes</Button>
                     </div>
                 </div>
             </CardHeader>
@@ -71,7 +83,7 @@ export default function ConfigPage() {
                                 <TableCell>{v.author}</TableCell>
                                 <TableCell>{format(new Date(v.date), 'PPp')}</TableCell>
                                 <TableCell className="text-right">
-                                    <Button variant="outline" size="sm">Rollback</Button>
+                                    <Button variant="outline" size="sm" onClick={() => handleRollback(v.version)}>Rollback</Button>
                                 </TableCell>
                             </TableRow>
                         ))}
