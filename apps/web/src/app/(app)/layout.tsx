@@ -1,4 +1,4 @@
-import { AppLayout } from "@amberops/ui/components/layout/app-layout";
+import { AppLayout } from '@amberops/ui/components/layout/app-layout';
 
 export const dynamic = 'force-dynamic';
 

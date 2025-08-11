@@ -30,35 +30,32 @@ import {
   useSidebar,
 } from '@amberops/ui/components/ui/sidebar';
 import { AmberOpsLogo } from '@amberops/ui/components/icons';
-import { useTranslation } from 'react-i18next';
-
 
 export function SidebarNav() {
   const pathname = usePathname();
-  const { t } = useTranslation();
   const { state: sidebarState } = useSidebar();
 
   const navItems = [
-    { href: '/dashboard', label: t('dashboard'), icon: LayoutDashboard, tooltip: 'Dashboard' },
-    { href: '/clusters', label: t('clusters'), icon: Server, tooltip: 'Clusters' },
-    { href: '/services', label: t('services'), icon: HardDrive, tooltip: 'Services' },
-    { href: '/hosts', label: t('hosts'), icon: Laptop, tooltip: 'Hosts' },
+    { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, tooltip: 'Dashboard' },
+    { href: '/clusters', label: 'Clusters', icon: Server, tooltip: 'Clusters' },
+    { href: '/services', label: 'Services', icon: HardDrive, tooltip: 'Services' },
+    { href: '/hosts', label: 'Hosts', icon: Laptop, tooltip: 'Hosts' },
     {
-      label: t('alerts'),
+      label: 'Alerts',
       icon: Siren,
       tooltip: 'Alerts',
       subItems: [
-        { href: '/alerts', label: t('currentAlerts'), tooltip: 'Current Alerts' },
-        { href: '/alerts/definitions', label: t('definitions'), tooltip: 'Alert Definitions' },
+        { href: '/alerts', label: 'Current Alerts', tooltip: 'Current Alerts' },
+        { href: '/alerts/definitions', label: 'Definitions', tooltip: 'Alert Definitions' },
       ],
     },
-    { href: '/config', label: t('configuration'), icon: FileText, tooltip: 'Configuration' },
-    { href: '/tasks', label: t('tasksOps'), icon: ListChecks, tooltip: 'Tasks & Ops' },
-    { href: '/logs', label: t('logs'), icon: ScrollText, tooltip: 'Logs' },
+    { href: '/config', label: 'Configuration', icon: FileText, tooltip: 'Configuration' },
+    { href: '/tasks', label: 'Tasks / Ops', icon: ListChecks, tooltip: 'Tasks & Ops' },
+    { href: '/logs', label: 'Logs', icon: ScrollText, tooltip: 'Logs' },
   ];
 
   const bottomNavItems = [
-    { href: '/settings', label: t('settings'), icon: Settings, tooltip: 'Settings' },
+    { href: '/settings', label: 'Settings', icon: Settings, tooltip: 'Settings' },
     { href: '/help', label: 'Help', icon: AlertCircle, tooltip: 'Help' },
   ];
 
