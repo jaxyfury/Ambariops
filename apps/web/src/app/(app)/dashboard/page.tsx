@@ -1,9 +1,14 @@
+
+'use client';
+
 import { PageHeader } from "@/components/page-header";
-import { Button, Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle, Progress, Table, TableBody, TableCell, TableHead, TableHeader, TableRow, Badge } from "@amberops/ui";
+import { Button, Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle, Progress, Table, TableBody, TableCell, TableHead, TableHeader, TableRow, Badge, Select, SelectTrigger, SelectContent, SelectValue, SelectItem } from "@amberops/ui";
 import { mockClusters, mockAlerts } from "@amberops/api";
 import { ArrowUpRight, Cpu, MemoryStick, Server, Siren } from "lucide-react";
 import Link from 'next/link';
 import { ClusterHealthSummary } from "@/components/cluster-health-summary";
+import { useState } from "react";
+import type { Cluster } from "@amberops/lib";
 
 function getStatusColor(status: 'healthy' | 'unhealthy' | 'degraded') {
   switch (status) {
@@ -32,6 +37,15 @@ export default function DashboardPage() {
     const totalClusters = mockClusters.length;
     const totalAlerts = mockAlerts.filter(a => a.status === 'triggered').length;
     const healthyClusters = mockClusters.filter(c => c.status === 'healthy').length;
+
+    const [selectedCluster, setSelectedCluster] = useState<Cluster>(mockClusters[1]);
+
+    const handleClusterChange = (clusterId: string) => {
+        const cluster = mockClusters.find(c => c.id === clusterId);
+        if (cluster) {
+            setSelectedCluster(cluster);
+        }
+    };
 
     return (
         <div>
@@ -164,7 +178,29 @@ export default function DashboardPage() {
                 </Card>
             </div>
              <div className="grid gap-6 mt-6">
-                <ClusterHealthSummary cluster={mockClusters[1]} />
+                 <Card>
+                    <CardHeader className="flex flex-row justify-between items-start">
+                        <div>
+                        <CardTitle>AI Health Summary</CardTitle>
+                        <CardDescription>
+                            Select a cluster to generate an AI-powered health summary.
+                        </CardDescription>
+                        </div>
+                        <Select onValueChange={handleClusterChange} defaultValue={selectedCluster.id}>
+                            <SelectTrigger className="w-[280px]">
+                                <SelectValue placeholder="Select a cluster" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {mockClusters.map(cluster => (
+                                    <SelectItem key={cluster.id} value={cluster.id}>{cluster.name}</SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </CardHeader>
+                    <CardContent>
+                         <ClusterHealthSummary cluster={selectedCluster} />
+                    </CardContent>
+                </Card>
             </div>
         </div>
     )

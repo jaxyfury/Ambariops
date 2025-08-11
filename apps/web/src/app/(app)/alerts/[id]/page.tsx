@@ -1,3 +1,6 @@
+
+'use client';
+
 import { notFound } from 'next/navigation';
 import { PageHeader } from '@/components/page-header';
 import { Button, Card, CardContent, CardHeader, CardTitle, CardDescription, Badge } from '@amberops/ui';
@@ -6,6 +9,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { AlertTriangle, Server, HardDrive, Clock } from 'lucide-react';
 import Link from 'next/link';
 import { TroubleshootingSteps } from '@/components/troubleshooting-steps';
+import toast from 'react-hot-toast';
 
 function getSeverityBadgeVariant(severity: 'critical' | 'warning' | 'info'): 'destructive' | 'secondary' | 'default' {
     switch (severity) {
@@ -26,14 +30,25 @@ export default function AlertDetailPage({ params }: { params: { id: string } }) 
     notFound();
   }
 
+  const handleAcknowledge = () => {
+    toast.success(`Alert "${alert.name}" acknowledged.`);
+    // Here you would typically call an API to update the alert status
+  };
+
+  const handleResolve = () => {
+    toast.success(`Alert "${alert.name}" marked as resolved.`);
+     // Here you would typically call an API to update the alert status
+  };
+
+
   return (
     <div>
       <PageHeader
         title={alert.name}
         description="Details for the triggered alert."
       >
-        <Button variant="outline">Acknowledge</Button>
-        <Button>Resolve</Button>
+        <Button variant="outline" onClick={handleAcknowledge}>Acknowledge</Button>
+        <Button onClick={handleResolve}>Resolve</Button>
       </PageHeader>
       
       <div className="grid gap-6 lg:grid-cols-3">

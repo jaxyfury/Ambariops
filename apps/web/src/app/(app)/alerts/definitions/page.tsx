@@ -2,7 +2,7 @@
 'use client';
 
 import { PageHeader } from '@/components/page-header';
-import { Button, Switch, Badge, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, Checkbox, Tooltip, TooltipContent, TooltipTrigger } from '@amberops/ui';
+import { Button, Switch, Badge, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, Checkbox, Tooltip, TooltipContent, TooltipTrigger, Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, Label, Input, Select, SelectTrigger, SelectValue, SelectContent, SelectItem, DialogFooter } from '@amberops/ui';
 import { mockAlertDefinitions } from '@amberops/api';
 import { PlusCircle, MoreHorizontal, ArrowUpDown } from 'lucide-react';
 import { DataTable } from '@/components/data-table';
@@ -136,10 +136,58 @@ export default function AlertDefinitionsPage() {
         title="Alert Definitions"
         description="Create and manage alert definitions for your services."
       >
-        <Button>
-          <PlusCircle className="mr-2 h-4 w-4" />
-          New Definition
-        </Button>
+        <Dialog>
+            <DialogTrigger asChild>
+                <Button>
+                    <PlusCircle className="mr-2 h-4 w-4" />
+                    New Definition
+                </Button>
+            </DialogTrigger>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>Create New Alert Definition</DialogTitle>
+                    <DialogDescription>
+                        Define a new alert to monitor your services.
+                    </DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-4 py-4">
+                    <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="name" className="text-right">Name</Label>
+                        <Input id="name" placeholder="e.g., Namenode RPC Latency" className="col-span-3" />
+                    </div>
+                     <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="service" className="text-right">Service</Label>
+                        <Select>
+                            <SelectTrigger className="col-span-3">
+                                <SelectValue placeholder="Select a service" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="hdfs">HDFS</SelectItem>
+                                <SelectItem value="yarn">YARN</SelectItem>
+                                <SelectItem value="kafka">Kafka</SelectItem>
+                                <SelectItem value="spark">Spark</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+                     <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="type" className="text-right">Type</Label>
+                        <Select>
+                            <SelectTrigger className="col-span-3">
+                                <SelectValue placeholder="Select a type" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="metric">METRIC</SelectItem>
+                                <SelectItem value="port">PORT</SelectItem>
+                                <SelectItem value="script">SCRIPT</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+                </div>
+                <DialogFooter>
+                    <Button type="submit">Create Definition</Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
       </PageHeader>
       <DataTable columns={columns} data={mockAlertDefinitions} filterKey="name" isLoading={isLoading} />
     </div>

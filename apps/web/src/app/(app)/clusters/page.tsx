@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { PageHeader } from '@/components/page-header';
-import { Button, Badge, Checkbox } from '@amberops/ui';
+import { Button, Badge, Checkbox, Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger, Input, Label } from '@amberops/ui';
 import { mockClusters } from '@amberops/api';
 import { ArrowUpRight, PlusCircle, ArrowUpDown } from 'lucide-react';
 import { DataTable } from '@/components/data-table';
@@ -142,10 +142,40 @@ export default function ClustersPage() {
         title="Clusters"
         description="Manage your clusters and view their health status."
       >
-        <Button>
-          <PlusCircle className="mr-2 h-4 w-4" />
-          Add Cluster
-        </Button>
+        <Dialog>
+            <DialogTrigger asChild>
+                <Button>
+                    <PlusCircle className="mr-2 h-4 w-4" />
+                    Add Cluster
+                </Button>
+            </DialogTrigger>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>Add New Cluster</DialogTitle>
+                    <DialogDescription>
+                        Enter the details for the new cluster.
+                    </DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-4 py-4">
+                    <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="name" className="text-right">
+                        Name
+                        </Label>
+                        <Input id="name" placeholder="e.g., Production-West-2" className="col-span-3" />
+                    </div>
+                     <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="url" className="text-right">
+                        Ambari URL
+                        </Label>
+                        <Input id="url" placeholder="http://c1.ambari.apache.org:8080" className="col-span-3" />
+                    </div>
+                </div>
+                <DialogFooter>
+                    <Button type="submit">Add Cluster</Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
+
       </PageHeader>
       <DataTable columns={columns} data={mockClusters} isLoading={isLoading} filterKey="name" />
     </div>
