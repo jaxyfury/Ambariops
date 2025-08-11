@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, Skeleton } from '@amberops/ui';
-import { ai } from '@amberops/api';
+import { ai } from '@amberops/api/ai';
 import type { Alert } from '@amberops/lib';
 import { Bot } from 'lucide-react';
 

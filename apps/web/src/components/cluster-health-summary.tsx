@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, Skeleton } from '@amberops/ui';
-import { ai, mockAlerts } from '@amberops/api';
+import { ai } from '@amberops/api/ai';
+import { mockAlerts } from '@amberops/api/mock-data';
 import type { Cluster } from '@amberops/lib';
 import { Bot } from 'lucide-react';
 

@@ -6,7 +6,7 @@ import { cn } from '@amberops/lib';
 import { ThemeProvider, Toaster as DefaultToaster } from '@amberops/ui';
 import { Toaster } from 'react-hot-toast';
 import { useEffect } from 'react';
-import { enableMocking } from '@amberops/api';
+import { enableMocking } from '@amberops/api/mocks';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '@/lib/i18n';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
