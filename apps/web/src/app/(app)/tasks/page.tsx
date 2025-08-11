@@ -2,7 +2,7 @@
 'use client';
 
 import { PageHeader } from '@/components/page-header';
-import { Progress, Badge, Checkbox } from '@amberops/ui';
+import { Progress, Badge, Checkbox, Tooltip, TooltipTrigger, TooltipContent } from '@amberops/ui';
 import { mockTasks } from '@amberops/api';
 import { CheckCircle, XCircle, Loader, CircleDotDashed, ArrowUpDown } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
@@ -71,7 +71,16 @@ export const columns: ColumnDef<Task>[] = [
                 <ArrowUpDown className="ml-2 h-4 w-4" />
             </Button>
         ),
-        cell: ({ row }) => <span className="font-mono text-xs text-muted-foreground">#{row.original.id}</span>
+        cell: ({ row }) => (
+             <Tooltip>
+                <TooltipTrigger asChild>
+                    <span className="font-mono text-xs text-muted-foreground">#{row.original.id}</span>
+                </TooltipTrigger>
+                <TooltipContent>
+                    <p>Task ID: {row.original.id}</p>
+                </TooltipContent>
+            </Tooltip>
+        )
     },
     {
         accessorKey: 'name',
@@ -84,7 +93,16 @@ export const columns: ColumnDef<Task>[] = [
                 <ArrowUpDown className="ml-2 h-4 w-4" />
             </Button>
         ),
-        cell: ({ row }) => <span className="font-medium">{row.original.name}</span>,
+        cell: ({ row }) => (
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <span className="font-medium truncate block max-w-[250px]">{row.original.name}</span>
+                </TooltipTrigger>
+                <TooltipContent>
+                    <p>{row.original.name}</p>
+                </TooltipContent>
+            </Tooltip>
+        ),
     },
     {
         accessorKey: 'status',
@@ -135,6 +153,16 @@ export const columns: ColumnDef<Task>[] = [
                 <ArrowUpDown className="ml-2 h-4 w-4" />
             </Button>
         ),
+        cell: ({ row }) => (
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <span className="truncate">{row.original.user}</span>
+                </TooltipTrigger>
+                <TooltipContent>
+                    <p>{row.original.user}</p>
+                </TooltipContent>
+            </Tooltip>
+        )
     },
     {
         accessorKey: 'duration',
@@ -159,7 +187,16 @@ export const columns: ColumnDef<Task>[] = [
                 <ArrowUpDown className="ml-2 h-4 w-4" />
             </Button>
         ),
-        cell: ({ row }) => formatDistanceToNow(new Date(row.original.startTime), { addSuffix: true }),
+        cell: ({ row }) => (
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <span>{formatDistanceToNow(new Date(row.original.startTime), { addSuffix: true })}</span>
+                </TooltipTrigger>
+                <TooltipContent>
+                    <p>{new Date(row.original.startTime).toLocaleString()}</p>
+                </TooltipContent>
+            </Tooltip>
+        ),
     },
 ]
 

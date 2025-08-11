@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { PageHeader } from '@/components/page-header';
-import { Button, Badge, Checkbox } from '@amberops/ui';
+import { Button, Badge, Checkbox, Tooltip, TooltipTrigger, TooltipContent } from '@amberops/ui';
 import { mockAlerts } from '@amberops/api';
 import { ArrowUpRight, Siren, ArrowUpDown } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
@@ -73,7 +73,14 @@ export const columns: ColumnDef<Alert>[] = [
         cell: ({ row }) => (
             <div className="font-medium flex items-center gap-2">
                 <Siren className="h-4 w-4 text-muted-foreground" />
-                {row.original.name}
+                 <Tooltip>
+                    <TooltipTrigger asChild>
+                        <span className="truncate">{row.original.name}</span>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                        <p>{row.original.name}</p>
+                    </TooltipContent>
+                </Tooltip>
             </div>
         ),
     },
@@ -123,9 +130,16 @@ export const columns: ColumnDef<Alert>[] = [
             </Button>
         ),
         cell: ({ row }) => (
-            <Link href={`/clusters/${row.original.clusterId}`} className="hover:underline">
-                {row.original.clusterName}
-            </Link>
+             <Tooltip>
+                <TooltipTrigger asChild>
+                    <Link href={`/clusters/${row.original.clusterId}`} className="hover:underline truncate block max-w-[150px]">
+                        {row.original.clusterName}
+                    </Link>
+                </TooltipTrigger>
+                <TooltipContent>
+                    <p>{row.original.clusterName}</p>
+                </TooltipContent>
+            </Tooltip>
         ),
     },
     {
@@ -139,6 +153,16 @@ export const columns: ColumnDef<Alert>[] = [
                 <ArrowUpDown className="ml-2 h-4 w-4" />
             </Button>
         ),
+         cell: ({ row }) => (
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <span className="truncate">{row.original.serviceName}</span>
+                </TooltipTrigger>
+                <TooltipContent>
+                    <p>{row.original.serviceName}</p>
+                </TooltipContent>
+            </Tooltip>
+        ),
     },
     {
         accessorKey: 'timestamp',
@@ -151,7 +175,16 @@ export const columns: ColumnDef<Alert>[] = [
                 <ArrowUpDown className="ml-2 h-4 w-4" />
             </Button>
         ),
-        cell: ({ row }) => formatDistanceToNow(new Date(row.original.timestamp), { addSuffix: true }),
+        cell: ({ row }) => (
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <span>{formatDistanceToNow(new Date(row.original.timestamp), { addSuffix: true })}</span>
+                </TooltipTrigger>
+                <TooltipContent>
+                    <p>{new Date(row.original.timestamp).toLocaleString()}</p>
+                </TooltipContent>
+            </Tooltip>
+        ),
     },
     {
         id: 'actions',

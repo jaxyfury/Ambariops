@@ -59,7 +59,14 @@ export const columns: ColumnDef<Service>[] = [
         cell: ({ row }) => (
             <div className="font-medium flex items-center gap-2">
                 <HardDrive className="h-4 w-4 text-muted-foreground" />
-                {row.original.name}
+                 <Tooltip>
+                    <TooltipTrigger asChild>
+                        <span className="truncate">{row.original.name}</span>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                        <p>{row.original.name}</p>
+                    </TooltipContent>
+                </Tooltip>
             </div>
         ),
     },
@@ -93,9 +100,16 @@ export const columns: ColumnDef<Service>[] = [
             </Button>
         ),
         cell: ({ row }) => (
-            <Link href={`/clusters/${row.original.clusterId}`} className="hover:underline">
-                {row.original.clusterName}
-            </Link>
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <Link href={`/clusters/${row.original.clusterId}`} className="hover:underline truncate block max-w-[150px]">
+                        {row.original.clusterName}
+                    </Link>
+                </TooltipTrigger>
+                <TooltipContent>
+                    <p>{row.original.clusterName}</p>
+                </TooltipContent>
+            </Tooltip>
         ),
     },
     {
@@ -109,6 +123,16 @@ export const columns: ColumnDef<Service>[] = [
                 <ArrowUpDown className="ml-2 h-4 w-4" />
             </Button>
         ),
+        cell: ({ row }) => (
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <span className="truncate">{row.original.version}</span>
+                </TooltipTrigger>
+                <TooltipContent>
+                    <p>{row.original.version}</p>
+                </TooltipContent>
+            </Tooltip>
+        )
     },
     {
         accessorKey: 'runningHosts',
@@ -125,11 +149,11 @@ export const columns: ColumnDef<Service>[] = [
     },
     {
         id: 'actions',
-        cell: () => (
+        cell: ({ row }) => (
             <div className="text-right">
                 <div className="flex items-center justify-end gap-2">
                     <Button asChild variant="ghost" size="sm">
-                      <Link href={`/services/service-1`}>
+                      <Link href={`/services/${row.original.id}`}>
                         View <ArrowUpRight className="ml-2 h-4 w-4" />
                       </Link>
                     </Button>

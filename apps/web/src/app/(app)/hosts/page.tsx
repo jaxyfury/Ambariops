@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { PageHeader } from '@/components/page-header';
-import { Button, Badge, Checkbox } from '@amberops/ui';
+import { Button, Badge, Checkbox, Tooltip, TooltipTrigger, TooltipContent } from '@amberops/ui';
 import { mockHosts } from '@amberops/api';
 import { ArrowUpRight, PlusCircle, Server, ArrowUpDown } from 'lucide-react';
 import { DataTable } from '@/components/data-table';
@@ -60,7 +60,14 @@ export const columns: ColumnDef<Host>[] = [
         cell: ({ row }) => (
             <div className="font-medium flex items-center gap-2">
                 <Server className="h-4 w-4 text-muted-foreground" />
-                {row.original.name}
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <span className="truncate block max-w-[200px]">{row.original.name}</span>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                        <p>{row.original.name}</p>
+                    </TooltipContent>
+                </Tooltip>
             </div>
         ),
     },
@@ -92,6 +99,16 @@ export const columns: ColumnDef<Host>[] = [
                 <ArrowUpDown className="ml-2 h-4 w-4" />
             </Button>
         ),
+        cell: ({ row }) => (
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <span>{row.original.ip}</span>
+                </TooltipTrigger>
+                <TooltipContent>
+                    <p>{row.original.ip}</p>
+                </TooltipContent>
+            </Tooltip>
+        )
     },
     {
         accessorKey: 'clusterName',
@@ -105,9 +122,16 @@ export const columns: ColumnDef<Host>[] = [
             </Button>
         ),
         cell: ({ row }) => (
-            <Link href={`/clusters/${row.original.clusterId}`} className="hover:underline">
-                {row.original.clusterName}
-            </Link>
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <Link href={`/clusters/${row.original.clusterId}`} className="hover:underline truncate block max-w-[150px]">
+                        {row.original.clusterName}
+                    </Link>
+                </TooltipTrigger>
+                <TooltipContent>
+                    <p>{row.original.clusterName}</p>
+                </TooltipContent>
+            </Tooltip>
         ),
     },
     {
@@ -121,6 +145,16 @@ export const columns: ColumnDef<Host>[] = [
                 <ArrowUpDown className="ml-2 h-4 w-4" />
             </Button>
         ),
+         cell: ({ row }) => (
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <span className="truncate">{row.original.os}</span>
+                </TooltipTrigger>
+                <TooltipContent>
+                    <p>{row.original.os}</p>
+                </TooltipContent>
+            </Tooltip>
+        )
     },
     {
         accessorKey: 'lastHeartbeat',
@@ -133,6 +167,16 @@ export const columns: ColumnDef<Host>[] = [
                 <ArrowUpDown className="ml-2 h-4 w-4" />
             </Button>
         ),
+         cell: ({ row }) => (
+             <Tooltip>
+                <TooltipTrigger asChild>
+                    <span>{row.original.lastHeartbeat}</span>
+                </TooltipTrigger>
+                <TooltipContent>
+                    <p>{row.original.lastHeartbeat}</p>
+                </TooltipContent>
+            </Tooltip>
+        )
     },
     {
         id: 'actions',

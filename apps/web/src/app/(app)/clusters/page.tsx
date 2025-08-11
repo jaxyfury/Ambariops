@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { PageHeader } from '@/components/page-header';
-import { Button, Badge, Checkbox, Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger, Input, Label } from '@amberops/ui';
+import { Button, Badge, Checkbox, Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger, Input, Label, Tooltip, TooltipTrigger, TooltipContent } from '@amberops/ui';
 import { mockClusters } from '@amberops/api';
 import { ArrowUpRight, PlusCircle, ArrowUpDown } from 'lucide-react';
 import { DataTable } from '@/components/data-table';
@@ -58,7 +58,16 @@ export const columns: ColumnDef<Cluster>[] = [
         </Button>
       )
     },
-    cell: ({ row }) => <span className="font-medium">{row.original.name}</span>,
+    cell: ({ row }) => (
+        <Tooltip>
+            <TooltipTrigger asChild>
+                <span className="font-medium truncate block max-w-[200px]">{row.original.name}</span>
+            </TooltipTrigger>
+            <TooltipContent>
+                <p>{row.original.name}</p>
+            </TooltipContent>
+        </Tooltip>
+    ),
   },
   {
     accessorKey: 'status',

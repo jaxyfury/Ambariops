@@ -7,7 +7,7 @@ import { type ColumnDef } from '@tanstack/react-table';
 import type { ActivityLog } from '@amberops/lib';
 import { useState, useEffect } from 'react';
 import { formatDistanceToNow } from 'date-fns';
-import { Avatar, AvatarFallback, AvatarImage, Badge, Button, Checkbox } from '@amberops/ui';
+import { Avatar, AvatarFallback, AvatarImage, Badge, Button, Checkbox, Tooltip, TooltipTrigger, TooltipContent } from '@amberops/ui';
 import { ArrowUpDown } from 'lucide-react';
 import { DataTable } from '@/components/data-table';
 
@@ -67,7 +67,14 @@ export const columns: ColumnDef<ActivityLog>[] = [
                     <AvatarImage src={row.original.user.avatar} alt={row.original.user.name} />
                     <AvatarFallback>{row.original.user.name.charAt(0)}</AvatarFallback>
                 </Avatar>
-                <span className="font-medium">{row.original.user.name}</span>
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <span className="font-medium truncate">{row.original.user.name}</span>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                        <p>{row.original.user.name}</p>
+                    </TooltipContent>
+                </Tooltip>
             </div>
         )
     },
@@ -95,6 +102,16 @@ export const columns: ColumnDef<ActivityLog>[] = [
                 <ArrowUpDown className="ml-2 h-4 w-4" />
             </Button>
         ),
+        cell: ({ row }) => (
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <span className="truncate block max-w-[250px]">{row.original.details}</span>
+                </TooltipTrigger>
+                <TooltipContent>
+                    <p>{row.original.details}</p>
+                </TooltipContent>
+            </Tooltip>
+        )
     },
     {
         accessorKey: 'timestamp',
@@ -107,7 +124,16 @@ export const columns: ColumnDef<ActivityLog>[] = [
                 <ArrowUpDown className="ml-2 h-4 w-4" />
             </Button>
         ),
-        cell: ({ row }) => formatDistanceToNow(new Date(row.original.timestamp), { addSuffix: true }),
+        cell: ({ row }) => (
+             <Tooltip>
+                <TooltipTrigger asChild>
+                    <span>{formatDistanceToNow(new Date(row.original.timestamp), { addSuffix: true })}</span>
+                </TooltipTrigger>
+                <TooltipContent>
+                    <p>{new Date(row.original.timestamp).toLocaleString()}</p>
+                </TooltipContent>
+            </Tooltip>
+        )
     }
 ];
 

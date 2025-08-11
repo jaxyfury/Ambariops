@@ -1,3 +1,4 @@
+
 "use client"
 
 import * as React from "react"
@@ -7,7 +8,14 @@ import { cn } from "@amberops/lib"
 
 const TooltipProvider = TooltipPrimitive.Provider
 
-const Tooltip = TooltipPrimitive.Root
+const Tooltip = ({
+  ...props
+}: React.ComponentProps<typeof TooltipPrimitive.Root>) => (
+  <TooltipProvider>
+    <TooltipPrimitive.Root {...props} />
+  </TooltipProvider>
+);
+
 
 const TooltipTrigger = TooltipPrimitive.Trigger
 

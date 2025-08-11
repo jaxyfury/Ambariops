@@ -59,7 +59,16 @@ export const columns: ColumnDef<AlertDefinition>[] = [
                 <ArrowUpDown className="ml-2 h-4 w-4" />
             </Button>
         ),
-        cell: ({ row }) => <span className="font-medium">{row.original.name}</span>,
+        cell: ({ row }) => (
+             <Tooltip>
+                <TooltipTrigger asChild>
+                    <span className="font-medium truncate block max-w-[200px]">{row.original.name}</span>
+                </TooltipTrigger>
+                <TooltipContent>
+                    <p>{row.original.name}</p>
+                </TooltipContent>
+            </Tooltip>
+        ),
     },
     {
         accessorKey: 'service',
@@ -72,6 +81,16 @@ export const columns: ColumnDef<AlertDefinition>[] = [
                 <ArrowUpDown className="ml-2 h-4 w-4" />
             </Button>
         ),
+         cell: ({ row }) => (
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <span className="truncate">{row.original.service}</span>
+                </TooltipTrigger>
+                <TooltipContent>
+                    <p>{row.original.service}</p>
+                </TooltipContent>
+            </Tooltip>
+        )
     },
     {
         accessorKey: 'type',
@@ -89,7 +108,16 @@ export const columns: ColumnDef<AlertDefinition>[] = [
     {
         accessorKey: 'description',
         header: 'Description',
-        cell: ({ row }) => <span className="text-muted-foreground">{row.original.description}</span>,
+        cell: ({ row }) => (
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <span className="text-muted-foreground truncate block max-w-[300px]">{row.original.description}</span>
+                </TooltipTrigger>
+                <TooltipContent>
+                    <p>{row.original.description}</p>
+                </TooltipContent>
+            </Tooltip>
+        ),
     },
     {
         id: 'actions',
