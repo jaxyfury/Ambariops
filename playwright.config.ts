@@ -1,7 +1,7 @@
 
 import { defineConfig, devices } from '@playwright/test';
 
-const PORT = process.env.PORT || 9002;
+const PORT = process.env.PORT || 3000;
 
 // Set webServer.url and use.baseURL with the location of the WebServer respecting the PORT that it will be using.
 const baseURL = `http://localhost:${PORT}`;
@@ -50,9 +50,9 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'npm run dev',
+    command: 'pnpm dev',
     url: baseURL,
-    timeout: 120 * 1000,
+    timeout: 240 * 1000,
     reuseExistingServer: !process.env.CI,
   },
 });
