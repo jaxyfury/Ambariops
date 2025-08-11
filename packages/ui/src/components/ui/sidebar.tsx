@@ -7,17 +7,17 @@ import { PanelLeft } from "lucide-react"
 
 import { useIsMobile } from "../../hooks/use-mobile"
 import { cn } from "@amberops/lib"
-import { Button } from "@amberops/ui"
-import { Input } from "@amberops/ui"
-import { Separator } from "@amberops/ui"
-import { Sheet, SheetContent } from "@amberops/ui"
-import { Skeleton } from "@amberops/ui"
+import { Button } from "./button"
+import { Input } from "./input"
+import { Separator } from "./separator"
+import { Sheet, SheetContent } from "./sheet"
+import { Skeleton } from "./skeleton"
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@amberops/ui"
+} from "./tooltip"
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state"
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7

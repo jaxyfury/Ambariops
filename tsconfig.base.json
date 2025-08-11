@@ -18,6 +18,7 @@
     "baseUrl": ".",
     "paths": {
       "@amberops/ui": ["packages/ui/src/index.ts"],
+      "@amberops/ui/*": ["packages/ui/src/*"],
       "@amberops/api": ["packages/api/src/index.ts"],
       "@amberops/api/*": ["packages/api/src/*"],
       "@amberops/design-tokens/*": ["packages/design-tokens/*"],

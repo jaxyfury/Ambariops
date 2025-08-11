@@ -16,7 +16,7 @@ import {
   Clock,
 } from 'lucide-react';
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
-
+import type { ChartConfig } from '@amberops/ui';
 
 function getStatusBadgeVariant(status: 'healthy' | 'unhealthy' | 'degraded'): 'default' | 'destructive' | 'secondary' {
   switch (status) {
@@ -53,7 +53,7 @@ const chartConfig = {
     label: "Desktop",
     color: "hsl(var(--chart-1))",
   },
-} satisfies import("@amberops/ui").ChartConfig
+} satisfies ChartConfig
 
 
 export default function ClusterDetailPage({ params }: { params: { id: string } }) {

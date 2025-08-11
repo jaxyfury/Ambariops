@@ -1,9 +1,7 @@
 import { notFound } from 'next/navigation';
 import { PageHeader } from '@/components/page-header';
-import { Button } from '@amberops/ui';
-import { Card, CardContent, CardHeader, CardTitle } from '@amberops/ui';
+import { Button, Card, CardContent, CardHeader, CardTitle, CardDescription, Badge } from '@amberops/ui';
 import { mockAlerts } from '@amberops/api';
-import { Badge } from '@amberops/ui';
 import { formatDistanceToNow } from 'date-fns';
 import { AlertTriangle, Server, HardDrive, Clock } from 'lucide-react';
 import Link from 'next/link';
