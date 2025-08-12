@@ -129,7 +129,6 @@ export function SidebarNav() {
         </SidebarMenu>
       </SidebarContent>
       <SidebarFooter>
-        <SidebarTrigger className="w-full justify-start"/>
         <SidebarMenu className="p-2">
           {bottomNavItems.map((item) => (
             <SidebarMenuItem key={item.label}>
