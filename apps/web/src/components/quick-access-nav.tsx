@@ -112,7 +112,7 @@ export function QuickAccessNav() {
       </Tooltip>
 
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="z-[9999] max-w-4xl">
+        <DialogContent className="z-[9999] max-w-6xl">
           <DialogHeader>
             <DialogTitle>Quick Access</DialogTitle>
             <DialogDescription>
