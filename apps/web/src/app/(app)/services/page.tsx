@@ -11,6 +11,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Badge } from '@amberops/ui/components/ui/badge';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@amberops/ui/components/ui/dialog';
 import { Label } from '@amberops/ui/components/ui/label';
+import { Input } from '@amberops/ui/components/ui/input';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@amberops/ui/components/ui/select';
 import { mockServices, mockClusters } from '@amberops/api';
 import { ArrowUpRight, CheckCircle2, XCircle, Clock, HardDrive, MoreHorizontal, Play, Square, RefreshCw, ArrowUpDown, ArrowDown, ArrowUp, PlusCircle } from 'lucide-react';
@@ -292,6 +293,72 @@ function ServiceCard({ service }: { service: Service }) {
     )
 }
 
+function AddServiceDialog({ isOpen, onOpenChange }: { isOpen: boolean, onOpenChange: (open: boolean) => void }) {
+    const [selectedService, setSelectedService] = useState('');
+
+    const handleAddService = () => {
+        toast.success('Task to add new service has been created!');
+        onOpenChange(false);
+        setSelectedService('');
+    }
+
+    return (
+        <Dialog open={isOpen} onOpenChange={onOpenChange}>
+            <DialogTrigger asChild>
+                <Button>
+                    <PlusCircle className="mr-2 h-4 w-4" />
+                    Add Service
+                </Button>
+            </DialogTrigger>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>Add New Service</DialogTitle>
+                    <DialogDescription>
+                        Choose a cluster and service to install.
+                    </DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-4 py-4">
+                    <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="cluster" className="text-right">Cluster</Label>
+                        <Select>
+                            <SelectTrigger className="col-span-3">
+                                <SelectValue placeholder="Select a cluster" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {mockClusters.map(c => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}
+                            </SelectContent>
+                        </Select>
+                    </div>
+                        <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="service" className="text-right">Service</Label>
+                        <Select value={selectedService} onValueChange={setSelectedService}>
+                            <SelectTrigger className="col-span-3">
+                                <SelectValue placeholder="Select a service" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="zookeeper">Zookeeper</SelectItem>
+                                <SelectItem value="ambari-metrics">Ambari Metrics</SelectItem>
+                                <SelectItem value="hbase">HBase</SelectItem>
+                                <SelectItem value="custom">Custom Service</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+                    {selectedService === 'custom' && (
+                        <div className="grid grid-cols-4 items-center gap-4">
+                            <Label htmlFor="custom-service" className="text-right">Custom Name</Label>
+                            <Input id="custom-service" placeholder="e.g., My-Custom-Flink-Service" className="col-span-3" />
+                        </div>
+                    )}
+                </div>
+                <DialogFooter>
+                    <Button variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
+                    <Button onClick={handleAddService}>Add Service</Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
+    )
+}
+
 
 export default function ServicesPage() {
     const [isLoading, setIsLoading] = useState(true);
@@ -304,63 +371,13 @@ export default function ServicesPage() {
         return () => clearTimeout(timer);
     }, []);
 
-    const handleAddService = () => {
-        toast.success('Task to add new service has been created!');
-        setIsModalOpen(false);
-    }
-
   return (
     <div>
       <PageHeader
         title="Services"
         description="A list of all services running across your clusters."
         actions={(
-            <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-                <DialogTrigger asChild>
-                    <Button>
-                        <PlusCircle className="mr-2 h-4 w-4" />
-                        Add Service
-                    </Button>
-                </DialogTrigger>
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>Add New Service</DialogTitle>
-                        <DialogDescription>
-                            Choose a cluster and service to install.
-                        </DialogDescription>
-                    </DialogHeader>
-                    <div className="grid gap-4 py-4">
-                        <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="cluster" className="text-right">Cluster</Label>
-                            <Select>
-                                <SelectTrigger className="col-span-3">
-                                    <SelectValue placeholder="Select a cluster" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {mockClusters.map(c => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}
-                                </SelectContent>
-                            </Select>
-                        </div>
-                         <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="service" className="text-right">Service</Label>
-                            <Select>
-                                <SelectTrigger className="col-span-3">
-                                    <SelectValue placeholder="Select a service" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="zookeeper">Zookeeper</SelectItem>
-                                    <SelectItem value="ambari-metrics">Ambari Metrics</SelectItem>
-                                    <SelectItem value="hbase">HBase</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
-                    </div>
-                    <DialogFooter>
-                        <Button variant="outline" onClick={() => setIsModalOpen(false)}>Cancel</Button>
-                        <Button onClick={handleAddService}>Add Service</Button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
+            <AddServiceDialog isOpen={isModalOpen} onOpenChange={setIsModalOpen} />
         )}
       />
       <DataTable
