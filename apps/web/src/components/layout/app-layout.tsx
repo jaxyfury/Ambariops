@@ -23,8 +23,8 @@ import toast from 'react-hot-toast';
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
   return (
-    <>
-      <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background/80 px-4 backdrop-blur-lg sm:h-auto sm:border-0 sm:bg-transparent sm:px-6 py-2">
+    <div className="flex flex-col h-screen">
+      <header className="sticky top-0 z-30 flex h-14 shrink-0 items-center gap-4 border-b bg-background/80 px-4 backdrop-blur-lg sm:h-auto sm:border-0 sm:bg-transparent sm:px-6 py-2">
         <Tooltip>
           <TooltipTrigger asChild>
             <SidebarTrigger className="sm:hidden" />
@@ -72,7 +72,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           </DropdownMenu>
         </div>
       </header>
-      <main className="flex-1 p-6">{children}</main>
-    </>
+      <main className="flex-1 p-6 overflow-y-auto">{children}</main>
+    </div>
   );
 }

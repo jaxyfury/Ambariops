@@ -196,6 +196,11 @@ export function DataTable<TData, TValue>({
     if (typeof columnDef.header === 'string') {
         return columnDef.header;
     }
+    if (typeof columnDef.header === 'function') {
+        // This is a simplified extraction. It won't work for complex components.
+        // It relies on the convention of passing simple text or a simple component.
+        return (columnDef.id || (columnDef as any).accessorKey || '').replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+    }
     const accessorKey = (columnDef as any).accessorKey as string | undefined;
     if (accessorKey) {
         // Convert camelCase to Title Case
@@ -263,7 +268,12 @@ export function DataTable<TData, TValue>({
     XLSX.writeFile(workbook, "table_data.xlsx");
   };
   
-  const isFiltered = table.getState().columnFilters.length > 0 || table.getState().sorting.length > 0;
+  const isFiltered = table.getState().columnFilters.length > 0 || 
+                     table.getState().sorting.length > 0 ||
+                     density !== 'default' ||
+                     style !== 'default' ||
+                     JSON.stringify(columnOrder) !== JSON.stringify(initialColumnOrder) ||
+                     Object.keys(columnVisibility).length > 0;
 
   const resetAll = () => {
     table.resetColumnFilters();
