@@ -139,6 +139,45 @@ export const SidebarProvider = React.forwardRef<
 )
 SidebarProvider.displayName = "SidebarProvider"
 
+const SidebarCollapse = React.forwardRef<
+  React.ElementRef<typeof Button>,
+  React.ComponentProps<typeof Button>
+>(({ className, ...props }, ref) => {
+  const { toggleSidebar, state, isMobile } = useSidebar()
+
+  if (isMobile) {
+    return null
+  }
+
+  return (
+    <Tooltip>
+        <TooltipTrigger asChild>
+            <Button
+                ref={ref}
+                variant="ghost"
+                size="icon"
+                className={cn(
+                    "absolute top-1/2 z-30 -translate-y-1/2 rounded-full",
+                    "group-data-[side=left]:-right-5 group-data-[side=left]:border-r-0",
+                    "group-data-[side=right]:-left-5 group-data-[side=right]:border-l-0",
+                    className
+                )}
+                onClick={toggleSidebar}
+                {...props}
+            >
+                <PanelLeft className={cn("transition-transform duration-300", state === "collapsed" && "rotate-180")} />
+            </Button>
+        </TooltipTrigger>
+        <TooltipContent side="right">
+            <p>{state === 'expanded' ? 'Collapse' : 'Expand'} sidebar</p>
+        </TooltipContent>
+    </Tooltip>
+
+  )
+})
+SidebarCollapse.displayName = "SidebarCollapse"
+
+
 export const Sidebar = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<"div"> & {
@@ -220,6 +259,7 @@ export const Sidebar = React.forwardRef<
              state === 'expanded' ? "w-[--sidebar-width]" : "w-[--sidebar-width-icon]",
           )}
         />
+        <SidebarCollapse />
       </div>
     )
   }
@@ -703,3 +743,4 @@ export const SidebarMenuSubButton = React.forwardRef<
   )
 })
 SidebarMenuSubButton.displayName = "SidebarMenuSubButton"
+

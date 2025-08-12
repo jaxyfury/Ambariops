@@ -30,7 +30,6 @@ import {
   SidebarHeader,
   SidebarContent,
   SidebarFooter,
-  SidebarTrigger,
   SidebarSeparator,
 } from '@amberops/ui/components/ui/sidebar';
 import { useSidebar } from '@amberops/ui/hooks/use-sidebar';
@@ -135,14 +134,9 @@ export function SidebarNav() {
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
-          <SidebarSeparator className="my-1" />
-          <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip="Toggle Sidebar">
-                <SidebarTrigger />
-              </SidebarMenuButton>
-          </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
     </Sidebar>
   );
 }
+
