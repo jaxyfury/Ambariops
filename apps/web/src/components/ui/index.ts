@@ -1,7 +1,11 @@
 // Components
-export * from './icons';
-export * from './theme-provider';
-export * from './page-header';
+export * from '../icons';
+export * from '../theme-provider';
+export * from '../page-header';
+export * from './general-settings';
+export * from './integrations-settings';
+export * from './api-access-settings';
+export * from './user-management';
 
 // UI
 export * from './accordion';
