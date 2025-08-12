@@ -2,7 +2,11 @@
 'use client';
 
 import { PageHeader } from '@/components/page-header';
-import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle, Textarea, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@amberops/ui';
+import { Button } from '@amberops/ui/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@amberops/ui/components/ui/card';
+import { Textarea } from '@amberops/ui/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@amberops/ui/components/ui/select';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@amberops/ui/components/ui/table';
 import { mockConfigVersions } from '@amberops/api';
 import { format } from 'date-fns';
 import { Save, History } from 'lucide-react';

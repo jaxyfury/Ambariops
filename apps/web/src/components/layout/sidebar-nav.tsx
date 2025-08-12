@@ -32,7 +32,7 @@ import {
   SidebarFooter,
 } from '@amberops/ui/components/ui/sidebar';
 import { useSidebar } from '@amberops/ui/hooks/use-sidebar';
-import { AmberOpsLogo } from '@amberops/ui/icons';
+import { AmberOpsLogo } from '@amberops/ui/components/icons';
 
 export function SidebarNav() {
   const pathname = usePathname();

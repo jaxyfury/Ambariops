@@ -1,11 +1,12 @@
+
 "use client"
 
 import * as React from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { DayPicker } from "react-day-picker"
 
-import { cn } from "@amberops/lib"
-import { buttonVariants } from "./button"
+import { cn } from "@amberops/lib/utils"
+import { buttonVariants } from "@amberops/ui/components/ui/button"
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>
 

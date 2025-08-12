@@ -3,7 +3,12 @@
 
 import Link from 'next/link';
 import { PageHeader } from '@/components/page-header';
-import { Button, Badge, Checkbox, Tooltip, TooltipTrigger, TooltipContent, Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, Label, Input, DialogFooter, Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@amberops/ui';
+import { Button } from '@amberops/ui/components/ui/button';
+import { Badge } from '@amberops/ui/components/ui/badge';
+import { Checkbox } from '@amberops/ui/components/ui/checkbox';
+import { Tooltip, TooltipTrigger, TooltipContent } from '@amberops/ui/components/ui/tooltip';
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, Label, Input, DialogFooter } from '@amberops/ui/components/ui/dialog';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@amberops/ui/components/ui/card';
 import { mockHosts } from '@amberops/api';
 import { ArrowUpRight, PlusCircle, Server, ArrowUpDown, Cpu, MemoryStick } from 'lucide-react';
 import { DataTable } from '@/components/data-table';

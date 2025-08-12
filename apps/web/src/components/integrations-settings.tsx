@@ -4,20 +4,10 @@
 import { useState } from 'react';
 import {
   Button,
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-  Switch,
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-  DialogTrigger,
-} from '@amberops/ui';
+} from '@amberops/ui/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@amberops/ui/components/ui/card';
+import { Switch } from '@amberops/ui/components/ui/switch';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogTrigger } from '@amberops/ui/components/ui/dialog';
 import { PlusCircle, Slack, GitMerge, Bell } from 'lucide-react';
 import toast from 'react-hot-toast';
 

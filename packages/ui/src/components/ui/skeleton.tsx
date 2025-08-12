@@ -1,4 +1,5 @@
-import { cn } from "@amberops/lib"
+
+import { cn } from "@amberops/lib/utils"
 
 function Skeleton({
   className,

@@ -3,7 +3,10 @@
 
 import { notFound, useRouter } from 'next/navigation';
 import { PageHeader } from '@/components/page-header';
-import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle, Table, TableBody, TableCell, TableHead, TableHeader, TableRow, Badge } from '@amberops/ui';
+import { Button } from '@amberops/ui/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@amberops/ui/components/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@amberops/ui/components/ui/table';
+import { Badge } from '@amberops/ui/components/ui/badge';
 import { mockHosts, mockServices } from '@amberops/api';
 import { Cpu, MemoryStick, HardDrive, Server, Power, CheckCircle2, XCircle, Clock } from 'lucide-react';
 import toast from 'react-hot-toast';

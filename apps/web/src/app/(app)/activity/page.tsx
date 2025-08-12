@@ -7,7 +7,11 @@ import { type ColumnDef } from '@tanstack/react-table';
 import type { ActivityLog } from '@amberops/lib';
 import { useState, useEffect } from 'react';
 import { formatDistanceToNow } from 'date-fns';
-import { Avatar, AvatarFallback, AvatarImage, Badge, Button, Checkbox, Tooltip, TooltipTrigger, TooltipContent } from '@amberops/ui';
+import { Avatar, AvatarFallback, AvatarImage } from '@amberops/ui/components/ui/avatar';
+import { Badge } from '@amberops/ui/components/ui/badge';
+import { Button } from '@amberops/ui/components/ui/button';
+import { Checkbox } from '@amberops/ui/components/ui/checkbox';
+import { Tooltip, TooltipTrigger, TooltipContent } from '@amberops/ui/components/ui/tooltip';
 import { ArrowUpDown } from 'lucide-react';
 import { DataTable } from '@/components/data-table';
 

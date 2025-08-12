@@ -4,7 +4,11 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { PageHeader } from '@/components/page-header';
-import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle, Badge, Table, TableBody, TableCell, TableHead, TableHeader, TableRow, ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from '@amberops/ui';
+import { Button } from '@amberops/ui/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@amberops/ui/components/ui/card';
+import { Badge } from '@amberops/ui/components/ui/badge';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@amberops/ui/components/ui/table';
+import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from '@amberops/ui/components/ui/chart';
 import { mockClusters, mockServices, mockHosts, mockAlerts } from '@amberops/api';
 import {
   AlertTriangle,
@@ -21,7 +25,7 @@ import {
   Clock,
 } from 'lucide-react';
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
-import type { ChartConfig } from '@amberops/ui';
+import type { ChartConfig } from '@amberops/ui/components/ui/chart';
 import toast from 'react-hot-toast';
 
 function getStatusBadgeVariant(status: 'healthy' | 'unhealthy' | 'degraded'): 'default' | 'destructive' | 'secondary' {

@@ -2,7 +2,16 @@
 'use client';
 
 import { PageHeader } from '@/components/page-header';
-import { Button, Switch, Badge, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, Checkbox, Tooltip, TooltipContent, TooltipTrigger, Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, Label, Input, Select, SelectTrigger, SelectValue, SelectContent, SelectItem, DialogFooter } from '@amberops/ui';
+import { Button } from '@amberops/ui/components/ui/button';
+import { Switch } from '@amberops/ui/components/ui/switch';
+import { Badge } from '@amberops/ui/components/ui/badge';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@amberops/ui/components/ui/dropdown-menu';
+import { Checkbox } from '@amberops/ui/components/ui/checkbox';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@amberops/ui/components/ui/tooltip';
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@amberops/ui/components/ui/dialog';
+import { Label } from '@amberops/ui/components/ui/label';
+import { Input } from '@amberops/ui/components/ui/input';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@amberops/ui/components/ui/select';
 import { mockAlertDefinitions } from '@amberops/api';
 import { PlusCircle, MoreHorizontal, ArrowUpDown } from 'lucide-react';
 import { DataTable } from '@/components/data-table';

@@ -3,20 +3,11 @@
 
 import {
   Button,
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-  Input,
-  Label,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@amberops/ui';
+} from '@amberops/ui/components/ui/button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@amberops/ui/components/ui/card';
+import { Input } from '@amberops/ui/components/ui/input';
+import { Label } from '@amberops/ui/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@amberops/ui/components/ui/select';
 import { useTheme } from 'next-themes';
 import toast from 'react-hot-toast';
 

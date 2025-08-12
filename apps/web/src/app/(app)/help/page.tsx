@@ -6,13 +6,15 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-  Button,
+} from '@amberops/ui/components/ui/accordion';
+import { Button } from '@amberops/ui/components/ui/button';
+import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@amberops/ui';
+} from '@amberops/ui/components/ui/card';
 import { LifeBuoy, Mail } from 'lucide-react';
 import { PageHeader } from '@/components/page-header';
 import toast from 'react-hot-toast';

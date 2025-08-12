@@ -1,10 +1,11 @@
+
 "use client"
 
 import * as React from "react"
 import * as AccordionPrimitive from "@radix-ui/react-accordion"
 import { ChevronDown } from "lucide-react"
 
-import { cn } from "@amberops/lib"
+import { cn } from "@amberops/lib/utils"
 
 const Accordion = AccordionPrimitive.Root
 

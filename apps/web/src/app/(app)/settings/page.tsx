@@ -7,7 +7,7 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
-} from '@amberops/ui/tabs';
+} from '@amberops/ui/components/ui/tabs';
 import { UserManagement } from '@/components/user-management';
 import { GeneralSettings } from '@/components/general-settings';
 import { IntegrationsSettings } from '@/components/integrations-settings';

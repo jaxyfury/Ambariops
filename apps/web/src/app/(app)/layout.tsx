@@ -3,7 +3,7 @@
 import { AppLayout } from '@/components/layout/app-layout';
 import { SidebarNav } from '@/components/layout/sidebar-nav';
 import { Breadcrumbs } from '@/components/breadcrumbs';
-import { SidebarProvider } from '@amberops/ui/sidebar';
+import { SidebarProvider } from '@amberops/ui/components/ui/sidebar';
 
 export const dynamic = 'force-dynamic';
 

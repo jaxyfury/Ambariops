@@ -2,7 +2,12 @@
 'use client';
 
 import { PageHeader } from '@/components/page-header';
-import { Button, Input, Table, TableBody, TableCell, TableHead, TableHeader, TableRow, Card, CardContent, Badge, ScrollArea } from '@amberops/ui';
+import { Button } from '@amberops/ui/components/ui/button';
+import { Input } from '@amberops/ui/components/ui/input';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@amberops/ui/components/ui/table';
+import { Card, CardContent } from '@amberops/ui/components/ui/card';
+import { Badge } from '@amberops/ui/components/ui/badge';
+import { ScrollArea } from '@amberops/ui/components/ui/scroll-area';
 import { mockLogEntries } from '@amberops/api';
 import { Search, PlayCircle } from 'lucide-react';
 import toast from 'react-hot-toast';

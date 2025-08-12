@@ -1,3 +1,4 @@
+
 "use client"
 
 import * as React from "react"
@@ -12,8 +13,8 @@ import {
   type FieldValues,
 } from "react-hook-form"
 
-import { cn } from "@amberops/lib"
-import { Label } from "./label"
+import { cn } from "@amberops/lib/utils"
+import { Label } from "@amberops/ui/components/ui/label"
 
 const Form = FormProvider
 

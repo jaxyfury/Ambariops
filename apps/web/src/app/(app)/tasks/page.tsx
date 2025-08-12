@@ -1,9 +1,12 @@
 
-
 'use client';
 
 import { PageHeader } from '@/components/page-header';
-import { Progress, Badge, Checkbox, Tooltip, TooltipTrigger, TooltipContent, Card, CardContent, CardHeader } from '@amberops/ui';
+import { Progress } from '@amberops/ui/components/ui/progress';
+import { Badge } from '@amberops/ui/components/ui/badge';
+import { Checkbox } from '@amberops/ui/components/ui/checkbox';
+import { Tooltip, TooltipTrigger, TooltipContent } from '@amberops/ui/components/ui/tooltip';
+import { Card, CardContent, CardHeader } from '@amberops/ui/components/ui/card';
 import { mockTasks, mockServices, mockClusters } from '@amberops/api';
 import { CheckCircle, XCircle, Loader, CircleDotDashed, ArrowUpDown, Server, HardDrive } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
@@ -11,7 +14,7 @@ import { DataTable } from '@/components/data-table';
 import { type ColumnDef } from '@tanstack/react-table';
 import type { Task } from '@amberops/lib';
 import { useState, useEffect } from 'react';
-import { Button } from '@amberops/ui';
+import { Button } from '@amberops/ui/components/ui/button';
 
 function getStatusIcon(status: 'running' | 'completed' | 'failed' | 'pending') {
   switch (status) {

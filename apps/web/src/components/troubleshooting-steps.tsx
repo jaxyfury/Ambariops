@@ -2,8 +2,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@amberops/ui/card';
-import { Skeleton } from '@amberops/ui/skeleton';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@amberops/ui/components/ui/card';
+import { Skeleton } from '@amberops/ui/components/ui/skeleton';
 import { suggestTroubleshootingSteps } from '@/app/actions';
 import type { Alert } from '@amberops/lib';
 import { Bot } from 'lucide-react';
