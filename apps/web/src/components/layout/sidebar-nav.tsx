@@ -21,7 +21,7 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@amberops/ui/accordion';
+} from '@amberops/ui/components/ui/accordion';
 import {
   Sidebar,
   SidebarMenu,
@@ -30,7 +30,7 @@ import {
   SidebarHeader,
   SidebarContent,
   SidebarFooter,
-} from '@amberops/ui/sidebar';
+} from '@amberops/ui/components/ui/sidebar';
 import { useSidebar } from '@amberops/ui/hooks/use-sidebar';
 import { AmberOpsLogo } from '@amberops/ui/icons';
 
