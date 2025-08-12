@@ -154,12 +154,12 @@ const SidebarCollapse = React.forwardRef<
         <TooltipTrigger asChild>
             <Button
                 ref={ref}
-                variant="ghost"
+                variant="outline"
                 size="icon"
                 className={cn(
-                    "absolute top-1/2 z-30 -translate-y-1/2 rounded-full",
-                    "group-data-[side=left]:-right-5 group-data-[side=left]:border-r-0",
-                    "group-data-[side=right]:-left-5 group-data-[side=right]:border-l-0",
+                    "absolute top-1/2 z-30 -translate-y-1/2 rounded-full bg-background",
+                    "group-data-[side=left]:-right-5",
+                    "group-data-[side=right]:-left-5",
                     className
                 )}
                 onClick={toggleSidebar}
@@ -744,3 +744,6 @@ export const SidebarMenuSubButton = React.forwardRef<
 })
 SidebarMenuSubButton.displayName = "SidebarMenuSubButton"
 
+
+
+    
