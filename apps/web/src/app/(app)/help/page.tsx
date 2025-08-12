@@ -1,6 +1,7 @@
 
 'use client';
 
+import { useState } from 'react';
 import {
   Accordion,
   AccordionContent,
@@ -15,6 +16,18 @@ import {
   CardHeader,
   CardTitle,
 } from '@amberops/ui/components/ui/card';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@amberops/ui/components/ui/dialog';
+import { Input } from '@amberops/ui/components/ui/input';
+import { Label } from '@amberops/ui/components/ui/label';
+import { Textarea } from '@amberops/ui/components/ui/textarea';
 import { LifeBuoy, Mail } from 'lucide-react';
 import { PageHeader } from '@/components/page-header';
 import toast from 'react-hot-toast';
@@ -43,8 +56,11 @@ const faqs = [
 ];
 
 export default function HelpPage() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const handleContactSupport = () => {
     toast.success('Support request sent! We will get back to you shortly.');
+    setIsModalOpen(false);
   };
 
   return (
@@ -82,10 +98,53 @@ export default function HelpPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button className="w-full" onClick={handleContactSupport}>
-                <Mail className="mr-2 h-4 w-4" />
-                Contact Support
-              </Button>
+              <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+                <DialogTrigger asChild>
+                  <Button className="w-full">
+                    <Mail className="mr-2 h-4 w-4" />
+                    Contact Support
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Contact Support</DialogTitle>
+                    <DialogDescription>
+                      Describe your issue below and our team will get back to
+                      you as soon as possible.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="grid gap-4 py-4">
+                    <div className="grid items-center gap-2">
+                      <Label htmlFor="email">Your Email</Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        defaultValue="alice@amberops.io"
+                        disabled
+                      />
+                    </div>
+                    <div className="grid items-center gap-2">
+                      <Label htmlFor="details">Issue Details</Label>
+                      <Textarea
+                        id="details"
+                        placeholder="Please provide as much detail as possible..."
+                        className="min-h-[120px]"
+                      />
+                    </div>
+                  </div>
+                  <DialogFooter>
+                    <Button
+                      variant="outline"
+                      onClick={() => setIsModalOpen(false)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button onClick={handleContactSupport}>
+                      Send Request
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
             </CardContent>
           </Card>
         </div>
