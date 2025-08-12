@@ -128,6 +128,7 @@
     animation: petal12 4s linear infinite;
 }
 
+/* Source control graph styling */
 .quick-access-list {
     position: relative;
     padding-left: 20px;
@@ -137,40 +138,44 @@
 .quick-access-item {
     position: relative;
     list-style: none;
-    margin-bottom: 0.5rem;
 }
 
+.quick-access-item a,
+.quick-access-item button {
+    padding-left: 24px;
+}
+
+/* The main vertical timeline */
 .quick-access-item::before {
     content: '';
     position: absolute;
-    left: -12px;
+    left: 0;
     top: 0;
     bottom: 0;
     width: 2px;
     background-color: hsl(var(--border));
 }
 
+/* End the timeline for the last item */
 .quick-access-item:last-child::before {
-    height: 18px; /* Half height for the last item */
+    height: 18px; /* Half the height of the button */
 }
 
-.quick-access-item > button svg {
-    position: relative;
-}
-
-.quick-access-item > button svg::before {
+/* The "commit" dot on the timeline */
+.quick-access-item::after {
     content: '';
     position: absolute;
-    left: -20px; /* Adjust based on padding/icon size */
-    top: 50%;
-    transform: translateY(-50%);
-    width: 8px;
-    height: 8px;
+    left: -4px; /* Center the dot on the line */
+    top: 14px; /* Vertically center with the text */
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     background-color: hsl(var(--muted-foreground));
-    border: 2px solid hsl(var(--background));
+    border: 2px solid hsl(var(--card));
+    transition: background-color 0.2s ease-in-out;
 }
 
-.quick-access-item > button:hover svg::before {
+/* Change dot color on hover */
+.quick-access-item:hover::after {
     background-color: hsl(var(--primary));
 }
