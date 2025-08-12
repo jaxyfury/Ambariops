@@ -29,8 +29,8 @@ import { Popover, PopoverTrigger, PopoverContent } from "@amberops/ui/components
 import { Label } from "@amberops/ui/components/ui/label"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@amberops/ui/components/ui/tooltip"
 import { ScrollArea } from "@amberops/ui/components/ui/scroll-area"
-import { FileDown, SlidersHorizontal, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, List, LayoutGrid, GripVertical, ArrowUp, ArrowDown, ChevronDown, XCircle } from "lucide-react"
-import { BroomIcon } from '@amberops/ui/components/icons';
+import { FileDown, SlidersHorizontal, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, List, LayoutGrid, GripVertical, ArrowUp, ArrowDown, ChevronDown } from "lucide-react"
+import { ClearFilterIcon } from '@amberops/ui/components/icons';
 import jsPDF from "jspdf"
 import autoTable from "jspdf-autotable"
 import * as XLSX from "xlsx"
@@ -263,6 +263,7 @@ export function DataTable<TData, TValue>({
     initialColumnOrder,
     filterKey,
     columnFilters,
+    table.getState().columnFilters,
   ]);
 
   const resetAll = () => {
@@ -286,31 +287,34 @@ export function DataTable<TData, TValue>({
   return (
     <div className="w-full">
         <div className="flex items-center py-4 gap-2">
-        {filterKey && <Input
-          placeholder={`Filter by ${filterKey}...`}
-          value={(table.getColumn(filterKey)?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn(filterKey)?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        /> }
-        {isFiltered && (
-            <Tooltip>
-                <TooltipTrigger asChild>
-                     <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={resetAll}
-                        className="h-8 w-8 rounded-full group"
-                    >
-                       <BroomIcon className="h-4 w-4" />
-                    </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                    <p>Clear all filters and customizations</p>
-                </TooltipContent>
-            </Tooltip>
-        )}
+            <div className="relative flex-grow max-w-sm">
+                {filterKey && <Input
+                    placeholder={`Filter by ${filterKey}...`}
+                    value={(table.getColumn(filterKey)?.getFilterValue() as string) ?? ""}
+                    onChange={(event) =>
+                        table.getColumn(filterKey)?.setFilterValue(event.target.value)
+                    }
+                    className="pr-8"
+                />}
+                {isFiltered && (
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={resetAll}
+                                className="h-6 w-6 rounded-full group absolute right-1.5 top-1/2 -translate-y-1/2"
+                            >
+                                <ClearFilterIcon className="h-4 w-4" />
+                            </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p>Clear all filters and customizations</p>
+                        </TooltipContent>
+                    </Tooltip>
+                )}
+            </div>
+        
         <div className="ml-auto flex items-center gap-2">
             {renderCard && (
                 <div className="flex items-center gap-1 rounded-md bg-muted p-1">
@@ -608,9 +612,3 @@ export function DataTable<TData, TValue>({
                 </Button>
             </div>
         </div>
-      </div>
-    </div>
-  )
-}
-
-    
