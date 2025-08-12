@@ -48,12 +48,12 @@ interface QuickLinkProps {
 function QuickLink({ href, onClick, children }: QuickLinkProps) {
     const commonProps = {
         variant: "ghost",
-        className: "h-auto py-2 justify-start text-muted-foreground hover:text-foreground hover:bg-accent transition-all duration-200 w-full whitespace-normal break-words",
+        className: "h-auto py-2 justify-start text-left text-muted-foreground hover:text-foreground hover:bg-accent transition-all duration-200 w-full whitespace-normal break-words",
         onClick,
     } as const;
 
     const content = (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center justify-start gap-2">
             {children}
         </div>
     );
