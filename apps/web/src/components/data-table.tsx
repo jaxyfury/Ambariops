@@ -1,5 +1,4 @@
 
-
 "use client"
 
 import * as React from "react"
@@ -44,7 +43,7 @@ import {
   PopoverContent,
   Label,
 } from "@amberops/ui"
-import { FileDown, SlidersHorizontal, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Broom, List, LayoutGrid, ArrowUp, ArrowDown, GripVertical, Rows, Columns } from "lucide-react"
+import { FileDown, SlidersHorizontal, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Broom, List, LayoutGrid, ArrowUp, ArrowDown, GripVertical, Rows, Columns, Paintbrush } from "lucide-react"
 import jsPDF from "jspdf"
 import autoTable from "jspdf-autotable"
 import * as XLSX from "xlsx"
@@ -52,6 +51,7 @@ import { cn } from "@amberops/lib"
 
 type ViewType = 'table' | 'card';
 type DensityType = 'default' | 'comfortable' | 'compact';
+type StyleType = 'default' | 'grid' | 'zebra' | 'minimal';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -75,6 +75,7 @@ export function DataTable<TData, TValue>({
   const [rowSelection, setRowSelection] = React.useState({})
   const [view, setView] = React.useState<ViewType>('table');
   const [density, setDensity] = React.useState<DensityType>('default');
+  const [style, setStyle] = React.useState<StyleType>('default');
   const [columnSizing, setColumnSizing] = React.useState<ColumnSizingState>({});
   
   const initialColumnOrder = React.useMemo(() => columns.map(c => (c as any).id || (c as any).accessorKey), [columns]);
@@ -227,6 +228,22 @@ export function DataTable<TData, TValue>({
                 <DropdownMenuItem onClick={() => setDensity('comfortable')}>Comfortable</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline">
+                  <Paintbrush className="mr-2 h-4 w-4" />
+                  <span className="capitalize">{style}</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>Table Style</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => setStyle('default')}>Horizontal Lines</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setStyle('grid')}>Grid</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setStyle('zebra')}>Zebra Stripes</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setStyle('minimal')}>Minimal</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
              <Popover>
                 <PopoverTrigger asChild>
                   <Button variant="outline">
@@ -330,7 +347,7 @@ export function DataTable<TData, TValue>({
         </div>
       ) : (
          <div className="rounded-md border">
-            <Table style={{ width: table.getCenterTotalSize() }}>
+            <Table style={{ width: table.getCenterTotalSize() }} data-style={style}>
             <TableHeader className="sticky top-0 bg-card z-10">
                 {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
