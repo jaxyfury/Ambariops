@@ -77,7 +77,7 @@ export function GlobalSearch() {
 
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogContent className="top-1/4" onInteractOutside={closeModal}>
-          <div className="relative">
+          <div className="relative mt-3">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             <Input
               value={query}
