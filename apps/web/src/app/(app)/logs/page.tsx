@@ -9,7 +9,7 @@ import { Card, CardContent } from '@amberops/ui/components/ui/card';
 import { Badge } from '@amberops/ui/components/ui/badge';
 import { ScrollArea } from '@amberops/ui/components/ui/scroll-area';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@amberops/ui/components/ui/select';
-import { mockLogEntries, mockClusters, mockServices } from '@amberops/api';
+import { mockLogEntries, mockClusters, mockServices, mockHosts } from '@amberops/api';
 import { Search, PlayCircle, X } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useState } from 'react';
@@ -31,7 +31,7 @@ function getLevelBadgeVariant(level: 'INFO' | 'WARN' | 'ERROR' | 'DEBUG'): 'defa
 export default function LogsPage() {
     const [searchQuery, setSearchQuery] = useState('');
     const [levelFilter, setLevelFilter] = useState('all');
-    const [componentFilter, setComponentFilter] = useState('all');
+    const [serviceFilter, setServiceFilter] = useState('all');
     const [clusterFilter, setClusterFilter] = useState('all');
     const [filteredLogs, setFilteredLogs] = useState<LogEntry[]>(mockLogEntries);
 
@@ -44,15 +44,14 @@ export default function LogsPage() {
         if (levelFilter !== 'all') {
             logs = logs.filter(log => log.level === levelFilter);
         }
-        if (componentFilter !== 'all') {
-            logs = logs.filter(log => log.component === componentFilter);
+        if (serviceFilter !== 'all') {
+            logs = logs.filter(log => log.component === serviceFilter);
         }
         if (clusterFilter !== 'all') {
-            // This is a mock; a real implementation would have cluster info in logs
-            const service = mockServices.find(s => s.name === componentFilter);
-            if (service && service.clusterId !== clusterFilter) {
-                logs = [];
-            }
+             logs = logs.filter(log => {
+                const host = mockHosts.find(h => h.name === log.host);
+                return host?.clusterId === clusterFilter;
+            });
         }
         
         setFilteredLogs(logs);
@@ -62,13 +61,13 @@ export default function LogsPage() {
     const clearFilters = () => {
         setSearchQuery('');
         setLevelFilter('all');
-        setComponentFilter('all');
+        setServiceFilter('all');
         setClusterFilter('all');
         setFilteredLogs(mockLogEntries);
         toast.success('Filters cleared.');
     };
 
-    const uniqueComponents = Array.from(new Set(mockLogEntries.map(log => log.component)));
+    const uniqueServices = Array.from(new Set(mockLogEntries.map(log => log.component)));
 
   return (
     <div className="flex flex-col h-[calc(100vh-8rem)]">
@@ -98,13 +97,13 @@ export default function LogsPage() {
                 <SelectItem value="DEBUG">Debug</SelectItem>
             </SelectContent>
         </Select>
-         <Select value={componentFilter} onValueChange={setComponentFilter}>
+         <Select value={serviceFilter} onValueChange={setServiceFilter}>
             <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Filter by component..." />
+                <SelectValue placeholder="Filter by service..." />
             </SelectTrigger>
             <SelectContent>
-                <SelectItem value="all">All Components</SelectItem>
-                {uniqueComponents.map(comp => (
+                <SelectItem value="all">All Services</SelectItem>
+                {uniqueServices.map(comp => (
                     <SelectItem key={comp} value={comp}>{comp}</SelectItem>
                 ))}
             </SelectContent>
@@ -135,7 +134,7 @@ export default function LogsPage() {
                   <TableHead className="w-[180px]">Timestamp</TableHead>
                   <TableHead className="w-[80px]">Level</TableHead>
                   <TableHead className="w-[150px]">Host</TableHead>
-                  <TableHead className="w-[180px]">Component</TableHead>
+                  <TableHead className="w-[180px]">Service</TableHead>
                   <TableHead>Message</TableHead>
                 </TableRow>
               </TableHeader>
