@@ -1,10 +1,11 @@
 
+
 'use client';
 
 import { PageHeader } from '@/components/page-header';
-import { Progress, Badge, Checkbox, Tooltip, TooltipTrigger, TooltipContent } from '@amberops/ui';
-import { mockTasks } from '@amberops/api';
-import { CheckCircle, XCircle, Loader, CircleDotDashed, ArrowUpDown } from 'lucide-react';
+import { Progress, Badge, Checkbox, Tooltip, TooltipTrigger, TooltipContent, Card, CardContent, CardHeader } from '@amberops/ui';
+import { mockTasks, mockServices, mockClusters } from '@amberops/api';
+import { CheckCircle, XCircle, Loader, CircleDotDashed, ArrowUpDown, Server, HardDrive } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { DataTable } from '@/components/data-table';
 import { type ColumnDef } from '@tanstack/react-table';
@@ -19,7 +20,7 @@ function getStatusIcon(status: 'running' | 'completed' | 'failed' | 'pending') {
     case 'completed':
       return <CheckCircle className="h-4 w-4 text-green-500" />;
     case 'failed':
-      return <XCircle className="h-4 w-4 text-white" />;
+      return <XCircle className="h-4 w-4 text-destructive" />;
     case 'pending':
       return <CircleDotDashed className="h-4 w-4 text-muted-foreground" />;
   }
@@ -200,6 +201,50 @@ export const columns: ColumnDef<Task>[] = [
     },
 ]
 
+const SubRowComponent = ({ task }: { task: Task }) => {
+    // This is a mock: in a real app, you'd fetch this data or have it in the task object
+    const service = mockServices.find(s => task.name.includes(s.name));
+    const cluster = service ? mockClusters.find(c => c.id === service.clusterId) : undefined;
+    
+    return (
+        <div className="bg-muted/50 p-4">
+            <Card>
+                <CardHeader>
+                    <h4 className="font-semibold">Task Details</h4>
+                </CardHeader>
+                <CardContent className="grid grid-cols-2 gap-4 text-sm">
+                    {cluster && (
+                        <div className="flex items-center gap-2">
+                            <Server className="h-4 w-4 text-muted-foreground" />
+                            <div>
+                                <p className="text-muted-foreground">Cluster</p>
+                                <p className="font-semibold">{cluster.name}</p>
+                            </div>
+                        </div>
+                    )}
+                    {service && (
+                         <div className="flex items-center gap-2">
+                            <HardDrive className="h-4 w-4 text-muted-foreground" />
+                            <div>
+                                <p className="text-muted-foreground">Service</p>
+                                <p className="font-semibold">{service.name}</p>
+                            </div>
+                        </div>
+                    )}
+                    <div>
+                        <p className="text-muted-foreground">Target</p>
+                        <p className="font-semibold">{task.target || 'N/A'}</p>
+                    </div>
+                     <div>
+                        <p className="text-muted-foreground">Logs</p>
+                        <p className="font-mono text-xs bg-background p-2 rounded">See task logs for details.</p>
+                    </div>
+                </CardContent>
+            </Card>
+        </div>
+    )
+}
+
 export default function TasksPage() {
     const [isLoading, setIsLoading] = useState(true);
 
@@ -216,7 +261,13 @@ export default function TasksPage() {
         title="Tasks & Operations"
         description="Track background operations and service checks."
       />
-      <DataTable columns={columns} data={mockTasks} filterKey="name" isLoading={isLoading}/>
+      <DataTable 
+        columns={columns} 
+        data={mockTasks} 
+        filterKey="name" 
+        isLoading={isLoading}
+        renderSubComponent={(row) => <SubRowComponent task={row} />}
+      />
     </div>
   );
 }

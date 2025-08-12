@@ -88,6 +88,8 @@ export type Task = {
   startTime: string;
   duration: string;
   user: string;
+  target?: string;
+  subRows?: Task[];
 };
 
 export type LogEntry = {

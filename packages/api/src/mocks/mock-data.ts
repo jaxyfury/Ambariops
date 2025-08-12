@@ -110,10 +110,10 @@ export const mockConfigVersions: ConfigVersion[] = [
 ];
 
 export const mockTasks: Task[] = [
-    { id: 101, name: 'Restart HDFS DataNodes', status: 'running', progress: 75, startTime: '2024-05-21T12:00:00Z', duration: '5m 30s', user: 'admin' },
-    { id: 100, name: 'Run Service Check on YARN', status: 'completed', progress: 100, startTime: '2024-05-21T11:45:00Z', duration: '2m 15s', user: 'admin' },
-    { id: 99, name: 'Deploy Kafka Client Configs', status: 'failed', progress: 50, startTime: '2024-05-21T11:30:00Z', duration: '1m 05s', user: 'jdoe' },
-    { id: 98, name: 'Add new host to cluster', status: 'pending', progress: 0, startTime: '2024-05-21T12:05:00Z', duration: '0m 0s', user: 'admin' },
+    { id: 101, name: 'Restart HDFS DataNodes', status: 'running', progress: 75, startTime: '2024-05-21T12:00:00Z', duration: '5m 30s', user: 'admin', target: 'All DataNodes' },
+    { id: 100, name: 'Run Service Check on YARN', status: 'completed', progress: 100, startTime: '2024-05-21T11:45:00Z', duration: '2m 15s', user: 'admin', target: 'YARN' },
+    { id: 99, name: 'Deploy Kafka Client Configs', status: 'failed', progress: 50, startTime: '2024-05-21T11:30:00Z', duration: '1m 05s', user: 'jdoe', target: 'Kafka Brokers' },
+    { id: 98, name: 'Add new host to cluster', status: 'pending', progress: 0, startTime: '2024-05-21T12:05:00Z', duration: '0m 0s', user: 'admin', target: 'worker-04.prod' },
 ];
 
 export const mockLogEntries: LogEntry[] = [

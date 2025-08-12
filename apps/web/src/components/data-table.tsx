@@ -16,6 +16,8 @@ import {
   useReactTable,
   ColumnOrderState,
   ColumnSizingState,
+  getExpandedRowModel,
+  ExpandedState,
 } from "@tanstack/react-table"
 import {
   Table,
@@ -44,7 +46,7 @@ import {
   PopoverContent,
   Label,
 } from "@amberops/ui"
-import { FileDown, SlidersHorizontal, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Broom, List, LayoutGrid, GripVertical, ArrowUp, ArrowDown } from "lucide-react"
+import { FileDown, SlidersHorizontal, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Broom, List, LayoutGrid, GripVertical, ArrowUp, ArrowDown, ChevronDown } from "lucide-react"
 import jsPDF from "jspdf"
 import autoTable from "jspdf-autotable"
 import * as XLSX from "xlsx"
@@ -60,6 +62,7 @@ interface DataTableProps<TData, TValue> {
   filterKey?: string
   isLoading?: boolean
   renderCard?: (item: TData) => React.ReactNode;
+  renderSubComponent?: (row: TData) => React.ReactNode;
 }
 
 export function DataTable<TData, TValue>({
@@ -68,6 +71,7 @@ export function DataTable<TData, TValue>({
   filterKey,
   isLoading = false,
   renderCard,
+  renderSubComponent,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
@@ -78,14 +82,42 @@ export function DataTable<TData, TValue>({
   const [density, setDensity] = React.useState<DensityType>('default');
   const [style, setStyle] = React.useState<StyleType>('default');
   const [columnSizing, setColumnSizing] = React.useState<ColumnSizingState>({});
+  const [expanded, setExpanded] = React.useState<ExpandedState>({})
+
+  const tableColumns = React.useMemo(() => {
+    if (!renderSubComponent) return columns;
+    
+    const expanderColumn: ColumnDef<TData, TValue> = {
+        id: 'expander',
+        header: () => null,
+        cell: ({ row }) => {
+        return row.getCanExpand() ? (
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={row.getToggleExpandedHandler()}
+            className="h-6 w-6"
+          >
+            <ChevronDown
+              className={cn(
+                'h-4 w-4 transition-transform',
+                row.getIsExpanded() && 'rotate-180'
+              )}
+            />
+          </Button>
+        ) : null
+      },
+    }
+    return [expanderColumn, ...columns];
+  }, [columns, renderSubComponent])
   
-  const initialColumnOrder = React.useMemo(() => columns.map(c => (c as any).id || (c as any).accessorKey), [columns]);
+  const initialColumnOrder = React.useMemo(() => tableColumns.map(c => (c as any).id || (c as any).accessorKey), [tableColumns]);
   const [columnOrder, setColumnOrder] = React.useState<ColumnOrderState>(initialColumnOrder);
   const [draggedColumn, setDraggedColumn] = React.useState<string | null>(null);
 
   const table = useReactTable({
     data,
-    columns,
+    columns: tableColumns,
     columnResizeMode: 'onChange',
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -97,6 +129,9 @@ export function DataTable<TData, TValue>({
     onRowSelectionChange: setRowSelection,
     onColumnOrderChange: setColumnOrder,
     onColumnSizingChange: setColumnSizing,
+    onExpandedChange: setExpanded,
+    getSubRowModel: renderSubComponent ? (row) => row.subRows : undefined,
+    getExpandedRowModel: getExpandedRowModel(),
     state: {
       sorting,
       columnFilters,
@@ -104,6 +139,7 @@ export function DataTable<TData, TValue>({
       rowSelection,
       columnOrder,
       columnSizing,
+      expanded,
     },
   })
 
@@ -139,37 +175,46 @@ export function DataTable<TData, TValue>({
   const moveColumn = (columnId: string, direction: 'up' | 'down') => {
     const currentOrder = table.getState().columnOrder;
     const currentIndex = currentOrder.indexOf(columnId);
-    const newOrder = [...currentOrder];
+    let newOrder = [...currentOrder];
 
     if (direction === 'up' && currentIndex > 0) {
-      [newOrder[currentIndex - 1], newOrder[currentIndex]] = [newOrder[currentIndex], newOrder[currentIndex - 1]];
+        const prevIndex = newOrder.findIndex((id, index) => index < currentIndex && table.getColumn(id)?.getCanHide());
+        if (prevIndex !== -1) {
+            [newOrder[prevIndex], newOrder[currentIndex]] = [newOrder[currentIndex], newOrder[prevIndex]];
+        }
     } else if (direction === 'down' && currentIndex < newOrder.length - 1) {
-      [newOrder[currentIndex], newOrder[currentIndex + 1]] = [newOrder[currentIndex + 1], newOrder[currentIndex]];
+        const nextIndex = newOrder.findIndex((id, index) => index > currentIndex && table.getColumn(id)?.getCanHide());
+        if (nextIndex !== -1) {
+            [newOrder[currentIndex], newOrder[nextIndex]] = [newOrder[nextIndex], newOrder[currentIndex]];
+        }
     }
-
     table.setColumnOrder(newOrder);
   };
 
 
-  const getHeaderFromColumn = (columnDef: ColumnDef<TData, TValue>): string => {
+ const getHeaderFromColumn = (columnDef: ColumnDef<TData, TValue>): string => {
     if (typeof columnDef.header === 'string') {
         return columnDef.header;
     }
-    const accessorKey = (columnDef as any).accessorKey;
-    if (typeof accessorKey === 'string') {
-        return accessorKey.charAt(0).toUpperCase() + accessorKey.slice(1);
+    const accessorKey = (columnDef as any).accessorKey as string | undefined;
+    if (accessorKey) {
+        // Convert camelCase to Title Case
+        const result = accessorKey.replace(/([A-Z])/g, ' $1');
+        return result.charAt(0).toUpperCase() + result.slice(1);
     }
-    if(columnDef.id) return columnDef.id;
-
+    if (columnDef.id) {
+        const result = columnDef.id.replace(/([A-Z])/g, ' $1');
+        return result.charAt(0).toUpperCase() + result.slice(1);
+    }
     return '';
-  };
+};
 
 
   const exportToPDF = () => {
     const doc = new jsPDF();
     const visibleColumns = table.getVisibleFlatColumns()
         .map(col => col.columnDef)
-        .filter((colDef: any) => colDef.id !== 'select' && colDef.id !== 'actions');
+        .filter((colDef: any) => colDef.id !== 'select' && colDef.id !== 'actions' && colDef.id !== 'expander');
 
     const tableHeaders = visibleColumns.map(colDef => getHeaderFromColumn(colDef));
     
@@ -194,7 +239,7 @@ export function DataTable<TData, TValue>({
   const exportToExcel = () => {
      const visibleColumns = table.getVisibleFlatColumns()
         .map(col => col.columnDef)
-        .filter((colDef: any) => colDef.id !== 'select' && colDef.id !== 'actions');
+        .filter((colDef: any) => colDef.id !== 'select' && colDef.id !== 'actions' && colDef.id !== 'expander');
 
     const tableHeaders = visibleColumns.map(colDef => getHeaderFromColumn(colDef));
 
@@ -316,7 +361,7 @@ export function DataTable<TData, TValue>({
                            {table
                                 .getAllLeafColumns()
                                 .filter((column) => column.getCanHide())
-                                .map((column) => {
+                                .map((column, index) => {
                                 return (
                                     <div
                                         key={column.id}
@@ -336,10 +381,10 @@ export function DataTable<TData, TValue>({
                                             {column.id}
                                         </Label>
                                         <div className="flex items-center gap-1 ml-auto">
-                                            <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => moveColumn(column.id, 'up')} disabled={table.getState().columnOrder.indexOf(column.id) === 0}>
+                                            <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => moveColumn(column.id, 'up')} disabled={index === 0}>
                                                 <ArrowUp className="h-4 w-4" />
                                             </Button>
-                                            <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => moveColumn(column.id, 'down')} disabled={table.getState().columnOrder.indexOf(column.id) === table.getState().columnOrder.length - 1}>
+                                            <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => moveColumn(column.id, 'down')} disabled={index === table.getAllLeafColumns().filter(c => c.getCanHide()).length - 1}>
                                                 <ArrowDown className="h-4 w-4" />
                                             </Button>
                                         </div>
@@ -422,24 +467,32 @@ export function DataTable<TData, TValue>({
                     ))
                 ) : table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map((row) => (
-                    <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
-                    >
-                    {row.getVisibleCells().map((cell) => (
-                        <TableCell key={cell.id} className={densityClasses[density]}>
-                        {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
+                    <React.Fragment key={row.id}>
+                        <TableRow
+                            data-state={row.getIsSelected() && "selected"}
+                        >
+                            {row.getVisibleCells().map((cell) => (
+                                <TableCell key={cell.id} className={densityClasses[density]}>
+                                {flexRender(
+                                    cell.column.columnDef.cell,
+                                    cell.getContext()
+                                )}
+                                </TableCell>
+                            ))}
+                        </TableRow>
+                        {row.getIsExpanded() && renderSubComponent && (
+                            <TableRow>
+                                <TableCell colSpan={table.getVisibleFlatColumns().length} className="p-0">
+                                    {renderSubComponent(row.original)}
+                                </TableCell>
+                            </TableRow>
                         )}
-                        </TableCell>
-                    ))}
-                    </TableRow>
+                    </React.Fragment>
                 ))
                 ) : (
                 <TableRow>
                     <TableCell
-                    colSpan={columns.length}
+                    colSpan={tableColumns.length}
                     className="h-24 text-center"
                     >
                     No results.
