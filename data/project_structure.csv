@@ -1,23 +1,21 @@
-Level 1,Level 2,Level 3,Level 4,Description
-apps,,,,Container for deployable applications.
-,web,,,The main Next.js frontend application.
-,,public,,,Static assets, including language files (locales) and the MSW service worker.
-,,src,,,Source code for the web application.
-,,,app,,Next.js App Router, containing all pages and layouts.
-,,,components,,App-specific React components (e.g., page headers, data tables).
-,,,lib,,Application-specific utilities, like i18n setup and API service definitions.
-,,,ai,,Genkit AI flows and configuration for the web app (deprecated, moved to packages/api).
-packages,,,,Shared libraries and tools used across the monorepo.
-,api,,,Handles API-related logic.
-,,src,ai,"Genkit flows for AI features (e.g., summarize cluster health, suggest troubleshooting)."
-,,src,mocks,"Mock Service Worker (MSW) handlers and mock data for development."
-,design-tokens,,,Shared Tailwind CSS configuration, theme variables, and global styles.
-,lib,,,Core shared utilities (`cn` function) and TypeScript types used by all other packages.
-,ui,,,The shared, reusable React component library.
-,,src,components,"ShadCN-style UI components (Button, Card, etc.) and custom composite components (Sidebar)."
-,,src,stories,"Storybook stories for every component, used for documentation and isolated development."
-,,src,hooks,"Shared React hooks (e.g., `useToast`, `useSidebar`)."
-tests,,,,End-to-end tests written with Playwright, covering all major user flows.
-docs,,,,Project documentation, including Architecture Decision Records (ADRs).
-.github,,,,GitHub Actions workflows for Continuous Integration (CI).
-data,,,,Project metadata, including this feature status report.
+path,type,description
+.github,directory,Contains GitHub Actions workflows for CI/CD.
+apps,directory,Contains the main application code.
+apps/web,directory,The Next.js frontend application.
+apps/web/src/app,directory,Main application routes using Next.js App Router.
+apps/web/src/components,directory,React components specific to the web application.
+apps/web/src/lib,directory,Application-specific libraries, hooks, and utilities.
+apps/web/src/styles,directory,Global and component-specific CSS files.
+data,directory,Project metadata and progress tracking CSVs.
+docs,directory,Project documentation and Architecture Decision Records (ADRs).
+packages,directory,Shared libraries (workspaces) used across the monorepo.
+packages/api,directory,Handles API client logic, MSW mocking, and Genkit AI flows.
+packages/design-tokens,directory,Shared Tailwind CSS configuration and theme variables.
+packages/lib,directory,Shared TypeScript types and utility functions.
+packages/ui,directory,Reusable React UI components and their Storybook stories.
+tests,directory,End-to-end tests written with Playwright.
+pnpm-workspace.yaml,file,Defines the pnpm workspaces for the monorepo.
+playwright.config.ts,file,Configuration for the Playwright E2E test runner.
+next.config.ts,file,Configuration for the Next.js application.
+package.json,file,Root package.json managing all dependencies and scripts.
+README.md,file,Main project README file.
