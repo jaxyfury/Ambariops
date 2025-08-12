@@ -49,7 +49,7 @@ export default function LogsPage() {
         }
         if (clusterFilter !== 'all') {
             // This is a mock; a real implementation would have cluster info in logs
-            const service = mockServices.find(s => s.id === componentFilter);
+            const service = mockServices.find(s => s.name === componentFilter);
             if (service && service.clusterId !== clusterFilter) {
                 logs = [];
             }
