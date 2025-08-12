@@ -336,10 +336,10 @@ function AddServiceDialog({ isOpen, onOpenChange }: { isOpen: boolean, onOpenCha
                                 <SelectValue placeholder="Select a service" />
                             </SelectTrigger>
                             <SelectContent>
+                                <SelectItem value="custom">Custom Service</SelectItem>
                                 <SelectItem value="zookeeper">Zookeeper</SelectItem>
                                 <SelectItem value="ambari-metrics">Ambari Metrics</SelectItem>
                                 <SelectItem value="hbase">HBase</SelectItem>
-                                <SelectItem value="custom">Custom Service</SelectItem>
                             </SelectContent>
                         </Select>
                     </div>
