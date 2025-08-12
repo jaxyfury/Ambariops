@@ -12,7 +12,7 @@ import { Badge } from '@amberops/ui/components/ui/badge';
 import { Button } from '@amberops/ui/components/ui/button';
 import { Checkbox } from '@amberops/ui/components/ui/checkbox';
 import { Tooltip, TooltipTrigger, TooltipContent } from '@amberops/ui/components/ui/tooltip';
-import { ArrowUpDown } from 'lucide-react';
+import { ArrowUpDown, ArrowDown, ArrowUp } from 'lucide-react';
 import { DataTable } from '@/components/data-table';
 
 function getActionBadgeVariant(action: 'LOGIN' | 'CREATE' | 'UPDATE' | 'DELETE' | 'RESTART' | 'ACKNOWLEDGE'): 'default' | 'secondary' | 'destructive' | 'outline' {
@@ -62,7 +62,13 @@ export const columns: ColumnDef<ActivityLog>[] = [
                 onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             >
                 User
-                <ArrowUpDown className="ml-2 h-4 w-4" />
+                {column.getIsSorted() === 'desc' ? (
+                    <ArrowDown className="ml-2 h-4 w-4" />
+                ) : column.getIsSorted() === 'asc' ? (
+                    <ArrowUp className="ml-2 h-4 w-4" />
+                ) : (
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                )}
             </Button>
         ),
         cell: ({ row }) => (
@@ -90,7 +96,13 @@ export const columns: ColumnDef<ActivityLog>[] = [
                 onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             >
                 Action
-                <ArrowUpDown className="ml-2 h-4 w-4" />
+                {column.getIsSorted() === 'desc' ? (
+                    <ArrowDown className="ml-2 h-4 w-4" />
+                ) : column.getIsSorted() === 'asc' ? (
+                    <ArrowUp className="ml-2 h-4 w-4" />
+                ) : (
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                )}
             </Button>
         ),
         cell: ({ row }) => <Badge variant={getActionBadgeVariant(row.original.action)}>{row.original.action}</Badge>
@@ -103,7 +115,13 @@ export const columns: ColumnDef<ActivityLog>[] = [
                 onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             >
                 Details
-                <ArrowUpDown className="ml-2 h-4 w-4" />
+                {column.getIsSorted() === 'desc' ? (
+                    <ArrowDown className="ml-2 h-4 w-4" />
+                ) : column.getIsSorted() === 'asc' ? (
+                    <ArrowUp className="ml-2 h-4 w-4" />
+                ) : (
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                )}
             </Button>
         ),
         cell: ({ row }) => (
@@ -125,7 +143,13 @@ export const columns: ColumnDef<ActivityLog>[] = [
                 onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             >
                 Time
-                <ArrowUpDown className="ml-2 h-4 w-4" />
+                {column.getIsSorted() === 'desc' ? (
+                    <ArrowDown className="ml-2 h-4 w-4" />
+                ) : column.getIsSorted() === 'asc' ? (
+                    <ArrowUp className="ml-2 h-4 w-4" />
+                ) : (
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                )}
             </Button>
         ),
         cell: ({ row }) => (

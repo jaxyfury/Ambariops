@@ -9,7 +9,7 @@ import { Checkbox } from '@amberops/ui/components/ui/checkbox';
 import { Tooltip, TooltipTrigger, TooltipContent } from '@amberops/ui/components/ui/tooltip';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@amberops/ui/components/ui/card';
 import { mockAlerts } from '@amberops/api';
-import { ArrowUpRight, Siren, ArrowUpDown, Clock } from 'lucide-react';
+import { ArrowUpRight, Siren, ArrowUpDown, Clock, ArrowDown, ArrowUp } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { DataTable } from '@/components/data-table';
 import { type ColumnDef } from '@tanstack/react-table';
@@ -71,7 +71,13 @@ export const columns: ColumnDef<Alert>[] = [
                 onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             >
                 Alert Name
-                <ArrowUpDown className="ml-2 h-4 w-4" />
+                {column.getIsSorted() === 'desc' ? (
+                    <ArrowDown className="ml-2 h-4 w-4" />
+                ) : column.getIsSorted() === 'asc' ? (
+                    <ArrowUp className="ml-2 h-4 w-4" />
+                ) : (
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                )}
             </Button>
         ),
         cell: ({ row }) => (
@@ -96,7 +102,13 @@ export const columns: ColumnDef<Alert>[] = [
                 onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             >
                 Severity
-                <ArrowUpDown className="ml-2 h-4 w-4" />
+                {column.getIsSorted() === 'desc' ? (
+                    <ArrowDown className="ml-2 h-4 w-4" />
+                ) : column.getIsSorted() === 'asc' ? (
+                    <ArrowUp className="ml-2 h-4 w-4" />
+                ) : (
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                )}
             </Button>
         ),
         cell: ({ row }) => (
@@ -113,7 +125,13 @@ export const columns: ColumnDef<Alert>[] = [
                 onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             >
                 Status
-                <ArrowUpDown className="ml-2 h-4 w-4" />
+                {column.getIsSorted() === 'desc' ? (
+                    <ArrowDown className="ml-2 h-4 w-4" />
+                ) : column.getIsSorted() === 'asc' ? (
+                    <ArrowUp className="ml-2 h-4 w-4" />
+                ) : (
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                )}
             </Button>
         ),
         cell: ({ row }) => (
@@ -130,7 +148,13 @@ export const columns: ColumnDef<Alert>[] = [
                 onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             >
                 Cluster
-                <ArrowUpDown className="ml-2 h-4 w-4" />
+                {column.getIsSorted() === 'desc' ? (
+                    <ArrowDown className="ml-2 h-4 w-4" />
+                ) : column.getIsSorted() === 'asc' ? (
+                    <ArrowUp className="ml-2 h-4 w-4" />
+                ) : (
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                )}
             </Button>
         ),
         cell: ({ row }) => (
@@ -154,7 +178,13 @@ export const columns: ColumnDef<Alert>[] = [
                 onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             >
                 Service
-                <ArrowUpDown className="ml-2 h-4 w-4" />
+                {column.getIsSorted() === 'desc' ? (
+                    <ArrowDown className="ml-2 h-4 w-4" />
+                ) : column.getIsSorted() === 'asc' ? (
+                    <ArrowUp className="ml-2 h-4 w-4" />
+                ) : (
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                )}
             </Button>
         ),
          cell: ({ row }) => (
@@ -176,7 +206,13 @@ export const columns: ColumnDef<Alert>[] = [
                 onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             >
                 Timestamp
-                <ArrowUpDown className="ml-2 h-4 w-4" />
+                {column.getIsSorted() === 'desc' ? (
+                    <ArrowDown className="ml-2 h-4 w-4" />
+                ) : column.getIsSorted() === 'asc' ? (
+                    <ArrowUp className="ml-2 h-4 w-4" />
+                ) : (
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                )}
             </Button>
         ),
         cell: ({ row }) => (

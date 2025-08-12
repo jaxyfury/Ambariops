@@ -10,7 +10,7 @@ import { Tooltip, TooltipTrigger, TooltipContent } from '@amberops/ui/components
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@amberops/ui/components/ui/card';
 import { Badge } from '@amberops/ui/components/ui/badge';
 import { mockServices } from '@amberops/api';
-import { ArrowUpRight, CheckCircle2, XCircle, Clock, HardDrive, MoreHorizontal, Play, Square, RefreshCw, ArrowUpDown } from 'lucide-react';
+import { ArrowUpRight, CheckCircle2, XCircle, Clock, HardDrive, MoreHorizontal, Play, Square, RefreshCw, ArrowUpDown, ArrowDown, ArrowUp } from 'lucide-react';
 import { DataTable } from '@/components/data-table';
 import { type ColumnDef } from '@tanstack/react-table';
 import type { Service } from '@amberops/lib';
@@ -64,7 +64,13 @@ export const columns: ColumnDef<Service>[] = [
                 onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             >
                 Name
-                <ArrowUpDown className="ml-2 h-4 w-4" />
+                {column.getIsSorted() === 'desc' ? (
+                    <ArrowDown className="ml-2 h-4 w-4" />
+                ) : column.getIsSorted() === 'asc' ? (
+                    <ArrowUp className="ml-2 h-4 w-4" />
+                ) : (
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                )}
             </Button>
         ),
         cell: ({ row }) => (
@@ -89,7 +95,13 @@ export const columns: ColumnDef<Service>[] = [
                 onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             >
                 Status
-                <ArrowUpDown className="ml-2 h-4 w-4" />
+                {column.getIsSorted() === 'desc' ? (
+                    <ArrowDown className="ml-2 h-4 w-4" />
+                ) : column.getIsSorted() === 'asc' ? (
+                    <ArrowUp className="ml-2 h-4 w-4" />
+                ) : (
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                )}
             </Button>
         ),
         cell: ({ row }) => (
@@ -107,7 +119,13 @@ export const columns: ColumnDef<Service>[] = [
                 onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             >
                 Cluster
-                <ArrowUpDown className="ml-2 h-4 w-4" />
+                {column.getIsSorted() === 'desc' ? (
+                    <ArrowDown className="ml-2 h-4 w-4" />
+                ) : column.getIsSorted() === 'asc' ? (
+                    <ArrowUp className="ml-2 h-4 w-4" />
+                ) : (
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                )}
             </Button>
         ),
         cell: ({ row }) => (
@@ -131,7 +149,13 @@ export const columns: ColumnDef<Service>[] = [
                 onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             >
                 Version
-                <ArrowUpDown className="ml-2 h-4 w-4" />
+                {column.getIsSorted() === 'desc' ? (
+                    <ArrowDown className="ml-2 h-4 w-4" />
+                ) : column.getIsSorted() === 'asc' ? (
+                    <ArrowUp className="ml-2 h-4 w-4" />
+                ) : (
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                )}
             </Button>
         ),
         cell: ({ row }) => (
@@ -153,7 +177,13 @@ export const columns: ColumnDef<Service>[] = [
                 onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             >
                 Running Hosts
-                <ArrowUpDown className="ml-2 h-4 w-4" />
+                {column.getIsSorted() === 'desc' ? (
+                    <ArrowDown className="ml-2 h-4 w-4" />
+                ) : column.getIsSorted() === 'asc' ? (
+                    <ArrowUp className="ml-2 h-4 w-4" />
+                ) : (
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                )}
             </Button>
         ),
         cell: ({ row }) => `${row.original.runningHosts} / ${row.original.totalHosts}`,
