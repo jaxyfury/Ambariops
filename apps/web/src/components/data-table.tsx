@@ -29,7 +29,8 @@ import { Popover, PopoverTrigger, PopoverContent } from "@amberops/ui/components
 import { Label } from "@amberops/ui/components/ui/label"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@amberops/ui/components/ui/tooltip"
 import { ScrollArea } from "@amberops/ui/components/ui/scroll-area"
-import { FileDown, SlidersHorizontal, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, List, LayoutGrid, GripVertical, ArrowUp, ArrowDown, ChevronDown, XCircle } from "lucide-react"
+import { FileDown, SlidersHorizontal, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, List, LayoutGrid, GripVertical, ArrowUp, ArrowDown, ChevronDown } from "lucide-react"
+import { BroomIcon } from '@amberops/ui/components/icons';
 import jsPDF from "jspdf"
 import autoTable from "jspdf-autotable"
 import * as XLSX from "xlsx"
@@ -247,7 +248,7 @@ export function DataTable<TData, TValue>({
   };
   
   const isFiltered = React.useMemo(() => {
-    const hasColumnFilters = filterKey ? (table.getColumn(filterKey)?.getFilterValue() as string)?.length > 0 : false;
+    const hasColumnFilters = filterKey ? ((table.getColumn(filterKey)?.getFilterValue() as string) ?? '').length > 0 : false;
     
     return hasColumnFilters || 
       table.getState().sorting.length > 0 ||
@@ -260,7 +261,8 @@ export function DataTable<TData, TValue>({
     density, 
     style, 
     initialColumnOrder,
-    filterKey
+    filterKey,
+    columnFilters
   ]);
 
   const resetAll = () => {
@@ -301,11 +303,11 @@ export function DataTable<TData, TValue>({
                         onClick={resetAll}
                         className="h-8 w-8 rounded-full group"
                     >
-                       <XCircle className="h-4 w-4" />
+                       <BroomIcon className="h-4 w-4" />
                     </Button>
                 </TooltipTrigger>
                 <TooltipContent>
-                    <p>Clear all filters and view settings</p>
+                    <p>Clear all filters and customizations</p>
                 </TooltipContent>
             </Tooltip>
         )}

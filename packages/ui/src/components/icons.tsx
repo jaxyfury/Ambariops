@@ -34,7 +34,11 @@ export function BroomIcon(props: SVGProps<SVGSVGElement>) {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <g className="group-hover:animate-sweep origin-center">
+      <g className="group-hover:animate-sweep origin-bottom">
+        <path
+          d="M12.986 4.498a1.5 1.5 0 0 1 2.528 1.004l-2.002 9.01A1.5 1.5 0 0 1 12 16h-1.5a1.5 1.5 0 0 1-1.488-1.75l3.002-10.5a1.5 1.5 0 0 1 .972-.752Z"
+          fill="currentColor"
+        />
         <path
           d="M12.986 4.498a1.5 1.5 0 0 1 2.528 1.004l-2.002 9.01A1.5 1.5 0 0 1 12 16h-1.5a1.5 1.5 0 0 1-1.488-1.75l3.002-10.5a1.5 1.5 0 0 1 .972-.752Z"
           stroke="currentColor"
@@ -42,22 +46,27 @@ export function BroomIcon(props: SVGProps<SVGSVGElement>) {
           strokeLinecap="round"
           strokeLinejoin="round"
         />
-        <path
-          d="M19 12a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"
-          stroke="currentColor"
-          strokeWidth="2"
-        />
-        <path
-          d="M5 19a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"
-          stroke="currentColor"
-          strokeWidth="2"
-        />
-        <path
-          d="M7 8a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"
-          stroke="currentColor"
-          strokeWidth="2"
-        />
       </g>
+      <path
+        className="group-hover:animate-sparkle"
+        d="M19 12a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"
+        stroke="currentColor"
+        strokeWidth="2"
+      />
+      <path
+        className="group-hover:animate-sparkle"
+        d="M5 19a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"
+        stroke="currentColor"
+        strokeWidth="2"
+        style={{ animationDelay: '0.2s' }}
+      />
+      <path
+        className="group-hover:animate-sparkle"
+        d="M7 8a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"
+        stroke="currentColor"
+        strokeWidth="2"
+        style={{ animationDelay: '0.3s' }}
+      />
     </svg>
   );
 }
