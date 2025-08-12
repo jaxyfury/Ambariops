@@ -52,3 +52,30 @@ test('user management modal works', async ({ page }) => {
     await expect(page.getByRole('cell', { name: 'Test User' })).toBeVisible();
     await expect(page.getByRole('cell', { name: 'test@example.com' })).toBeVisible();
 });
+
+test('clear filter button works', async ({ page }) => {
+    await page.goto('/clusters', { waitUntil: 'networkidle' });
+    
+    // Wait for the table to finish loading
+    await expect(page.locator('[role="cell"]:has-text("Production Cluster")')).toBeVisible();
+    
+    const clearButton = page.getByRole('tooltip', { name: 'Clear all filters and' }).locator('..');
+
+    // Initially, the button should not be visible
+    await expect(clearButton).not.toBeVisible();
+
+    // Type in the filter input
+    await page.getByPlaceholder('Filter by name...').fill('Prod');
+    await expect(page.getByRole('cell', { name: 'Development Cluster' })).not.toBeVisible();
+    
+    // Now the button should be visible
+    await expect(clearButton).toBeVisible();
+
+    // Click the clear button
+    await clearButton.click();
+
+    // The filter should be cleared and the button should disappear
+    await expect(page.getByPlaceholder('Filter by name...')).toHaveValue('');
+    await expect(page.getByRole('cell', { name: 'Development Cluster' })).toBeVisible();
+    await expect(clearButton).not.toBeVisible();
+});

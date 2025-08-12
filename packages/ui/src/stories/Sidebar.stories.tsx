@@ -8,8 +8,6 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
-  SidebarTrigger,
-  SidebarInset,
 } from '../components/ui/sidebar';
 import { AmberOpsLogo } from '../components/icons';
 import { LayoutDashboard, Server, Settings } from 'lucide-react';
@@ -46,7 +44,7 @@ const SidebarContentComponent = () => (
     <SidebarHeader>
       <div className="flex items-center gap-2">
         <AmberOpsLogo className="w-8 h-8"/>
-        <span className="text-xl font-headline font-semibold group-data-[collapsible=icon]:hidden">AmberOps</span>
+        <span className="text-xl font-headline font-semibold group-data-[state=collapsed]:hidden">AmberOps</span>
       </div>
     </SidebarHeader>
     <SidebarContent>
@@ -84,13 +82,13 @@ export const Default: Story = {
       <Sidebar>
         <SidebarContentComponent />
       </Sidebar>
-      <SidebarInset>
+      <div className="flex-1 flex flex-col">
         <AppLayout>
             <Breadcrumbs />
             <h1 className="text-2xl font-bold">Main Content</h1>
             <p>This is the main content area. The sidebar can be toggled.</p>
         </AppLayout>
-      </SidebarInset>
+      </div>
     </div>
   ),
 };
@@ -102,13 +100,13 @@ export const Collapsed: Story = {
         <Sidebar>
           <SidebarContentComponent />
         </Sidebar>
-        <SidebarInset>
+         <div className="flex-1 flex flex-col">
             <AppLayout>
                 <Breadcrumbs />
                 <h1 className="text-2xl font-bold">Main Content</h1>
                 <p>The sidebar is collapsed by default.</p>
             </AppLayout>
-        </SidebarInset>
+        </div>
       </SidebarProvider>
   ),
 };
