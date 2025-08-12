@@ -27,53 +27,37 @@ export function AmberOpsLogo(props: SVGProps<SVGSVGElement>) {
 export function BroomIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
-        width="1em"
-        height="1em"
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        {...props}
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
     >
-        <g className="group-hover:animate-sweep origin-bottom-left">
-            <path
-                d="M4 18H20"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-            />
-            <path
-                d="M12 2L12 18"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-            />
-        </g>
-        <g className="opacity-0 group-hover:opacity-100">
-            <path
-                className="group-hover:animate-dust"
-                d="M14 18L18 14"
-                stroke="hsl(var(--primary))"
-                strokeWidth="2"
-                strokeLinecap="round"
-            />
-             <path
-                className="group-hover:animate-sparkle"
-                style={{ animationDelay: '0.1s' }}
-                d="M8 12L7 11"
-                stroke="hsl(var(--accent))"
-                strokeWidth="2"
-                strokeLinecap="round"
-            />
-             <path
-                className="group-hover:animate-sparkle"
-                d="M17 9L18 8"
-                stroke="hsl(var(--primary))"
-                strokeWidth="2"
-                strokeLinecap="round"
-            />
-        </g>
+      <g className="group-hover:animate-sweep origin-center">
+        <path
+          d="M12.986 4.498a1.5 1.5 0 0 1 2.528 1.004l-2.002 9.01A1.5 1.5 0 0 1 12 16h-1.5a1.5 1.5 0 0 1-1.488-1.75l3.002-10.5a1.5 1.5 0 0 1 .972-.752Z"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M19 12a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"
+          stroke="currentColor"
+          strokeWidth="2"
+        />
+        <path
+          d="M5 19a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"
+          stroke="currentColor"
+          strokeWidth="2"
+        />
+        <path
+          d="M7 8a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"
+          stroke="currentColor"
+          strokeWidth="2"
+        />
+      </g>
     </svg>
   );
 }
