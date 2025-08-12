@@ -284,14 +284,14 @@ export function DataTable<TData, TValue>({
   return (
     <div className="w-full">
         <div className="flex items-center py-4 gap-2">
-            <div className="relative flex-grow max-w-sm">
+            <div className="flex items-center gap-2 flex-grow max-w-sm">
                 {filterKey && <Input
                     placeholder={`Filter by ${filterKey}...`}
                     value={(table.getColumn(filterKey)?.getFilterValue() as string) ?? ""}
                     onChange={(event) =>
                         table.getColumn(filterKey)?.setFilterValue(event.target.value)
                     }
-                    className="pr-8"
+                    className="flex-grow"
                 />}
                 {isFiltered && (
                     <Tooltip>
@@ -300,7 +300,7 @@ export function DataTable<TData, TValue>({
                                 variant="ghost"
                                 size="icon"
                                 onClick={resetAll}
-                                className="h-8 w-8 rounded-full group absolute right-1.5 top-1/2 -translate-y-1/2"
+                                className="h-8 w-8 rounded-full group flex-shrink-0"
                             >
                                 <ClearFilterIcon className="h-5 w-5" />
                             </Button>
