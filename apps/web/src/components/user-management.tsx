@@ -22,7 +22,7 @@ import {
   updateUser,
   deleteUser,
 } from '@/lib/api/services';
-import { MoreHorizontal, UserPlus, Trash, Edit } from 'lucide-react';
+import { MoreHorizontal, UserPlus, Trash, Edit, Search } from 'lucide-react';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -41,6 +41,7 @@ type UserFormData = z.infer<typeof userSchema>;
 export function UserManagement() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>(null);
+  const [filter, setFilter] = useState('');
 
   const queryClient = useQueryClient();
 
@@ -116,6 +117,11 @@ export function UserManagement() {
   const onSubmit = (data: UserFormData) => {
     userMutation.mutate(data);
   };
+  
+  const filteredUsers = users.filter(user => 
+    user.name.toLowerCase().includes(filter.toLowerCase()) ||
+    user.email.toLowerCase().includes(filter.toLowerCase())
+  );
 
   if (isError) {
     return (
@@ -133,18 +139,27 @@ export function UserManagement() {
   return (
     <>
       <Card>
-        <CardHeader className="flex flex-row justify-between items-center">
-          <div>
-            <CardTitle>User Management</CardTitle>
-            <CardDescription>
-              Manage users and their permissions.
-            </CardDescription>
-          </div>
-          <Button onClick={() => openModal()}>
-            <UserPlus className="mr-2 h-4 w-4" /> Add User
-          </Button>
+        <CardHeader>
+          <CardTitle>User Management</CardTitle>
+          <CardDescription>
+            Manage users and their permissions.
+          </CardDescription>
         </CardHeader>
         <CardContent>
+            <div className="flex items-center justify-between mb-4">
+                 <div className="relative flex-grow max-w-sm">
+                    <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                    <Input 
+                        placeholder="Filter users..." 
+                        className="pl-8" 
+                        value={filter}
+                        onChange={(e) => setFilter(e.target.value)}
+                    />
+                </div>
+                <Button onClick={() => openModal()}>
+                    <UserPlus className="mr-2 h-4 w-4" /> Add User
+                </Button>
+            </div>
           <Table>
             <TableHeader>
               <TableRow>
@@ -178,7 +193,7 @@ export function UserManagement() {
                       </TableCell>
                     </TableRow>
                   ))
-                : users.map((user) => (
+                : filteredUsers.map((user) => (
                     <TableRow key={user.id}>
                       <TableCell>
                         <div className="flex items-center gap-3">

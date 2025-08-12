@@ -27,7 +27,7 @@ function getLevelBadgeVariant(level: 'INFO' | 'WARN' | 'ERROR' | 'DEBUG'): 'defa
 
 export default function LogsPage() {
   return (
-    <div className="flex flex-col h-[calc(100vh-4rem)]">
+    <div className="flex flex-col h-[calc(100vh-8rem)]">
       <PageHeader
         title="Log Search"
         description="Search and tail logs from all hosts and services."
@@ -43,10 +43,10 @@ export default function LogsPage() {
         </Button>
       </div>
       <Card className="flex-grow flex flex-col">
-        <CardContent className="pt-0 flex-grow overflow-hidden">
+        <CardContent className="p-0 flex-grow overflow-hidden">
           <ScrollArea className="h-full">
             <Table>
-              <TableHeader className="sticky top-0 bg-card">
+              <TableHeader className="sticky top-0 bg-card z-10">
                 <TableRow>
                   <TableHead className="w-[180px]">Timestamp</TableHead>
                   <TableHead className="w-[80px]">Level</TableHead>
