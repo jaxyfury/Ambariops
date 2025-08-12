@@ -9,6 +9,11 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@amberops/ui/components/ui/dialog';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@amberops/ui/components/ui/tooltip';
 import { Button } from '@amberops/ui/components/ui/button';
 import { PlusCircle, Search, Settings } from 'lucide-react';
 import Link from 'next/link';
@@ -25,23 +30,30 @@ export function QuickAccessNav() {
 
   return (
     <>
-      <div
-        className="quick-nav-container group"
-        onClick={() => setIsModalOpen(true)}
-        onKeyDown={(e) => e.key === 'Enter' && setIsModalOpen(true)}
-        role="button"
-        tabIndex={0}
-        aria-label="Open quick access menu"
-      >
-        <div className="quick-nav-animation">
-          {Array.from({ length: 12 }).map((_, i) => (
-            <div key={i} className="petal" />
-          ))}
-        </div>
-      </div>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <div
+            className="quick-nav-container group"
+            onClick={() => setIsModalOpen(true)}
+            onKeyDown={(e) => e.key === 'Enter' && setIsModalOpen(true)}
+            role="button"
+            tabIndex={0}
+            aria-label="Open quick access menu"
+          >
+            <div className="quick-nav-animation">
+              {Array.from({ length: 12 }).map((_, i) => (
+                <div key={i} className="petal" />
+              ))}
+            </div>
+          </div>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Quick Access</p>
+        </TooltipContent>
+      </Tooltip>
 
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent>
+        <DialogContent className="z-[9999]">
           <DialogHeader>
             <DialogTitle>Quick Access</DialogTitle>
             <DialogDescription>
