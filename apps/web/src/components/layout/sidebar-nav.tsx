@@ -35,6 +35,7 @@ import {
 } from '@amberops/ui/components/ui/sidebar';
 import { useSidebar } from '@amberops/ui/hooks/use-sidebar';
 import { AmberOpsLogo } from '@amberops/ui/components/icons';
+import { cn } from '@amberops/lib';
 
 export function SidebarNav() {
   const pathname = usePathname();
@@ -84,15 +85,22 @@ export function SidebarNav() {
               {item.subItems ? (
                  <Accordion type="single" collapsible defaultValue={isAlertsActive ? "alerts" : undefined} disabled={sidebarState === 'collapsed'}>
                     <AccordionItem value="alerts" className="border-b-0">
-                        <AccordionTrigger asChild>
-                           <SidebarMenuButton
-                            isActive={isAlertsActive}
-                            tooltip={item.tooltip}
-                          >
-                            <item.icon />
-                            <span>{item.label}</span>
-                          </SidebarMenuButton>
-                      </AccordionTrigger>
+                      <SidebarMenuButton
+                        asChild
+                        isActive={isAlertsActive}
+                        tooltip={item.tooltip}
+                        className="p-0"
+                      >
+                        <AccordionTrigger className={cn(
+                          "peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-none ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:!justify-center group-data-[collapsible=icon]:!p-2 [&>span]:group-data-[collapsible=icon]:hidden [&>svg]:size-4 [&>svg]:shrink-0",
+                          "hover:no-underline"
+                        )}>
+                            <div className="flex items-center gap-2">
+                                <item.icon />
+                                <span className="group-data-[state=collapsed]:hidden">{item.label}</span>
+                            </div>
+                        </AccordionTrigger>
+                      </SidebarMenuButton>
                       <AccordionContent className="p-0 pl-7 pt-1 group-data-[state=collapsed]:hidden">
                         <ul className="space-y-1">
                           {item.subItems.map(subItem => (
