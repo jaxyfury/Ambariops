@@ -44,7 +44,7 @@ import {
   PopoverContent,
   Label,
 } from "@amberops/ui"
-import { FileDown, SlidersHorizontal, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Broom, List, LayoutGrid, GripVertical } from "lucide-react"
+import { FileDown, SlidersHorizontal, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Broom, List, LayoutGrid, GripVertical, ArrowUp, ArrowDown } from "lucide-react"
 import jsPDF from "jspdf"
 import autoTable from "jspdf-autotable"
 import * as XLSX from "xlsx"
@@ -134,6 +134,20 @@ export function DataTable<TData, TValue>({
 
     table.setColumnOrder(newOrder);
     setDraggedColumn(null);
+  };
+  
+  const moveColumn = (columnId: string, direction: 'up' | 'down') => {
+    const currentOrder = table.getState().columnOrder;
+    const currentIndex = currentOrder.indexOf(columnId);
+    const newOrder = [...currentOrder];
+
+    if (direction === 'up' && currentIndex > 0) {
+      [newOrder[currentIndex - 1], newOrder[currentIndex]] = [newOrder[currentIndex], newOrder[currentIndex - 1]];
+    } else if (direction === 'down' && currentIndex < newOrder.length - 1) {
+      [newOrder[currentIndex], newOrder[currentIndex + 1]] = [newOrder[currentIndex + 1], newOrder[currentIndex]];
+    }
+
+    table.setColumnOrder(newOrder);
   };
 
 
@@ -278,7 +292,7 @@ export function DataTable<TData, TValue>({
                                     <SelectValue placeholder="Select style" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="default">Horizontal Lines</SelectItem>
+                                    <SelectItem value="default">Horizontal</SelectItem>
                                     <SelectItem value="grid">Grid</SelectItem>
                                     <SelectItem value="zebra">Zebra Stripes</SelectItem>
                                     <SelectItem value="minimal">Minimal</SelectItem>
@@ -312,6 +326,14 @@ export function DataTable<TData, TValue>({
                                         <Label htmlFor={`col-${column.id}`} className="capitalize truncate flex-1 cursor-grab">
                                             {column.id}
                                         </Label>
+                                        <div className="flex items-center gap-1 ml-auto">
+                                            <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => moveColumn(column.id, 'up')} disabled={table.getState().columnOrder.indexOf(column.id) === 0}>
+                                                <ArrowUp className="h-4 w-4" />
+                                            </Button>
+                                            <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => moveColumn(column.id, 'down')} disabled={table.getState().columnOrder.indexOf(column.id) === table.getState().columnOrder.length - 1}>
+                                                <ArrowDown className="h-4 w-4" />
+                                            </Button>
+                                        </div>
                                     </div>
                                 )
                             })}
