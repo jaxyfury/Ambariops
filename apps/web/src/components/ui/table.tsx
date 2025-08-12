@@ -33,7 +33,7 @@ const TableBody = React.forwardRef<
     ref={ref}
     className={cn(
       "[&_tr:last-child]:border-0",
-      "[&[data-style=zebra]_tr:nth-child(even)]:bg-muted/50",
+      "[data-style=zebra]_&_tr:nth-child(even)]:bg-muted/50",
       className
     )}
     {...props}
@@ -64,10 +64,10 @@ const TableRow = React.forwardRef<
     ref={ref}
     className={cn(
       "border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted",
-       "tbody[data-style=default]_&]:border-b",
-       "tbody[data-style=grid]_&]:border-b",
-       "tbody[data-style=minimal]_&]:border-0",
-       "tbody[data-style=zebra]_&]:border-b",
+       "[data-style=default]_&]:border-b",
+       "[data-style=grid]_&]:border-b",
+       "[data-style=minimal]_&]:border-0",
+       "[data-style=zebra]_&]:border-b",
       className
     )}
     {...props}
@@ -83,7 +83,7 @@ const TableHead = React.forwardRef<
     ref={ref}
     className={cn(
       "h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0 relative group",
-      "tbody[data-style=grid]_&]:border-r",
+      "[data-style=grid]_&]:border-r",
       className
     )}
     {...props}
@@ -99,8 +99,8 @@ const TableCell = React.forwardRef<
     ref={ref}
     className={cn(
         "align-middle [&:has([role=checkbox])]:pr-0",
-        "tbody[data-style=grid]_&]:border-r",
-        "tbody[data-style=grid]_&:last-child]:border-r-0",
+        "[data-style=grid]_&]:border-r",
+        "[data-style=grid]_&:last-child]:border-r-0",
         className
     )}
     {...props}
