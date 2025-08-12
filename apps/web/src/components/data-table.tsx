@@ -34,7 +34,6 @@ import jsPDF from "jspdf"
 import autoTable from "jspdf-autotable"
 import * as XLSX from "xlsx"
 import { cn } from "@amberops/lib/utils"
-import { BroomIcon } from "@amberops/ui/components/icons"
 
 type ViewType = 'table' | 'card';
 type DensityType = 'default' | 'comfortable' | 'compact';
@@ -247,20 +246,30 @@ export function DataTable<TData, TValue>({
     XLSX.writeFile(workbook, "table_data.xlsx");
   };
   
-  const isFiltered = React.useMemo(() => 
-    table.getState().columnFilters.length > 0 || 
-    table.getState().sorting.length > 0 ||
-    density !== 'default' ||
-    style !== 'default' ||
-    JSON.stringify(table.getState().columnOrder) !== JSON.stringify(initialColumnOrder) ||
-    Object.keys(table.getState().columnVisibility).length > 0
-  , [table, density, style, initialColumnOrder]);
+  const isFiltered = React.useMemo(() => {
+    const hasColumnFilters = table.getState().columnFilters.length > 0 && 
+      (filterKey ? (table.getColumn(filterKey)?.getFilterValue() as string) !== '' : false);
+    
+    return hasColumnFilters || 
+      table.getState().sorting.length > 0 ||
+      density !== 'default' ||
+      style !== 'default' ||
+      JSON.stringify(table.getState().columnOrder) !== JSON.stringify(initialColumnOrder) ||
+      Object.keys(table.getState().columnVisibility).length > 0;
+  }, [
+    table.getState().columnFilters, 
+    table.getState().sorting, 
+    density, 
+    style, 
+    table.getState().columnOrder, 
+    table.getState().columnVisibility,
+    filterKey,
+    table
+  ]);
 
   const resetAll = () => {
     table.resetColumnFilters();
-    if(filterKey && table.getColumn(filterKey)) {
-        const input = document.querySelector(`input[placeholder*="Filter by ${filterKey}"]`) as HTMLInputElement;
-        if(input) input.value = '';
+    if(filterKey) {
         table.getColumn(filterKey)?.setFilterValue("");
     }
     table.resetSorting();
