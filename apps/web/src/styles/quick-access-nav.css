@@ -1,9 +1,6 @@
 
 .quick-nav-container {
-    position: fixed;
-    top: 1rem;
-    left: 50%;
-    transform: translateX(-50%);
+    position: relative;
     z-index: 50;
     cursor: pointer;
     width: 60px;
@@ -16,7 +13,7 @@
 }
 
 .quick-nav-container:hover {
-    transform: translateX(-50%) scale(1.1);
+    transform: scale(1.1);
 }
 
 .quick-nav-animation {

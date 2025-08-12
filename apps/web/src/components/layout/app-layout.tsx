@@ -28,6 +28,7 @@ import { ThemeToggle } from '@/components/theme-toggle';
 import { LanguageSwitcher } from '@/components/language-switcher';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
+import { QuickAccessNav } from '@/components/quick-access-nav';
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -41,6 +42,9 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             <p>Toggle Menu</p>
           </TooltipContent>
         </Tooltip>
+        
+        <QuickAccessNav />
+        
         <div className="flex-1" />
         <div className="flex items-center gap-2">
           <LanguageSwitcher />

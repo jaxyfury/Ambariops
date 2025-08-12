@@ -256,7 +256,10 @@ export function DataTable<TData, TValue>({
       JSON.stringify(table.getState().columnOrder) !== JSON.stringify(initialColumnOrder) ||
       Object.keys(table.getState().columnVisibility).length > 0;
   }, [
-    table,
+    table.getState().columnFilters,
+    table.getState().sorting,
+    table.getState().columnOrder,
+    table.getState().columnVisibility,
     density, 
     style, 
     initialColumnOrder,
