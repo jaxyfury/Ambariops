@@ -259,7 +259,7 @@ export function DataTable<TData, TValue>({
   const resetAll = () => {
     table.resetColumnFilters();
     if(filterKey && table.getColumn(filterKey)) {
-        (document.querySelector(`input[placeholder="Filter by ${filterKey}..."]`) as HTMLInputElement).value = '';
+        (document.querySelector(`input[placeholder*="${filterKey}"]`) as HTMLInputElement).value = '';
         table.getColumn(filterKey)?.setFilterValue("");
     }
     table.resetSorting();
@@ -306,12 +306,26 @@ export function DataTable<TData, TValue>({
         <div className="ml-auto flex items-center gap-2">
             {renderCard && (
                 <div className="flex items-center gap-1 rounded-md bg-muted p-1">
-                    <Button variant={view === 'table' ? 'secondary' : 'ghost'} size="sm" onClick={() => setView('table')}>
-                        <List className="h-4 w-4"/>
-                    </Button>
-                    <Button variant={view === 'card' ? 'secondary' : 'ghost'} size="sm" onClick={() => setView('card')}>
-                        <LayoutGrid className="h-4 w-4"/>
-                    </Button>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <Button variant={view === 'table' ? 'secondary' : 'ghost'} size="sm" onClick={() => setView('table')}>
+                                <List className="h-4 w-4"/>
+                            </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p>List View</p>
+                        </TooltipContent>
+                    </Tooltip>
+                     <Tooltip>
+                        <TooltipTrigger asChild>
+                            <Button variant={view === 'card' ? 'secondary' : 'ghost'} size="sm" onClick={() => setView('card')}>
+                                <LayoutGrid className="h-4 w-4"/>
+                            </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p>Grid View</p>
+                        </TooltipContent>
+                    </Tooltip>
                 </div>
             )}
              <Popover>

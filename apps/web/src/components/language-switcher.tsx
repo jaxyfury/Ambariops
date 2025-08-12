@@ -4,6 +4,7 @@
 import { useTranslation } from 'react-i18next';
 import { Button } from '@amberops/ui/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@amberops/ui/components/ui/dropdown-menu';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@amberops/ui/components/ui/tooltip';
 import { Languages } from 'lucide-react';
 
 export function LanguageSwitcher() {
@@ -15,12 +16,19 @@ export function LanguageSwitcher() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon">
-          <Languages className="h-[1.2rem] w-[1.2rem]" />
-          <span className="sr-only">Change language</span>
-        </Button>
-      </DropdownMenuTrigger>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon">
+              <Languages className="h-[1.2rem] w-[1.2rem]" />
+              <span className="sr-only">Change language</span>
+            </Button>
+          </DropdownMenuTrigger>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Change Language</p>
+        </TooltipContent>
+      </Tooltip>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => changeLanguage('en')}>English</DropdownMenuItem>
         <DropdownMenuItem onClick={() => changeLanguage('es')}>Español</DropdownMenuItem>
