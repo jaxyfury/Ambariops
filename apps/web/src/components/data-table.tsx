@@ -29,11 +29,12 @@ import { Popover, PopoverTrigger, PopoverContent } from "@amberops/ui/components
 import { Label } from "@amberops/ui/components/ui/label"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@amberops/ui/components/ui/tooltip"
 import { ScrollArea } from "@amberops/ui/components/ui/scroll-area"
-import { FileDown, SlidersHorizontal, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, List, LayoutGrid, GripVertical, ArrowUp, ArrowDown, ChevronDown } from "lucide-react"
+import { FileDown, SlidersHorizontal, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, List, LayoutGrid, GripVertical, ArrowUp, ArrowDown, ChevronDown, XCircle } from "lucide-react"
 import jsPDF from "jspdf"
 import autoTable from "jspdf-autotable"
 import * as XLSX from "xlsx"
 import { cn } from "@amberops/lib/utils"
+import { BroomIcon } from "@amberops/ui/components/icons";
 
 type ViewType = 'table' | 'card';
 type DensityType = 'default' | 'comfortable' | 'compact';
@@ -291,13 +292,15 @@ export function DataTable<TData, TValue>({
                 <TooltipTrigger asChild>
                     <Button
                         variant="ghost"
+                        size="icon"
                         onClick={resetAll}
+                        className="h-8 w-8 rounded-full"
                     >
-                       Clear Filters & View
+                       <XCircle className="h-4 w-4" />
                     </Button>
                 </TooltipTrigger>
                 <TooltipContent>
-                    <p>Clear all filters and customizations</p>
+                    <p>Clear all filters and view settings</p>
                 </TooltipContent>
             </Tooltip>
         )}
@@ -602,3 +605,5 @@ export function DataTable<TData, TValue>({
     </div>
   )
 }
+
+    
