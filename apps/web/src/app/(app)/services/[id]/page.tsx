@@ -55,11 +55,14 @@ export default function ServiceDetailPage({ params }: { params: { id: string } }
       <PageHeader
         title={service.name}
         description={`Service details for ${service.name} on cluster ${service.clusterName}`}
-      >
-        <Button variant="outline" onClick={() => handleAction('start')}><Play className="mr-2 h-4 w-4" />Start</Button>
-        <Button variant="outline" onClick={() => handleAction('stop')}><Square className="mr-2 h-4 w-4" />Stop</Button>
-        <Button onClick={() => handleAction('restart')}><RefreshCw className="mr-2 h-4 w-4" />Restart Service</Button>
-      </PageHeader>
+        actions={(
+            <div className="flex gap-2">
+                <Button variant="outline" onClick={() => handleAction('start')}><Play className="mr-2 h-4 w-4" />Start</Button>
+                <Button variant="outline" onClick={() => handleAction('stop')}><Square className="mr-2 h-4 w-4" />Stop</Button>
+                <Button onClick={() => handleAction('restart')}><RefreshCw className="mr-2 h-4 w-4" />Restart Service</Button>
+            </div>
+        )}
+      />
       
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="lg:col-span-1 space-y-6">

@@ -170,43 +170,43 @@ export default function ClustersPage() {
       <PageHeader
         title="Clusters"
         description="Manage your clusters and view their health status."
-      >
-        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-            <DialogTrigger asChild>
-                <Button>
-                    <PlusCircle className="mr-2 h-4 w-4" />
-                    Add Cluster
-                </Button>
-            </DialogTrigger>
-            <DialogContent>
-                <DialogHeader>
-                    <DialogTitle>Add New Cluster</DialogTitle>
-                    <DialogDescription>
-                        Enter the details for the new cluster. This will begin the registration process.
-                    </DialogDescription>
-                </DialogHeader>
-                <div className="grid gap-4 py-4">
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="name" className="text-right">
-                        Name
-                        </Label>
-                        <Input id="name" placeholder="e.g., Production-West-2" className="col-span-3" />
+        actions={(
+             <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+                <DialogTrigger asChild>
+                     <Button>
+                        <PlusCircle className="mr-2 h-4 w-4" />
+                        Add Cluster
+                    </Button>
+                </DialogTrigger>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Add New Cluster</DialogTitle>
+                        <DialogDescription>
+                            Enter the details for the new cluster. This will begin the registration process.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="grid gap-4 py-4">
+                        <div className="grid grid-cols-4 items-center gap-4">
+                            <Label htmlFor="name" className="text-right">
+                            Name
+                            </Label>
+                            <Input id="name" placeholder="e.g., Production-West-2" className="col-span-3" />
+                        </div>
+                         <div className="grid grid-cols-4 items-center gap-4">
+                            <Label htmlFor="url" className="text-right">
+                            Ambari URL
+                            </Label>
+                            <Input id="url" placeholder="http://c1.ambari.apache.org:8080" className="col-span-3" />
+                        </div>
                     </div>
-                     <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="url" className="text-right">
-                        Ambari URL
-                        </Label>
-                        <Input id="url" placeholder="http://c1.ambari.apache.org:8080" className="col-span-3" />
-                    </div>
-                </div>
-                <DialogFooter>
-                    <Button variant="outline" onClick={() => setIsModalOpen(false)}>Cancel</Button>
-                    <Button onClick={handleAddCluster}>Add Cluster</Button>
-                </DialogFooter>
-            </DialogContent>
-        </Dialog>
-
-      </PageHeader>
+                    <DialogFooter>
+                        <Button variant="outline" onClick={() => setIsModalOpen(false)}>Cancel</Button>
+                        <Button onClick={handleAddCluster}>Add Cluster</Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+        )}
+      />
       <DataTable columns={columns} data={mockClusters} isLoading={isLoading} filterKey="name" />
     </div>
   );

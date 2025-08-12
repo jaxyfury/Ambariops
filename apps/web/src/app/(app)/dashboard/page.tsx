@@ -52,14 +52,15 @@ export default function DashboardPage() {
             <PageHeader
                 title="Dashboard"
                 description="Welcome to your AmberOps Console."
-            >
-                 <Button asChild>
-                    <Link href="/clusters">
-                        <PlusCircle className="mr-2 h-4 w-4" />
-                        Create New Cluster
-                    </Link>
-                </Button>
-            </PageHeader>
+                actions={(
+                    <Button asChild>
+                        <Link href="/clusters">
+                            <PlusCircle className="mr-2 h-4 w-4" />
+                            Create New Cluster
+                        </Link>
+                    </Button>
+                )}
+            />
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">

@@ -46,10 +46,13 @@ export default function AlertDetailPage({ params }: { params: { id: string } }) 
       <PageHeader
         title={alert.name}
         description="Details for the triggered alert."
-      >
-        <Button variant="outline" onClick={handleAcknowledge}>Acknowledge</Button>
-        <Button onClick={handleResolve}>Resolve</Button>
-      </PageHeader>
+        actions={(
+            <div className="flex gap-2">
+                <Button variant="outline" onClick={handleAcknowledge}>Acknowledge</Button>
+                <Button onClick={handleResolve}>Resolve</Button>
+            </div>
+        )}
+      />
       
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="lg:col-span-2 space-y-6">

@@ -170,61 +170,62 @@ export default function AlertDefinitionsPage() {
       <PageHeader
         title="Alert Definitions"
         description="Create and manage alert definitions for your services."
-      >
-        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-            <DialogTrigger asChild>
-                <Button>
-                    <PlusCircle className="mr-2 h-4 w-4" />
-                    New Definition
-                </Button>
-            </DialogTrigger>
-            <DialogContent>
-                <DialogHeader>
-                    <DialogTitle>Create New Alert Definition</DialogTitle>
-                    <DialogDescription>
-                        Define a new alert to monitor your services.
-                    </DialogDescription>
-                </DialogHeader>
-                <div className="grid gap-4 py-4">
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="name" className="text-right">Name</Label>
-                        <Input id="name" placeholder="e.g., Namenode RPC Latency" className="col-span-3" />
+        actions={(
+            <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+                <DialogTrigger asChild>
+                    <Button>
+                        <PlusCircle className="mr-2 h-4 w-4" />
+                        New Definition
+                    </Button>
+                </DialogTrigger>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Create New Alert Definition</DialogTitle>
+                        <DialogDescription>
+                            Define a new alert to monitor your services.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="grid gap-4 py-4">
+                        <div className="grid grid-cols-4 items-center gap-4">
+                            <Label htmlFor="name" className="text-right">Name</Label>
+                            <Input id="name" placeholder="e.g., Namenode RPC Latency" className="col-span-3" />
+                        </div>
+                         <div className="grid grid-cols-4 items-center gap-4">
+                            <Label htmlFor="service" className="text-right">Service</Label>
+                            <Select>
+                                <SelectTrigger className="col-span-3">
+                                    <SelectValue placeholder="Select a service" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="hdfs">HDFS</SelectItem>
+                                    <SelectItem value="yarn">YARN</SelectItem>
+                                    <SelectItem value="kafka">Kafka</SelectItem>
+                                    <SelectItem value="spark">Spark</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                         <div className="grid grid-cols-4 items-center gap-4">
+                            <Label htmlFor="type" className="text-right">Type</Label>
+                            <Select>
+                                <SelectTrigger className="col-span-3">
+                                    <SelectValue placeholder="Select a type" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="metric">METRIC</SelectItem>
+                                    <SelectItem value="port">PORT</SelectItem>
+                                    <SelectItem value="script">SCRIPT</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
                     </div>
-                     <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="service" className="text-right">Service</Label>
-                        <Select>
-                            <SelectTrigger className="col-span-3">
-                                <SelectValue placeholder="Select a service" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="hdfs">HDFS</SelectItem>
-                                <SelectItem value="yarn">YARN</SelectItem>
-                                <SelectItem value="kafka">Kafka</SelectItem>
-                                <SelectItem value="spark">Spark</SelectItem>
-                            </SelectContent>
-                        </Select>
-                    </div>
-                     <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="type" className="text-right">Type</Label>
-                        <Select>
-                            <SelectTrigger className="col-span-3">
-                                <SelectValue placeholder="Select a type" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="metric">METRIC</SelectItem>
-                                <SelectItem value="port">PORT</SelectItem>
-                                <SelectItem value="script">SCRIPT</SelectItem>
-                            </SelectContent>
-                        </Select>
-                    </div>
-                </div>
-                <DialogFooter>
-                    <Button variant="outline" onClick={() => setIsModalOpen(false)}>Cancel</Button>
-                    <Button onClick={handleCreateDefinition}>Create Definition</Button>
-                </DialogFooter>
-            </DialogContent>
-        </Dialog>
-      </PageHeader>
+                    <DialogFooter>
+                        <Button variant="outline" onClick={() => setIsModalOpen(false)}>Cancel</Button>
+                        <Button onClick={handleCreateDefinition}>Create Definition</Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+        )}
+      />
       <DataTable columns={columns} data={mockAlertDefinitions} filterKey="name" isLoading={isLoading} />
     </div>
   );

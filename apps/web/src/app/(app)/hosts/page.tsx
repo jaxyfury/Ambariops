@@ -222,36 +222,37 @@ export default function HostsPage() {
       <PageHeader
         title="Hosts"
         description="A list of all hosts across your clusters."
-      >
-        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-            <DialogTrigger asChild>
-                <Button>
-                    <PlusCircle className="mr-2 h-4 w-4" />
-                    Add Host
-                </Button>
-            </DialogTrigger>
-            <DialogContent>
-                <DialogHeader>
-                    <DialogTitle>Add New Host</DialogTitle>
-                    <DialogDescription>
-                        Provide the hostname and cluster to add a new host.
-                    </DialogDescription>
-                </DialogHeader>
-                <div className="grid gap-4 py-4">
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="hostname" className="text-right">
-                        Hostname
-                        </Label>
-                        <Input id="hostname" placeholder="e.g., worker-03.prod.amberops.io" className="col-span-3" />
+        actions={(
+             <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+                <DialogTrigger asChild>
+                    <Button>
+                        <PlusCircle className="mr-2 h-4 w-4" />
+                        Add Host
+                    </Button>
+                </DialogTrigger>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Add New Host</DialogTitle>
+                        <DialogDescription>
+                            Provide the hostname and cluster to add a new host.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="grid gap-4 py-4">
+                        <div className="grid grid-cols-4 items-center gap-4">
+                            <Label htmlFor="hostname" className="text-right">
+                            Hostname
+                            </Label>
+                            <Input id="hostname" placeholder="e.g., worker-03.prod.amberops.io" className="col-span-3" />
+                        </div>
                     </div>
-                </div>
-                <DialogFooter>
-                    <Button variant="outline" onClick={() => setIsModalOpen(false)}>Cancel</Button>
-                    <Button onClick={handleAddHost}>Add Host</Button>
-                </DialogFooter>
-            </DialogContent>
-        </Dialog>
-      </PageHeader>
+                    <DialogFooter>
+                        <Button variant="outline" onClick={() => setIsModalOpen(false)}>Cancel</Button>
+                        <Button onClick={handleAddHost}>Add Host</Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+        )}
+      />
        <DataTable columns={columns} data={mockHosts} filterKey="name" isLoading={isLoading}/>
     </div>
   );

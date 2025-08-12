@@ -45,13 +45,16 @@ export default function HostDetailPage({ params }: { params: { id: string } }) {
       <PageHeader
         title={host.name}
         description={`Host details for ${host.ip}`}
-      >
-        <Button variant="outline">Actions</Button>
-        <Button onClick={handleReboot}>
-          <Power className="mr-2 h-4 w-4" />
-          Reboot Host
-        </Button>
-      </PageHeader>
+        actions={(
+            <div className="flex gap-2">
+                <Button variant="outline" onClick={() => toast.info("Actions clicked!")}>Actions</Button>
+                <Button onClick={handleReboot}>
+                <Power className="mr-2 h-4 w-4" />
+                Reboot Host
+                </Button>
+            </div>
+        )}
+      />
       
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-6">
         <Card>
