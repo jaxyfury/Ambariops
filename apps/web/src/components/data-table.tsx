@@ -28,7 +28,6 @@ import { Checkbox } from "@amberops/ui/components/ui/checkbox"
 import { Popover, PopoverTrigger, PopoverContent } from "@amberops/ui/components/ui/popover"
 import { Label } from "@amberops/ui/components/ui/label"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@amberops/ui/components/ui/tooltip"
-import { BroomIcon } from "@amberops/ui/components/icons";
 import { ScrollArea } from "@amberops/ui/components/ui/scroll-area"
 import { FileDown, SlidersHorizontal, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, List, LayoutGrid, GripVertical, ArrowUp, ArrowDown, ChevronDown } from "lucide-react"
 import jsPDF from "jspdf"
@@ -253,13 +252,14 @@ export function DataTable<TData, TValue>({
     density !== 'default' ||
     style !== 'default' ||
     JSON.stringify(table.getState().columnOrder) !== JSON.stringify(initialColumnOrder) ||
-    Object.keys(columnVisibility).length > 0
-  , [table.getState().columnFilters, table.getState().sorting, density, style, table.getState().columnOrder, initialColumnOrder, columnVisibility]);
+    Object.keys(table.getState().columnVisibility).length > 0
+  , [table, density, style, initialColumnOrder]);
 
   const resetAll = () => {
     table.resetColumnFilters();
     if(filterKey && table.getColumn(filterKey)) {
-        (document.querySelector(`input[placeholder*="${filterKey}"]`) as HTMLInputElement).value = '';
+        const input = document.querySelector(`input[placeholder*="${filterKey}"]`) as HTMLInputElement;
+        if(input) input.value = '';
         table.getColumn(filterKey)?.setFilterValue("");
     }
     table.resetSorting();
@@ -292,14 +292,12 @@ export function DataTable<TData, TValue>({
                     <Button
                         variant="ghost"
                         onClick={resetAll}
-                        size="icon"
-                        className="group h-10 w-10 rounded-full transition-all duration-300 hover:bg-secondary/80 hover:scale-110"
                     >
-                       <BroomIcon className="h-5 w-5 text-muted-foreground transition-all group-hover:-rotate-12 group-hover:scale-110" />
+                       Clear Filters & View
                     </Button>
                 </TooltipTrigger>
                 <TooltipContent>
-                    <p>Clear Filters & View</p>
+                    <p>Clear all filters and customizations</p>
                 </TooltipContent>
             </Tooltip>
         )}
