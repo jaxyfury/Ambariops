@@ -1,4 +1,3 @@
-
 "use client"
 
 import * as React from "react"
@@ -260,11 +259,11 @@ export function DataTable<TData, TValue>({
     table.getState().sorting,
     table.getState().columnVisibility,
     table.getState().columnOrder,
+    table,
     density, 
     style, 
     initialColumnOrder,
     filterKey,
-    table,
   ]);
 
   const resetAll = () => {
@@ -304,9 +303,9 @@ export function DataTable<TData, TValue>({
                                 variant="ghost"
                                 size="icon"
                                 onClick={resetAll}
-                                className="h-6 w-6 rounded-full group absolute right-1.5 top-1/2 -translate-y-1/2"
+                                className="h-8 w-8 rounded-full group absolute right-1.5 top-1/2 -translate-y-1/2"
                             >
-                                <ClearFilterIcon className="h-4 w-4" />
+                                <ClearFilterIcon className="h-5 w-5" />
                             </Button>
                         </TooltipTrigger>
                         <TooltipContent>
@@ -609,4 +608,11 @@ export function DataTable<TData, TValue>({
                     disabled={!table.getCanNextPage()}
                 >
                     <span className="sr-only">Go to last page</span>
-                    <ChevronsRight className
+                    <ChevronsRight className="h-4 w-4" />
+                </Button>
+            </div>
+        </div>
+      </div>
+    </div>
+  )
+}
