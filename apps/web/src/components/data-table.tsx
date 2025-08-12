@@ -34,6 +34,7 @@ import jsPDF from "jspdf"
 import autoTable from "jspdf-autotable"
 import * as XLSX from "xlsx"
 import { cn } from "@amberops/lib/utils"
+import { BroomIcon } from "@amberops/ui/components/icons"
 
 type ViewType = 'table' | 'card';
 type DensityType = 'default' | 'comfortable' | 'compact';
@@ -258,7 +259,7 @@ export function DataTable<TData, TValue>({
   const resetAll = () => {
     table.resetColumnFilters();
     if(filterKey && table.getColumn(filterKey)) {
-        const input = document.querySelector(`input[placeholder*="${filterKey}"]`) as HTMLInputElement;
+        const input = document.querySelector(`input[placeholder*="Filter by ${filterKey}"]`) as HTMLInputElement;
         if(input) input.value = '';
         table.getColumn(filterKey)?.setFilterValue("");
     }
@@ -289,11 +290,11 @@ export function DataTable<TData, TValue>({
         {isFiltered && (
             <Tooltip>
                 <TooltipTrigger asChild>
-                    <Button
+                     <Button
                         variant="ghost"
                         size="icon"
                         onClick={resetAll}
-                        className="h-8 w-8 rounded-full"
+                        className="h-8 w-8 rounded-full group"
                     >
                        <XCircle className="h-4 w-4" />
                     </Button>
