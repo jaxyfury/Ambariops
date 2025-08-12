@@ -52,14 +52,20 @@ function QuickLink({ href, onClick, children }: QuickLinkProps) {
         onClick,
     } as const;
 
+    const content = (
+        <div className="flex items-center gap-2">
+            {children}
+        </div>
+    );
+
     if (href) {
         return (
             <Button {...commonProps} asChild>
-                <Link href={href}>{children}</Link>
+                <Link href={href}>{content}</Link>
             </Button>
         );
     }
-    return <Button {...commonProps}>{children}</Button>;
+    return <Button {...commonProps}>{content}</Button>;
 }
 
 export function QuickAccessNav() {
@@ -140,7 +146,7 @@ export function QuickAccessNav() {
                  <li className="quick-access-item"><QuickLink href="/alerts" onClick={closeModal}><AlertTriangle /> View All Alerts</QuickLink></li>
                  <li className="quick-access-item"><QuickLink href="/alerts" onClick={closeModal}><AlertTriangle /> View Critical Alerts</QuickLink></li>
                  <li className="quick-access-item"><QuickLink href="/dashboard" onClick={closeModal}><Bot /> AI Health Summary</QuickLink></li>
-                 <li className="quick-access-item"><QuickLink href="/dashboard" onClick={closeModal}><LayoutDashboard /> Resource Dashboard</QuickLink></li>
+                 <li className="quick-access-item"><QuickLink href="/dashboard" onClick={closeModal}><LayoutDashboard /> Resource Usage Dashboard</QuickLink></li>
               </ul>
             </div>
 

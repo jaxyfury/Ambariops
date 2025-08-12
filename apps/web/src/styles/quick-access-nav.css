@@ -132,7 +132,7 @@
 /* Source control graph styling */
 .quick-access-list {
     position: relative;
-    padding-left: 10px; /* Space for the line and dots */
+    padding-left: 1rem;
     margin-top: 0.5rem;
 }
 
@@ -140,17 +140,19 @@
 .quick-access-list::before {
     content: '';
     position: absolute;
-    left: 14px;
+    left: 1.125rem; /* (24px icon width / 2) + padding = 12px + 6px = 18px */
     top: 0;
     bottom: 0;
     width: 2px;
     background-color: hsl(var(--border));
+    transform: translateX(-50%);
 }
 
 .quick-access-item {
     position: relative;
     list-style: none;
-    padding-left: 20px; /* Space for the dot and horizontal line */
+    padding-left: 1.5rem; 
+    min-height: 40px;
     display: flex;
     align-items: center;
 }
@@ -159,9 +161,9 @@
 .quick-access-item::before {
     content: '';
     position: absolute;
-    left: 10px; 
-    top: 50%;
-    transform: translateY(-50%);
+    left: 1.125rem;
+    top: 1.25rem; /* approx middle of a single line button */
+    transform: translate(-50%, -50%);
     width: 10px;
     height: 10px;
     border-radius: 50%;
@@ -175,10 +177,10 @@
 .quick-access-item::after {
     content: '';
     position: absolute;
-    left: 20px;
-    top: 50%;
+    left: 1.125rem;
+    top: 1.25rem;
     transform: translateY(-50%);
-    width: 10px; /* Length of the horizontal line */
+    width: 1.5rem; /* Length of the horizontal line */
     height: 2px;
     background-color: hsl(var(--border));
     z-index: 0;
@@ -190,9 +192,5 @@
 }
 
 .quick-access-item > button {
-    padding-left: 1rem; /* Add padding to the button text itself */
-}
-
-.quick-access-item .lucide {
-    margin-right: 8px;
+    width: 100%;
 }
