@@ -174,12 +174,12 @@ export const columns: ColumnDef<Service>[] = [
                                 <DropdownMenuTrigger asChild>
                                 <Button variant="ghost" size="icon">
                                     <MoreHorizontal className="h-4 w-4" />
-                                     <span className="sr-only">Open actions</span>
+                                     <span className="sr-only">More actions</span>
                                 </Button>
                                 </DropdownMenuTrigger>
                             </TooltipTrigger>
                             <TooltipContent>
-                                <p>Open actions</p>
+                                <p>More actions</p>
                             </TooltipContent>
                         </Tooltip>
                       <DropdownMenuContent align="end">

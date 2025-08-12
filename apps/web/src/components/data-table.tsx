@@ -407,12 +407,19 @@ export function DataTable<TData, TValue>({
                     </div>
                 </PopoverContent>
             </Popover>
-             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" data-testid="export-button">
-                  <FileDown className="mr-2 h-4 w-4" /> Export
-                </Button>
-              </DropdownMenuTrigger>
+            <DropdownMenu>
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="outline" data-testid="export-button">
+                            <FileDown className="mr-2 h-4 w-4" /> Export
+                            </Button>
+                        </DropdownMenuTrigger>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                        <p>Export data to a file</p>
+                    </TooltipContent>
+                </Tooltip>
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Export As</DropdownMenuLabel>
                 <DropdownMenuSeparator />
@@ -583,5 +590,3 @@ export function DataTable<TData, TValue>({
     </div>
   )
 }
-
-    

@@ -150,7 +150,7 @@ export const columns: ColumnDef<AlertDefinition>[] = [
                     <DropdownMenuContent align="end">
                     <DropdownMenuItem>Edit</DropdownMenuItem>
                     <DropdownMenuItem>Duplicate</DropdownMenuItem>
-                    <DropdownMenuItem className="text-red-500">Delete</DropdownMenuItem>
+                    <DropdownMenuItem className="text-destructive">Delete</DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>
