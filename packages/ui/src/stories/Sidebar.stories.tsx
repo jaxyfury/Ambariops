@@ -12,8 +12,9 @@ import {
   SidebarInset,
 } from '../components/ui/sidebar';
 import { AmberOpsLogo } from '../components/icons';
-import { Button } from '../components/ui/button';
 import { LayoutDashboard, Server, Settings } from 'lucide-react';
+import { Breadcrumbs } from '../../../../apps/web/src/components/breadcrumbs';
+import { AppLayout } from '../../../../apps/web/src/components/layout/app-layout';
 
 const meta: Meta<typeof Sidebar> = {
   title: 'Components/Sidebar',
@@ -27,6 +28,11 @@ const meta: Meta<typeof Sidebar> = {
   ],
   parameters: {
     layout: 'fullscreen',
+    nextjs: {
+      router: {
+        pathname: '/clusters/prod-cluster-1',
+      },
+    },
   },
   tags: ['autodocs'],
 };
@@ -79,13 +85,11 @@ export const Default: Story = {
         <SidebarContentComponent />
       </Sidebar>
       <SidebarInset>
-        <header className="p-4 border-b">
-          <SidebarTrigger />
-        </header>
-        <main className="p-4">
-          <h1 className="text-2xl font-bold">Main Content</h1>
-          <p>This is the main content area. The sidebar can be toggled.</p>
-        </main>
+        <AppLayout>
+            <Breadcrumbs />
+            <h1 className="text-2xl font-bold">Main Content</h1>
+            <p>This is the main content area. The sidebar can be toggled.</p>
+        </AppLayout>
       </SidebarInset>
     </div>
   ),
@@ -99,13 +103,11 @@ export const Collapsed: Story = {
           <SidebarContentComponent />
         </Sidebar>
         <SidebarInset>
-           <header className="p-4 border-b">
-            <SidebarTrigger />
-           </header>
-           <main className="p-4">
-            <h1 className="text-2xl font-bold">Main Content</h1>
-            <p>The sidebar is collapsed by default.</p>
-           </main>
+            <AppLayout>
+                <Breadcrumbs />
+                <h1 className="text-2xl font-bold">Main Content</h1>
+                <p>The sidebar is collapsed by default.</p>
+            </AppLayout>
         </SidebarInset>
       </SidebarProvider>
   ),
