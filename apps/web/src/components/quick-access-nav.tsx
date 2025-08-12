@@ -12,6 +12,7 @@ import {
 import { Button } from '@amberops/ui/components/ui/button';
 import { PlusCircle, Search, Settings } from 'lucide-react';
 import Link from 'next/link';
+import '../styles/quick-access-nav.css';
 
 export function QuickAccessNav() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -25,7 +26,7 @@ export function QuickAccessNav() {
   return (
     <>
       <div
-        className="quick-nav-container group h-6 w-6"
+        className="quick-nav-container group"
         onClick={() => setIsModalOpen(true)}
         onKeyDown={(e) => e.key === 'Enter' && setIsModalOpen(true)}
         role="button"

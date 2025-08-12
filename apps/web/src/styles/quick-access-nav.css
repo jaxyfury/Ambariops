@@ -16,7 +16,7 @@
 }
 
 .quick-nav-animation {
-    font-size: 20px;
+    /* font-size: 20px; will use to resize quick access */
     position: relative;
     width: 1em;
     height: 1em;
@@ -27,16 +27,14 @@
     width: 1.7em;
     height: .7em;
     margin: -.35em 0 0 -.85em;
-    background: linear-gradient(45deg, hsl(var(--primary)), hsl(var(--primary) / 0.7));
+    background-color: hsl(var(--primary));
     border-radius: 50%;
     opacity: 0.8;
-    filter: drop-shadow(0 0 2px hsl(var(--primary) / 0.5));
 }
 
 @keyframes petal1 {
-    from { transform: rotate(0deg) translateX(0.6em) rotate(0deg); opacity: 0.8; }
-    50% { transform: rotate(0deg) translateX(0.6em) rotate(180deg); opacity: 0.5; }
-    to { transform: rotate(0deg) translateX(0.6em) rotate(360deg); opacity: 0.8; }
+    from { transform: rotate(0deg) translateX(0.6em) rotate(0deg); }
+    to { transform: rotate(0deg) translateX(0.6em) rotate(180deg); }
 }
 .petal:nth-child(1) {
     animation: petal1 4s linear infinite;
@@ -47,8 +45,7 @@
     to { transform: rotate(30deg) translateX(0.6em) rotate(180deg); }
 }
 .petal:nth-child(2) {
-    animation: petal2 4.2s linear infinite;
-    animation-delay: -0.2s;
+    animation: petal2 4s linear infinite;
 }
 
 @keyframes petal3 {
@@ -56,18 +53,15 @@
     to { transform: rotate(60deg) translateX(0.6em) rotate(180deg); }
 }
 .petal:nth-child(3) {
-    animation: petal3 4.4s linear infinite;
-    animation-delay: -0.4s;
+    animation: petal3 4s linear infinite;
 }
 
 @keyframes petal4 {
-    from { transform: rotate(90deg) translateX(0.6em) rotate(0deg); opacity: 0.8; }
-    50% { transform: rotate(90deg) translateX(0.6em) rotate(180deg); opacity: 0.6; }
-    to { transform: rotate(90deg) translateX(0.6em) rotate(360deg); opacity: 0.8; }
+    from { transform: rotate(90deg) translateX(0.6em) rotate(0deg); }
+    to { transform: rotate(90deg) translateX(0.6em) rotate(180deg); }
 }
 .petal:nth-child(4) {
-    animation: petal4 4.6s linear infinite;
-     animation-delay: -0.6s;
+    animation: petal4 4s linear infinite;
 }
 
 @keyframes petal5 {
@@ -75,8 +69,7 @@
     to { transform: rotate(120deg) translateX(0.6em) rotate(180deg); }
 }
 .petal:nth-child(5) {
-    animation: petal5 4.8s linear infinite;
-    animation-delay: -0.8s;
+    animation: petal5 4s linear infinite;
 }
 
 @keyframes petal6 {
@@ -85,17 +78,14 @@
 }
 .petal:nth-child(6) {
     animation: petal6 4s linear infinite;
-    animation-delay: -1s;
 }
 
 @keyframes petal7 {
-    from { transform: rotate(180deg) translateX(0.6em) rotate(0deg); opacity: 0.7; }
-    50% { transform: rotate(180deg) translateX(0.6em) rotate(180deg); opacity: 0.9; }
-    to { transform: rotate(180deg) translateX(0.6em) rotate(360deg); opacity: 0.7; }
+    from { transform: rotate(180deg) translateX(0.6em) rotate(0deg); }
+    to { transform: rotate(180deg) translateX(0.6em) rotate(180deg); }
 }
 .petal:nth-child(7) {
-    animation: petal7 4.2s linear infinite;
-    animation-delay: -1.2s;
+    animation: petal7 4s linear infinite;
 }
 
 @keyframes petal8 {
@@ -103,8 +93,7 @@
     to { transform: rotate(210deg) translateX(0.6em) rotate(180deg); }
 }
 .petal:nth-child(8) {
-    animation: petal8 4.4s linear infinite;
-    animation-delay: -1.4s;
+    animation: petal8 4s linear infinite;
 }
 
 @keyframes petal9 {
@@ -112,18 +101,15 @@
     to { transform: rotate(240deg) translateX(0.6em) rotate(180deg); }
 }
 .petal:nth-child(9) {
-    animation: petal9 4.6s linear infinite;
-     animation-delay: -1.6s;
+    animation: petal9 4s linear infinite;
 }
 
 @keyframes petal10 {
-     from { transform: rotate(270deg) translateX(0.6em) rotate(0deg); opacity: 0.9; }
-    50% { transform: rotate(270deg) translateX(0.6em) rotate(180deg); opacity: 0.5; }
-    to { transform: rotate(270deg) translateX(0.6em) rotate(360deg); opacity: 0.9; }
+    from { transform: rotate(270deg) translateX(0.6em) rotate(0deg); }
+    to { transform: rotate(270deg) translateX(0.6em) rotate(180deg); }
 }
 .petal:nth-child(10) {
-    animation: petal10 4.8s linear infinite;
-    animation-delay: -1.8s;
+    animation: petal10 4s linear infinite;
 }
 
 @keyframes petal11 {
@@ -132,7 +118,6 @@
 }
 .petal:nth-child(11) {
     animation: petal11 4s linear infinite;
-    animation-delay: -2s;
 }
 
 @keyframes petal12 {
@@ -140,6 +125,5 @@
     to { transform: rotate(330deg) translateX(0.6em) rotate(180deg); }
 }
 .petal:nth-child(12) {
-    animation: petal12 4.2s linear infinite;
-    animation-delay: -2.2s;
+    animation: petal12 4s linear infinite;
 }
