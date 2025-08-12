@@ -261,12 +261,14 @@ export function DataTable<TData, TValue>({
     XLSX.writeFile(workbook, "table_data.xlsx");
   };
   
-  const isFiltered = table.getState().columnFilters.length > 0 || 
-                     table.getState().sorting.length > 0 ||
-                     density !== 'default' ||
-                     style !== 'default' ||
-                     JSON.stringify(table.getState().columnOrder) !== JSON.stringify(initialColumnOrder) ||
-                     Object.keys(table.getState().columnVisibility).length > 0;
+  const isFiltered = React.useMemo(() => 
+    table.getState().columnFilters.length > 0 || 
+    table.getState().sorting.length > 0 ||
+    density !== 'default' ||
+    style !== 'default' ||
+    JSON.stringify(table.getState().columnOrder) !== JSON.stringify(initialColumnOrder) ||
+    Object.keys(table.getState().columnVisibility).length > 0
+  , [table.getState(), density, style, initialColumnOrder]);
 
   const resetAll = () => {
     table.resetColumnFilters();
@@ -431,7 +433,7 @@ export function DataTable<TData, TValue>({
       ) : (
          <div className="rounded-md border">
             <Table>
-            <TableHeader className="sticky top-0 bg-card z-10">
+            <TableHeader>
                 {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                     {headerGroup.headers.map((header) => {
