@@ -2,7 +2,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Skeleton } from '@amberops/ui';
+import { Skeleton } from '@amberops/ui/components/ui/skeleton';
 import { summarizeClusterHealth } from '@/app/actions';
 import { mockAlerts } from '@amberops/api/mock-data';
 import type { Cluster } from '@amberops/lib';

@@ -2,13 +2,13 @@
 'use client';
 
 import { PageHeader } from "@/components/page-header";
-import { Button } from "@amberops/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@amberops/ui/card";
-import { Progress } from "@amberops/ui/progress";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@amberops/ui/table";
-import { Badge } from "@amberops/ui/badge";
-import { Select, SelectTrigger, SelectContent, SelectValue, SelectItem } from "@amberops/ui/select";
-import { Tooltip, TooltipTrigger, TooltipContent } from "@amberops/ui/tooltip";
+import { Button } from "@amberops/ui/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@amberops/ui/components/ui/card";
+import { Progress } from "@amberops/ui/components/ui/progress";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@amberops/ui/components/ui/table";
+import { Badge } from "@amberops/ui/components/ui/badge";
+import { Select, SelectTrigger, SelectContent, SelectValue, SelectItem } from "@amberops/ui/components/ui/select";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@amberops/ui/components/ui/tooltip";
 import { mockClusters, mockAlerts } from "@amberops/api";
 import { ArrowUpRight, Cpu, MemoryStick, Server, Siren, PlusCircle } from "lucide-react";
 import Link from 'next/link';
@@ -247,5 +247,3 @@ export default function DashboardPage() {
         </div>
     )
 }
-
-    
