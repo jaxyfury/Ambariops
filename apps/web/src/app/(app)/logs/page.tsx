@@ -33,7 +33,7 @@ export default function LogsPage() {
           <Input placeholder="Search logs... (e.g., component:HDFS AND level:ERROR)" className="pl-8" />
         </div>
         <Button onClick={() => toast.success('Search results updated.')}>Search</Button>
-        <Button variant="outline" onClick={() => toast.info('Live tail feature coming soon!')}>
+        <Button variant="outline" onClick={() => toast('Live tail feature coming soon!')}>
           <PlayCircle className="h-4 w-4 mr-2" />Live Tail
         </Button>
       </div>

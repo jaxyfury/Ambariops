@@ -46,7 +46,7 @@ export default function ConfigPage() {
                         <CardDescription>Editing for Production Cluster</CardDescription>
                     </div>
                     <div className="flex gap-2">
-                        <Button variant="outline" onClick={() => toast.info('Compare feature coming soon!')}>Compare Versions</Button>
+                        <Button variant="outline" onClick={() => toast('Compare feature coming soon!')}>Compare Versions</Button>
                         <Button onClick={handleSaveChanges}><Save className="h-4 w-4 mr-2"/>Save Changes</Button>
                     </div>
                 </div>

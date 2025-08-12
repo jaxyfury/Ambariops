@@ -79,7 +79,7 @@ export default function ClusterDetailPage({ params }: { params: { id: string } }
         description={`Details for cluster ID: ${cluster.id}`}
         actions={(
             <div className="flex gap-2">
-                <Button variant="outline" onClick={() => toast.info('Actions dropdown coming soon!')}>Actions</Button>
+                <Button variant="outline" onClick={() => toast('Actions dropdown coming soon!')}>Actions</Button>
                 <Button onClick={handleRunServiceCheck}>Run Service Check</Button>
             </div>
         )}

@@ -85,7 +85,7 @@ export default function ServiceDetailPage({ params }: { params: { id: string } }
                 <CardContent className="flex flex-col space-y-2">
                    <Button asChild variant="link" className="justify-start p-0 h-auto"><Link href="/config">View Configurations</Link></Button>
                    <Button variant="link" className="justify-start p-0 h-auto" onClick={handleRunServiceCheck}>Run Service Check</Button>
-                   <Button variant="link" className="justify-start p-0 h-auto" onClick={() => toast.info('Metrics view coming soon!')}>View Metrics</Button>
+                   <Button variant="link" className="justify-start p-0 h-auto" onClick={() => toast('Metrics view coming soon!')}>View Metrics</Button>
                 </CardContent>
             </Card>
         </div>

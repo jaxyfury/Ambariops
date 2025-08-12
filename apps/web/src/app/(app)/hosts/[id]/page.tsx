@@ -47,7 +47,7 @@ export default function HostDetailPage({ params }: { params: { id: string } }) {
         description={`Host details for ${host.ip}`}
         actions={(
             <div className="flex gap-2">
-                <Button variant="outline" onClick={() => toast.info("Actions clicked!")}>Actions</Button>
+                <Button variant="outline" onClick={() => toast("Actions clicked!")}>Actions</Button>
                 <Button onClick={handleReboot}>
                 <Power className="mr-2 h-4 w-4" />
                 Reboot Host
