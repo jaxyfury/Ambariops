@@ -131,51 +131,67 @@
 /* Source control graph styling */
 .quick-access-list {
     position: relative;
-    padding-left: 20px;
+    padding-left: 10px; /* Space for the line and dots */
     margin-top: 1rem;
 }
 
 .quick-access-item {
     position: relative;
     list-style: none;
-}
-
-.quick-access-item a,
-.quick-access-item button {
-    padding-left: 24px;
+    padding-left: 20px; /* Space for the dot */
 }
 
 /* The main vertical timeline */
-.quick-access-item::before {
+.quick-access-list::before {
     content: '';
     position: absolute;
-    left: 0;
-    top: 0;
+    left: 14px; /* Center the line */
+    top: -1rem; /* Start from the header's bottom padding */
     bottom: 0;
     width: 2px;
     background-color: hsl(var(--border));
 }
 
-/* End the timeline for the last item */
-.quick-access-item:last-child::before {
+.quick-access-item:last-child > .quick-access-list::before {
     height: 18px; /* Half the height of the button */
 }
 
+
 /* The "commit" dot on the timeline */
-.quick-access-item::after {
+.quick-access-item::before {
     content: '';
     position: absolute;
-    left: -4px; /* Center the dot on the line */
-    top: 14px; /* Vertically center with the text */
+    left: 10px; 
+    top: 50%;
+    transform: translateY(-50%);
     width: 10px;
     height: 10px;
     border-radius: 50%;
     background-color: hsl(var(--muted-foreground));
     border: 2px solid hsl(var(--card));
     transition: background-color 0.2s ease-in-out;
+    z-index: 1;
 }
 
+/* The horizontal line connecting dot to item */
+.quick-access-item::after {
+    content: '';
+    position: absolute;
+    left: 20px; /* Start from the dot */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 10px; /* Length of the horizontal line */
+    height: 2px;
+    background-color: hsl(var(--border));
+    z-index: 0;
+}
+
+
 /* Change dot color on hover */
-.quick-access-item:hover::after {
+.quick-access-item:hover::before {
     background-color: hsl(var(--primary));
+}
+
+.quick-access-item .lucide {
+    margin-right: 8px;
 }

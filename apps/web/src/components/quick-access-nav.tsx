@@ -48,7 +48,7 @@ interface QuickLinkProps {
 function QuickLink({ href, onClick, children }: QuickLinkProps) {
     const commonProps = {
         variant: "ghost",
-        className: "justify-start text-muted-foreground hover:text-foreground hover:bg-accent transition-all duration-200 w-full",
+        className: "justify-start text-muted-foreground hover:text-foreground hover:bg-accent transition-all duration-200 w-full whitespace-nowrap",
         onClick,
     } as const;
 
@@ -121,7 +121,7 @@ export function QuickAccessNav() {
           </DialogHeader>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-6 pt-4">
             {/* Column 1: Clusters & Services */}
-            <div className="space-y-3 border-r pr-4">
+            <div className="space-y-3 lg:border-r lg:pr-4">
               <h4 className="font-semibold flex items-center gap-2 text-primary border-b pb-2"><Server className="h-4 w-4" />Clusters & Services</h4>
               <ul className="quick-access-list">
                 <li className="quick-access-item"><QuickLink href="/clusters" onClick={closeModal}><PlusCircle /> Add Cluster</QuickLink></li>
@@ -133,7 +133,7 @@ export function QuickAccessNav() {
             </div>
 
             {/* Column 2: Alerts & Monitoring */}
-            <div className="space-y-3 border-r pr-4">
+            <div className="space-y-3 lg:border-r lg:pr-4">
               <h4 className="font-semibold flex items-center gap-2 text-primary border-b pb-2"><Siren className="h-4 w-4" />Alerts & Monitoring</h4>
               <ul className="quick-access-list">
                  <li className="quick-access-item"><QuickLink href="/alerts/definitions" onClick={closeModal}><Siren /> New Alert Definition</QuickLink></li>
@@ -145,7 +145,7 @@ export function QuickAccessNav() {
             </div>
 
             {/* Column 3: Tasks & Logs */}
-            <div className="space-y-3 border-r pr-4">
+            <div className="space-y-3 lg:border-r lg:pr-4">
               <h4 className="font-semibold flex items-center gap-2 text-primary border-b pb-2"><ListChecks className="h-4 w-4" />Tasks & Logs</h4>
                <ul className="quick-access-list">
                  <li className="quick-access-item"><QuickLink href="/tasks" onClick={closeModal}><ListChecks /> View All Tasks</QuickLink></li>
