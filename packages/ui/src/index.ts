@@ -8,3 +8,4 @@ export * from './components/ui/toaster';
 // Hooks
 export * from './hooks/use-toast';
 export * from './hooks/use-mobile';
+export * from './hooks/use-sidebar';
