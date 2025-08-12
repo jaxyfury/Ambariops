@@ -114,17 +114,33 @@ export default function HelpPage() {
                     </DialogDescription>
                   </DialogHeader>
                   <div className="grid gap-4 py-4">
-                    <div className="grid items-center gap-2">
-                      <Label htmlFor="email">Your Email</Label>
+                     <div className="grid items-center gap-2">
+                      <Label htmlFor="from">From</Label>
                       <Input
-                        id="email"
+                        id="from"
                         type="email"
                         defaultValue="alice@amberops.io"
                         disabled
                       />
                     </div>
+                     <div className="grid items-center gap-2">
+                      <Label htmlFor="to">To</Label>
+                      <Input
+                        id="to"
+                        type="email"
+                        defaultValue="support@amberops.io"
+                      />
+                    </div>
+                     <div className="grid items-center gap-2">
+                      <Label htmlFor="subject">Subject</Label>
+                      <Input
+                        id="subject"
+                        type="text"
+                        placeholder="Regarding..."
+                      />
+                    </div>
                     <div className="grid items-center gap-2">
-                      <Label htmlFor="details">Issue Details</Label>
+                      <Label htmlFor="details">Message</Label>
                       <Textarea
                         id="details"
                         placeholder="Please provide as much detail as possible..."
