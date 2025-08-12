@@ -11,7 +11,7 @@ import { Input } from '@amberops/ui/components/ui/input';
 import { Label } from '@amberops/ui/components/ui/label';
 import { Tooltip, TooltipTrigger, TooltipContent } from '@amberops/ui/components/ui/tooltip';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@amberops/ui/components/ui/card';
-import { Stepper, StepperItem, StepperContent, StepperTrigger, StepperIndicator, StepperSeparator, StepperNumber, StepperLabel, useStepper } from '@amberops/ui/components/ui/stepper';
+import { Stepper, StepperItem, StepperContent, StepperTrigger, StepperIndicator, StepperSeparator, StepperLabel, useStepper, StepperNumber } from '@amberops/ui/components/ui/stepper';
 import { mockClusters } from '@amberops/api';
 import { ArrowUpRight, PlusCircle, ArrowUpDown, Server, AlertTriangle, ArrowDown, ArrowUp } from 'lucide-react';
 import { DataTable } from '@/components/data-table';
@@ -254,28 +254,28 @@ function AddClusterDialog({ isOpen, onOpenChange }: { isOpen: boolean, onOpenCha
           <div className="flex w-full">
             <StepperItem step={0}>
               <StepperTrigger>
-                <StepperIndicator>
-                  <StepperNumber />
+                <StepperIndicator step={0}>
+                  <StepperNumber>1</StepperNumber>
                 </StepperIndicator>
-                <StepperLabel>Cluster Details</StepperLabel>
+                <StepperLabel step={0}>Cluster Details</StepperLabel>
               </StepperTrigger>
               <StepperSeparator />
             </StepperItem>
             <StepperItem step={1}>
               <StepperTrigger>
-                <StepperIndicator>
-                  <StepperNumber />
+                <StepperIndicator step={1}>
+                  <StepperNumber>2</StepperNumber>
                 </StepperIndicator>
-                <StepperLabel>Credentials</StepperLabel>
+                <StepperLabel step={1}>Credentials</StepperLabel>
               </StepperTrigger>
               <StepperSeparator />
             </StepperItem>
             <StepperItem step={2}>
               <StepperTrigger>
-                <StepperIndicator>
-                  <StepperNumber />
+                <StepperIndicator step={2}>
+                  <StepperNumber>3</StepperNumber>
                 </StepperIndicator>
-                <StepperLabel>Confirmation</StepperLabel>
+                <StepperLabel step={2}>Confirmation</StepperLabel>
               </StepperTrigger>
             </StepperItem>
           </div>

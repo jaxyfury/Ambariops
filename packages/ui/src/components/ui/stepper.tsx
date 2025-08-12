@@ -168,12 +168,9 @@ StepperTrigger.displayName = "StepperTrigger"
 
 const StepperIndicator = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ children, className, ...props }, ref) => {
+  React.HTMLAttributes<HTMLDivElement> & { step: number }
+>(({ children, className, step, ...props }, ref) => {
   const { isStepActive, isStepCompleted } = useStepperContext()
-  const step = (
-    children as React.ReactElement<React.ComponentProps<typeof StepperNumber>>
-  ).props.children
 
   const isActive = isStepActive(step)
   const isCompleted = isStepCompleted(step)
@@ -188,7 +185,7 @@ const StepperIndicator = React.forwardRef<
       )}
       {...props}
     >
-      {isStepCompleted(step) ? <Check className="size-4" /> : children}
+      {isCompleted ? <Check className="size-4" /> : children}
     </div>
   )
 })
@@ -208,12 +205,9 @@ StepperNumber.displayName = "StepperNumber"
 
 const StepperLabel = React.forwardRef<
   HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>
->(({ children, className, ...props }, ref) => {
+  React.HTMLAttributes<HTMLParagraphElement> & { step: number }
+>(({ children, className, step, ...props }, ref) => {
   const { isStepActive } = useStepperContext()
-  const step = (
-    children as React.ReactElement<React.ComponentProps<typeof StepperNumber>>
-  ).props.children
   const isActive = isStepActive(step)
 
   return (
