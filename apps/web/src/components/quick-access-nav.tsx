@@ -25,7 +25,7 @@ export function QuickAccessNav() {
   return (
     <>
       <div
-        className="quick-nav-container group"
+        className="quick-nav-container group h-6 w-6"
         onClick={() => setIsModalOpen(true)}
         onKeyDown={(e) => e.key === 'Enter' && setIsModalOpen(true)}
         role="button"
