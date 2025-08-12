@@ -10,11 +10,15 @@ export const dynamic = 'force-dynamic';
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
-      <SidebarNav />
-      <AppLayout>
-        <Breadcrumbs />
-        {children}
-      </AppLayout>
+      <div className="flex">
+        <SidebarNav />
+        <div className="flex-1">
+          <AppLayout>
+            <Breadcrumbs />
+            {children}
+          </AppLayout>
+        </div>
+      </div>
     </SidebarProvider>
   );
 }
