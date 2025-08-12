@@ -34,7 +34,6 @@ import jsPDF from "jspdf"
 import autoTable from "jspdf-autotable"
 import * as XLSX from "xlsx"
 import { cn } from "@amberops/lib/utils"
-import { BroomIcon } from "@amberops/ui/components/icons";
 
 type ViewType = 'table' | 'card';
 type DensityType = 'default' | 'comfortable' | 'compact';
@@ -605,5 +604,3 @@ export function DataTable<TData, TValue>({
     </div>
   )
 }
-
-    

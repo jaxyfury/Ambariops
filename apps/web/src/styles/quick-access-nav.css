@@ -34,7 +34,6 @@
     background-color: hsl(var(--primary));
     border-radius: 50%;
     opacity: 0.8;
-    mix-blend-mode: screen;
 }
 
 @keyframes petal1 {
@@ -137,5 +136,3 @@
 .quick-nav-container.modal-open .petal {
     animation-play-state: paused;
 }
-
-    
