@@ -7,7 +7,6 @@
     ".": "./src/index.ts",
     "./components/theme-provider": "./src/components/theme-provider.tsx",
     "./components/ui/toaster": "./src/components/ui/toaster.tsx",
-    "./components/ui/sidebar": "./src/components/ui/sidebar.tsx",
     "./components/ui/button": "./src/components/ui/button.tsx",
     "./components/ui/tooltip": "./src/components/ui/tooltip.tsx",
     "./components/ui/dropdown-menu": "./src/components/ui/dropdown-menu.tsx",
@@ -44,6 +43,7 @@
     "./components/ui/toast": "./src/components/ui/toast.tsx",
     "./hooks/use-toast": "./src/hooks/use-toast.ts",
     "./hooks/use-mobile": "./src/hooks/use-mobile.tsx",
+    "./components/ui/sidebar": "./src/components/ui/sidebar.tsx",
     "./hooks/use-sidebar": "./src/hooks/use-sidebar.tsx"
   },
   "scripts": {

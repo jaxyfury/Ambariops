@@ -4,18 +4,25 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
+} from '@amberops/ui/components/ui/avatar';
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-  Button,
+} from '@amberops/ui/components/ui/dropdown-menu';
+import { Button } from '@amberops/ui/components/ui/button';
+import {
   SidebarTrigger,
+} from '@amberops/ui/components/ui/sidebar';
+import {
   Tooltip,
   TooltipTrigger,
   TooltipContent,
-} from '@amberops/ui';
+} from '@amberops/ui/components/ui/tooltip';
+
 import { ThemeToggle } from '@/components/theme-toggle';
 import { LanguageSwitcher } from '@/components/language-switcher';
 import Link from 'next/link';

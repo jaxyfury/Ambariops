@@ -15,22 +15,23 @@ import {
   Laptop,
   History,
 } from 'lucide-react';
-
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
+} from '@amberops/ui/components/ui/accordion';
+import {
   Sidebar,
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
-  useSidebar,
-  AmberOpsLogo,
   SidebarHeader,
   SidebarContent,
   SidebarFooter,
-} from '@amberops/ui';
+} from '@amberops/ui/components/ui/sidebar';
+import { useSidebar } from '@amberops/ui/hooks/use-sidebar';
+import { AmberOpsLogo } from '@amberops/ui/components/icons';
 
 export function SidebarNav() {
   const pathname = usePathname();
@@ -84,7 +85,6 @@ export function SidebarNav() {
                         asChild
                         isActive={isAlertsActive}
                         className="[&>svg:last-child]:hidden"
-                        tooltip={item.tooltip}
                       >
                          <AccordionTrigger className="w-full">
                            <div className="flex items-center gap-2">
