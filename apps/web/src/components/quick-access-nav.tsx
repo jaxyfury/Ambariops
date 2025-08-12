@@ -112,7 +112,7 @@ export function QuickAccessNav() {
       </Tooltip>
 
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="z-[9999] max-w-6xl">
+        <DialogContent className="z-[9999] max-w-screen-lg data-[state=open]:zoom-in-95">
           <DialogHeader>
             <DialogTitle>Quick Access</DialogTitle>
             <DialogDescription>
