@@ -219,7 +219,7 @@ export function UserManagement() {
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem
-                              className="text-red-500"
+                              className="text-destructive"
                               onClick={() => deleteMutation.mutate(user.id)}
                             >
                               <Trash className="mr-2 h-4 w-4" />

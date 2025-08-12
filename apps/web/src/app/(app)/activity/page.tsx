@@ -72,19 +72,15 @@ export const columns: ColumnDef<ActivityLog>[] = [
             </Button>
         ),
         cell: ({ row }) => (
-            <div className="flex items-center gap-2">
-                <Avatar className="h-8 w-8">
-                    <AvatarImage src={row.original.user.avatar} alt={row.original.user.name} />
-                    <AvatarFallback>{row.original.user.name.charAt(0)}</AvatarFallback>
-                </Avatar>
-                <Tooltip>
-                    <TooltipTrigger asChild>
-                        <span className="font-medium truncate">{row.original.user.name}</span>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                        <p>{row.original.user.name}</p>
-                    </TooltipContent>
-                </Tooltip>
+            <div className="flex items-center gap-3">
+              <Avatar className="h-8 w-8">
+                <AvatarImage src={row.original.user.avatar} alt={row.original.user.name} />
+                <AvatarFallback>{row.original.user.name.charAt(0)}</AvatarFallback>
+              </Avatar>
+              <div>
+                <p className="font-medium">{row.original.user.name}</p>
+                <p className="text-sm text-muted-foreground">{row.original.user.email}</p>
+              </div>
             </div>
         )
     },
