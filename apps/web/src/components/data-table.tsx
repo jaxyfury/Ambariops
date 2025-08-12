@@ -29,6 +29,7 @@ import { Popover, PopoverTrigger, PopoverContent } from "@amberops/ui/components
 import { Label } from "@amberops/ui/components/ui/label"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@amberops/ui/components/ui/tooltip"
 import { BroomIcon } from '@amberops/ui/components/icons';
+import { ScrollArea } from '@amberops/ui/components/ui/scroll-area';
 import { FileDown, SlidersHorizontal, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, List, LayoutGrid, GripVertical, ArrowUp, ArrowDown, ChevronDown } from "lucide-react"
 import jsPDF from "jspdf"
 import autoTable from "jspdf-autotable"
@@ -257,7 +258,9 @@ export function DataTable<TData, TValue>({
 
   const resetAll = () => {
     table.resetColumnFilters();
-    if(filterKey) table.getColumn(filterKey)?.setFilterValue("");
+    if(filterKey && table.getColumn(filterKey)) {
+        table.getColumn(filterKey)?.setFilterValue("");
+    }
     table.resetSorting();
     table.setColumnOrder(initialColumnOrder);
     table.resetColumnVisibility();
@@ -355,43 +358,45 @@ export function DataTable<TData, TValue>({
                            <Label>Columns</Label>
                            <p className="text-xs text-muted-foreground">Toggle visibility and reorder columns.</p>
                         </div>
-                        <div className="grid gap-2">
-                           {table
-                                .getAllLeafColumns()
-                                .filter((column) => column.getCanHide())
-                                .map((column, index) => {
-                                const visibleColumns = table.getVisibleLeafColumns().filter(c => c.getCanHide());
-                                const visibleIndex = visibleColumns.findIndex(c => c.id === column.id);
-                                return (
-                                    <div
-                                        key={column.id}
-                                        className="flex items-center space-x-2 p-2 rounded-md hover:bg-muted"
-                                        draggable="true"
-                                        onDragStart={(e) => handleDragStart(e, column.id)}
-                                        onDragOver={handleDragOver}
-                                        onDrop={(e) => handleDrop(e, column.id)}
-                                    >
-                                        <GripVertical className="h-4 w-4 text-muted-foreground cursor-grab" />
-                                        <Checkbox
-                                            id={`col-${column.id}`}
-                                            checked={column.getIsVisible()}
-                                            onCheckedChange={(value) => column.toggleVisibility(!!value)}
-                                        />
-                                        <Label htmlFor={`col-${column.id}`} className="capitalize truncate flex-1 cursor-grab">
-                                            {column.id}
-                                        </Label>
-                                        <div className="flex items-center gap-1 ml-auto">
-                                            <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => moveColumn(column.id, 'up')} disabled={visibleIndex === 0}>
-                                                <ArrowUp className="h-4 w-4" />
-                                            </Button>
-                                            <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => moveColumn(column.id, 'down')} disabled={visibleIndex === visibleColumns.length - 1}>
-                                                <ArrowDown className="h-4 w-4" />
-                                            </Button>
+                         <ScrollArea className="h-[200px]">
+                            <div className="grid gap-2 pr-4">
+                            {table
+                                    .getAllLeafColumns()
+                                    .filter((column) => column.getCanHide())
+                                    .map((column) => {
+                                    const visibleColumns = table.getVisibleLeafColumns().filter(c => c.getCanHide());
+                                    const visibleIndex = visibleColumns.findIndex(c => c.id === column.id);
+                                    return (
+                                        <div
+                                            key={column.id}
+                                            className="flex items-center space-x-2 p-2 rounded-md hover:bg-muted"
+                                            draggable="true"
+                                            onDragStart={(e) => handleDragStart(e, column.id)}
+                                            onDragOver={handleDragOver}
+                                            onDrop={(e) => handleDrop(e, column.id)}
+                                        >
+                                            <GripVertical className="h-4 w-4 text-muted-foreground cursor-grab" />
+                                            <Checkbox
+                                                id={`col-${column.id}`}
+                                                checked={column.getIsVisible()}
+                                                onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                                            />
+                                            <Label htmlFor={`col-${column.id}`} className="capitalize truncate flex-1 cursor-grab">
+                                                {column.id}
+                                            </Label>
+                                            <div className="flex items-center gap-1 ml-auto">
+                                                <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => moveColumn(column.id, 'up')} disabled={visibleIndex === 0}>
+                                                    <ArrowUp className="h-4 w-4" />
+                                                </Button>
+                                                <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => moveColumn(column.id, 'down')} disabled={visibleIndex === visibleColumns.length - 1}>
+                                                    <ArrowDown className="h-4 w-4" />
+                                                </Button>
+                                            </div>
                                         </div>
-                                    </div>
-                                )
-                            })}
-                        </div>
+                                    )
+                                })}
+                            </div>
+                        </ScrollArea>
                         <Button variant="outline" size="sm" onClick={() => {
                           table.setColumnOrder(initialColumnOrder);
                           table.resetColumnVisibility();
@@ -577,5 +582,7 @@ export function DataTable<TData, TValue>({
     </div>
   )
 }
+
+    
 
     
