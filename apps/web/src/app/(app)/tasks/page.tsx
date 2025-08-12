@@ -19,7 +19,7 @@ function getStatusIcon(status: 'running' | 'completed' | 'failed' | 'pending') {
     case 'completed':
       return <CheckCircle className="h-4 w-4 text-green-500" />;
     case 'failed':
-      return <XCircle className="h-4 w-4 text-red-500" />;
+      return <XCircle className="h-4 w-4 text-white" />;
     case 'pending':
       return <CircleDotDashed className="h-4 w-4 text-muted-foreground" />;
   }
