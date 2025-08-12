@@ -1,6 +1,5 @@
 
 import type { SVGProps } from 'react';
-import { cn } from '@amberops/lib/utils';
 
 export function AmberOpsLogo(props: SVGProps<SVGSVGElement>) {
     return (
@@ -169,5 +168,3 @@ export function ClearFilterIcon(props: SVGProps<SVGSVGElement>) {
         <path d="M1665 70 c-4 -6 10 -10 34 -10 23 0 41 5 41 10 0 6 -15 10 -34 10 -19 0 -38 -4 -41 -10z"/>
         </g>
     </svg>
-  );
-}

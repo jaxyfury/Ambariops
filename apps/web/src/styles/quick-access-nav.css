@@ -129,10 +129,4 @@
     to { transform: rotate(330deg) translateX(0.6em) rotate(180deg); }
 }
 .petal:nth-child(12) {
-    animation: petal12 4s linear infinite;
-}
-
-/* Stop animation when modal is open */
-.quick-nav-container.modal-open .petal {
-    animation-play-state: paused;
-}
+    animation: petal12 4s linear

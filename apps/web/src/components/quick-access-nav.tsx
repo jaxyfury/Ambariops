@@ -65,8 +65,4 @@ export function QuickAccessNav() {
           </div>
         </DialogContent>
       </Dialog>
-    </>
-  );
-}
-
     

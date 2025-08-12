@@ -257,13 +257,14 @@ export function DataTable<TData, TValue>({
       JSON.stringify(table.getState().columnOrder) !== JSON.stringify(initialColumnOrder) ||
       Object.keys(table.getState().columnVisibility).length > 0;
   }, [
-    table,
+    table.getState().sorting,
+    table.getState().columnVisibility,
+    table.getState().columnOrder,
     density, 
     style, 
     initialColumnOrder,
     filterKey,
-    columnFilters,
-    table.getState().columnFilters,
+    table,
   ]);
 
   const resetAll = () => {
@@ -608,7 +609,4 @@ export function DataTable<TData, TValue>({
                     disabled={!table.getCanNextPage()}
                 >
                     <span className="sr-only">Go to last page</span>
-                    <ChevronsRight className="h-4 w-4" />
-                </Button>
-            </div>
-        </div>
+                    <ChevronsRight className
