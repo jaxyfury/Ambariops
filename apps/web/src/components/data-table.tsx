@@ -218,7 +218,16 @@ export function DataTable<TData, TValue>({
     XLSX.writeFile(workbook, "table_data.xlsx");
   };
   
-  const isFiltered = table.getState().columnFilters.length > 0;
+  const isFiltered = table.getState().columnFilters.length > 0 || table.getState().sorting.length > 0;
+
+  const resetAll = () => {
+    table.resetColumnFilters();
+    table.resetSorting();
+    table.setColumnOrder(initialColumnOrder);
+    table.resetColumnVisibility();
+    setDensity('default');
+    setStyle('default');
+  }
 
   const densityClasses = {
     default: 'py-4 px-4',
@@ -240,8 +249,8 @@ export function DataTable<TData, TValue>({
         {isFiltered && (
             <Button
                 variant="ghost"
-                onClick={() => table.resetColumnFilters()}
-                className="h-8 px-2 lg:px-3"
+                onClick={resetAll}
+                className="h-10 px-2 lg:px-3"
             >
                 Reset
                 <Broom className="ml-2 h-4 w-4" />
