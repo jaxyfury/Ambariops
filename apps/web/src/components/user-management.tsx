@@ -40,7 +40,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@amberops/ui/components/ui';
+} from '@amberops/ui';
 import {
   fetchUsers,
   addUser,

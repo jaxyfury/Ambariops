@@ -5,7 +5,7 @@ import { Inter, Space_Grotesk } from 'next/font/google';
 import '@amberops/design-tokens/globals.css';
 import { cn } from '@amberops/lib';
 import { ThemeProvider } from '@amberops/ui/components/theme-provider';
-import { Toaster as DefaultToaster } from '@amberops/ui/components/ui/toaster';
+import { Toaster as DefaultToaster } from '@amberops/ui/toaster';
 import { Toaster } from 'react-hot-toast';
 import { useEffect } from 'react';
 import { enableMocking } from '@amberops/api/mocks/browser';

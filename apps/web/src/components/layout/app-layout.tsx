@@ -1,10 +1,11 @@
+
 'use client';
 
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from '@amberops/ui/components/ui/avatar';
+} from '@amberops/ui/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,16 +13,16 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@amberops/ui/components/ui/dropdown-menu';
-import { Button } from '@amberops/ui/components/ui/button';
+} from '@amberops/ui/dropdown-menu';
+import { Button } from '@amberops/ui/button';
 import {
   SidebarTrigger,
-} from '@amberops/ui/components/ui/sidebar';
+} from '@amberops/ui/sidebar';
 import {
   Tooltip,
   TooltipTrigger,
   TooltipContent,
-} from '@amberops/ui/components/ui/tooltip';
+} from '@amberops/ui/tooltip';
 
 import { ThemeToggle } from '@/components/theme-toggle';
 import { LanguageSwitcher } from '@/components/language-switcher';
