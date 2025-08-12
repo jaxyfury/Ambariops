@@ -13,6 +13,7 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
+  ColumnOrderState,
 } from "@tanstack/react-table"
 import {
   Table,
@@ -26,7 +27,6 @@ import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
-  DropdownMenuCheckboxItem,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -36,8 +36,13 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  Checkbox,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  Label,
 } from "@amberops/ui"
-import { FileDown, SlidersHorizontal, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Broom, List, LayoutGrid } from "lucide-react"
+import { FileDown, SlidersHorizontal, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Broom, List, LayoutGrid, ArrowUp, ArrowDown, GripVertical } from "lucide-react"
 import jsPDF from "jspdf"
 import autoTable from "jspdf-autotable"
 import * as XLSX from "xlsx"
@@ -65,6 +70,10 @@ export function DataTable<TData, TValue>({
     React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
   const [view, setView] = React.useState<ViewType>('table');
+  
+  const initialColumnOrder = React.useMemo(() => columns.map(c => (c as any).id || (c as any).accessorKey), [columns]);
+  const [columnOrder, setColumnOrder] = React.useState<ColumnOrderState>(initialColumnOrder);
+
 
   const table = useReactTable({
     data,
@@ -77,11 +86,13 @@ export function DataTable<TData, TValue>({
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
+    onColumnOrderChange: setColumnOrder,
     state: {
       sorting,
       columnFilters,
       columnVisibility,
       rowSelection,
+      columnOrder,
     },
   })
 
@@ -89,13 +100,13 @@ export function DataTable<TData, TValue>({
     if (typeof columnDef.header === 'string') {
         return columnDef.header;
     }
-
-    if (typeof columnDef.accessorKey === 'string') {
-        return columnDef.accessorKey;
+    // Attempt to extract from accessorKey if header is a function
+    const accessorKey = (columnDef as any).accessorKey;
+    if (typeof accessorKey === 'string') {
+        // Capitalize first letter for a cleaner title
+        return accessorKey.charAt(0).toUpperCase() + accessorKey.slice(1);
     }
-    
-    // For complex headers with components, we try a best-effort extraction.
-    // This is a simplification; a real app might need a more robust solution.
+    // Fallback to the column id
     if(columnDef.id) return columnDef.id;
 
     return '';
@@ -115,7 +126,8 @@ export function DataTable<TData, TValue>({
             const cellValue = row.getValue((colDef as any).accessorKey || (colDef as any).id);
             if(cellValue instanceof Date) return cellValue.toLocaleString();
             if (typeof cellValue === 'object' && cellValue !== null) {
-                return JSON.stringify(cellValue);
+                // For complex objects, attempt to get a name or just stringify
+                return (cellValue as any).name || JSON.stringify(cellValue);
             }
             return String(cellValue ?? '');
         });
@@ -140,18 +152,33 @@ export function DataTable<TData, TValue>({
         visibleColumns.forEach(colDef => {
             const header = getHeaderFromColumn(colDef);
             const cellValue = row.getValue((colDef as any).accessorKey || (colDef as any).id);
-            rowData[header] = cellValue;
+            if (typeof cellValue === 'object' && cellValue !== null) {
+                 rowData[header] = (cellValue as any).name || JSON.stringify(cellValue);
+            } else {
+                rowData[header] = cellValue;
+            }
         });
         return rowData;
     });
 
-    const worksheet = XLSX.utils.json_to_sheet(tableData, { header: tableHeaders });
+    const worksheet = XLSX.utils.json_to_sheet(tableData);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
     XLSX.writeFile(workbook, "table_data.xlsx");
   };
   
   const isFiltered = table.getState().columnFilters.length > 0;
+
+  const moveColumn = (draggedId: string, targetId: string) => {
+    const newOrder = [...columnOrder];
+    const draggedIndex = newOrder.indexOf(draggedId);
+    const targetIndex = newOrder.indexOf(targetId);
+    
+    // Swap elements
+    [newOrder[draggedIndex], newOrder[targetIndex]] = [newOrder[targetIndex], newOrder[draggedIndex]];
+    
+    setColumnOrder(newOrder);
+  };
 
 
   return (
@@ -186,34 +213,80 @@ export function DataTable<TData, TValue>({
                     </Button>
                 </div>
             )}
-            <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <Button variant="outline">
-                    <SlidersHorizontal className="mr-2 h-4 w-4" /> View
-                </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-                 <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                {table
-                .getAllColumns()
-                .filter((column) => column.getCanHide())
-                .map((column) => {
-                    return (
-                    <DropdownMenuCheckboxItem
-                        key={column.id}
-                        className="capitalize"
-                        checked={column.getIsVisible()}
-                        onCheckedChange={(value) =>
-                        column.toggleVisibility(!!value)
-                        }
-                    >
-                        {column.id}
-                    </DropdownMenuCheckboxItem>
-                    )
-                })}
-            </DropdownMenuContent>
-            </DropdownMenu>
+             <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="outline">
+                      <SlidersHorizontal className="mr-2 h-4 w-4" /> Customize
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-64">
+                    <div className="grid gap-4">
+                        <div className="space-y-2">
+                            <h4 className="font-medium leading-none">Customize Columns</h4>
+                            <p className="text-sm text-muted-foreground">
+                            Toggle visibility and reorder columns.
+                            </p>
+                        </div>
+                        <div className="grid gap-2">
+                            {table
+                                .getAllColumns()
+                                .filter((column) => column.getCanHide())
+                                .map((column) => {
+                                return (
+                                    <div key={column.id} className="flex items-center justify-between space-x-2">
+                                        <div className="flex items-center gap-2">
+                                            <GripVertical className="h-4 w-4 text-muted-foreground" />
+                                            <Checkbox
+                                                id={`col-${column.id}`}
+                                                checked={column.getIsVisible()}
+                                                onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                                            />
+                                            <Label htmlFor={`col-${column.id}`} className="capitalize truncate">
+                                                {column.id}
+                                            </Label>
+                                        </div>
+                                        <div className="flex items-center gap-1">
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                className="h-6 w-6"
+                                                onClick={() => {
+                                                    const order = [...columnOrder];
+                                                    const idx = order.indexOf(column.id);
+                                                    if (idx > 0) {
+                                                        [order[idx - 1], order[idx]] = [order[idx], order[idx - 1]];
+                                                        table.setColumnOrder(order);
+                                                    }
+                                                }}
+                                                disabled={columnOrder.indexOf(column.id) === 0}
+                                            >
+                                                <ArrowUp className="h-4 w-4"/>
+                                            </Button>
+                                             <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                className="h-6 w-6"
+                                                onClick={() => {
+                                                    const order = [...columnOrder];
+                                                    const idx = order.indexOf(column.id);
+                                                    if (idx < order.length - 1) {
+                                                        [order[idx], order[idx + 1]] = [order[idx + 1], order[idx]];
+                                                        table.setColumnOrder(order);
+                                                    }
+                                                }}
+                                                disabled={columnOrder.indexOf(column.id) === columnOrder.length - 1}
+                                            >
+                                                <ArrowDown className="h-4 w-4"/>
+                                            </Button>
+                                        </div>
+                                    </div>
+                                )
+                            })}
+                        </div>
+                        <Button variant="outline" size="sm" onClick={() => table.setColumnOrder(initialColumnOrder)}>Reset Order</Button>
+                    </div>
+                </PopoverContent>
+            </Popover>
              <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" data-testid="export-button">
@@ -246,7 +319,7 @@ export function DataTable<TData, TValue>({
                 <TableRow key={headerGroup.id}>
                     {headerGroup.headers.map((header) => {
                     return (
-                        <TableHead key={header.id}>
+                        <TableHead key={header.id} style={{ width: header.getSize() !== 150 ? header.getSize() : undefined }}>
                         {header.isPlaceholder
                             ? null
                             : flexRender(
@@ -263,7 +336,7 @@ export function DataTable<TData, TValue>({
                 {isLoading ? (
                     Array.from({ length: 10 }).map((_, i) => (
                         <TableRow key={i}>
-                            {columns.map((column, j) => (
+                            {table.getAllColumns().map((column, j) => (
                                 <TableCell key={j}>
                                     <Skeleton className="h-6 w-full" />
                                 </TableCell>
@@ -374,3 +447,5 @@ export function DataTable<TData, TValue>({
     </div>
   )
 }
+
+    
