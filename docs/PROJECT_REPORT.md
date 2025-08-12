@@ -54,7 +54,8 @@ The project uses a pnpm-managed monorepo structure to ensure clear separation of
 
 The project has successfully reached its initial MVP milestone. All core features are functional using a mocked API layer.
 
-*   **Core UI Modules**: All primary pages (Dashboard, Clusters, Services, Hosts, Alerts, Config, Tasks, Logs, Settings) are implemented and fetching data from the mock API.
+*   **Core UI Modules**: All primary pages (Dashboard, Clusters, Services, Hosts, Alerts, Config, Tasks, Logs, Settings) are implemented.
+*   **Global Search**: A universal search bar is available in the header for finding clusters, services, and hosts.
 *   **Component Library**: A robust set of shared UI components is available in `packages/ui`, with Storybook stories and accessibility checks.
 *   **Mock API**: The entire API surface is mocked using MSW, allowing for full frontend development without a live backend.
 *   **State Management**: TanStack Query is integrated for server state, and Zustand is set up for local UI state.
@@ -99,6 +100,8 @@ Merges to the `main` branch are protected and require all checks to pass.
 While the MVP is complete, the following areas are planned for future development:
 
 *   **Real Ambari API Integration**: Replace the MSW mock client with a real HTTP client that communicates with a live Ambari backend.
+*   **User Onboarding Tour**: Implement an interactive, guided tour for new users to explain the core features of the application.
+*   **Customizable Dashboards**: Allow users to add, remove, and rearrange widgets on their dashboard to create personalized views.
 *   **Enhanced AI Features**: Expand the AI capabilities to include proactive alerting, root cause analysis, and automated remediation suggestions.
 *   **Advanced Table Features**: Add global filtering, advanced sorting, and column customization to all data tables.
 *   **Production Monitoring**: Integrate a monitoring service like Sentry or Datadog for error tracking and performance monitoring.

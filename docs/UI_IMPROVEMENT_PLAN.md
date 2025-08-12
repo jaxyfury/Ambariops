@@ -8,34 +8,43 @@ This document outlines a comprehensive plan for enhancing the AmberOps Console f
 
 ## 2. UI Improvements
 
+### Global Search Bar
+
+-   **Header Integration**: A universal search bar is integrated into the application header for quick access from any page.
+-   **Modal-based Results**: Search triggers a modal dialog that displays categorized results for clusters, services, and hosts.
+-   **Keyboard Shortcut**: The search can be activated via a `⌘K` keyboard shortcut for power users.
+
 ### Responsive and Collapsible Sidebar
 
--   **Desktop View**: The sidebar will be collapsible, allowing users to expand it for full navigation with labels or collapse it to an icon-only rail to maximize content space. The state will be persisted across sessions.
--   **Mobile View**: On smaller viewports, the sidebar will transform into an off-canvas drawer, ensuring an uncluttered and intuitive mobile experience.
--   **Icons**: All navigation items will feature clear, intuitive icons from the `lucide-react` library.
+-   **Desktop View**: The sidebar is collapsible, allowing users to expand it for full navigation with labels or collapse it to an icon-only rail to maximize content space. The state is persisted across sessions.
+-   **Mobile View**: On smaller viewports, the sidebar transforms into an off-canvas drawer, ensuring an uncluttered and intuitive mobile experience.
+-   **Icons**: All navigation items feature clear, intuitive icons from the `lucide-react` library.
 
 ### Sticky, Accessible Header
 
--   A sticky header will remain visible at all times, providing persistent access to global controls.
--   The header will contain:
+-   A sticky header remains visible at all times, providing persistent access to global controls.
+-   The header contains:
     -   A **Language Switcher** for internationalization.
     -   A **Theme Toggler** for light/dark mode.
     -   A **User Menu** with links to settings and logout actions.
 
 ### Professional Loaders and Indicators
 
--   **Skeleton Loaders**: All data-fetching views will display animated, professional skeleton loaders that mimic the layout of the content being loaded. This provides a better perceived performance and reduces layout shift.
--   **Progress Indicators**: Long-running actions (e.g., service restarts) will use progress bars or spinners to give users clear feedback on background tasks.
--   **Pre-loaders**: A subtle pre-loader will be displayed on initial application load.
-
-### Authentication Pages
-
--   **Login & Signup**: Clean, user-friendly login and signup pages will be created with clear form validation and links for password recovery.
--   **Admin Login**: A separate, distinct interface for administrative login can be provided if required by the backend authentication scheme.
+-   **Skeleton Loaders**: All data-fetching views display animated, professional skeleton loaders that mimic the layout of the content being loaded. This provides a better perceived performance and reduces layout shift.
+-   **Progress Indicators**: Long-running actions (e.g., service restarts) use progress bars or spinners to give users clear feedback on background tasks.
 
 ---
 
-## 3. Component and Storybook Enhancements
+## 3. Future Enhancements
+
+### User Onboarding Tour
+- **Goal**: Create an interactive, guided walkthrough for new users to introduce them to core functionalities like the dashboard, cluster details, and alert management.
+- **Recommendation**: Use a library like `react-joyride` to build a step-by-step tour that highlights key UI elements.
+
+### Customizable Dashboards
+- **Goal**: Empower users to create personalized dashboards by adding, removing, and rearranging widgets.
+- **Recommendation**: Implement a drag-and-drop grid system using a library like `react-grid-layout`. User dashboard configurations should be saved to the backend.
+
 
 ### Complete Storybook Documentation
 
@@ -44,8 +53,8 @@ This document outlines a comprehensive plan for enhancing the AmberOps Console f
 
 ### Integrated Storybook Testing
 
--   **Accessibility Addon**: The `@storybook/addon-a11y` will be integrated to run automated accessibility checks on every story.
--   **Playwright Addon**: The Storybook Playwright addon will be used to test component interactions directly within the Storybook environment, ensuring that component logic is sound in isolation.
+-   **Accessibility Addon**: The `@storybook/addon-a11y` is integrated to run automated accessibility checks on every story.
+-   **Playwright Addon**: The Storybook Playwright addon can be used to test component interactions directly within the Storybook environment.
 
 ---
 
@@ -53,22 +62,17 @@ This document outlines a comprehensive plan for enhancing the AmberOps Console f
 
 ### Centralized Mock Data
 
--   To ensure UI components are data-agnostic, all static and hardcoded data will be centralized in `packages/api/src/mocks/mock-data.ts`. No UI component will contain hardcoded display data.
+-   To ensure UI components are data-agnostic, all static and hardcoded data is centralized in `packages/api/src/mocks/mock-data.ts`.
 
 ### TanStack Query for API Operations
 
--   All API interactions (CRUD operations) will be managed by TanStack Query (`@tanstack/react-query`).
--   Queries and mutations will be organized into a dedicated services layer (e.g., `apps/web/src/lib/api/services.ts`), providing a clean, reusable, and maintainable data-fetching layer.
-
-### Mock Data Fallback
-
--   The application will be configured to use MSW (Mock Service Worker) in development.
--   In case of an API failure or when running in a disconnected development mode, the data-fetching hooks will be designed to gracefully fall back to the mock data, ensuring the UI remains fully functional.
+-   All API interactions (CRUD operations) are managed by TanStack Query (`@tanstack/react-query`).
+-   Queries and mutations are organized into a dedicated services layer (`apps/web/src/lib/api/services.ts`), providing a clean, reusable, and maintainable data-fetching layer.
 
 ### User-Friendly Toast Notifications
 
--   Toast notifications (powered by `react-hot-toast`) will be used for providing feedback on user actions.
--   Notifications will be context-aware (success, error, info) and will include actionable buttons where appropriate (e.g., a "Retry" button on a failed API call).
+-   Toast notifications (powered by `react-hot-toast`) are used for providing feedback on user actions.
+-   Notifications are context-aware (success, error, info).
 
 ---
 
@@ -76,8 +80,8 @@ This document outlines a comprehensive plan for enhancing the AmberOps Console f
 
 ### Comprehensive Test IDs and ARIA
 
--   All interactive elements and key containers will be assigned a stable `data-testid` attribute to facilitate robust and non-brittle E2E tests with Playwright.
--   Semantic HTML and proper ARIA roles (e.g., `role`, `aria-label`, `aria-describedby`) will be used throughout the application to ensure it is fully accessible to screen readers and other assistive technologies.
+-   All interactive elements and key containers are assigned a stable `data-testid` attribute to facilitate robust and non-brittle E2E tests with Playwright.
+-   Semantic HTML and proper ARIA roles (e.g., `role`, `aria-label`, `aria-describedby`) are used throughout the application.
 
 ### WCAG Compliance
 
@@ -85,18 +89,4 @@ This document outlines a comprehensive plan for enhancing the AmberOps Console f
 
 ### End-to-End Testing with Playwright
 
--   A comprehensive suite of E2E tests will be written to cover all critical user flows:
-    -   Authentication (Login/Logout).
-    -   Navigating to all major pages.
-    -   CRUD actions on resources (e.g., acknowledging an alert).
-    -   Toggling language and theme.
-    -   Verifying error handling and toast notifications.
-
----
-
-## 6. General Recommendations
-
--   **Responsive First**: All new components and pages must be designed and implemented with responsiveness in mind, ensuring a seamless experience from mobile to desktop.
--   **Keyboard Navigation**: All interactive elements must be reachable and operable via keyboard. Focus states must be clear and visible.
--   **Semantic HTML**: Use HTML elements for their intended purpose (e.g., `<button>` for actions, `<nav>` for navigation) to maximize built-in accessibility.
--   **Storybook as Source of Truth**: Storybook should be considered the single source of truth for UI components. All component development should start with a story.
+-   A comprehensive suite of E2E tests has been written to cover all critical user flows, including navigation, CRUD actions, and theme toggling.

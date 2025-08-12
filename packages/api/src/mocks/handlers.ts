@@ -119,6 +119,22 @@ export const handlers = [
   http.get('/api/v1/logs', () => {
     return HttpResponse.json(mockLogEntries);
   }),
+  
+  // Search
+  http.get('/api/v1/search', ({request}) => {
+    const url = new URL(request.url);
+    const q = url.searchParams.get('q')?.toLowerCase() || '';
+
+    if (!q) {
+      return HttpResponse.json({ clusters: [], services: [], hosts: [] });
+    }
+
+    const clusters = mockClusters.filter(c => c.name.toLowerCase().includes(q));
+    const services = mockServices.filter(s => s.name.toLowerCase().includes(q));
+    const hosts = mockHosts.filter(h => h.name.toLowerCase().includes(q) || h.ip.includes(q));
+
+    return HttpResponse.json({ clusters, services, hosts });
+  }),
 
   // Activity
   http.get('/api/v1/activity', () => {
