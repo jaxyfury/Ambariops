@@ -48,7 +48,7 @@ interface QuickLinkProps {
 function QuickLink({ href, onClick, children }: QuickLinkProps) {
     const commonProps = {
         variant: "ghost",
-        className: "justify-start text-muted-foreground hover:text-foreground hover:bg-accent transition-all duration-200 w-full whitespace-nowrap",
+        className: "h-auto py-2 justify-start text-muted-foreground hover:text-foreground hover:bg-accent transition-all duration-200 w-full whitespace-normal break-words",
         onClick,
     } as const;
 

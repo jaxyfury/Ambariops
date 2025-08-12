@@ -141,7 +141,7 @@
     content: '';
     position: absolute;
     left: 14px;
-    top: -0.5rem; /* Start just below the header's padding-bottom */
+    top: 0;
     bottom: 0;
     width: 2px;
     background-color: hsl(var(--border));
@@ -151,7 +151,6 @@
     position: relative;
     list-style: none;
     padding-left: 20px; /* Space for the dot and horizontal line */
-    min-height: 36px; /* Match button height */
     display: flex;
     align-items: center;
 }
