@@ -43,9 +43,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           </TooltipContent>
         </Tooltip>
         
-        <div className="flex-1 flex justify-center">
-            <QuickAccessNav />
-        </div>
+        <div className="flex-1 flex justify-center" />
         
         <div className="flex items-center gap-2">
           <LanguageSwitcher />
@@ -85,7 +83,10 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           </DropdownMenu>
         </div>
       </header>
-      <main className="flex-1 p-6 overflow-y-auto">{children}</main>
+      <main className="flex-1 p-6 overflow-y-auto relative">
+        <QuickAccessNav />
+        {children}
+      </main>
     </div>
   );
 }
