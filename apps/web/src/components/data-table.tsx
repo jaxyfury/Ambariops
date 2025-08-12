@@ -43,7 +43,7 @@ import {
   PopoverContent,
   Label,
 } from "@amberops/ui"
-import { FileDown, SlidersHorizontal, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Broom, List, LayoutGrid, ArrowUp, ArrowDown, GripVertical, Rows, Columns, Paintbrush } from "lucide-react"
+import { FileDown, SlidersHorizontal, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Broom, List, LayoutGrid, GripVertical, Rows, Columns, Paintbrush } from "lucide-react"
 import jsPDF from "jspdf"
 import autoTable from "jspdf-autotable"
 import * as XLSX from "xlsx"
@@ -80,7 +80,7 @@ export function DataTable<TData, TValue>({
   
   const initialColumnOrder = React.useMemo(() => columns.map(c => (c as any).id || (c as any).accessorKey), [columns]);
   const [columnOrder, setColumnOrder] = React.useState<ColumnOrderState>(initialColumnOrder);
-
+  const [draggedColumn, setDraggedColumn] = React.useState<string | null>(null);
 
   const table = useReactTable({
     data,
@@ -105,6 +105,35 @@ export function DataTable<TData, TValue>({
       columnSizing,
     },
   })
+
+  const handleDragStart = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {
+    setDraggedColumn(columnId);
+    e.dataTransfer.effectAllowed = 'move';
+  };
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+  };
+  
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>, targetColumnId: string) => {
+    e.preventDefault();
+    if (draggedColumn === null || draggedColumn === targetColumnId) {
+      setDraggedColumn(null);
+      return;
+    }
+
+    const currentOrder = [...columnOrder];
+    const draggedIndex = currentOrder.indexOf(draggedColumn);
+    const targetIndex = currentOrder.indexOf(targetColumnId);
+    
+    currentOrder.splice(draggedIndex, 1);
+    currentOrder.splice(targetIndex, 0, draggedColumn);
+
+    table.setColumnOrder(currentOrder);
+    setDraggedColumn(null);
+  };
+
 
   const getHeaderFromColumn = (columnDef: ColumnDef<TData, TValue>): string => {
     if (typeof columnDef.header === 'string') {
@@ -259,57 +288,28 @@ export function DataTable<TData, TValue>({
                             </p>
                         </div>
                         <div className="grid gap-2">
-                            {table
-                                .getAllColumns()
+                           {table
+                                .getAllLeafColumns()
                                 .filter((column) => column.getCanHide())
                                 .map((column) => {
                                 return (
-                                    <div key={column.id} className="flex items-center justify-between space-x-2">
-                                        <div className="flex items-center gap-2">
-                                            <GripVertical className="h-4 w-4 text-muted-foreground cursor-grab" />
-                                            <Checkbox
-                                                id={`col-${column.id}`}
-                                                checked={column.getIsVisible()}
-                                                onCheckedChange={(value) => column.toggleVisibility(!!value)}
-                                            />
-                                            <Label htmlFor={`col-${column.id}`} className="capitalize truncate">
-                                                {column.id}
-                                            </Label>
-                                        </div>
-                                        <div className="flex items-center gap-1">
-                                            <Button
-                                                variant="ghost"
-                                                size="icon"
-                                                className="h-6 w-6"
-                                                onClick={() => {
-                                                    const order = [...columnOrder];
-                                                    const idx = order.indexOf(column.id);
-                                                    if (idx > 0) {
-                                                        [order[idx - 1], order[idx]] = [order[idx], order[idx - 1]];
-                                                        table.setColumnOrder(order);
-                                                    }
-                                                }}
-                                                disabled={columnOrder.indexOf(column.id) === 0}
-                                            >
-                                                <ArrowUp className="h-4 w-4"/>
-                                            </Button>
-                                             <Button
-                                                variant="ghost"
-                                                size="icon"
-                                                className="h-6 w-6"
-                                                onClick={() => {
-                                                    const order = [...columnOrder];
-                                                    const idx = order.indexOf(column.id);
-                                                    if (idx < order.length - 1) {
-                                                        [order[idx], order[idx + 1]] = [order[idx + 1], order[idx]];
-                                                        table.setColumnOrder(order);
-                                                    }
-                                                }}
-                                                disabled={columnOrder.indexOf(column.id) === columnOrder.length - 1}
-                                            >
-                                                <ArrowDown className="h-4 w-4"/>
-                                            </Button>
-                                        </div>
+                                    <div
+                                        key={column.id}
+                                        className="flex items-center space-x-2 p-2 rounded-md hover:bg-muted"
+                                        draggable="true"
+                                        onDragStart={(e) => handleDragStart(e, column.id)}
+                                        onDragOver={handleDragOver}
+                                        onDrop={(e) => handleDrop(e, column.id)}
+                                    >
+                                        <GripVertical className="h-4 w-4 text-muted-foreground cursor-grab" />
+                                        <Checkbox
+                                            id={`col-${column.id}`}
+                                            checked={column.getIsVisible()}
+                                            onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                                        />
+                                        <Label htmlFor={`col-${column.id}`} className="capitalize truncate flex-1 cursor-grab">
+                                            {column.id}
+                                        </Label>
                                     </div>
                                 )
                             })}
