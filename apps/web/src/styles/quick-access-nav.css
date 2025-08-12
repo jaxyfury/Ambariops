@@ -27,7 +27,7 @@
     width: 1.7em;
     height: .7em;
     margin: -.35em 0 0 -.85em;
-    background: linear-gradient(45deg, hsl(var(--primary)), #fde047);
+    background: hsl(var(--primary));
     border-radius: 50%;
     opacity: 0.8;
     filter: drop-shadow(0 0 2px hsl(var(--primary) / 0.5));
