@@ -1,5 +1,6 @@
 
 
+
 "use client"
 
 import * as React from "react"
@@ -32,7 +33,7 @@ import { FileDown, SlidersHorizontal, ChevronLeft, ChevronRight, ChevronsLeft, C
 import jsPDF from "jspdf"
 import autoTable from "jspdf-autotable"
 import * as XLSX from "xlsx"
-import { cn } from "@amberops/lib"
+import { cn } from "@amberops/lib/utils"
 
 type ViewType = 'table' | 'card';
 type DensityType = 'default' | 'comfortable' | 'compact';

@@ -10,9 +10,9 @@ export const dynamic = 'force-dynamic';
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
-      <div className="flex">
+      <div className="flex min-h-screen">
         <SidebarNav />
-        <div className="flex-1">
+        <div className="flex-1 flex flex-col">
           <AppLayout>
             <Breadcrumbs />
             {children}
