@@ -350,7 +350,7 @@ export function DataTable<TData, TValue>({
         </div>
       ) : (
          <div className="rounded-md border">
-            <Table style={{ width: table.getCenterTotalSize() }} data-style={style}>
+            <Table style={{ width: table.getCenterTotalSize() }}>
             <TableHeader className="sticky top-0 bg-card z-10">
                 {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
@@ -377,7 +377,7 @@ export function DataTable<TData, TValue>({
                 </TableRow>
                 ))}
             </TableHeader>
-            <TableBody>
+            <TableBody data-style={style}>
                 {isLoading ? (
                     Array.from({ length: 10 }).map((_, i) => (
                         <TableRow key={i}>
