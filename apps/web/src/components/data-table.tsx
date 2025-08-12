@@ -28,8 +28,8 @@ import { Checkbox } from "@amberops/ui/components/ui/checkbox"
 import { Popover, PopoverTrigger, PopoverContent } from "@amberops/ui/components/ui/popover"
 import { Label } from "@amberops/ui/components/ui/label"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@amberops/ui/components/ui/tooltip"
-import { BroomIcon } from '@amberops/ui/components/icons';
-import { ScrollArea } from '@amberops/ui/components/ui/scroll-area';
+import { BroomIcon } from "@amberops/ui/components/icons";
+import { ScrollArea } from "@amberops/ui/components/ui/scroll-area"
 import { FileDown, SlidersHorizontal, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, List, LayoutGrid, GripVertical, ArrowUp, ArrowDown, ChevronDown } from "lucide-react"
 import jsPDF from "jspdf"
 import autoTable from "jspdf-autotable"
@@ -259,6 +259,7 @@ export function DataTable<TData, TValue>({
   const resetAll = () => {
     table.resetColumnFilters();
     if(filterKey && table.getColumn(filterKey)) {
+        (document.querySelector(`input[placeholder="Filter by ${filterKey}..."]`) as HTMLInputElement).value = '';
         table.getColumn(filterKey)?.setFilterValue("");
     }
     table.resetSorting();
@@ -292,13 +293,13 @@ export function DataTable<TData, TValue>({
                         variant="ghost"
                         onClick={resetAll}
                         size="icon"
-                        className="h-10 w-10 rounded-full transition-all duration-300 hover:bg-secondary/80 hover:scale-110"
+                        className="group h-10 w-10 rounded-full transition-all duration-300 hover:bg-secondary/80 hover:scale-110"
                     >
-                       <BroomIcon className="h-5 w-5 text-muted-foreground" />
+                       <BroomIcon className="h-5 w-5 text-muted-foreground transition-all group-hover:-rotate-12 group-hover:scale-110" />
                     </Button>
                 </TooltipTrigger>
                 <TooltipContent>
-                    <p>Clear all filters and customizations</p>
+                    <p>Clear Filters & View</p>
                 </TooltipContent>
             </Tooltip>
         )}
@@ -582,7 +583,5 @@ export function DataTable<TData, TValue>({
     </div>
   )
 }
-
-    
 
     
