@@ -44,10 +44,10 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         </Tooltip>
         
         <div className="flex-1 flex justify-center">
+            <QuickAccessNav />
         </div>
         
         <div className="flex items-center gap-2">
-        <QuickAccessNav />
           <LanguageSwitcher />
           <ThemeToggle />
           <DropdownMenu>
