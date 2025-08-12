@@ -256,14 +256,7 @@ export function DataTable<TData, TValue>({
       Object.keys(columnVisibility).length > 0 ||
       JSON.stringify(columnOrder) !== JSON.stringify(initialColumnOrder);
   }, [
-    table.getColumn(filterKey)?.getFilterValue(),
-    table.getState().sorting,
-    columnVisibility,
-    columnOrder,
-    density, 
-    style, 
-    initialColumnOrder,
-    filterKey,
+    table, filterKey, density, style, columnVisibility, columnOrder, initialColumnOrder
   ]);
 
   const [isClearing, setIsClearing] = React.useState(false);
@@ -285,6 +278,7 @@ export function DataTable<TData, TValue>({
   const resetAll = () => {
     table.resetColumnFilters();
     if(filterKey) {
+        (document.getElementById(`${filterKey}-filter-input`) as HTMLInputElement).value = '';
         table.getColumn(filterKey)?.setFilterValue("");
     }
     table.resetSorting();
@@ -304,23 +298,25 @@ export function DataTable<TData, TValue>({
     <div className="w-full">
         <div className="flex items-center py-4 gap-2">
             <div className="flex items-center gap-2 flex-grow max-w-sm">
-                {filterKey && <Input
-                    placeholder={`Filter by ${filterKey}...`}
-                    value={(table.getColumn(filterKey)?.getFilterValue() as string) ?? ""}
-                    onChange={(event) =>
-                        table.getColumn(filterKey)?.setFilterValue(event.target.value)
-                    }
-                    className="flex-grow"
-                />}
+                {filterKey && (
+                    <Input
+                        id={`${filterKey}-filter-input`}
+                        placeholder={`Filter by ${filterKey}...`}
+                        defaultValue={(table.getColumn(filterKey)?.getFilterValue() as string) ?? ""}
+                        onChange={(event) =>
+                            table.getColumn(filterKey)?.setFilterValue(event.target.value)
+                        }
+                        className="flex-grow"
+                    />
+                )}
                 {showClearFilter && (
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <Button
-                                variant="secondary"
                                 size="icon"
                                 onClick={resetAll}
                                 className={cn(
-                                    "h-8 w-8 rounded-full group flex-shrink-0",
+                                    "h-8 w-8 rounded-full group flex-shrink-0 bg-secondary text-secondary-foreground hover:bg-primary hover:text-primary-foreground",
                                     isClearing && "animate-fade-out-slide-out"
                                 )}
                             >
