@@ -38,6 +38,7 @@ import Link from 'next/link';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import '../styles/quick-access-nav.css';
+import { cn } from '@amberops/lib';
 
 interface QuickLinkProps {
   href?: string;
@@ -48,7 +49,7 @@ interface QuickLinkProps {
 function QuickLink({ href, onClick, children }: QuickLinkProps) {
     const commonProps = {
         variant: "ghost",
-        className: "justify-start text-muted-foreground hover:text-foreground",
+        className: "justify-start text-muted-foreground hover:text-foreground hover:bg-accent transition-all duration-200 transform hover:scale-105",
         onClick,
     } as const;
 
@@ -119,10 +120,10 @@ export function QuickAccessNav() {
               Navigate to key areas of the application or perform common actions.
             </DialogDescription>
           </DialogHeader>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 pt-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-6 pt-4">
             {/* Column 1: Clusters & Services */}
-            <div className="space-y-2">
-              <h4 className="font-semibold flex items-center gap-2"><Server className="h-4 w-4" />Clusters & Services</h4>
+            <div className="space-y-3 border-r pr-4">
+              <h4 className="font-semibold flex items-center gap-2 text-primary border-b pb-2"><Server className="h-4 w-4" />Clusters & Services</h4>
               <div className="flex flex-col items-stretch gap-1">
                 <QuickLink href="/clusters" onClick={closeModal}><PlusCircle /> Add Cluster</QuickLink>
                 <QuickLink href="/clusters" onClick={closeModal}><Server /> Manage Clusters</QuickLink>
@@ -133,8 +134,8 @@ export function QuickAccessNav() {
             </div>
 
             {/* Column 2: Alerts & Monitoring */}
-            <div className="space-y-2">
-              <h4 className="font-semibold flex items-center gap-2"><Siren className="h-4 w-4" />Alerts & Monitoring</h4>
+            <div className="space-y-3 border-r pr-4">
+              <h4 className="font-semibold flex items-center gap-2 text-primary border-b pb-2"><Siren className="h-4 w-4" />Alerts & Monitoring</h4>
               <div className="flex flex-col items-stretch gap-1">
                  <QuickLink href="/alerts/definitions" onClick={closeModal}><Siren /> New Alert Definition</QuickLink>
                  <QuickLink href="/alerts" onClick={closeModal}><AlertTriangle /> View All Alerts</QuickLink>
@@ -145,8 +146,8 @@ export function QuickAccessNav() {
             </div>
 
             {/* Column 3: Tasks & Logs */}
-            <div className="space-y-2">
-              <h4 className="font-semibold flex items-center gap-2"><ListChecks className="h-4 w-4" />Tasks & Logs</h4>
+            <div className="space-y-3 border-r pr-4">
+              <h4 className="font-semibold flex items-center gap-2 text-primary border-b pb-2"><ListChecks className="h-4 w-4" />Tasks & Logs</h4>
                <div className="flex flex-col items-stretch gap-1">
                  <QuickLink href="/tasks" onClick={closeModal}><ListChecks /> View All Tasks</QuickLink>
                  <QuickLink href="/tasks" onClick={closeModal}><ListChecks /> Pending / Failed Tasks</QuickLink>
@@ -157,8 +158,8 @@ export function QuickAccessNav() {
             </div>
 
             {/* Column 4: Settings & Help */}
-            <div className="space-y-2">
-              <h4 className="font-semibold flex items-center gap-2"><Settings className="h-4 w-4" />Settings & Help</h4>
+            <div className="space-y-3">
+              <h4 className="font-semibold flex items-center gap-2 text-primary border-b pb-2"><Settings className="h-4 w-4" />Settings & Help</h4>
                <div className="flex flex-col items-stretch gap-1">
                  <QuickLink href="/settings" onClick={closeModal}><Settings /> Go to Settings</QuickLink>
                  <QuickLink onClick={toggleTheme}><Moon /> Toggle Theme</QuickLink>
