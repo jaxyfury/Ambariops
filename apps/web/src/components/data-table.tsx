@@ -29,7 +29,7 @@ import { Popover, PopoverTrigger, PopoverContent } from "@amberops/ui/components
 import { Label } from "@amberops/ui/components/ui/label"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@amberops/ui/components/ui/tooltip"
 import { ScrollArea } from "@amberops/ui/components/ui/scroll-area"
-import { FileDown, SlidersHorizontal, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, List, LayoutGrid, GripVertical, ArrowUp, ArrowDown, ChevronDown } from "lucide-react"
+import { FileDown, SlidersHorizontal, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, List, LayoutGrid, GripVertical, ArrowUp, ArrowDown, ChevronDown, XCircle } from "lucide-react"
 import { BroomIcon } from '@amberops/ui/components/icons';
 import jsPDF from "jspdf"
 import autoTable from "jspdf-autotable"
@@ -262,7 +262,7 @@ export function DataTable<TData, TValue>({
     style, 
     initialColumnOrder,
     filterKey,
-    columnFilters
+    columnFilters,
   ]);
 
   const resetAll = () => {
@@ -316,7 +316,7 @@ export function DataTable<TData, TValue>({
                 <div className="flex items-center gap-1 rounded-md bg-muted p-1">
                     <Tooltip>
                         <TooltipTrigger asChild>
-                            <Button variant={view === 'table' ? 'secondary' : 'ghost'} size="sm" onClick={() => setView('table')}>
+                            <Button variant={view === 'table' ? 'default' : 'outline'} size="sm" onClick={() => setView('table')}>
                                 <List className="h-4 w-4"/>
                             </Button>
                         </TooltipTrigger>
@@ -326,7 +326,7 @@ export function DataTable<TData, TValue>({
                     </Tooltip>
                      <Tooltip>
                         <TooltipTrigger asChild>
-                            <Button variant={view === 'card' ? 'secondary' : 'ghost'} size="sm" onClick={() => setView('card')}>
+                            <Button variant={view === 'card' ? 'default' : 'outline'} size="sm" onClick={() => setView('card')}>
                                 <LayoutGrid className="h-4 w-4"/>
                             </Button>
                         </TooltipTrigger>
@@ -612,3 +612,5 @@ export function DataTable<TData, TValue>({
     </div>
   )
 }
+
+    
