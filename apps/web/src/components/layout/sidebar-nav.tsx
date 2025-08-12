@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from 'next/link';
@@ -20,7 +21,7 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@amberops/ui/components/ui/accordion';
+} from '@amberops/ui/accordion';
 import {
   Sidebar,
   SidebarMenu,
@@ -29,9 +30,9 @@ import {
   SidebarHeader,
   SidebarContent,
   SidebarFooter,
-} from '@amberops/ui/components/ui/sidebar';
+} from '@amberops/ui/sidebar';
 import { useSidebar } from '@amberops/ui/hooks/use-sidebar';
-import { AmberOpsLogo } from '@amberops/ui/components/icons';
+import { AmberOpsLogo } from '@amberops/ui/icons';
 
 export function SidebarNav() {
   const pathname = usePathname();
