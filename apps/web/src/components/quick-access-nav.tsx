@@ -2,6 +2,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTheme } from 'next-themes';
 import {
   Dialog,
   DialogContent,
@@ -15,21 +16,76 @@ import {
   TooltipTrigger,
 } from '@amberops/ui/components/ui/tooltip';
 import { Button } from '@amberops/ui/components/ui/button';
-import { PlusCircle, Search, Settings, HardDrive, Siren, ListChecks } from 'lucide-react';
+import {
+    PlusCircle,
+    Search,
+    Settings,
+    HardDrive,
+    Siren,
+    ListChecks,
+    Server,
+    RefreshCw,
+    AlertTriangle,
+    Bot,
+    LayoutDashboard,
+    FileText,
+    Moon,
+    Languages,
+    BookOpen,
+    LifeBuoy,
+} from 'lucide-react';
 import Link from 'next/link';
+import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 import '../styles/quick-access-nav.css';
+
+interface QuickLinkProps {
+  href?: string;
+  onClick?: () => void;
+  children: React.ReactNode;
+}
+
+function QuickLink({ href, onClick, children }: QuickLinkProps) {
+    const commonProps = {
+        variant: "ghost",
+        className: "justify-start text-muted-foreground hover:text-foreground",
+        onClick,
+    } as const;
+
+    if (href) {
+        return (
+            <Button {...commonProps} asChild>
+                <Link href={href}>{children}</Link>
+            </Button>
+        );
+    }
+    return <Button {...commonProps}>{children}</Button>;
+}
 
 export function QuickAccessNav() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { setTheme, theme } = useTheme();
+  const { i18n } = useTranslation();
 
-  const navItems = [
-    { href: '/clusters', label: 'Add Cluster', icon: PlusCircle },
-    { href: '/services', label: 'Add Service', icon: HardDrive },
-    { href: '/alerts/definitions', label: 'New Alert Definition', icon: Siren },
-    { href: '/tasks', label: 'View All Tasks', icon: ListChecks },
-    { href: '/logs', label: 'Search Logs', icon: Search },
-    { href: '/settings', label: 'Go to Settings', icon: Settings },
-  ];
+  const toggleTheme = () => {
+    setTheme(theme === 'light' ? 'dark' : 'light');
+    toast.success(`Theme changed to ${theme === 'light' ? 'Dark' : 'Light'}`);
+    setIsModalOpen(false);
+  };
+  
+  const changeLanguage = () => {
+    const newLang = i18n.language === 'en' ? 'es' : 'en';
+    i18n.changeLanguage(newLang);
+    toast.success(`Language changed to ${newLang === 'en' ? 'English' : 'Español'}`);
+    setIsModalOpen(false);
+  };
+
+  const handleAction = (action: string) => {
+    toast.success(`${action} task initiated.`);
+    setIsModalOpen(false);
+  };
+
+  const closeModal = () => setIsModalOpen(false);
 
   return (
     <>
@@ -56,28 +112,61 @@ export function QuickAccessNav() {
       </Tooltip>
 
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="z-[9999]">
+        <DialogContent className="z-[9999] max-w-4xl">
           <DialogHeader>
             <DialogTitle>Quick Access</DialogTitle>
             <DialogDescription>
-              Navigate to key areas of the application.
+              Navigate to key areas of the application or perform common actions.
             </DialogDescription>
           </DialogHeader>
-          <div className="flex flex-col gap-2 pt-4">
-            {navItems.map((item) => (
-              <Button
-                key={item.href}
-                variant="ghost"
-                className="justify-start"
-                asChild
-                onClick={() => setIsModalOpen(false)}
-              >
-                <Link href={item.href}>
-                  <item.icon className="mr-2 h-4 w-4" />
-                  {item.label}
-                </Link>
-              </Button>
-            ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 pt-4">
+            {/* Column 1: Clusters & Services */}
+            <div className="space-y-2">
+              <h4 className="font-semibold flex items-center gap-2"><Server className="h-4 w-4" />Clusters & Services</h4>
+              <div className="flex flex-col items-stretch gap-1">
+                <QuickLink href="/clusters" onClick={closeModal}><PlusCircle /> Add Cluster</QuickLink>
+                <QuickLink href="/clusters" onClick={closeModal}><Server /> Manage Clusters</QuickLink>
+                <QuickLink href="/services" onClick={closeModal}><HardDrive /> Add Service</QuickLink>
+                <QuickLink onClick={() => handleAction("Restart All Services")}><RefreshCw /> Restart All Services</QuickLink>
+                <QuickLink onClick={() => handleAction("Refresh Cluster Health")}><RefreshCw /> Refresh Cluster Health</QuickLink>
+              </div>
+            </div>
+
+            {/* Column 2: Alerts & Monitoring */}
+            <div className="space-y-2">
+              <h4 className="font-semibold flex items-center gap-2"><Siren className="h-4 w-4" />Alerts & Monitoring</h4>
+              <div className="flex flex-col items-stretch gap-1">
+                 <QuickLink href="/alerts/definitions" onClick={closeModal}><Siren /> New Alert Definition</QuickLink>
+                 <QuickLink href="/alerts" onClick={closeModal}><AlertTriangle /> View All Alerts</QuickLink>
+                 <QuickLink href="/alerts" onClick={closeModal}><AlertTriangle /> View Critical Alerts</QuickLink>
+                 <QuickLink href="/dashboard" onClick={closeModal}><Bot /> AI Health Summary</QuickLink>
+                 <QuickLink href="/dashboard" onClick={closeModal}><LayoutDashboard /> Resource Dashboard</QuickLink>
+              </div>
+            </div>
+
+            {/* Column 3: Tasks & Logs */}
+            <div className="space-y-2">
+              <h4 className="font-semibold flex items-center gap-2"><ListChecks className="h-4 w-4" />Tasks & Logs</h4>
+               <div className="flex flex-col items-stretch gap-1">
+                 <QuickLink href="/tasks" onClick={closeModal}><ListChecks /> View All Tasks</QuickLink>
+                 <QuickLink href="/tasks" onClick={closeModal}><ListChecks /> Pending / Failed Tasks</QuickLink>
+                 <QuickLink href="/logs" onClick={closeModal}><Search /> Search Logs</QuickLink>
+                 <QuickLink onClick={() => handleAction("Export Logs")}><FileText /> Export Logs</QuickLink>
+                 <QuickLink onClick={() => handleAction("View Scheduled Operations")}><ListChecks /> Scheduled Operations</QuickLink>
+              </div>
+            </div>
+
+            {/* Column 4: Settings & Help */}
+            <div className="space-y-2">
+              <h4 className="font-semibold flex items-center gap-2"><Settings className="h-4 w-4" />Settings & Help</h4>
+               <div className="flex flex-col items-stretch gap-1">
+                 <QuickLink href="/settings" onClick={closeModal}><Settings /> Go to Settings</QuickLink>
+                 <QuickLink onClick={toggleTheme}><Moon /> Toggle Theme</QuickLink>
+                 <QuickLink onClick={changeLanguage}><Languages /> Change Language</QuickLink>
+                 <QuickLink href="/help" onClick={closeModal}><BookOpen /> Documentation</QuickLink>
+                 <QuickLink href="/help" onClick={closeModal}><LifeBuoy /> Contact Support</QuickLink>
+              </div>
+            </div>
           </div>
         </DialogContent>
       </Dialog>
