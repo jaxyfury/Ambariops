@@ -1,0 +1,139 @@
+
+.quick-nav-container {
+    position: fixed;
+    top: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 50;
+    cursor: pointer;
+    width: 60px;
+    height: 60px;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease-in-out;
+}
+
+.quick-nav-container:hover {
+    transform: translateX(-50%) scale(1.1);
+}
+
+.quick-nav-animation {
+    font-size: 20px;
+    position: relative;
+    width: 1em;
+    height: 1em;
+}
+
+.petal {
+    position: absolute;
+    width: 1.7em;
+    height: .7em;
+    margin: -.35em 0 0 -.85em;
+    background-color: hsl(var(--primary));
+    border-radius: 50%;
+    opacity: 0.8;
+    mix-blend-mode: screen;
+}
+
+@keyframes petal1 {
+    from { transform: rotate(0deg) translateX(0.6em) rotate(0deg); }
+    to { transform: rotate(0deg) translateX(0.6em) rotate(180deg); }
+}
+.petal:nth-child(1) {
+    animation: petal1 4s linear infinite;
+}
+
+@keyframes petal2 {
+    from { transform: rotate(30deg) translateX(0.6em) rotate(0deg); }
+    to { transform: rotate(30deg) translateX(0.6em) rotate(180deg); }
+}
+.petal:nth-child(2) {
+    animation: petal2 4s linear infinite;
+}
+
+@keyframes petal3 {
+    from { transform: rotate(60deg) translateX(0.6em) rotate(0deg); }
+    to { transform: rotate(60deg) translateX(0.6em) rotate(180deg); }
+}
+.petal:nth-child(3) {
+    animation: petal3 4s linear infinite;
+}
+
+@keyframes petal4 {
+    from { transform: rotate(90deg) translateX(0.6em) rotate(0deg); }
+    to { transform: rotate(90deg) translateX(0.6em) rotate(180deg); }
+}
+.petal:nth-child(4) {
+    animation: petal4 4s linear infinite;
+}
+
+@keyframes petal5 {
+    from { transform: rotate(120deg) translateX(0.6em) rotate(0deg); }
+    to { transform: rotate(120deg) translateX(0.6em) rotate(180deg); }
+}
+.petal:nth-child(5) {
+    animation: petal5 4s linear infinite;
+}
+
+@keyframes petal6 {
+    from { transform: rotate(150deg) translateX(0.6em) rotate(0deg); }
+    to { transform: rotate(150deg) translateX(0.6em) rotate(180deg); }
+}
+.petal:nth-child(6) {
+    animation: petal6 4s linear infinite;
+}
+
+@keyframes petal7 {
+    from { transform: rotate(180deg) translateX(0.6em) rotate(0deg); }
+    to { transform: rotate(180deg) translateX(0.6em) rotate(180deg); }
+}
+.petal:nth-child(7) {
+    animation: petal7 4s linear infinite;
+}
+
+@keyframes petal8 {
+    from { transform: rotate(210deg) translateX(0.6em) rotate(0deg); }
+    to { transform: rotate(210deg) translateX(0.6em) rotate(180deg); }
+}
+.petal:nth-child(8) {
+    animation: petal8 4s linear infinite;
+}
+
+@keyframes petal9 {
+    from { transform: rotate(240deg) translateX(0.6em) rotate(0deg); }
+    to { transform: rotate(240deg) translateX(0.6em) rotate(180deg); }
+}
+.petal:nth-child(9) {
+    animation: petal9 4s linear infinite;
+}
+
+@keyframes petal10 {
+    from { transform: rotate(270deg) translateX(0.6em) rotate(0deg); }
+    to { transform: rotate(270deg) translateX(0.6em) rotate(180deg); }
+}
+.petal:nth-child(10) {
+    animation: petal10 4s linear infinite;
+}
+
+@keyframes petal11 {
+    from { transform: rotate(300deg) translateX(0.6em) rotate(0deg); }
+    to { transform: rotate(300deg) translateX(0.6em) rotate(180deg); }
+}
+.petal:nth-child(11) {
+    animation: petal11 4s linear infinite;
+}
+
+@keyframes petal12 {
+    from { transform: rotate(330deg) translateX(0.6em) rotate(0deg); }
+    to { transform: rotate(330deg) translateX(0.6em) rotate(180deg); }
+}
+.petal:nth-child(12) {
+    animation: petal12 4s linear infinite;
+}
+
+/* Stop animation when modal is open */
+.quick-nav-container.modal-open .petal {
+    animation-play-state: paused;
+}
