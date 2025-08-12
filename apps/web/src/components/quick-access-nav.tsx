@@ -15,7 +15,7 @@ import {
   TooltipTrigger,
 } from '@amberops/ui/components/ui/tooltip';
 import { Button } from '@amberops/ui/components/ui/button';
-import { PlusCircle, Search, Settings } from 'lucide-react';
+import { PlusCircle, Search, Settings, HardDrive, Siren, ListChecks } from 'lucide-react';
 import Link from 'next/link';
 import '../styles/quick-access-nav.css';
 
@@ -23,7 +23,10 @@ export function QuickAccessNav() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const navItems = [
-    { href: '/clusters/new', label: 'Add Cluster', icon: PlusCircle },
+    { href: '/clusters', label: 'Add Cluster', icon: PlusCircle },
+    { href: '/services', label: 'Add Service', icon: HardDrive },
+    { href: '/alerts/definitions', label: 'New Alert Definition', icon: Siren },
+    { href: '/tasks', label: 'View All Tasks', icon: ListChecks },
     { href: '/logs', label: 'Search Logs', icon: Search },
     { href: '/settings', label: 'Go to Settings', icon: Settings },
   ];
