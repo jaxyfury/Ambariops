@@ -10,11 +10,12 @@ import { Badge } from "@amberops/ui/components/ui/badge";
 import { Select, SelectTrigger, SelectContent, SelectValue, SelectItem } from "@amberops/ui/components/ui/select";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@amberops/ui/components/ui/tooltip";
 import { mockClusters, mockAlerts } from "@amberops/api";
-import { ArrowUpRight, Cpu, MemoryStick, Server, Siren, PlusCircle } from "lucide-react";
+import { ArrowUpRight, Cpu, MemoryStick, Server, Siren, Rocket } from "lucide-react";
 import Link from 'next/link';
 import { ClusterHealthSummary } from "@/components/cluster-health-summary";
 import { useState } from "react";
 import type { Cluster } from "@amberops/lib";
+import { OnboardingTour } from "@/components/onboarding-tour";
 
 function getStatusColor(status: 'healthy' | 'unhealthy' | 'degraded') {
   switch (status) {
@@ -45,6 +46,7 @@ export default function DashboardPage() {
     const healthyClusters = mockClusters.filter(c => c.status === 'healthy').length;
 
     const [selectedCluster, setSelectedCluster] = useState<Cluster>(mockClusters[1]);
+    const [runTour, setRunTour] = useState(false);
 
     const handleClusterChange = (clusterId: string) => {
         const cluster = mockClusters.find(c => c.id === clusterId);
@@ -52,22 +54,30 @@ export default function DashboardPage() {
             setSelectedCluster(cluster);
         }
     };
+    
+    // Auto-start tour for first-time visit (simulated with sessionStorage)
+    useState(() => {
+        if (typeof window !== 'undefined' && !sessionStorage.getItem('amberops_tour_completed')) {
+            setRunTour(true);
+            sessionStorage.setItem('amberops_tour_completed', 'true');
+        }
+    });
+
 
     return (
         <div>
+            <OnboardingTour run={runTour} setRun={setRunTour} />
             <PageHeader
                 title="Dashboard"
                 description="Welcome to your AmberOps Console."
                 actions={(
-                    <Button asChild>
-                        <Link href="/clusters">
-                            <PlusCircle className="mr-2 h-4 w-4" />
-                            Create New Cluster
-                        </Link>
+                    <Button onClick={() => setRunTour(true)}>
+                        <Rocket className="mr-2 h-4 w-4" />
+                        Start Tour
                     </Button>
                 )}
             />
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            <div id="summary-cards" className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">Total Clusters</CardTitle>
@@ -110,7 +120,7 @@ export default function DashboardPage() {
                 </Card>
             </div>
             <div className="grid gap-6 mt-6 lg:grid-cols-2">
-                <Card className="lg:col-span-1">
+                <Card id="cluster-status-card" className="lg:col-span-1">
                     <CardHeader>
                         <CardTitle>Cluster Status</CardTitle>
                         <CardDescription>Overview of all managed clusters.</CardDescription>
@@ -219,7 +229,7 @@ export default function DashboardPage() {
                     </CardFooter>
                 </Card>
             </div>
-             <div className="grid gap-6 mt-6">
+             <div id="ai-summary-card" className="grid gap-6 mt-6">
                  <Card>
                     <CardHeader className="flex flex-row justify-between items-start">
                         <div>
