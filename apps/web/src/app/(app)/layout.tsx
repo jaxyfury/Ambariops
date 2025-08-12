@@ -17,4 +17,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <AppLayout>
             <Breadcrumbs />
             {children}
-          </AppLayout
+          </AppLayout>
+        </div>
+      </div>
+    </SidebarProvider>
+  );
+}

@@ -256,9 +256,6 @@ export function DataTable<TData, TValue>({
       JSON.stringify(table.getState().columnOrder) !== JSON.stringify(initialColumnOrder) ||
       Object.keys(table.getState().columnVisibility).length > 0;
   }, [
-    table.getState().sorting,
-    table.getState().columnVisibility,
-    table.getState().columnOrder,
     table,
     density, 
     style, 
@@ -276,13 +273,13 @@ export function DataTable<TData, TValue>({
     table.resetColumnVisibility();
     setDensity('default');
     setStyle('default');
-  }
+  };
 
   const densityClasses = {
     default: 'py-4 px-4',
     comfortable: 'py-6 px-4',
     compact: 'py-2 px-4',
-  }
+  };
 
   return (
     <div className="w-full">

@@ -165,5 +165,7 @@ export function ClearFilterIcon(props: SVGProps<SVGSVGElement>) {
         <path d="M2600 75 c0 -11 11 -15 40 -15 29 0 40 4 40 15 0 11 -11 15 -40 15 -29 0 -40 -4 -40 -15z"/>
         <path d="M2760 75 c0 -13 8 -16 38 -13 20 2 37 8 37 13 0 6 -17 11 -37 13 -30 3 -38 0 -38 -13z"/>
         <path d="M1665 70 c-4 -6 10 -10 34 -10 23 0 41 5 41 10 0 6 -15 10 -34 10 -19 0 -38 -4 -41 -10z"/>
-        </g> </svg> 
-change the broom icon to this clear filter icon
+        </g>
+    </svg>
+  )
+}
