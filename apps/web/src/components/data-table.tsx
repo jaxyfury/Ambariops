@@ -157,19 +157,21 @@ export function DataTable<TData, TValue>({
   const moveColumn = (columnId: string, direction: 'up' | 'down') => {
     const currentOrder = table.getState().columnOrder;
     const currentIndex = currentOrder.indexOf(columnId);
-    let newOrder = [...currentOrder];
+    const newOrder = [...currentOrder];
+    
+    const visibleColumnOrder = currentOrder.filter(id => table.getColumn(id)?.getIsVisible());
+    const currentVisibleIndex = visibleColumnOrder.indexOf(columnId);
 
-    if (direction === 'up' && currentIndex > 0) {
-        const prevIndex = newOrder.findIndex((id, index) => index < currentIndex && table.getColumn(id)?.getCanHide());
-        if (prevIndex !== -1) {
-            [newOrder[prevIndex], newOrder[currentIndex]] = [newOrder[currentIndex], newOrder[prevIndex]];
-        }
-    } else if (direction === 'down' && currentIndex < newOrder.length - 1) {
-        const nextIndex = newOrder.findIndex((id, index) => index > currentIndex && table.getColumn(id)?.getCanHide());
-        if (nextIndex !== -1) {
-            [newOrder[currentIndex], newOrder[nextIndex]] = [newOrder[nextIndex], newOrder[currentIndex]];
-        }
+    if (direction === 'up' && currentVisibleIndex > 0) {
+        const targetColumnId = visibleColumnOrder[currentVisibleIndex - 1];
+        const targetIndex = newOrder.indexOf(targetColumnId);
+        [newOrder[currentIndex], newOrder[targetIndex]] = [newOrder[targetIndex], newOrder[currentIndex]];
+    } else if (direction === 'down' && currentVisibleIndex < visibleColumnOrder.length - 1) {
+        const targetColumnId = visibleColumnOrder[currentVisibleIndex + 1];
+        const targetIndex = newOrder.indexOf(targetColumnId);
+        [newOrder[currentIndex], newOrder[targetIndex]] = [newOrder[targetIndex], newOrder[currentIndex]];
     }
+    
     table.setColumnOrder(newOrder);
   };
 
@@ -349,6 +351,8 @@ export function DataTable<TData, TValue>({
                                 .getAllLeafColumns()
                                 .filter((column) => column.getCanHide())
                                 .map((column, index) => {
+                                const visibleColumns = table.getVisibleLeafColumns().filter(c => c.getCanHide());
+                                const visibleIndex = visibleColumns.findIndex(c => c.id === column.id);
                                 return (
                                     <div
                                         key={column.id}
@@ -368,10 +372,10 @@ export function DataTable<TData, TValue>({
                                             {column.id}
                                         </Label>
                                         <div className="flex items-center gap-1 ml-auto">
-                                            <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => moveColumn(column.id, 'up')} disabled={index === 0}>
+                                            <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => moveColumn(column.id, 'up')} disabled={visibleIndex === 0}>
                                                 <ArrowUp className="h-4 w-4" />
                                             </Button>
-                                            <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => moveColumn(column.id, 'down')} disabled={index === table.getAllLeafColumns().filter(c => c.getCanHide()).length - 1}>
+                                            <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => moveColumn(column.id, 'down')} disabled={visibleIndex === visibleColumns.length - 1}>
                                                 <ArrowDown className="h-4 w-4" />
                                             </Button>
                                         </div>
