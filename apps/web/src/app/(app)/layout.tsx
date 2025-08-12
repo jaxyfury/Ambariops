@@ -1,3 +1,4 @@
+
 'use client';
 import { AppLayout } from '@/components/layout/app-layout';
 import { SidebarNav } from '@/components/layout/sidebar-nav';

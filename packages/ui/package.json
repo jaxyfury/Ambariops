@@ -42,7 +42,8 @@
     "./components/ui/tabs": "./src/components/ui/tabs.tsx",
     "./components/ui/textarea": "./src/components/ui/textarea.tsx",
     "./components/ui/toast": "./src/components/ui/toast.tsx",
-    "./hooks/use-toast": "./src/hooks/use-toast.ts"
+    "./hooks/use-toast": "./src/hooks/use-toast.ts",
+    "./hooks/use-mobile": "./src/hooks/use-mobile.tsx"
   },
   "scripts": {
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
