@@ -43,7 +43,7 @@ import {
   PopoverContent,
   Label,
 } from "@amberops/ui"
-import { FileDown, SlidersHorizontal, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Broom, List, LayoutGrid, GripVertical, Rows, Columns, Paintbrush } from "lucide-react"
+import { FileDown, SlidersHorizontal, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Broom, List, LayoutGrid, GripVertical } from "lucide-react"
 import jsPDF from "jspdf"
 import autoTable from "jspdf-autotable"
 import * as XLSX from "xlsx"
@@ -123,14 +123,15 @@ export function DataTable<TData, TValue>({
       return;
     }
 
-    const currentOrder = [...columnOrder];
+    const currentOrder = table.getState().columnOrder;
     const draggedIndex = currentOrder.indexOf(draggedColumn);
     const targetIndex = currentOrder.indexOf(targetColumnId);
     
-    currentOrder.splice(draggedIndex, 1);
-    currentOrder.splice(targetIndex, 0, draggedColumn);
+    const newOrder = [...currentOrder];
+    newOrder.splice(draggedIndex, 1);
+    newOrder.splice(targetIndex, 0, draggedColumn);
 
-    table.setColumnOrder(currentOrder);
+    table.setColumnOrder(newOrder);
     setDraggedColumn(null);
   };
 
@@ -205,9 +206,9 @@ export function DataTable<TData, TValue>({
   const isFiltered = table.getState().columnFilters.length > 0;
 
   const densityClasses = {
-    default: 'p-4',
-    comfortable: 'p-6',
-    compact: 'p-2',
+    default: 'py-4 px-4',
+    comfortable: 'py-6 px-4',
+    compact: 'py-2 px-4',
   }
 
   return (
@@ -242,50 +243,50 @@ export function DataTable<TData, TValue>({
                     </Button>
                 </div>
             )}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline">
-                  <Rows className="mr-2 h-4 w-4" />
-                  <span className="capitalize">{density}</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuLabel>Row Density</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => setDensity('compact')}>Compact</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setDensity('default')}>Default</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setDensity('comfortable')}>Comfortable</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline">
-                  <Paintbrush className="mr-2 h-4 w-4" />
-                  <span className="capitalize">{style}</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuLabel>Table Style</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => setStyle('default')}>Horizontal Lines</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setStyle('grid')}>Grid</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setStyle('zebra')}>Zebra Stripes</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setStyle('minimal')}>Minimal</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
              <Popover>
                 <PopoverTrigger asChild>
                   <Button variant="outline">
                       <SlidersHorizontal className="mr-2 h-4 w-4" /> Customize
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-64">
+                <PopoverContent className="w-80">
                     <div className="grid gap-4">
                         <div className="space-y-2">
-                            <h4 className="font-medium leading-none">Customize Columns</h4>
+                            <h4 className="font-medium leading-none">Customize View</h4>
                             <p className="text-sm text-muted-foreground">
-                            Toggle visibility and reorder columns.
+                            Adjust density, style, and columns.
                             </p>
+                        </div>
+                        <div className="grid gap-2">
+                            <Label>Row Density</Label>
+                             <Select value={density} onValueChange={(value) => setDensity(value as DensityType)}>
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Select density" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="compact">Compact</SelectItem>
+                                    <SelectItem value="default">Default</SelectItem>
+                                    <SelectItem value="comfortable">Comfortable</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                         <div className="grid gap-2">
+                            <Label>Table Style</Label>
+                             <Select value={style} onValueChange={(value) => setStyle(value as StyleType)}>
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Select style" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="default">Horizontal Lines</SelectItem>
+                                    <SelectItem value="grid">Grid</SelectItem>
+                                    <SelectItem value="zebra">Zebra Stripes</SelectItem>
+                                    <SelectItem value="minimal">Minimal</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                        <div className="space-y-2">
+                           <Label>Columns</Label>
+                           <p className="text-xs text-muted-foreground">Toggle visibility and reorder columns.</p>
                         </div>
                         <div className="grid gap-2">
                            {table
@@ -315,8 +316,10 @@ export function DataTable<TData, TValue>({
                             })}
                         </div>
                         <Button variant="outline" size="sm" onClick={() => {
-                          table.setColumnOrder(initialColumnOrder)
-                          table.resetColumnVisibility()
+                          table.setColumnOrder(initialColumnOrder);
+                          table.resetColumnVisibility();
+                          setDensity('default');
+                          setStyle('default');
                         }}>Reset View</Button>
                     </div>
                 </PopoverContent>

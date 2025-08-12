@@ -12,9 +12,12 @@ const Table = React.forwardRef<
       ref={ref}
       className={cn(
         "w-full caption-bottom text-sm",
-        "[&_[data-style=grid]_tr:last-child]:border-b-0",
-        "[&_[data-style=minimal]_tr]:border-b-0",
-        "[&_[data-style=zebra]_tr]:border-b-0",
+        "[&_[data-style=grid]_tr:not(:last-child)]:border-b",
+        "[&_[data-style=grid]_th]:border-b",
+        "[&_[data-style=grid]_td]:border-r [&_[data-style=grid]_th]:border-r",
+        "[&_[data-style=grid]_td:last-child]:border-r-0 [&_[data-style=grid]_th:last-child]:border-r-0",
+        "[&_[data-style=minimal]_tr]:border-0",
+        "[&_[data-style=zebra]_tr]:border-b",
         className
       )}
       {...props}
@@ -39,7 +42,7 @@ const TableBody = React.forwardRef<
     ref={ref}
     className={cn(
         "[&_tr:last-child]:border-0",
-        "[&_[data-style=zebra]_tr:nth-child(even)]:bg-muted/50",
+        "[[data-style=zebra]_&_tr:nth-child(even)]:bg-muted/50",
         className
     )}
     {...props}
@@ -85,7 +88,6 @@ const TableHead = React.forwardRef<
     ref={ref}
     className={cn(
       "h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0 relative group",
-      "[&[data-style=grid]]:border-r",
       className
     )}
     {...props}
@@ -101,7 +103,6 @@ const TableCell = React.forwardRef<
     ref={ref}
     className={cn(
         "align-middle [&:has([role=checkbox])]:pr-0",
-        "[&[data-style=grid]]:border-r",
         className
     )}
     {...props}
