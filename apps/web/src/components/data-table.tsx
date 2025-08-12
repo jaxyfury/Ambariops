@@ -247,8 +247,7 @@ export function DataTable<TData, TValue>({
   };
   
   const isFiltered = React.useMemo(() => {
-    const hasColumnFilters = table.getState().columnFilters.length > 0 && 
-      (filterKey ? (table.getColumn(filterKey)?.getFilterValue() as string) !== '' : false);
+    const hasColumnFilters = filterKey ? (table.getColumn(filterKey)?.getFilterValue() as string)?.length > 0 : false;
     
     return hasColumnFilters || 
       table.getState().sorting.length > 0 ||
@@ -257,14 +256,11 @@ export function DataTable<TData, TValue>({
       JSON.stringify(table.getState().columnOrder) !== JSON.stringify(initialColumnOrder) ||
       Object.keys(table.getState().columnVisibility).length > 0;
   }, [
-    table.getState().columnFilters, 
-    table.getState().sorting, 
+    table,
     density, 
     style, 
-    table.getState().columnOrder, 
-    table.getState().columnVisibility,
-    filterKey,
-    table
+    initialColumnOrder,
+    filterKey
   ]);
 
   const resetAll = () => {
