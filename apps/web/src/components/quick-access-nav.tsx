@@ -38,7 +38,6 @@ import Link from 'next/link';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import '../styles/quick-access-nav.css';
-import { cn } from '@amberops/lib';
 
 interface QuickLinkProps {
   href?: string;
@@ -49,7 +48,7 @@ interface QuickLinkProps {
 function QuickLink({ href, onClick, children }: QuickLinkProps) {
     const commonProps = {
         variant: "ghost",
-        className: "justify-start text-muted-foreground hover:text-foreground hover:bg-accent transition-all duration-200 transform hover:scale-105",
+        className: "justify-start text-muted-foreground hover:text-foreground hover:bg-accent transition-all duration-200 transform hover:scale-105 w-full",
         onClick,
     } as const;
 
@@ -124,49 +123,49 @@ export function QuickAccessNav() {
             {/* Column 1: Clusters & Services */}
             <div className="space-y-3 border-r pr-4">
               <h4 className="font-semibold flex items-center gap-2 text-primary border-b pb-2"><Server className="h-4 w-4" />Clusters & Services</h4>
-              <div className="flex flex-col items-stretch gap-1">
-                <QuickLink href="/clusters" onClick={closeModal}><PlusCircle /> Add Cluster</QuickLink>
-                <QuickLink href="/clusters" onClick={closeModal}><Server /> Manage Clusters</QuickLink>
-                <QuickLink href="/services" onClick={closeModal}><HardDrive /> Add Service</QuickLink>
-                <QuickLink onClick={() => handleAction("Restart All Services")}><RefreshCw /> Restart All Services</QuickLink>
-                <QuickLink onClick={() => handleAction("Refresh Cluster Health")}><RefreshCw /> Refresh Cluster Health</QuickLink>
-              </div>
+              <ul className="quick-access-list">
+                <li className="quick-access-item"><QuickLink href="/clusters" onClick={closeModal}><PlusCircle /> Add Cluster</QuickLink></li>
+                <li className="quick-access-item"><QuickLink href="/clusters" onClick={closeModal}><Server /> Manage Clusters</QuickLink></li>
+                <li className="quick-access-item"><QuickLink href="/services" onClick={closeModal}><HardDrive /> Add Service</QuickLink></li>
+                <li className="quick-access-item"><QuickLink onClick={() => handleAction("Restart All Services")}><RefreshCw /> Restart All Services</QuickLink></li>
+                <li className="quick-access-item"><QuickLink onClick={() => handleAction("Refresh Cluster Health")}><RefreshCw /> Refresh Cluster Health</QuickLink></li>
+              </ul>
             </div>
 
             {/* Column 2: Alerts & Monitoring */}
             <div className="space-y-3 border-r pr-4">
               <h4 className="font-semibold flex items-center gap-2 text-primary border-b pb-2"><Siren className="h-4 w-4" />Alerts & Monitoring</h4>
-              <div className="flex flex-col items-stretch gap-1">
-                 <QuickLink href="/alerts/definitions" onClick={closeModal}><Siren /> New Alert Definition</QuickLink>
-                 <QuickLink href="/alerts" onClick={closeModal}><AlertTriangle /> View All Alerts</QuickLink>
-                 <QuickLink href="/alerts" onClick={closeModal}><AlertTriangle /> View Critical Alerts</QuickLink>
-                 <QuickLink href="/dashboard" onClick={closeModal}><Bot /> AI Health Summary</QuickLink>
-                 <QuickLink href="/dashboard" onClick={closeModal}><LayoutDashboard /> Resource Dashboard</QuickLink>
-              </div>
+              <ul className="quick-access-list">
+                 <li className="quick-access-item"><QuickLink href="/alerts/definitions" onClick={closeModal}><Siren /> New Alert Definition</QuickLink></li>
+                 <li className="quick-access-item"><QuickLink href="/alerts" onClick={closeModal}><AlertTriangle /> View All Alerts</QuickLink></li>
+                 <li className="quick-access-item"><QuickLink href="/alerts" onClick={closeModal}><AlertTriangle /> View Critical Alerts</QuickLink></li>
+                 <li className="quick-access-item"><QuickLink href="/dashboard" onClick={closeModal}><Bot /> AI Health Summary</QuickLink></li>
+                 <li className="quick-access-item"><QuickLink href="/dashboard" onClick={closeModal}><LayoutDashboard /> Resource Dashboard</QuickLink></li>
+              </ul>
             </div>
 
             {/* Column 3: Tasks & Logs */}
             <div className="space-y-3 border-r pr-4">
               <h4 className="font-semibold flex items-center gap-2 text-primary border-b pb-2"><ListChecks className="h-4 w-4" />Tasks & Logs</h4>
-               <div className="flex flex-col items-stretch gap-1">
-                 <QuickLink href="/tasks" onClick={closeModal}><ListChecks /> View All Tasks</QuickLink>
-                 <QuickLink href="/tasks" onClick={closeModal}><ListChecks /> Pending / Failed Tasks</QuickLink>
-                 <QuickLink href="/logs" onClick={closeModal}><Search /> Search Logs</QuickLink>
-                 <QuickLink onClick={() => handleAction("Export Logs")}><FileText /> Export Logs</QuickLink>
-                 <QuickLink onClick={() => handleAction("View Scheduled Operations")}><ListChecks /> Scheduled Operations</QuickLink>
-              </div>
+               <ul className="quick-access-list">
+                 <li className="quick-access-item"><QuickLink href="/tasks" onClick={closeModal}><ListChecks /> View All Tasks</QuickLink></li>
+                 <li className="quick-access-item"><QuickLink href="/tasks" onClick={closeModal}><ListChecks /> Pending / Failed Tasks</QuickLink></li>
+                 <li className="quick-access-item"><QuickLink href="/logs" onClick={closeModal}><Search /> Search Logs</QuickLink></li>
+                 <li className="quick-access-item"><QuickLink onClick={() => handleAction("Export Logs")}><FileText /> Export Logs</QuickLink></li>
+                 <li className="quick-access-item"><QuickLink onClick={() => handleAction("View Scheduled Operations")}><ListChecks /> Scheduled Operations</QuickLink></li>
+              </ul>
             </div>
 
             {/* Column 4: Settings & Help */}
             <div className="space-y-3">
               <h4 className="font-semibold flex items-center gap-2 text-primary border-b pb-2"><Settings className="h-4 w-4" />Settings & Help</h4>
-               <div className="flex flex-col items-stretch gap-1">
-                 <QuickLink href="/settings" onClick={closeModal}><Settings /> Go to Settings</QuickLink>
-                 <QuickLink onClick={toggleTheme}><Moon /> Toggle Theme</QuickLink>
-                 <QuickLink onClick={changeLanguage}><Languages /> Change Language</QuickLink>
-                 <QuickLink href="/help" onClick={closeModal}><BookOpen /> Documentation</QuickLink>
-                 <QuickLink href="/help" onClick={closeModal}><LifeBuoy /> Contact Support</QuickLink>
-              </div>
+               <ul className="quick-access-list">
+                 <li className="quick-access-item"><QuickLink href="/settings" onClick={closeModal}><Settings /> Go to Settings</QuickLink></li>
+                 <li className="quick-access-item"><QuickLink onClick={toggleTheme}><Moon /> Toggle Theme</QuickLink></li>
+                 <li className="quick-access-item"><QuickLink onClick={changeLanguage}><Languages /> Change Language</QuickLink></li>
+                 <li className="quick-access-item"><QuickLink href="/help" onClick={closeModal}><BookOpen /> Documentation</QuickLink></li>
+                 <li className="quick-access-item"><QuickLink href="/help" onClick={closeModal}><LifeBuoy /> Contact Support</QuickLink></li>
+              </ul>
             </div>
           </div>
         </DialogContent>

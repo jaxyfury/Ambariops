@@ -127,3 +127,50 @@
 .petal:nth-child(12) {
     animation: petal12 4s linear infinite;
 }
+
+.quick-access-list {
+    position: relative;
+    padding-left: 20px;
+    margin-top: 1rem;
+}
+
+.quick-access-item {
+    position: relative;
+    list-style: none;
+    margin-bottom: 0.5rem;
+}
+
+.quick-access-item::before {
+    content: '';
+    position: absolute;
+    left: -12px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: hsl(var(--border));
+}
+
+.quick-access-item:last-child::before {
+    height: 18px; /* Half height for the last item */
+}
+
+.quick-access-item > button svg {
+    position: relative;
+}
+
+.quick-access-item > button svg::before {
+    content: '';
+    position: absolute;
+    left: -20px; /* Adjust based on padding/icon size */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: hsl(var(--muted-foreground));
+    border: 2px solid hsl(var(--background));
+}
+
+.quick-access-item > button:hover svg::before {
+    background-color: hsl(var(--primary));
+}
