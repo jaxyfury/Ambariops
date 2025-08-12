@@ -1,5 +1,15 @@
 
 {
-  "dashboard": "Dashboard",
-  "welcome_message": "Willkommen in Ihrer AmberOps-Konsole."
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Willkommen in Ihrer AmberOps-Konsole."
+  },
+  "clusters": {
+    "title": "Cluster",
+    "description": "Verwalten Sie Ihre Cluster und sehen Sie deren Integritätsstatus."
+  },
+  "services": {
+    "title": "Dienste",
+    "description": "Eine Liste aller Dienste, die in Ihren Clustern ausgeführt werden."
+  }
 }

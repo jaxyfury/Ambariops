@@ -1,5 +1,15 @@
 
 {
-  "dashboard": "ダッシュボード",
-  "welcome_message": "AmberOpsコンソールへようこそ。"
+  "dashboard": {
+    "title": "ダッシュボード",
+    "welcome": "AmberOpsコンソールへようこそ。"
+  },
+  "clusters": {
+    "title": "クラスター",
+    "description": "クラスターを管理し、その健全性ステータスを表示します。"
+  },
+  "services": {
+    "title": "サービス",
+    "description": "クラスター全体で実行されているすべてのサービスのリスト。"
+  }
 }

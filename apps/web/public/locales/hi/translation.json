@@ -1,5 +1,15 @@
 
 {
-  "dashboard": "डैशबोर्ड",
-  "welcome_message": "आपके AmberOps कंसोल में आपका स्वागत है।"
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome to your AmberOps Console."
+  },
+  "clusters": {
+    "title": "Clusters",
+    "description": "Manage your clusters and view their health status."
+  },
+  "services": {
+    "title": "Services",
+    "description": "A list of all services running across your clusters."
+  }
 }

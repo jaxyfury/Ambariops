@@ -1,5 +1,15 @@
 
 {
-  "dashboard": "Tableau de bord",
-  "welcome_message": "Bienvenue sur votre console AmberOps."
+  "dashboard": {
+    "title": "Tableau de bord",
+    "welcome": "Bienvenue sur votre console AmberOps."
+  },
+  "clusters": {
+    "title": "Clusters",
+    "description": "Gérez vos clusters et consultez leur état de santé."
+  },
+  "services": {
+    "title": "Services",
+    "description": "Une liste de tous les services fonctionnant sur vos clusters."
+  }
 }
