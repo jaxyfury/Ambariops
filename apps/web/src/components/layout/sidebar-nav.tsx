@@ -15,6 +15,7 @@ import {
   AlertCircle,
   Laptop,
   History,
+  PanelLeft,
 } from 'lucide-react';
 import {
   Accordion,
@@ -30,7 +31,7 @@ import {
   SidebarHeader,
   SidebarContent,
   SidebarFooter,
-  SidebarSeparator,
+  SidebarTrigger,
 } from '@amberops/ui/components/ui/sidebar';
 import { useSidebar } from '@amberops/ui/hooks/use-sidebar';
 import { AmberOpsLogo } from '@amberops/ui/components/icons';
@@ -83,19 +84,16 @@ export function SidebarNav() {
               {item.subItems ? (
                  <Accordion type="single" collapsible defaultValue={isAlertsActive ? "alerts" : undefined} disabled={sidebarState === 'collapsed'}>
                     <AccordionItem value="alerts" className="border-b-0">
-                      <SidebarMenuButton
-                        asChild
-                        isActive={isAlertsActive}
-                        className="[&>svg:last-child]:hidden"
-                      >
-                         <AccordionTrigger className="w-full">
-                           <div className="flex items-center gap-2">
+                        <AccordionTrigger asChild>
+                           <SidebarMenuButton
+                            isActive={isAlertsActive}
+                            tooltip={item.tooltip}
+                          >
                             <item.icon />
                             <span>{item.label}</span>
-                           </div>
-                         </AccordionTrigger>
-                      </SidebarMenuButton>
-                      <AccordionContent className="p-0 pl-7 pt-1">
+                          </SidebarMenuButton>
+                      </AccordionTrigger>
+                      <AccordionContent className="p-0 pl-7 pt-1 group-data-[state=collapsed]:hidden">
                         <ul className="space-y-1">
                           {item.subItems.map(subItem => (
                             <li key={subItem.href}>
@@ -123,6 +121,7 @@ export function SidebarNav() {
         </SidebarMenu>
       </SidebarContent>
       <SidebarFooter>
+        <SidebarTrigger className="w-full justify-start"/>
         <SidebarMenu className="p-2">
           {bottomNavItems.map((item) => (
             <SidebarMenuItem key={item.label}>
@@ -139,4 +138,3 @@ export function SidebarNav() {
     </Sidebar>
   );
 }
-
