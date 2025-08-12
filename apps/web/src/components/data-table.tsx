@@ -246,25 +246,41 @@ export function DataTable<TData, TValue>({
     XLSX.writeFile(workbook, "table_data.xlsx");
   };
   
-  const isFiltered = React.useMemo(() => {
+ const isFiltered = React.useMemo(() => {
     const hasColumnFilters = filterKey ? ((table.getColumn(filterKey)?.getFilterValue() as string) ?? '').length > 0 : false;
     
     return hasColumnFilters || 
       table.getState().sorting.length > 0 ||
       density !== 'default' ||
       style !== 'default' ||
-      JSON.stringify(table.getState().columnOrder) !== JSON.stringify(initialColumnOrder) ||
-      Object.keys(table.getState().columnVisibility).length > 0;
+      Object.keys(columnVisibility).length > 0 ||
+      JSON.stringify(columnOrder) !== JSON.stringify(initialColumnOrder);
   }, [
-    table.getState().columnFilters,
+    table.getColumn(filterKey)?.getFilterValue(),
     table.getState().sorting,
-    table.getState().columnOrder,
-    table.getState().columnVisibility,
+    columnVisibility,
+    columnOrder,
     density, 
     style, 
     initialColumnOrder,
     filterKey,
   ]);
+
+  const [isClearing, setIsClearing] = React.useState(false);
+  const [showClearFilter, setShowClearFilter] = React.useState(false);
+
+  React.useEffect(() => {
+    if (isFiltered) {
+        setShowClearFilter(true);
+        setIsClearing(false);
+    } else if (showClearFilter) {
+        setIsClearing(true);
+        setTimeout(() => {
+            setShowClearFilter(false);
+            setIsClearing(false);
+        }, 200); // Should match animation duration
+    }
+  }, [isFiltered, showClearFilter]);
 
   const resetAll = () => {
     table.resetColumnFilters();
@@ -296,14 +312,17 @@ export function DataTable<TData, TValue>({
                     }
                     className="flex-grow"
                 />}
-                {isFiltered && (
+                {showClearFilter && (
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <Button
-                                variant="ghost"
+                                variant="secondary"
                                 size="icon"
                                 onClick={resetAll}
-                                className="h-8 w-8 rounded-full group flex-shrink-0"
+                                className={cn(
+                                    "h-8 w-8 rounded-full group flex-shrink-0",
+                                    isClearing && "animate-fade-out-slide-out"
+                                )}
                             >
                                 <ClearFilterIcon className="h-5 w-5" />
                             </Button>

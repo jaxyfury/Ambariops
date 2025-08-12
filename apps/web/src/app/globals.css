@@ -88,3 +88,20 @@
     @apply font-headline;
   }
 }
+
+@layer utilities {
+  @keyframes fade-out-slide-out {
+    from {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateX(10px);
+    }
+  }
+
+  .animate-fade-out-slide-out {
+    animation: fade-out-slide-out 0.2s ease-out forwards;
+  }
+}
