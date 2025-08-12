@@ -3,9 +3,9 @@
 
 import Link from 'next/link';
 import { PageHeader } from '@/components/page-header';
-import { Button, Badge, Checkbox, Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger, Input, Label, Tooltip, TooltipTrigger, TooltipContent } from '@amberops/ui';
+import { Button, Badge, Checkbox, Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger, Input, Label, Tooltip, TooltipTrigger, TooltipContent, Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@amberops/ui';
 import { mockClusters } from '@amberops/api';
-import { ArrowUpRight, PlusCircle, ArrowUpDown } from 'lucide-react';
+import { ArrowUpRight, PlusCircle, ArrowUpDown, Server, AlertTriangle } from 'lucide-react';
 import { DataTable } from '@/components/data-table';
 import { type ColumnDef } from '@tanstack/react-table';
 import type { Cluster } from '@amberops/lib';
@@ -147,6 +147,46 @@ export const columns: ColumnDef<Cluster>[] = [
   },
 ];
 
+function ClusterCard({ cluster }: { cluster: Cluster }) {
+    return (
+        <Card>
+            <CardHeader>
+                <div className="flex justify-between items-start">
+                    <CardTitle className="truncate">{cluster.name}</CardTitle>
+                    <Badge variant={getStatusBadgeVariant(cluster.status)} className="capitalize flex-shrink-0">{cluster.status}</Badge>
+                </div>
+                <CardDescription>ID: {cluster.id}</CardDescription>
+            </CardHeader>
+            <CardContent className="grid grid-cols-2 gap-4 text-sm">
+                <div className="flex items-center gap-2">
+                    <Server className="h-4 w-4 text-muted-foreground" />
+                    <span>{cluster.hostCount} Hosts</span>
+                </div>
+                 <div className="flex items-center gap-2">
+                    <AlertTriangle className="h-4 w-4 text-muted-foreground" />
+                    <span>{cluster.alertCount} Alerts</span>
+                </div>
+                <div className="col-span-2 space-y-1">
+                    <div className="flex justify-between">
+                        <span className="text-muted-foreground">CPU</span>
+                        <span>{cluster.cpuUsage}%</span>
+                    </div>
+                     <div className="flex justify-between">
+                        <span className="text-muted-foreground">Memory</span>
+                        <span>{cluster.memoryUsage}%</span>
+                    </div>
+                </div>
+            </CardContent>
+            <CardFooter>
+                 <Button asChild variant="outline" size="sm" className="w-full">
+                    <Link href={`/clusters/${cluster.id}`}>
+                        View Details <ArrowUpRight className="ml-2 h-4 w-4" />
+                    </Link>
+                </Button>
+            </CardFooter>
+        </Card>
+    )
+}
 
 export default function ClustersPage() {
   const [isLoading, setIsLoading] = useState(true);
@@ -160,7 +200,6 @@ export default function ClustersPage() {
   }, []);
 
   const handleAddCluster = () => {
-    // In a real app, you'd handle form submission here
     toast.success('New cluster registration process initiated!');
     setIsModalOpen(false);
   }
@@ -207,7 +246,13 @@ export default function ClustersPage() {
             </Dialog>
         )}
       />
-      <DataTable columns={columns} data={mockClusters} isLoading={isLoading} filterKey="name" />
+      <DataTable 
+        columns={columns} 
+        data={mockClusters} 
+        isLoading={isLoading} 
+        filterKey="name"
+        renderCard={(cluster) => <ClusterCard cluster={cluster} />}
+      />
     </div>
   );
 }

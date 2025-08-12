@@ -3,16 +3,16 @@
 
 import Link from 'next/link';
 import { PageHeader } from '@/components/page-header';
-import { Button, Badge, Checkbox, Tooltip, TooltipTrigger, TooltipContent, Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, Label, Input, DialogFooter } from '@amberops/ui';
+import { Button, Badge, Checkbox, Tooltip, TooltipTrigger, TooltipContent, Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, Label, Input, DialogFooter, Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@amberops/ui';
 import { mockHosts } from '@amberops/api';
-import { ArrowUpRight, PlusCircle, Server, ArrowUpDown } from 'lucide-react';
+import { ArrowUpRight, PlusCircle, Server, ArrowUpDown, Cpu, MemoryStick } from 'lucide-react';
 import { DataTable } from '@/components/data-table';
 import { type ColumnDef } from '@tanstack/react-table';
 import type { Host } from '@amberops/lib';
 import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 
-function getStatusBadgeVariant(status: 'healthy' | 'unhealthy' | 'restarting' | 'maintenance'): 'default' | 'destructive' | 'secondary' {
+function getStatusBadgeVariant(status: 'healthy' | 'unhealthy' | 'restarting' | 'maintenance'): 'default' | 'destructive' | 'secondary' | 'secondary' {
   switch (status) {
     case 'healthy':
       return 'default';
@@ -200,6 +200,39 @@ export const columns: ColumnDef<Host>[] = [
     },
 ];
 
+function HostCard({ host }: { host: Host }) {
+    return (
+        <Card>
+            <CardHeader>
+                 <div className="flex justify-between items-start">
+                    <CardTitle className="truncate">{host.name}</CardTitle>
+                    <Badge variant={getStatusBadgeVariant(host.status)} className="capitalize flex-shrink-0">{host.status}</Badge>
+                </div>
+                <CardDescription>{host.ip}</CardDescription>
+            </CardHeader>
+            <CardContent className="grid grid-cols-2 gap-4 text-sm">
+                 <div className="flex items-center gap-2">
+                    <Cpu className="h-4 w-4 text-muted-foreground" />
+                    <span>{host.cpuCores} Cores</span>
+                </div>
+                <div className="flex items-center gap-2">
+                    <MemoryStick className="h-4 w-4 text-muted-foreground" />
+                    <span>{host.memoryTotalGb}GB RAM</span>
+                </div>
+                 <div className="col-span-2">
+                    <p className="text-muted-foreground truncate">{host.clusterName}</p>
+                </div>
+            </CardContent>
+            <CardFooter>
+                 <Button asChild variant="outline" size="sm" className="w-full">
+                    <Link href={`/hosts/${host.id}`}>
+                        View Details <ArrowUpRight className="ml-2 h-4 w-4" />
+                    </Link>
+                </Button>
+            </CardFooter>
+        </Card>
+    )
+}
 
 export default function HostsPage() {
     const [isLoading, setIsLoading] = useState(true);
@@ -253,7 +286,13 @@ export default function HostsPage() {
             </Dialog>
         )}
       />
-       <DataTable columns={columns} data={mockHosts} filterKey="name" isLoading={isLoading}/>
+       <DataTable
+        columns={columns}
+        data={mockHosts}
+        filterKey="name"
+        isLoading={isLoading}
+        renderCard={(host) => <HostCard host={host} />}
+        />
     </div>
   );
 }

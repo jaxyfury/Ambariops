@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { PageHeader } from '@/components/page-header';
-import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, Checkbox, Tooltip, TooltipTrigger, TooltipContent } from '@amberops/ui';
+import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, Checkbox, Tooltip, TooltipTrigger, TooltipContent, Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, Badge } from '@amberops/ui';
 import { mockServices } from '@amberops/api';
 import { ArrowUpRight, CheckCircle2, XCircle, Clock, HardDrive, MoreHorizontal, Play, Square, RefreshCw, ArrowUpDown } from 'lucide-react';
 import { DataTable } from '@/components/data-table';
@@ -198,6 +198,63 @@ export const columns: ColumnDef<Service>[] = [
     },
 ];
 
+function ServiceCard({ service }: { service: Service }) {
+    return (
+        <Card>
+            <CardHeader>
+                <div className="flex justify-between items-start">
+                    <CardTitle className="truncate flex items-center gap-2">
+                        <HardDrive className="h-5 w-5 text-muted-foreground" />
+                        {service.name}
+                    </CardTitle>
+                    <Badge variant={service.status === 'started' ? 'default' : service.status === 'stopped' ? 'destructive' : 'secondary'} className="capitalize flex-shrink-0">{service.status}</Badge>
+                </div>
+                <CardDescription className="truncate">{service.clusterName}</CardDescription>
+            </CardHeader>
+            <CardContent className="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                    <p className="text-muted-foreground">Version</p>
+                    <p className="font-semibold">{service.version}</p>
+                </div>
+                <div>
+                    <p className="text-muted-foreground">Running Hosts</p>
+                    <p className="font-semibold">{service.runningHosts} / {service.totalHosts}</p>
+                </div>
+            </CardContent>
+            <CardFooter className="gap-2">
+                <Button asChild variant="outline" size="sm" className="w-full">
+                    <Link href={`/services/${service.id}`}>
+                        View <ArrowUpRight className="ml-2 h-4 w-4" />
+                    </Link>
+                </Button>
+                 <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button variant="secondary" size="sm" className="px-3">
+                            <MoreHorizontal className="h-4 w-4" />
+                            <span className="sr-only">More actions</span>
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                        <DropdownMenuItem onClick={() => handleAction(service.name, 'start')}>
+                            <Play className="mr-2 h-4 w-4" />
+                            Start
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleAction(service.name, 'stop')}>
+                            <Square className="mr-2 h-4 w-4" />
+                            Stop
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleAction(service.name, 'restart')}>
+                            <RefreshCw className="mr-2 h-4 w-4" />
+                            Restart
+                        </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            </CardFooter>
+        </Card>
+    )
+}
+
+
 export default function ServicesPage() {
     const [isLoading, setIsLoading] = useState(true);
 
@@ -214,7 +271,13 @@ export default function ServicesPage() {
         title="Services"
         description="A list of all services running across your clusters."
       />
-      <DataTable columns={columns} data={mockServices} filterKey="name" isLoading={isLoading} />
+      <DataTable
+        columns={columns}
+        data={mockServices}
+        filterKey="name"
+        isLoading={isLoading}
+        renderCard={(service) => <ServiceCard service={service} />}
+       />
     </div>
   );
 }
