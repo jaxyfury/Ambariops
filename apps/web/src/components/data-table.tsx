@@ -1,6 +1,4 @@
 
-
-
 "use client"
 
 import * as React from "react"
@@ -20,15 +18,15 @@ import {
   getExpandedRowModel,
   ExpandedState,
 } from "@tanstack/react-table"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@amberops/ui/table"
-import { Button } from "@amberops/ui/button"
-import { Input } from "@amberops/ui/input"
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from "@amberops/ui/dropdown-menu"
-import { Skeleton } from "@amberops/ui/skeleton"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@amberops/ui/select"
-import { Checkbox } from "@amberops/ui/checkbox"
-import { Popover, PopoverTrigger, PopoverContent } from "@amberops/ui/popover"
-import { Label } from "@amberops/ui/label"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@amberops/ui/components/ui/table"
+import { Button } from "@amberops/ui/components/ui/button"
+import { Input } from "@amberops/ui/components/ui/input"
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from "@amberops/ui/components/ui/dropdown-menu"
+import { Skeleton } from "@amberops/ui/components/ui/skeleton"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@amberops/ui/components/ui/select"
+import { Checkbox } from "@amberops/ui/components/ui/checkbox"
+import { Popover, PopoverTrigger, PopoverContent } from "@amberops/ui/components/ui/popover"
+import { Label } from "@amberops/ui/components/ui/label"
 import { FileDown, SlidersHorizontal, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Broom, List, LayoutGrid, GripVertical, ArrowUp, ArrowDown, ChevronDown } from "lucide-react"
 import jsPDF from "jspdf"
 import autoTable from "jspdf-autotable"
