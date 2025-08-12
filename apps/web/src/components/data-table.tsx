@@ -19,33 +19,15 @@ import {
   getExpandedRowModel,
   ExpandedState,
 } from "@tanstack/react-table"
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-  Button,
-  Input,
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  Skeleton,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-  Checkbox,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  Label,
-} from "@amberops/ui"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@amberops/ui/table"
+import { Button } from "@amberops/ui/button"
+import { Input } from "@amberops/ui/input"
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from "@amberops/ui/dropdown-menu"
+import { Skeleton } from "@amberops/ui/skeleton"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@amberops/ui/select"
+import { Checkbox } from "@amberops/ui/checkbox"
+import { Popover, PopoverTrigger, PopoverContent } from "@amberops/ui/popover"
+import { Label } from "@amberops/ui/label"
 import { FileDown, SlidersHorizontal, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Broom, List, LayoutGrid, GripVertical, ArrowUp, ArrowDown, ChevronDown } from "lucide-react"
 import jsPDF from "jspdf"
 import autoTable from "jspdf-autotable"
@@ -130,7 +112,6 @@ export function DataTable<TData, TValue>({
     onColumnOrderChange: setColumnOrder,
     onColumnSizingChange: setColumnSizing,
     onExpandedChange: setExpanded,
-    getSubRowModel: renderSubComponent ? (row) => row.subRows : undefined,
     getExpandedRowModel: getExpandedRowModel(),
     state: {
       sorting,
@@ -141,6 +122,7 @@ export function DataTable<TData, TValue>({
       columnSizing,
       expanded,
     },
+     getRowCanExpand: () => !!renderSubComponent,
   })
 
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {
@@ -267,8 +249,8 @@ export function DataTable<TData, TValue>({
     density !== 'default' ||
     style !== 'default' ||
     JSON.stringify(table.getState().columnOrder) !== JSON.stringify(initialColumnOrder) ||
-    Object.keys(table.getState().columnVisibility).length > 0
-  , [table.getState(), density, style, initialColumnOrder]);
+    Object.keys(columnVisibility).length > 0
+  , [table.getState().columnFilters, table.getState().sorting, density, style, table.getState().columnOrder, initialColumnOrder, columnVisibility]);
 
   const resetAll = () => {
     table.resetColumnFilters();

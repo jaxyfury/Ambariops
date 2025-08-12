@@ -21,7 +21,7 @@ import {
   Clock,
 } from 'lucide-react';
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
-import type { ChartConfig } from '@amberops/ui';
+import type { ChartConfig } from '@amberops/ui/chart';
 import toast from 'react-hot-toast';
 
 function getStatusBadgeVariant(status: 'healthy' | 'unhealthy' | 'degraded'): 'default' | 'destructive' | 'secondary' {
