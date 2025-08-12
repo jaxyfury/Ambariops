@@ -1,4 +1,5 @@
 
+
 "use client"
 
 import * as React from "react"
@@ -14,6 +15,7 @@ import {
   getSortedRowModel,
   useReactTable,
   ColumnOrderState,
+  ColumnSizingState,
 } from "@tanstack/react-table"
 import {
   Table,
@@ -42,12 +44,14 @@ import {
   PopoverContent,
   Label,
 } from "@amberops/ui"
-import { FileDown, SlidersHorizontal, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Broom, List, LayoutGrid, ArrowUp, ArrowDown, GripVertical } from "lucide-react"
+import { FileDown, SlidersHorizontal, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Broom, List, LayoutGrid, ArrowUp, ArrowDown, GripVertical, Rows, Columns } from "lucide-react"
 import jsPDF from "jspdf"
 import autoTable from "jspdf-autotable"
 import * as XLSX from "xlsx"
+import { cn } from "@amberops/lib"
 
 type ViewType = 'table' | 'card';
+type DensityType = 'default' | 'comfortable' | 'compact';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -70,6 +74,8 @@ export function DataTable<TData, TValue>({
     React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
   const [view, setView] = React.useState<ViewType>('table');
+  const [density, setDensity] = React.useState<DensityType>('default');
+  const [columnSizing, setColumnSizing] = React.useState<ColumnSizingState>({});
   
   const initialColumnOrder = React.useMemo(() => columns.map(c => (c as any).id || (c as any).accessorKey), [columns]);
   const [columnOrder, setColumnOrder] = React.useState<ColumnOrderState>(initialColumnOrder);
@@ -78,6 +84,7 @@ export function DataTable<TData, TValue>({
   const table = useReactTable({
     data,
     columns,
+    columnResizeMode: 'onChange',
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -87,12 +94,14 @@ export function DataTable<TData, TValue>({
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     onColumnOrderChange: setColumnOrder,
+    onColumnSizingChange: setColumnSizing,
     state: {
       sorting,
       columnFilters,
       columnVisibility,
       rowSelection,
       columnOrder,
+      columnSizing,
     },
   })
 
@@ -100,13 +109,10 @@ export function DataTable<TData, TValue>({
     if (typeof columnDef.header === 'string') {
         return columnDef.header;
     }
-    // Attempt to extract from accessorKey if header is a function
     const accessorKey = (columnDef as any).accessorKey;
     if (typeof accessorKey === 'string') {
-        // Capitalize first letter for a cleaner title
         return accessorKey.charAt(0).toUpperCase() + accessorKey.slice(1);
     }
-    // Fallback to the column id
     if(columnDef.id) return columnDef.id;
 
     return '';
@@ -126,7 +132,6 @@ export function DataTable<TData, TValue>({
             const cellValue = row.getValue((colDef as any).accessorKey || (colDef as any).id);
             if(cellValue instanceof Date) return cellValue.toLocaleString();
             if (typeof cellValue === 'object' && cellValue !== null) {
-                // For complex objects, attempt to get a name or just stringify
                 return (cellValue as any).name || JSON.stringify(cellValue);
             }
             return String(cellValue ?? '');
@@ -169,17 +174,11 @@ export function DataTable<TData, TValue>({
   
   const isFiltered = table.getState().columnFilters.length > 0;
 
-  const moveColumn = (draggedId: string, targetId: string) => {
-    const newOrder = [...columnOrder];
-    const draggedIndex = newOrder.indexOf(draggedId);
-    const targetIndex = newOrder.indexOf(targetId);
-    
-    // Swap elements
-    [newOrder[draggedIndex], newOrder[targetIndex]] = [newOrder[targetIndex], newOrder[draggedIndex]];
-    
-    setColumnOrder(newOrder);
-  };
-
+  const densityClasses = {
+    default: 'p-4',
+    comfortable: 'p-6',
+    compact: 'p-2',
+  }
 
   return (
     <div className="w-full">
@@ -213,6 +212,21 @@ export function DataTable<TData, TValue>({
                     </Button>
                 </div>
             )}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline">
+                  <Rows className="mr-2 h-4 w-4" />
+                  <span className="capitalize">{density}</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>Row Density</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => setDensity('compact')}>Compact</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setDensity('default')}>Default</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setDensity('comfortable')}>Comfortable</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
              <Popover>
                 <PopoverTrigger asChild>
                   <Button variant="outline">
@@ -235,7 +249,7 @@ export function DataTable<TData, TValue>({
                                 return (
                                     <div key={column.id} className="flex items-center justify-between space-x-2">
                                         <div className="flex items-center gap-2">
-                                            <GripVertical className="h-4 w-4 text-muted-foreground" />
+                                            <GripVertical className="h-4 w-4 text-muted-foreground cursor-grab" />
                                             <Checkbox
                                                 id={`col-${column.id}`}
                                                 checked={column.getIsVisible()}
@@ -283,7 +297,10 @@ export function DataTable<TData, TValue>({
                                 )
                             })}
                         </div>
-                        <Button variant="outline" size="sm" onClick={() => table.setColumnOrder(initialColumnOrder)}>Reset Order</Button>
+                        <Button variant="outline" size="sm" onClick={() => {
+                          table.setColumnOrder(initialColumnOrder)
+                          table.resetColumnVisibility()
+                        }}>Reset View</Button>
                     </div>
                 </PopoverContent>
             </Popover>
@@ -313,19 +330,27 @@ export function DataTable<TData, TValue>({
         </div>
       ) : (
          <div className="rounded-md border">
-            <Table>
-            <TableHeader>
+            <Table style={{ width: table.getCenterTotalSize() }}>
+            <TableHeader className="sticky top-0 bg-card z-10">
                 {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                     {headerGroup.headers.map((header) => {
                     return (
-                        <TableHead key={header.id} style={{ width: header.getSize() !== 150 ? header.getSize() : undefined }}>
+                        <TableHead key={header.id} style={{ width: header.getSize() }}>
                         {header.isPlaceholder
                             ? null
                             : flexRender(
                                 header.column.columnDef.header,
                                 header.getContext()
                             )}
+                            <div
+                                onMouseDown={header.getResizeHandler()}
+                                onTouchStart={header.getResizeHandler()}
+                                className={cn(
+                                'absolute top-0 right-0 h-full w-1.5 cursor-col-resize select-none touch-none bg-border opacity-0 group-hover:opacity-100',
+                                header.column.getIsResizing() && 'bg-primary opacity-100'
+                                )}
+                            />
                         </TableHead>
                     )
                     })}
@@ -337,7 +362,7 @@ export function DataTable<TData, TValue>({
                     Array.from({ length: 10 }).map((_, i) => (
                         <TableRow key={i}>
                             {table.getAllColumns().map((column, j) => (
-                                <TableCell key={j}>
+                                <TableCell key={j} className={densityClasses[density]}>
                                     <Skeleton className="h-6 w-full" />
                                 </TableCell>
                             ))}
@@ -350,7 +375,7 @@ export function DataTable<TData, TValue>({
                     data-state={row.getIsSelected() && "selected"}
                     >
                     {row.getVisibleCells().map((cell) => (
-                        <TableCell key={cell.id}>
+                        <TableCell key={cell.id} className={densityClasses[density]}>
                         {flexRender(
                             cell.column.columnDef.cell,
                             cell.getContext()
@@ -447,5 +472,3 @@ export function DataTable<TData, TValue>({
     </div>
   )
 }
-
-    
