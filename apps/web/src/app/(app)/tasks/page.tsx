@@ -6,7 +6,7 @@ import { Progress } from '@amberops/ui/components/ui/progress';
 import { Badge } from '@amberops/ui/components/ui/badge';
 import { Checkbox } from '@amberops/ui/components/ui/checkbox';
 import { Tooltip, TooltipTrigger, TooltipContent } from '@amberops/ui/components/ui/tooltip';
-import { Card, CardContent, CardHeader } from '@amberops/ui/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@amberops/ui/components/ui/card';
 import { mockTasks, mockServices, mockClusters } from '@amberops/api';
 import { CheckCircle, XCircle, Loader, CircleDotDashed, ArrowUpDown, Server, HardDrive, ArrowDown, ArrowUp } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
@@ -255,7 +255,10 @@ const SubRowComponent = ({ task }: { task: Task }) => {
         <div className="bg-muted/50 p-4">
             <Card>
                 <CardHeader>
-                    <h4 className="font-semibold">Task Details</h4>
+                    <CardTitle>Task Details</CardTitle>
+                    <CardDescription>
+                        Additional context and logs for task #{task.id}.
+                    </CardDescription>
                 </CardHeader>
                 <CardContent className="grid grid-cols-2 gap-4 text-sm">
                     {cluster && (
@@ -276,13 +279,21 @@ const SubRowComponent = ({ task }: { task: Task }) => {
                             </div>
                         </div>
                     )}
-                    <div>
-                        <p className="text-muted-foreground">Target</p>
+                    <div className="flex items-center gap-2">
+                        <p className="text-muted-foreground">Target:</p>
                         <p className="font-semibold">{task.target || 'N/A'}</p>
                     </div>
-                     <div>
-                        <p className="text-muted-foreground">Logs</p>
-                        <p className="font-mono text-xs bg-background p-2 rounded">See task logs for details.</p>
+                     <div className="col-span-2">
+                        <p className="text-muted-foreground mb-2">Logs</p>
+                        <pre className="bg-background p-3 rounded text-xs overflow-x-auto">
+                            <code>
+                                {`[${task.startTime}] INFO: Starting task '${task.name}' initiated by ${task.user}.\n`}
+                                {task.progress > 10 && `[${new Date(new Date(task.startTime).getTime() + 5000).toISOString()}] INFO: Validating parameters for target ${task.target}.\n`}
+                                {task.progress > 40 && `[${new Date(new Date(task.startTime).getTime() + 10000).toISOString()}] INFO: Executing operation on ${cluster?.name || 'cluster'}.\n`}
+                                {task.status === 'failed' && `[${new Date(new Date(task.startTime).getTime() + 15000).toISOString()}] ERROR: Operation failed. See error logs for details.`}
+                                {task.status === 'completed' && `[${new Date(new Date(task.startTime).getTime() + 25000).toISOString()}] INFO: Task completed successfully.`}
+                            </code>
+                        </pre>
                     </div>
                 </CardContent>
             </Card>

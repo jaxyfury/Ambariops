@@ -38,6 +38,7 @@
     "./components/ui/sheet": "./src/components/ui/sheet.tsx",
     "./components/ui/skeleton": "./src/components/ui/skeleton.tsx",
     "./components/ui/slider": "./src/components/ui/slider.tsx",
+    "./components/ui/stepper": "./src/components/ui/stepper.tsx",
     "./components/ui/switch": "./src/components/ui/switch.tsx",
     "./components/ui/table": "./src/components/ui/table.tsx",
     "./components/ui/tabs": "./src/components/ui/tabs.tsx",

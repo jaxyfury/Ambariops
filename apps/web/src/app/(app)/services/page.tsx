@@ -9,8 +9,11 @@ import { Checkbox } from '@amberops/ui/components/ui/checkbox';
 import { Tooltip, TooltipTrigger, TooltipContent } from '@amberops/ui/components/ui/tooltip';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@amberops/ui/components/ui/card';
 import { Badge } from '@amberops/ui/components/ui/badge';
-import { mockServices } from '@amberops/api';
-import { ArrowUpRight, CheckCircle2, XCircle, Clock, HardDrive, MoreHorizontal, Play, Square, RefreshCw, ArrowUpDown, ArrowDown, ArrowUp } from 'lucide-react';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@amberops/ui/components/ui/dialog';
+import { Label } from '@amberops/ui/components/ui/label';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@amberops/ui/components/ui/select';
+import { mockServices, mockClusters } from '@amberops/api';
+import { ArrowUpRight, CheckCircle2, XCircle, Clock, HardDrive, MoreHorizontal, Play, Square, RefreshCw, ArrowUpDown, ArrowDown, ArrowUp, PlusCircle } from 'lucide-react';
 import { DataTable } from '@/components/data-table';
 import { type ColumnDef } from '@tanstack/react-table';
 import type { Service } from '@amberops/lib';
@@ -292,6 +295,7 @@ function ServiceCard({ service }: { service: Service }) {
 
 export default function ServicesPage() {
     const [isLoading, setIsLoading] = useState(true);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -300,11 +304,64 @@ export default function ServicesPage() {
         return () => clearTimeout(timer);
     }, []);
 
+    const handleAddService = () => {
+        toast.success('Task to add new service has been created!');
+        setIsModalOpen(false);
+    }
+
   return (
     <div>
       <PageHeader
         title="Services"
         description="A list of all services running across your clusters."
+        actions={(
+            <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+                <DialogTrigger asChild>
+                    <Button>
+                        <PlusCircle className="mr-2 h-4 w-4" />
+                        Add Service
+                    </Button>
+                </DialogTrigger>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Add New Service</DialogTitle>
+                        <DialogDescription>
+                            Choose a cluster and service to install.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="grid gap-4 py-4">
+                        <div className="grid grid-cols-4 items-center gap-4">
+                            <Label htmlFor="cluster" className="text-right">Cluster</Label>
+                            <Select>
+                                <SelectTrigger className="col-span-3">
+                                    <SelectValue placeholder="Select a cluster" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {mockClusters.map(c => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}
+                                </SelectContent>
+                            </Select>
+                        </div>
+                         <div className="grid grid-cols-4 items-center gap-4">
+                            <Label htmlFor="service" className="text-right">Service</Label>
+                            <Select>
+                                <SelectTrigger className="col-span-3">
+                                    <SelectValue placeholder="Select a service" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="zookeeper">Zookeeper</SelectItem>
+                                    <SelectItem value="ambari-metrics">Ambari Metrics</SelectItem>
+                                    <SelectItem value="hbase">HBase</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    </div>
+                    <DialogFooter>
+                        <Button variant="outline" onClick={() => setIsModalOpen(false)}>Cancel</Button>
+                        <Button onClick={handleAddService}>Add Service</Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+        )}
       />
       <DataTable
         columns={columns}
