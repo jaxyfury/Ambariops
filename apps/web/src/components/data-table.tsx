@@ -27,7 +27,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@amberops/ui/components/ui/checkbox"
 import { Popover, PopoverTrigger, PopoverContent } from "@amberops/ui/components/ui/popover"
 import { Label } from "@amberops/ui/components/ui/label"
-import { FileDown, SlidersHorizontal, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Broom, List, LayoutGrid, GripVertical, ArrowUp, ArrowDown, ChevronDown } from "lucide-react"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@amberops/ui/components/ui/tooltip"
+import { BroomIcon } from '@amberops/ui/components/icons';
+import { FileDown, SlidersHorizontal, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, List, LayoutGrid, GripVertical, ArrowUp, ArrowDown, ChevronDown } from "lucide-react"
 import jsPDF from "jspdf"
 import autoTable from "jspdf-autotable"
 import * as XLSX from "xlsx"
@@ -255,6 +257,7 @@ export function DataTable<TData, TValue>({
 
   const resetAll = () => {
     table.resetColumnFilters();
+    if(filterKey) table.getColumn(filterKey)?.setFilterValue("");
     table.resetSorting();
     table.setColumnOrder(initialColumnOrder);
     table.resetColumnVisibility();
@@ -280,14 +283,21 @@ export function DataTable<TData, TValue>({
           className="max-w-sm"
         /> }
         {isFiltered && (
-            <Button
-                variant="ghost"
-                onClick={resetAll}
-                className="h-10 px-2 lg:px-3"
-            >
-                Reset
-                <Broom className="ml-2 h-4 w-4" />
-            </Button>
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <Button
+                        variant="ghost"
+                        onClick={resetAll}
+                        size="icon"
+                        className="h-10 w-10 rounded-full transition-all duration-300 hover:bg-secondary/80 hover:scale-110"
+                    >
+                       <BroomIcon className="h-5 w-5 text-muted-foreground" />
+                    </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                    <p>Clear all filters and customizations</p>
+                </TooltipContent>
+            </Tooltip>
         )}
         <div className="ml-auto flex items-center gap-2">
             {renderCard && (
@@ -567,3 +577,5 @@ export function DataTable<TData, TValue>({
     </div>
   )
 }
+
+    
