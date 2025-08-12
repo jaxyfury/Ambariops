@@ -43,9 +43,9 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           </TooltipContent>
         </Tooltip>
         
-        <div className="flex-1" />
-
-        <QuickAccessNav />
+        <div className="flex-1 flex justify-center">
+            <QuickAccessNav />
+        </div>
         
         <div className="flex items-center gap-2">
           <LanguageSwitcher />
