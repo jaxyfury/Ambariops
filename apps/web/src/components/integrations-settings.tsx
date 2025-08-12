@@ -11,7 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { PlusCircle, Slack, GitMerge, Bell } from 'lucide-react';
 import toast from 'react-hot-toast';
 
-const integrationsList = [
+const initialIntegrations = [
   {
     name: 'Slack',
     description: 'Receive notifications in your Slack channels.',
@@ -33,20 +33,30 @@ const integrationsList = [
 ];
 
 export function IntegrationsSettings() {
-  const [integrations, setIntegrations] = useState(integrationsList);
+  const [integrations, setIntegrations] = useState(initialIntegrations);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedIntegration, setSelectedIntegration] = useState<string | null>(null);
 
-  const toggleIntegration = (name: string) => {
+  const toggleIntegration = (name: string, connect: boolean) => {
     setIntegrations(
       integrations.map((int) =>
-        int.name === name ? { ...int, connected: !int.connected } : int
+        int.name === name ? { ...int, connected: connect } : int
       )
     );
-    toast.success(`Integration with ${name} updated.`);
+    toast.success(`Integration with ${name} ${connect ? 'enabled' : 'disabled'}.`);
   };
   
    const handleAddIntegration = () => {
-    toast.success('New integration added (simulation).');
+    if (!selectedIntegration) {
+      toast.error('Please select an integration to add.');
+      return;
+    }
+    toggleIntegration(selectedIntegration, true);
+    setIsModalOpen(false);
+    setSelectedIntegration(null);
   };
+
+  const availableIntegrations = integrations.filter(int => !int.connected);
 
   return (
     <Card>
@@ -57,7 +67,7 @@ export function IntegrationsSettings() {
             Connect AmberOps with your favorite third-party services.
           </CardDescription>
         </div>
-        <Dialog>
+        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
             <DialogTrigger asChild>
                 <Button>
                     <PlusCircle className="mr-2 h-4 w-4" />
@@ -68,15 +78,32 @@ export function IntegrationsSettings() {
                 <DialogHeader>
                     <DialogTitle>Add New Integration</DialogTitle>
                     <DialogDescription>
-                        Select a new service to connect with AmberOps. This is a placeholder and no real connection will be made.
+                        Select a new service to connect with AmberOps.
                     </DialogDescription>
                 </DialogHeader>
-                <div className="py-4">
-                    <p>Integration options would be listed here.</p>
+                <div className="py-4 space-y-2">
+                    {availableIntegrations.length > 0 ? (
+                        availableIntegrations.map(int => (
+                            <Button
+                                key={int.name}
+                                variant={selectedIntegration === int.name ? 'secondary' : 'outline'}
+                                className="w-full justify-start gap-3 p-6"
+                                onClick={() => setSelectedIntegration(int.name)}
+                            >
+                                <int.icon className="h-6 w-6" />
+                                <div className="text-left">
+                                    <p className="font-semibold">{int.name}</p>
+                                    <p className="font-normal text-muted-foreground">{int.description}</p>
+                                </div>
+                            </Button>
+                        ))
+                    ) : (
+                        <p className="text-center text-muted-foreground">All available integrations are already connected.</p>
+                    )}
                 </div>
                 <DialogFooter>
-                    <Button variant="outline">Cancel</Button>
-                    <Button onClick={handleAddIntegration}>Add</Button>
+                    <Button variant="outline" onClick={() => setIsModalOpen(false)}>Cancel</Button>
+                    <Button onClick={handleAddIntegration} disabled={!selectedIntegration}>Add</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
@@ -99,7 +126,7 @@ export function IntegrationsSettings() {
             </div>
             <Switch
               checked={integration.connected}
-              onCheckedChange={() => toggleIntegration(integration.name)}
+              onCheckedChange={(checked) => toggleIntegration(integration.name, checked)}
               aria-label={`Toggle ${integration.name} integration`}
             />
           </div>
