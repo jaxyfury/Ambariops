@@ -85,41 +85,40 @@ export function DataTable<TData, TValue>({
     },
   })
 
-  const getHeaderFromColumn = (column: any): string => {
-    if (typeof column.header === 'string') {
-        return column.header;
+  const getHeaderFromColumn = (columnDef: ColumnDef<TData, TValue>): string => {
+    if (typeof columnDef.header === 'string') {
+        return columnDef.header;
     }
-    const headerNode = column.header({ table });
-    // This is a naive way to get text from a React node, might need improvement
-    if (headerNode && typeof headerNode === 'object' && 'props' in headerNode) {
-        if (Array.isArray(headerNode.props.children)) {
-          return headerNode.props.children.find((c: any) => typeof c === 'string')?.trim() || column.id || column.accessorKey || '';
-        }
-        return headerNode.props.children || column.id || column.accessorKey || '';
+
+    if (typeof columnDef.accessorKey === 'string') {
+        return columnDef.accessorKey;
     }
-    return column.id || column.accessorKey || '';
+    
+    // For complex headers with components, we try a best-effort extraction.
+    // This is a simplification; a real app might need a more robust solution.
+    if(columnDef.id) return columnDef.id;
+
+    return '';
   };
+
 
   const exportToPDF = () => {
     const doc = new jsPDF();
-    const tableHeaders = table.getVisibleFlatColumns()
-        .map(col => getHeaderFromColumn(col.columnDef))
-        .filter(header => header && header !== 'select' && header !== 'actions');
+    const visibleColumns = table.getVisibleFlatColumns()
+        .map(col => col.columnDef)
+        .filter((colDef: any) => colDef.id !== 'select' && colDef.id !== 'actions');
+
+    const tableHeaders = visibleColumns.map(colDef => getHeaderFromColumn(colDef));
     
     const tableData = table.getRowModel().rows.map(row => {
-        return row.getVisibleCells()
-            .filter(cell => {
-                const colDef = cell.column.columnDef as any;
-                return colDef.id !== 'select' && colDef.id !== 'actions';
-            })
-            .map(cell => {
-                const context = cell.getContext();
-                const cellValue = context.getValue();
-                if (typeof cellValue === 'object' && cellValue !== null) {
-                    return JSON.stringify(cellValue);
-                }
-                return String(cellValue ?? '');
-            });
+        return visibleColumns.map(colDef => {
+            const cellValue = row.getValue((colDef as any).accessorKey || (colDef as any).id);
+            if(cellValue instanceof Date) return cellValue.toLocaleString();
+            if (typeof cellValue === 'object' && cellValue !== null) {
+                return JSON.stringify(cellValue);
+            }
+            return String(cellValue ?? '');
+        });
     });
 
     autoTable(doc, {
@@ -130,24 +129,23 @@ export function DataTable<TData, TValue>({
   };
 
   const exportToExcel = () => {
-    const tableHeaders = table.getVisibleFlatColumns()
-        .map(col => getHeaderFromColumn(col.columnDef))
-        .filter(header => header && header !== 'select' && header !== 'actions');
+     const visibleColumns = table.getVisibleFlatColumns()
+        .map(col => col.columnDef)
+        .filter((colDef: any) => colDef.id !== 'select' && colDef.id !== 'actions');
+
+    const tableHeaders = visibleColumns.map(colDef => getHeaderFromColumn(colDef));
 
     const tableData = table.getRowModel().rows.map(row => {
         const rowData: { [key: string]: any } = {};
-        row.getVisibleCells().forEach(cell => {
-            const colDef = cell.column.columnDef as any;
-            if (colDef.id !== 'select' && colDef.id !== 'actions') {
-                const header = getHeaderFromColumn(colDef);
-                const context = cell.getContext();
-                rowData[header] = context.getValue();
-            }
+        visibleColumns.forEach(colDef => {
+            const header = getHeaderFromColumn(colDef);
+            const cellValue = row.getValue((colDef as any).accessorKey || (colDef as any).id);
+            rowData[header] = cellValue;
         });
         return rowData;
     });
 
-    const worksheet = XLSX.utils.json_to_sheet(tableData);
+    const worksheet = XLSX.utils.json_to_sheet(tableData, { header: tableHeaders });
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
     XLSX.writeFile(workbook, "table_data.xlsx");
