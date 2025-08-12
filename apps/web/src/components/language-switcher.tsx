@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useTranslation } from 'react-i18next';
@@ -22,6 +23,13 @@ export function LanguageSwitcher() {
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => changeLanguage('en')}>English</DropdownMenuItem>
         <DropdownMenuItem onClick={() => changeLanguage('es')}>Español</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => changeLanguage('fr')}>Français</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => changeLanguage('de')}>Deutsch</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => changeLanguage('ja')}>日本語</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => changeLanguage('zh')}>中文</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => changeLanguage('ru')}>Русский</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => changeLanguage('hi')}>हिन्दी</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => changeLanguage('ar')}>العربية</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
