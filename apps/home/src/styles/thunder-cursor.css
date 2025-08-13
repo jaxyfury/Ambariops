@@ -22,6 +22,11 @@
     transition: transform 0.2s ease-out;
 }
 
+.thunder-cursor-icon svg {
+    width: 18px;
+    height: 18px;
+}
+
 .thunder-cursor-container:has(+ * a:hover),
 .thunder-cursor-container:has(+ * button:hover) {
     transform: translate3d(var(--x), var(--y), 0) scale(1.2);
@@ -84,11 +89,10 @@
 .spark:nth-child(4) { --angle: 315; }
 
 /* Hide default cursor only on the home app body */
-.auth-body, .home-body {
+.home-body {
     cursor: none;
 }
 /* Ensure links and buttons show a pointer, which will be our custom one */
-.auth-body a, .auth-body button,
 .home-body a, .home-body button {
     cursor: pointer;
 }

@@ -1,3 +1,4 @@
+
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from 'next/font/google';
 import "@amberops/design-tokens/globals.css";
@@ -12,6 +13,7 @@ import "@/styles/testimonials-marquee.css";
 import { cn } from "@amberops/lib";
 import { ThemeProvider } from "@amberops/ui/components/theme-provider";
 import { Toaster } from "react-hot-toast";
+import { ThunderCursor } from "@/components/thunder-cursor";
 
 const fontBody = Inter({
   subsets: ['latin'],
@@ -53,7 +55,7 @@ export default function RootLayout({
       <head />
       <body
          className={cn(
-          'min-h-screen bg-background font-body antialiased text-foreground',
+          'min-h-screen bg-background font-body antialiased text-foreground home-body',
           fontBody.variable,
           fontHeadline.variable
         )}
@@ -64,6 +66,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
         >
+            <ThunderCursor />
             {children}
             <Toaster position="bottom-right" />
         </ThemeProvider>
