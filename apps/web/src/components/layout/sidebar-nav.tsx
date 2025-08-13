@@ -15,7 +15,7 @@ import {
   AlertCircle,
   Laptop,
   History,
-  LifeBuoy,
+  BookOpen,
 } from 'lucide-react';
 import {
   Accordion,
@@ -63,7 +63,7 @@ export function SidebarNav() {
   const bottomNavItems = [
      {
       label: 'Documentation',
-      icon: LifeBuoy,
+      icon: BookOpen,
       tooltip: 'Documentation',
       subItems: [
         { href: '/documentation/dashboard', label: 'Dashboard Guide', tooltip: 'Dashboard Guide' },
