@@ -100,7 +100,7 @@ export function SidebarNav() {
                 >
                     <AccordionTrigger className="p-2">
                         <div className="flex items-center gap-2">
-                            <item.icon />
+                            <item.icon className="h-4 w-4" />
                             <span className="group-data-[state=collapsed]:hidden">{item.label}</span>
                         </div>
                     </AccordionTrigger>
