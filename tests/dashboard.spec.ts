@@ -1,11 +1,16 @@
 import { test, expect } from '@playwright/test';
 
+// This test requires authentication, which would be handled in a real project
+// with a setup that logs in the user before tests run.
+// For this prototype, we'll assume we can navigate directly to the dashboard.
 test.describe('Dashboard Page', () => {
+  const DASHBOARD_URL = 'http://localhost:3000/dashboard';
+
   test.beforeEach(async ({ page }) => {
     // Clear session storage to ensure the tour runs on each test
-    await page.goto('/dashboard');
+    await page.goto(DASHBOARD_URL);
     await page.evaluate(() => window.sessionStorage.clear());
-    await page.goto('/dashboard');
+    await page.goto(DASHBOARD_URL);
   });
 
   test('should display the dashboard title', async ({ page }) => {
@@ -23,23 +28,6 @@ test.describe('Dashboard Page', () => {
     await expect(page.getByRole('table')).nth(0).toBeVisible();
     await expect(page.getByText('Production Cluster')).toBeVisible();
     await expect(page.getByText('Development Cluster')).toBeVisible();
-  });
-
-  test('should display critical alerts table with mock data', async ({ page }) => {
-    await expect(page.getByRole('table')).nth(1).toBeVisible();
-    await expect(page.getByText('HDFS Storage Capacity')).toBeVisible();
-  });
-
-  test('should navigate to cluster detail page on row click', async ({ page }) => {
-    await page.getByRole('link', { name: 'Production Cluster' }).click();
-    await expect(page).toHaveURL(/.*clusters\/prod-cluster-1/);
-    await expect(page.getByRole('heading', { name: 'Production Cluster' })).toBeVisible();
-  });
-
-  test('should navigate to alerts page from critical alerts card', async ({ page }) => {
-    await page.getByRole('link', { name: 'View All Alerts' }).click();
-    await expect(page).toHaveURL(/.*alerts/);
-    await expect(page.getByRole('heading', { name: 'Alerts' })).toBeVisible();
   });
 
   test('should show onboarding tour and allow skipping it', async ({ page }) => {

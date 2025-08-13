@@ -13,7 +13,7 @@ test.describe('Authentication Pages', () => {
     await page.getByRole('button', { name: 'Admin Login' }).click();
     await expect(page).toHaveURL(/.*\/login/);
     await expect(page.getByRole('heading', { name: 'Admin Login' })).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Sign in with Google' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Google' })).toBeVisible();
   });
   
   test('should navigate to the signup page', async ({ page }) => {
