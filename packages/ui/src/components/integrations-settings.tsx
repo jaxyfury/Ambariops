@@ -8,7 +8,7 @@ import {
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@amberops/ui/components/ui/card';
 import { Switch } from '@amberops/ui/components/ui/switch';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogTrigger } from '@amberops/ui/components/ui/dialog';
-import { PlusCircle, Slack, GitMerge, Bell, Bot, KeyRound, Eye, EyeOff } from 'lucide-react';
+import { PlusCircle, Slack, GitMerge, Bell, Bot, KeyRound, Eye, EyeOff, AlertTriangle } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { Input } from '@amberops/ui/components/ui/input';
 import { Label } from '@amberops/ui/components/ui/label';
@@ -61,7 +61,7 @@ export function IntegrationsSettings() {
   };
 
   const handleSaveApiKey = () => {
-    toast.success('Your API Key has been securely saved.');
+    toast.success('API Key saved (simulation).');
     // In a real application, this would make an API call to a secure backend endpoint.
   }
 
@@ -76,13 +76,13 @@ export function IntegrationsSettings() {
                 <CardTitle>Generative AI Provider</CardTitle>
             </div>
             <CardDescription>
-             Your personal API key will be securely stored and used for all AI-powered features you invoke. By default, AmberOps uses a shared key for demonstration purposes.
+              Use your own personal Gemini API key for all AI-powered features. Your key will be securely managed by the backend.
             </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
             <div className="space-y-2">
                 <Label htmlFor="gemini-api-key">Your Personal Gemini API Key</Label>
-                 <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2">
                     <div className="relative flex-grow">
                         <Input 
                             id="gemini-api-key" 
@@ -104,6 +104,13 @@ export function IntegrationsSettings() {
                     <Button onClick={handleSaveApiKey}>Save Key</Button>
                 </div>
             </div>
+             <Alert variant="destructive">
+                <AlertTriangle className="h-4 w-4" />
+                <AlertTitle>Prototype Feature</AlertTitle>
+                <AlertDescription>
+                 This is a UI prototype. In a real application, saving this key would require a secure backend to store it and use it for your AI requests. Currently, all AI features will continue to use the default site-wide API key.
+                </AlertDescription>
+            </Alert>
         </CardContent>
       </Card>
 
