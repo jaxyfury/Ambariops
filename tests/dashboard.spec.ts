@@ -2,6 +2,9 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Dashboard Page', () => {
   test.beforeEach(async ({ page }) => {
+    // Clear session storage to ensure the tour runs on each test
+    await page.goto('/dashboard');
+    await page.evaluate(() => window.sessionStorage.clear());
     await page.goto('/dashboard');
   });
 
@@ -15,7 +18,7 @@ test.describe('Dashboard Page', () => {
     await expect(page.getByText('Avg. CPU Usage')).toBeVisible();
     await expect(page.getByText('Avg. Memory Usage')).toBeVisible();
   });
-  
+
   test('should display cluster status table with mock data', async ({ page }) => {
     await expect(page.getByRole('table')).nth(0).toBeVisible();
     await expect(page.getByText('Production Cluster')).toBeVisible();
@@ -37,5 +40,12 @@ test.describe('Dashboard Page', () => {
     await page.getByRole('link', { name: 'View All Alerts' }).click();
     await expect(page).toHaveURL(/.*alerts/);
     await expect(page.getByRole('heading', { name: 'Alerts' })).toBeVisible();
+  });
+
+  test('should show onboarding tour and allow skipping it', async ({ page }) => {
+    await expect(page.getByRole('heading', { name: 'Welcome!' })).toBeVisible();
+    await expect(page.getByText('Welcome to AmberOps! This is your main dashboard')).toBeVisible();
+    await page.getByRole('button', { name: 'Skip' }).click();
+    await expect(page.getByRole('heading', { name: 'Welcome!' })).not.toBeVisible();
   });
 });
