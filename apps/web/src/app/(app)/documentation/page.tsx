@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { PageHeader } from '@/components/page-header';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@amberops/ui/components/ui/card';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@amberops/ui/components/ui/card';
 import { ArrowUpRight, BookOpen, LayoutDashboard, Server, Siren, Settings, Wand2, Table, HardDrive } from 'lucide-react';
 
 const docSections = [
