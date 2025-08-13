@@ -13,7 +13,7 @@
   height: 400px;
   position: relative;
   transform-style: preserve-3d;
-  animation: rotate-globe 30s infinite linear;
+  animation:cubic-bezier(0.47, 0, 0.745, 0.715) 30s infinite linear;
 }
 
 @keyframes rotate-globe {
