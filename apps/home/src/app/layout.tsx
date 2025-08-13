@@ -10,7 +10,7 @@ import "@/styles/not-found.css";
 import "@/styles/pricing-card.css";
 import "@/styles/thunder-cursor.css";
 import "@/styles/testimonials-marquee.css";
-import "@/styles/feature-scroll.css";
+import "@/styles/feature-carousel.css";
 import { cn } from "@amberops/lib";
 import { ThemeProvider } from "@amberops/ui/components/theme-provider";
 import { Toaster } from "react-hot-toast";
@@ -75,3 +75,5 @@ export default function RootLayout({
     </html>
   );
 }
+
+    

@@ -18,62 +18,10 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { TestimonialsMarquee } from '@/components/testimonials-marquee';
 import { cn } from '@amberops/lib';
+import { FeatureCarousel } from '@/components/feature-carousel';
 
 gsap.registerPlugin(ScrollTrigger);
 
-
-const features = [
-  {
-    icon: <Zap className="h-8 w-8 text-primary" />,
-    title: 'Blazing Fast UI',
-    description: 'A modern, responsive interface built with Next.js for a seamless user experience that leaves legacy systems behind.',
-  },
-  {
-    icon: <BarChart className="h-8 w-8 text-primary" />,
-    title: 'AI-Powered Insights',
-    description: 'Leverage generative AI to get health summaries and actionable troubleshooting steps in plain English.',
-  },
-  {
-    icon: <Server className="h-8 w-8 text-primary" />,
-    title: 'Unified Cluster View',
-    description: 'Manage all your clusters from a single, intuitive dashboard. No more context switching.',
-  },
-  {
-    icon: <HardDrive className="h-8 w-8 text-primary" />,
-    title: 'Simplified Service Mgmt',
-    description: 'Start, stop, and configure services across all hosts with just a few clicks. Track operations in real-time.',
-  },
-  {
-    icon: <Users className="h-8 w-8 text-primary" />,
-    title: 'User & Access Control',
-    description: 'Fine-grained user management with roles and permissions to ensure secure access for your entire team.',
-  },
-   {
-    icon: <GitBranch className="h-8 w-8 text-primary" />,
-    title: 'Configuration Versioning',
-    description: 'Track changes to service configurations over time and easily rollback to previous versions when needed.',
-  },
-  {
-    icon: <Terminal className="h-8 w-8 text-primary" />,
-    title: 'Mock API for Devs',
-    description: 'Develop locally with a complete mock of the Ambari API, ensuring a smooth and independent workflow.',
-  },
-  {
-    icon: <Blocks className="h-8 w-8 text-primary" />,
-    title: 'Monorepo Architecture',
-    description: 'Built on a modern pnpm monorepo for clean code separation and maximum reusability between packages.',
-  },
-  {
-    icon: <Package className="h-8 w-8 text-primary" />,
-    title: 'Shared Component Library',
-    description: 'A robust set of UI components built with ShadCN and Storybook ensures a consistent and high-quality user interface.',
-  },
-  {
-    icon: <Search className="h-8 w-8 text-primary" />,
-    title: 'Global Search',
-    description: 'Instantly find any host, service, or cluster across your entire infrastructure with a single search.',
-  }
-];
 
 const testimonials = [
   {
@@ -157,7 +105,6 @@ const pricingTiers = {
 
 export default function HomePage() {
   const mainRef = useRef<HTMLDivElement>(null);
-  const featureSectionRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -180,36 +127,6 @@ export default function HomePage() {
         duration: 0.5,
         ease: "power3.out",
       });
-
-      if (featureSectionRef.current) {
-        const featureCards = gsap.utils.toArray<HTMLElement>('.feature-card-wrapper');
-        const featureText = gsap.utils.toArray<HTMLElement>('.feature-text-item');
-
-        gsap.set(featureText, { opacity: 0, y: 20 });
-        gsap.to(featureText[0], { opacity: 1, y: 0, duration: 0.3 });
-
-        featureCards.forEach((card, i) => {
-          ScrollTrigger.create({
-            trigger: card,
-            start: "top center",
-            end: "bottom center",
-            onEnter: () => {
-              gsap.to(featureText, { opacity: 0, y: 20, duration: 0.3, overwrite: 'auto' });
-              gsap.to(featureText[i], { opacity: 1, y: 0, duration: 0.3, overwrite: 'auto' });
-              
-              featureCards.forEach(c => (c as HTMLElement).classList.remove('active'));
-              card.classList.add('active');
-            },
-            onEnterBack: () => {
-               gsap.to(featureText, { opacity: 0, y: 20, duration: 0.3, overwrite: 'auto' });
-               gsap.to(featureText[i], { opacity: 1, y: 0, duration: 0.3, overwrite: 'auto' });
-
-               featureCards.forEach(c => (c as HTMLElement).classList.remove('active'));
-               card.classList.add('active');
-            }
-          });
-        });
-      }
 
     }, mainRef);
 
@@ -303,7 +220,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section id="features" ref={featureSectionRef} className="w-full py-20 md:py-28 lg:py-32 bg-muted/20">
+        <section id="features" className="w-full py-20 md:py-28 lg:py-32 bg-muted/20">
           <div className="container mx-auto px-4 md:px-6">
               <div className="text-center max-w-3xl mx-auto mb-16">
                   <div className="inline-block rounded-lg bg-secondary px-3 py-1 text-sm">Key Features</div>
@@ -315,33 +232,7 @@ export default function HomePage() {
                   </p>
               </div>
 
-              <div className="grid lg:grid-cols-2 gap-8 items-start">
-                  <div className="lg:sticky top-28 h-fit">
-                    <div className="relative h-48">
-                      {features.map((feature, i) => (
-                        <div key={i} className="feature-text-item absolute inset-0">
-                          <h3 className="text-2xl font-bold font-headline mb-3 flex items-center gap-3">
-                            {feature.icon} {feature.title}
-                          </h3>
-                          <p className="text-muted-foreground text-lg">{feature.description}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-8">
-                    {features.map((feature, i) => (
-                      <div key={i} className="feature-card-wrapper">
-                        <div className="feature-card">
-                           <h3 className="text-xl font-bold font-headline flex items-center gap-3 lg:hidden">
-                            {feature.icon} {feature.title}
-                           </h3>
-                           <p className="text-muted-foreground mt-2 lg:hidden">{feature.description}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-              </div>
+              <FeatureCarousel />
           </div>
         </section>
         
@@ -485,3 +376,5 @@ export default function HomePage() {
     </div>
   )
 }
+
+    
