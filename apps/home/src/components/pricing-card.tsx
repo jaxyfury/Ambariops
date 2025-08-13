@@ -4,8 +4,20 @@
 import { useEffect, useRef } from 'react';
 import type VanillaTilt from 'vanilla-tilt';
 import * as THREE from 'three';
+import { cn } from '@amberops/lib';
+import Link from 'next/link';
 
-export function PricingCard() {
+interface PricingCardProps {
+    title: string;
+    price: string;
+    period: string;
+    description: string;
+    features: string[];
+    buttonText: string;
+    isFeatured?: boolean;
+}
+
+export function PricingCard({ title, price, period, description, features, buttonText, isFeatured = false }: PricingCardProps) {
     const cardContainerRef = useRef<HTMLDivElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const animationFrameId = useRef<number>();
@@ -75,10 +87,10 @@ export function PricingCard() {
                     vec2 noiseCoord1 = vec2(normalizedAngle * 8.0 + mediumTime * 0.3, vUv.y * 4.0 - mediumTime * 0.4);
                     float fireDetail1 = turbulence(noiseCoord1, 1.0, 4);
                     vec2 noiseCoord2 = vec2(normalizedAngle * 6.0 - mediumTime * 0.5, vUv.y * 3.0 + mediumTime * 0.3);
-                    float widthModulation = 1.0 - pow(abs(vUv.y - 0.5) * 1.8, 2.0);
-                    widthModulation = clamp(widthModulation, 0.3, 1.0);
                     float fireDetail = fireDetail1 * 0.6 + fireDetail2 * 0.4;
                     fireDetail = pow(fireDetail, 1.2); 
+                    float widthModulation = 1.0 - pow(abs(vUv.y - 0.5) * 1.8, 2.0);
+                    widthModulation = clamp(widthModulation, 0.3, 1.0);
                     float turbulentIntensity = fireDetail * widthModulation;
                     vec3 finalColor = mix(vec3(0.7, 0.05, 0.01), fireColorBase, turbulentIntensity);
                     gl_FragColor = vec4(finalColor, turbulentIntensity);
@@ -209,52 +221,43 @@ export function PricingCard() {
         };
     }, []);
 
+    const buttonLink = title === 'Enterprise' ? '#contact' : '/auth?action=signup';
+
     return (
-        <div className="card-container" ref={cardContainerRef}>
+        <div className={cn("card-container", isFeatured && "scale-105")}>
             <canvas id="energy-canvas" ref={canvasRef}></canvas>
             <div className="card" data-tilt data-tilt-max="10" data-tilt-speed="400" data-tilt-perspective="1000" data-tilt-glare data-tilt-max-glare="0.2">
-                <h2 className="card-title">Pro Tier Access</h2>
+                <h2 className="card-title">{title}</h2>
                 <p className="card-price">
-                    <span className="currency">$</span>99<span className="text-3xl align-baseline">.00</span>
-                    <span className="period">/month</span>
+                    {price.match(/^\d+$/) ? (
+                        <>
+                            <span className="currency">$</span>
+                            {price}
+                            <span className="text-3xl align-baseline">.00</span>
+                        </>
+                    ) : (
+                        price
+                    )}
+                    <span className="period">{period}</span>
                 </p>
                 <p className="card-description">
-                    For growing businesses and production use. Unlock powerful features to scale your operations.
+                    {description}
                 </p>
                 <ul className="features-list">
-                    <li>
-                        <svg className="rotating-disc-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="12" cy="12" r="8"/>
-                        </svg>
-                        Up to 5 Clusters
-                    </li>
-                    <li>
-                        <svg className="rotating-disc-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="12" cy="12" r="8"/>
-                        </svg>
-                        Up to 50 Hosts
-                    </li>
-                    <li>
-                        <svg className="rotating-disc-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="12" cy="12" r="8"/>
-                        </svg>
-                         Priority Email Support
-                    </li>
-                    <li>
-                        <svg className="rotating-disc-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="12" cy="12" r="8"/>
-                        </svg>
-                        Advanced AI Features
-                    </li>
-                    <li>
-                        <svg className="rotating-disc-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="12" cy="12" r="8"/>
-                        </svg>
-                        Weekly Health Reports
-                    </li>
+                    {features.map((feature, index) => (
+                         <li key={index}>
+                            <svg className="rotating-disc-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="12" cy="12" r="8"/>
+                            </svg>
+                            {feature}
+                        </li>
+                    ))}
                 </ul>
-                <button className="cta-button">Choose Pro</button>
+                <Link href={buttonLink} className="cta-button text-center no-underline">
+                    {buttonText}
+                </Link>
             </div>
         </div>
     );
 }
+

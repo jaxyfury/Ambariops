@@ -87,6 +87,33 @@ const faqItems = [
     }
 ]
 
+const pricingTiers = {
+    hobby: {
+        title: "Hobby",
+        price: "0",
+        period: "/month",
+        description: "For personal projects & small teams.",
+        features: ["1 Cluster", "Up to 5 Hosts", "Community Support", "Core Features"],
+        buttonText: "Get Started"
+    },
+    pro: {
+        title: "Pro Tier Access",
+        price: "99",
+        period: "/month",
+        description: "For growing businesses and production use. Unlock powerful features to scale your operations.",
+        features: ["Up to 5 Clusters", "Up to 50 Hosts", "Priority Email Support", "Advanced AI Features", "Weekly Health Reports"],
+        buttonText: "Choose Pro"
+    },
+    enterprise: {
+        title: "Enterprise",
+        price: "Custom",
+        period: "",
+        description: "For large-scale, critical deployments.",
+        features: ["Unlimited Clusters", "Unlimited Hosts", "Dedicated SLA & Support", "On-premise Deployment"],
+        buttonText: "Contact Sales"
+    }
+}
+
 
 export default function HomePage() {
   return (
@@ -214,50 +241,10 @@ export default function HomePage() {
                     </p>
                 </div>
             </div>
-            <div className="mx-auto grid max-w-5xl items-center gap-8 py-12 lg:grid-cols-3 lg:items-start lg:gap-12">
-                <Card className="flex flex-col">
-                    <CardHeader className="items-center text-center">
-                        <CardTitle className="text-2xl font-headline">Hobby</CardTitle>
-                        <CardDescription>For personal projects & small teams.</CardDescription>
-                        <div className="text-4xl font-bold mt-4">$0<span className="text-sm font-normal text-muted-foreground">/month</span></div>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                        <ul className="space-y-2 text-sm text-muted-foreground">
-                            <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-primary" />1 Cluster</li>
-                            <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-primary" />Up to 5 Hosts</li>
-                            <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-primary" />Community Support</li>
-                            <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-primary" />Core Features</li>
-                        </ul>
-                    </CardContent>
-                    <CardFooter className="mt-auto">
-                        <Button asChild variant="outline" className="w-full">
-                            <Link href="/auth?action=signup">Get Started</Link>
-                        </Button>
-                    </CardFooter>
-                </Card>
-
-                <PricingCard />
-
-                <Card className="flex flex-col">
-                    <CardHeader className="items-center text-center">
-                        <CardTitle className="text-2xl font-headline">Enterprise</CardTitle>
-                        <CardDescription>For large-scale, critical deployments.</CardDescription>
-                         <div className="text-4xl font-bold mt-4">Custom</div>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                         <ul className="space-y-2 text-sm text-muted-foreground">
-                            <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-primary" />Unlimited Clusters</li>
-                            <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-primary" />Unlimited Hosts</li>
-                            <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-primary" />Dedicated SLA & Support</li>
-                            <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-primary" />On-premise Deployment</li>
-                        </ul>
-                    </CardContent>
-                    <CardFooter className="mt-auto">
-                        <Button asChild className="w-full">
-                           <Link href="#contact">Contact Sales</Link>
-                        </Button>
-                    </CardFooter>
-                </Card>
+            <div className="mx-auto grid max-w-6xl items-center gap-8 py-12 lg:grid-cols-3 lg:items-start lg:gap-12">
+                <PricingCard {...pricingTiers.hobby} />
+                <PricingCard {...pricingTiers.pro} isFeatured />
+                <PricingCard {...pricingTiers.enterprise} />
             </div>
           </div>
         </section>
