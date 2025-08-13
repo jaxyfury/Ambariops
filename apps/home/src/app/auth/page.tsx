@@ -10,6 +10,10 @@ import { GitMerge, Chrome, LogIn, UserPlus } from 'lucide-react';
 import { cn } from '@amberops/lib';
 import { AmberOpsLogo } from '@amberops/ui/components/icons';
 import { AnimatedThemeToggle } from '@/components/animated-theme-toggle';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@amberops/ui/components/ui/dialog';
+import { Input } from '@amberops/ui/components/ui/input';
+import { Label } from '@amberops/ui/components/ui/label';
+import { Button } from '@amberops/ui/components/ui/button';
 
 const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL || 'http://localhost:3000';
 
@@ -77,6 +81,8 @@ const SignUpForm = () => {
 
 const SignInForm = () => {
     const router = useRouter();
+    const [isForgotModalOpen, setIsForgotModalOpen] = useState(false);
+    const [forgotEmail, setForgotEmail] = useState('');
 
     const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -97,19 +103,66 @@ const SignInForm = () => {
         }
     }
 
+    const handleForgotPassword = async () => {
+        try {
+            const response = await fetch(`${WEB_URL}/api/auth/forgot-password`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: forgotEmail }),
+            });
+            if (response.ok) {
+                toast.success('If an account with that email exists, a password reset link has been sent.');
+            } else {
+                const data = await response.json();
+                toast.error(data.message || 'An error occurred.');
+            }
+        } catch (error) {
+            toast.error('Failed to send reset link.');
+        }
+        setIsForgotModalOpen(false);
+        setForgotEmail('');
+    }
+
     return (
-        <form onSubmit={handleLogin} data-testid="login-form">
-            <h1 className="text-3xl font-bold font-headline mb-3">Sign In</h1>
-            <div className="social-icons">
-                 <SocialButton icon={<Chrome size={20} />} onClick={() => signIn('google', { callbackUrl: `${WEB_URL}/dashboard` })} />
-                 <SocialButton icon={<GitMerge size={20} />} onClick={() => signIn('github', { callbackUrl: `${WEB_URL}/dashboard` })} />
-            </div>
-            <span>or use your email and password</span>
-            <input type="email" name="email" placeholder="Email" required />
-            <input type="password" name="password" placeholder="Password" required />
-            <button type="button" onClick={() => toast('Forgot Password functionality coming soon!')} className="text-xs underline my-2 bg-transparent p-0 text-muted-foreground normal-case font-normal letter-spacing-normal">Forgot Your Password?</button>
-            <button type="submit">Sign In</button>
-        </form>
+        <>
+            <form onSubmit={handleLogin} data-testid="login-form">
+                <h1 className="text-3xl font-bold font-headline mb-3">Sign In</h1>
+                <div className="social-icons">
+                     <SocialButton icon={<Chrome size={20} />} onClick={() => signIn('google', { callbackUrl: `${WEB_URL}/dashboard` })} />
+                     <SocialButton icon={<GitMerge size={20} />} onClick={() => signIn('github', { callbackUrl: `${WEB_URL}/dashboard` })} />
+                </div>
+                <span>or use your email and password</span>
+                <input type="email" name="email" placeholder="Email" required />
+                <input type="password" name="password" placeholder="Password" required />
+                <button type="button" onClick={() => setIsForgotModalOpen(true)} className="text-xs underline my-2 bg-transparent p-0 text-muted-foreground normal-case font-normal letter-spacing-normal hover:text-primary">Forgot Your Password?</button>
+                <button type="submit">Sign In</button>
+            </form>
+
+            <Dialog open={isForgotModalOpen} onOpenChange={setIsForgotModalOpen}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Forgot Password</DialogTitle>
+                        <DialogDescription>
+                            Enter your email address and we&apos;ll send you a link to reset your password.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="grid gap-4 py-4">
+                        <Label htmlFor="forgot-email">Email Address</Label>
+                        <Input 
+                            id="forgot-email" 
+                            type="email" 
+                            value={forgotEmail} 
+                            onChange={(e) => setForgotEmail(e.target.value)}
+                            placeholder="you@example.com"
+                        />
+                    </div>
+                    <DialogFooter>
+                        <Button variant="outline" onClick={() => setIsForgotModalOpen(false)}>Cancel</Button>
+                        <Button onClick={handleForgotPassword}>Send Reset Link</Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+        </>
     );
 };
 
@@ -164,4 +217,3 @@ export default function AuthPage() {
         </div>
     );
 }
-
