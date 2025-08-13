@@ -311,8 +311,7 @@ export default function HomePage() {
                 <div id="features-grid" className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 mt-16">
                     {features.map((feature) => (
                         <div key={feature.title} className="feature-card">
-                            <div className="feature-card-glow" />
-                            <div className="feature-card-content">
+                            <div className="p-8">
                                 <div className="mb-4">{feature.icon}</div>
                                 <h3 className="text-xl font-bold font-headline mb-2">{feature.title}</h3>
                                 <p className="text-muted-foreground">{feature.description}</p>
@@ -336,7 +335,7 @@ export default function HomePage() {
                     </p>
                 </div>
             </div>
-             <div id="pricing-grid" className="mx-auto grid max-w-6xl items-center gap-16 lg:grid-cols-3 justify-items-center">
+             <div id="pricing-grid" className="mx-auto grid max-w-6xl items-start gap-16 lg:grid-cols-3 justify-items-center">
                 <div className="pricing-card-wrapper">
                     <PricingCard {...pricingTiers.hobby} />
                 </div>
