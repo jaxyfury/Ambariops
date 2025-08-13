@@ -21,6 +21,8 @@ export function PricingCard({ title, price, period, description, features, butto
     const cardContainerRef = useRef<HTMLDivElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const animationFrameId = useRef<number>();
+    const cardId = useRef(`card-${title.toLowerCase().replace(/\s+/g, '-')}-${Math.random().toString(36).substring(2, 9)}`);
+
 
     useEffect(() => {
         let isMounted = true;
@@ -30,8 +32,8 @@ export function PricingCard({ title, price, period, description, features, butto
             if (!isMounted || !cardContainerRef.current || !canvasRef.current) return;
 
             const DEBUG = false;
-            function log(...args: any[]) { if (DEBUG) console.log('[FieryCard]', ...args); }
-            function warn(...args: any[]) { if (DEBUG) console.warn('[FieryCard]', ...args); }
+            function log(...args: any[]) { if (DEBUG) console.log(`[FieryCard-${cardId.current}]`, ...args); }
+            function warn(...args: any[]) { if (DEBUG) console.warn(`[FieryCard-${cardId.current}]`, ...args); }
 
             let scene: THREE.Scene, camera: THREE.OrthographicCamera, fieryBandMesh: THREE.Mesh;
             let uniforms: any;
@@ -139,7 +141,7 @@ export function PricingCard({ title, price, period, description, features, butto
                 try {
                     const cardRect = cardContainer.getBoundingClientRect();
                     if (cardRect.width === 0 || cardRect.height === 0) { return; }
-                    const gap = 10; const ringThickness = 20; const cornerRadius = 24;
+                    const gap = 10; const ringThickness = 20; const cornerRadius = 28;
                     const outerWidth = cardRect.width + 2 * (gap + ringThickness);
                     const outerHeight = cardRect.height + 2 * (gap + ringThickness);
                     const outerRadius = cornerRadius + gap + ringThickness;
@@ -166,19 +168,20 @@ export function PricingCard({ title, price, period, description, features, butto
                     outerShape.quadraticCurveTo(outerWidth/2, outerHeight/2, outerWidth/2 - outerRadius, outerHeight/2);
                     outerShape.lineTo(-outerWidth/2 + outerRadius, outerHeight/2);
                     outerShape.quadraticCurveTo(-outerWidth/2, outerHeight/2, -outerWidth/2, outerHeight/2 - outerRadius);
-                    outerShape.lineTo(-innerWidth/2, -innerHeight/2 + innerRadius);
-                    outerShape.quadraticCurveTo(-innerWidth/2, -innerHeight/2, -innerWidth/2 + outerRadius, -innerHeight/2);
-
+                    outerShape.lineTo(-outerWidth/2, -outerHeight/2 + outerRadius);
+                    outerShape.quadraticCurveTo(-outerWidth/2, -outerHeight/2, -outerWidth/2 + outerRadius, -outerHeight/2);
+                    
                     const innerShapePath = new THREE.Path();
-                    innerShapePath.moveTo(-innerWidth/2 + innerRadius, -innerHeight/2);
-                    innerShapePath.lineTo(innerWidth/2 - innerRadius, -innerHeight/2);
-                    innerShapePath.quadraticCurveTo(innerWidth/2, -innerHeight/2, innerWidth/2, -innerHeight/2 + innerRadius);
-                    innerShapePath.lineTo(innerWidth/2, innerHeight/2 - innerRadius);
-                    innerShapePath.quadraticCurveTo(innerWidth/2, innerHeight/2, innerWidth/2 - innerRadius, innerHeight/2);
-                    innerShapePath.lineTo(-innerWidth/2 + innerRadius, innerHeight/2);
-                    innerShapePath.quadraticCurveTo(-innerWidth/2, innerHeight/2, -innerWidth/2, innerHeight/2 - innerRadius);
-                    innerShapePath.lineTo(-innerWidth/2, -innerHeight/2 + innerRadius);
-                    innerShapePath.quadraticCurveTo(-innerWidth/2, -innerHeight/2, -innerWidth/2 + innerRadius, -innerHeight/2);
+                    innerShapePath.moveTo(-innerWidth / 2 + innerRadius, -innerHeight / 2);
+                    innerShapePath.lineTo(innerWidth / 2 - innerRadius, -innerHeight / 2);
+                    innerShapePath.quadraticCurveTo(innerWidth / 2, -innerHeight / 2, innerWidth / 2, -innerHeight / 2 + innerRadius);
+                    innerShapePath.lineTo(innerWidth / 2, innerHeight / 2 - innerRadius);
+                    innerShapePath.quadraticCurveTo(innerWidth / 2, innerHeight / 2, innerWidth / 2 - innerRadius, innerHeight / 2);
+                    innerShapePath.lineTo(-innerWidth / 2 + innerRadius, innerHeight / 2);
+                    innerShapePath.quadraticCurveTo(-innerWidth / 2, innerHeight / 2, -innerWidth / 2, innerHeight / 2 - innerRadius);
+                    innerShapePath.lineTo(-innerWidth / 2, -innerHeight / 2 + innerRadius);
+                    innerShapePath.quadraticCurveTo(-innerWidth / 2, -innerHeight / 2, -innerWidth / 2 + innerRadius, -innerHeight / 2);
+
 
                     outerShape.holes.push(innerShapePath);
                     const ringGeometry = new THREE.ShapeGeometry(outerShape, 48);
@@ -224,11 +227,10 @@ export function PricingCard({ title, price, period, description, features, butto
     }, []);
 
     const buttonLink = title === 'Enterprise' ? '#contact' : '/auth?action=signup';
-    const canvasId = `energy-canvas-${title.toLowerCase().replace(' ', '-')}`;
 
     return (
         <div ref={cardContainerRef} className={cn("card-container", isFeatured && "scale-105")}>
-            <canvas id={canvasId} ref={canvasRef}></canvas>
+            <canvas id={cardId.current} ref={canvasRef}></canvas>
             <div className="card" data-tilt data-tilt-max="10" data-tilt-speed="400" data-tilt-perspective="1000" data-tilt-glare data-tilt-max-glare="0.2">
                 <h2 className="card-title">{title}</h2>
                 <p className="card-price">
@@ -263,4 +265,3 @@ export function PricingCard({ title, price, period, description, features, butto
         </div>
     );
 }
-
