@@ -128,6 +128,18 @@ export default function HomePage() {
         ease: "power3.out",
       });
 
+      gsap.from(".cta-element", {
+        scrollTrigger: {
+            trigger: "#final-cta",
+            start: "top 80%",
+        },
+        opacity: 0,
+        y: 30,
+        stagger: 0.2,
+        duration: 0.8,
+        ease: "power3.out"
+      });
+
     }, mainRef);
 
     return () => ctx.revert();
@@ -336,17 +348,18 @@ export default function HomePage() {
         </section>
 
 
-        <section className="w-full py-20 md:py-24 lg:py-32">
-          <div className="container grid items-center justify-center gap-4 px-4 text-center md:px-6">
+        <section id="final-cta" className="w-full py-20 md:py-24 lg:py-32 relative overflow-hidden">
+             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60rem] h-[60rem] bg-primary/10 rounded-full blur-3xl" />
+          <div className="container grid items-center justify-center gap-4 px-4 text-center md:px-6 relative z-10">
             <div className="space-y-3">
-              <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight font-headline">
+              <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight font-headline cta-element">
                 Ready to Modernize Your Stack?
               </h2>
-              <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+              <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed cta-element">
                 Sign up today and experience the future of cluster management. Go from zero to hero in minutes.
               </p>
             </div>
-            <div className="mx-auto w-full max-w-sm space-y-2">
+            <div className="mx-auto w-full max-w-sm space-y-2 cta-element">
                 <Button asChild size="lg" className="w-full">
                     <Link href="/auth?action=signup">Sign Up Now</Link>
                 </Button>
@@ -376,5 +389,3 @@ export default function HomePage() {
     </div>
   )
 }
-
-    
