@@ -44,7 +44,7 @@ export function AnimatedThemeToggle() {
       <button
         id="darkmode-btn"
         onClick={toggleTheme}
-        className="relative z-50 flex h-[50px] w-[50px] scale-[1.5] items-center justify-center rounded-lg bg-secondary text-secondary-foreground transition-transform duration-300 hover:scale-[1.6] active:scale-[1.4]"
+        className="relative z-50 flex h-[20px] w-[20px] scale-[1.5] items-center justify-center rounded-lg bg-secondary text-secondary-foreground transition-transform duration-300 hover:scale-[1.6] active:scale-[1.4]"
         aria-label="Toggle theme"
         disabled={isAnimating}
       >
