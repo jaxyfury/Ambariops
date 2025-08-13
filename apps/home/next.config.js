@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+const path = require('path')
+
 const nextConfig = {
     images: {
         remotePatterns: [
@@ -19,6 +21,10 @@ const nextConfig = {
     env: {
         NEXT_PUBLIC_WEB_URL: process.env.NEXT_PUBLIC_WEB_URL,
         NEXT_PUBLIC_HOME_URL: process.env.NEXT_PUBLIC_HOME_URL,
+    },
+    webpack: (config) => {
+        config.resolve.alias['@'] = path.resolve(__dirname, 'src')
+        return config
     }
 };
 
