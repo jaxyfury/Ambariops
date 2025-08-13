@@ -81,9 +81,9 @@ const SignUpForm = () => {
                  <SocialButton icon={<GitMerge size={20} />} onClick={() => signIn('github', { callbackUrl: `${WEB_URL}/dashboard` })} tooltip="Sign up with GitHub" />
             </div>
             <span>or use your email for registration</span>
-            <input type="text" name="name" placeholder="Name" required />
-            <input type="email" name="email" placeholder="Email" required />
-            <input type="password" name="password" placeholder="Password" required />
+            <input type="text" name="name" placeholder="Name" required autoComplete="name" />
+            <input type="email" name="email" placeholder="Email" required autoComplete="email" />
+            <input type="password" name="password" placeholder="Password" required autoComplete="new-password" />
             <button type="submit" className="mt-4">Sign Up</button>
         </form>
     );
@@ -142,8 +142,8 @@ const SignInForm = () => {
                      <SocialButton icon={<GitMerge size={20} />} onClick={() => signIn('github', { callbackUrl: `${WEB_URL}/dashboard` })} tooltip="Sign in with GitHub" />
                 </div>
                 <span>or use your email and password</span>
-                <input type="email" name="email" placeholder="Email" required />
-                <input type="password" name="password" placeholder="Password" required />
+                <input type="email" name="email" placeholder="Email" required autoComplete="email" />
+                <input type="password" name="password" placeholder="Password" required autoComplete="current-password" />
                 <Button type="button" variant="link" onClick={() => setIsForgotModalOpen(true)} className="text-xs font-normal underline h-auto p-0 my-2 text-muted-foreground hover:text-primary">
                     Forgot Your Password?
                 </Button>
