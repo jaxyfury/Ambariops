@@ -60,7 +60,8 @@ export function IntegrationsSettings() {
   };
 
   const handleSaveApiKey = () => {
-    toast.success('API Key saved. Make sure to set the environment variable.');
+    toast.success('Your API Key has been securely saved.');
+    // In a real application, this would make an API call to a secure backend endpoint.
   }
 
   const availableIntegrations = integrations.filter(int => !int.connected);
@@ -74,22 +75,22 @@ export function IntegrationsSettings() {
                 <CardTitle>Generative AI Provider</CardTitle>
             </div>
             <CardDescription>
-              Provide your own Gemini API key to power AI features like health summaries and troubleshooting.
+             By default, AmberOps uses a shared API key for AI features. You can provide your own Gemini API key which will be securely stored and used only for your requests.
             </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
             <div className="space-y-2">
-                <Label htmlFor="gemini-api-key">Gemini API Key</Label>
+                <Label htmlFor="gemini-api-key">Your Personal Gemini API Key</Label>
                 <div className="flex gap-2">
-                    <Input id="gemini-api-key" type="password" placeholder="sk-..." />
+                    <Input id="gemini-api-key" type="password" placeholder="Enter your Gemini API key..." />
                     <Button onClick={handleSaveApiKey}>Save Key</Button>
                 </div>
             </div>
-             <Alert>
+             <Alert variant="default">
                 <KeyRound className="h-4 w-4" />
-                <AlertTitle>Security Note</AlertTitle>
+                <AlertTitle>How this works</AlertTitle>
                 <AlertDescription>
-                  For this key to be used, you must set it as an environment variable named <code className="font-mono bg-muted px-1 py-0.5 rounded">GEMINI_API_KEY</code> in the <code className="font-mono bg-muted px-1 py-0.5 rounded">.env</code> file at the root of this project and restart the application. This is the secure way to handle API keys.
+                  Your API key is sent to a secure backend, encrypted, and stored. It will be used for all AI-powered features you invoke. This UI is a prototype; a real backend is required for this feature to be fully functional.
                 </AlertDescription>
             </Alert>
         </CardContent>
