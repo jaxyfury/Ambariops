@@ -4,7 +4,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Button } from '@amberops/ui/components/ui/button';
-import { AmberOpsLogo } from '@amberops/ui/icons';
+import { AmberOpsLogo } from '@amberops/ui/components/icons';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@amberops/ui/components/ui/accordion';
 import { Copy } from 'lucide-react';
 import toast from 'react-hot-toast';
