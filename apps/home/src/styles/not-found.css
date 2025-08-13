@@ -138,7 +138,7 @@
 }
 
 .astronaut__head {
-  background-color: hsl(var(--card));
+  background-color: white;
   position: absolute;
   top: 60px;
   left: 60px;
@@ -149,7 +149,7 @@
 }
 
 .astronaut__head-visor-flare1 {
-  background-color: hsl(var(--secondary));
+  background-color: white;
   position: absolute;
   top: 28px;
   left: 40px;
@@ -161,7 +161,7 @@
 }
 
 .astronaut__head-visor-flare2 {
-  background-color: hsl(var(--muted));
+  background-color: white;
   position: absolute;
   top: 40px;
   left: 38px;
@@ -173,7 +173,7 @@
 }
 
 .astronaut__backpack {
-  background-color: hsl(var(--border));
+  background-color: white;
   position: absolute;
   top: 90px;
   left: 47px;
@@ -184,7 +184,7 @@
 }
 
 .astronaut__body {
-  background-color: hsl(var(--secondary));
+  background-color: white;
   position: absolute;
   top: 115px;
   left: 55px;
@@ -195,7 +195,7 @@
 }
 
 .astronaut__body__chest {
-  background-color: hsl(var(--muted));
+  background-color: white;
   position: absolute;
   top: 140px;
   left: 68px;
@@ -206,7 +206,7 @@
 }
 
 .astronaut__arm-left1 {
-  background-color: hsl(var(--secondary));
+  background-color: white;
   position: absolute;
   top: 127px;
   left: 9px;
@@ -218,7 +218,7 @@
 }
 
 .astronaut__arm-left2 {
-  background-color: hsl(var(--secondary));
+  background-color: white;
   position: absolute;
   top: 102px;
   left: 7px;
@@ -232,7 +232,7 @@
 }
 
 .astronaut__arm-right1 {
-  background-color: hsl(var(--secondary));
+  background-color: white;
   position: absolute;
   top: 113px;
   left: 100px;
@@ -244,7 +244,7 @@
 }
 
 .astronaut__arm-right2 {
-  background-color: hsl(var(--secondary));
+  background-color: white;
   position: absolute;
   top: 78px;
   left: 141px;
@@ -258,7 +258,7 @@
 }
 
 .astronaut__arm-thumb-left {
-  background-color: hsl(var(--secondary));
+  background-color: white;
   position: absolute;
   top: 110px;
   left: 21px;
@@ -270,7 +270,7 @@
 }
 
 .astronaut__arm-thumb-right {
-  background-color: hsl(var(--secondary));
+  background-color: white;
   position: absolute;
   top: 90px;
   left: 133px;
@@ -282,7 +282,7 @@
 }
 
 .astronaut__wrist-left {
-  background-color: hsl(var(--primary));
+  background-color: white;
   position: absolute;
   top: 122px;
   left: 6.5px;
@@ -294,7 +294,7 @@
 }
 
 .astronaut__wrist-right {
-  background-color: hsl(var(--primary));
+  background-color: white;
   position: absolute;
   top: 98px;
   left: 141px;
@@ -306,7 +306,7 @@
 }
 
 .astronaut__leg-left {
-  background-color: hsl(var(--secondary));
+  background-color: white;
   position: absolute;
   top: 188px;
   left: 50px;
@@ -317,7 +317,7 @@
 }
 
 .astronaut__leg-right {
-  background-color: hsl(var(--secondary));
+  background-color: white;
   position: absolute;
   top: 188px;
   left: 108px;
@@ -328,7 +328,7 @@
 }
 
 .astronaut__foot-left {
-  background-color: hsl(var(--card));
+  background-color: white;
   position: absolute;
   top: 240px;
   left: 43px;
@@ -343,7 +343,7 @@
 }
 
 .astronaut__foot-right {
-  background-color: hsl(var(--card));
+  background-color: white;
   position: absolute;
   top: 240px;
   left: 111px;
