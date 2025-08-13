@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "pnpm --filter web dev",
     "dev:home": "pnpm --filter home dev -p 3001",
-    "build": "pnpm --parallel build",
+    "build": "pnpm --filter web... --filter home... build",
     "build:web": "pnpm --filter web build",
     "build:home": "pnpm --filter home build",
     "start": "pnpm --filter web start",
