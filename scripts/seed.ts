@@ -1,0 +1,123 @@
+import { MongoClient } from 'mongodb';
+import {
+  mockUsers,
+  mockClusters,
+  mockServices,
+  mockHosts,
+  mockAlerts,
+  mockAlertDefinitions,
+  mockConfigVersions,
+  mockTasks,
+  mockActivityLogs,
+  mockLogEntries,
+} from '../packages/api/src/mocks/mock-data';
+import bcrypt from 'bcryptjs';
+import { config } from 'dotenv';
+
+config({ path: './.env' });
+
+async function seedDatabase() {
+  const uri = process.env.MONGODB_URI;
+  if (!uri) {
+    throw new Error('MONGODB_URI is not defined in the .env file');
+  }
+
+  const client = new MongoClient(uri);
+
+  try {
+    await client.connect();
+    console.log('Connected to MongoDB');
+
+    const db = client.db();
+
+    // Hash passwords for mock users
+    const usersWithHashedPasswords = await Promise.all(
+        mockUsers.map(async (user, index) => ({
+            ...user,
+            password: await bcrypt.hash(`password${index + 1}`, 10), // Simple password for mocks
+            emailVerified: null, 
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        }))
+    );
+
+    // 1. Seed Users
+    console.log('Seeding users...');
+    await db.collection('users').deleteMany({});
+    await db.collection('users').insertMany(usersWithHashedPasswords);
+    console.log('Users seeded.');
+
+    // 2. Seed Clusters
+    console.log('Seeding clusters...');
+    await db.collection('clusters').deleteMany({});
+    await db.collection('clusters').insertMany(mockClusters);
+    console.log('Clusters seeded.');
+
+    // 3. Seed Services
+    console.log('Seeding services...');
+    await db.collection('services').deleteMany({});
+    await db.collection('services').insertMany(mockServices);
+    console.log('Services seeded.');
+
+    // 4. Seed Hosts
+    console.log('Seeding hosts...');
+    await db.collection('hosts').deleteMany({});
+    await db.collection('hosts').insertMany(mockHosts);
+    console.log('Hosts seeded.');
+    
+    // 5. Seed Alerts
+    console.log('Seeding alerts...');
+    await db.collection('alerts').deleteMany({});
+    await db.collection('alerts').insertMany(mockAlerts);
+    console.log('Alerts seeded.');
+
+    // 6. Seed Alert Definitions
+    console.log('Seeding alertDefinitions...');
+    await db.collection('alertDefinitions').deleteMany({});
+    await db.collection('alertDefinitions').insertMany(mockAlertDefinitions);
+    console.log('Alert Definitions seeded.');
+
+    // 7. Seed Config Versions
+    console.log('Seeding configVersions...');
+    await db.collection('configVersions').deleteMany({});
+    await db.collection('configVersions').insertMany(mockConfigVersions);
+    console.log('Config Versions seeded.');
+    
+    // 8. Seed Tasks
+    console.log('Seeding tasks...');
+    await db.collection('tasks').deleteMany({});
+    await db.collection('tasks').insertMany(mockTasks);
+    console.log('Tasks seeded.');
+
+    // 9. Seed Activity Logs
+    console.log('Seeding activityLogs...');
+    await db.collection('activityLogs').deleteMany({});
+    // We need to resolve the user object to an id
+    const activityLogsToInsert = mockActivityLogs.map(log => {
+        const user = usersWithHashedPasswords.find(u => u.id === log.user.id);
+        return {
+            ...log,
+            userId: user?._id, // This assumes user will be found. In real apps, handle this case.
+        }
+    });
+    // @ts-ignore
+    await db.collection('activityLogs').insertMany(activityLogsToInsert);
+    console.log('Activity Logs seeded.');
+    
+    // 10. Seed Log Entries
+    console.log('Seeding logEntries...');
+    await db.collection('logEntries').deleteMany({});
+    await db.collection('logEntries').insertMany(mockLogEntries);
+    console.log('Log Entries seeded.');
+
+
+    console.log('Database seeding completed successfully!');
+  } catch (err) {
+    console.error('Error during database seeding:', err);
+  } finally {
+    await client.close();
+    console.log('MongoDB connection closed.');
+  }
+}
+
+seedDatabase();

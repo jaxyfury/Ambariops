@@ -15,7 +15,8 @@
     "storybook": "pnpm --filter @amberops/ui storybook",
     "build-storybook": "pnpm --filter @amberops/ui build-storybook",
     "test": "pnpm --filter '*' test",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "seed": "tsx scripts/seed.ts"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.3.0",
@@ -30,6 +31,7 @@
     "lint-staged": "^15.2.7",
     "prettier": "^3.3.2",
     "prettier-plugin-tailwindcss": "^0.6.5",
+    "tsx": "^4.16.2",
     "typescript": "^5",
     "ts-jest": "^29.1.2"
   },
