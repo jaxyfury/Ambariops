@@ -13,11 +13,11 @@ const useTypewriter = (lines: (string | React.ReactNode)[], speed = 50, initialD
     const [displayedLines, setDisplayedLines] = useState<(string | React.ReactNode)[]>([]);
 
     useEffect(() => {
-        setDisplayedLines([]);
+        let isCancelled = false;
         const timeouts: NodeJS.Timeout[] = [];
 
         const typeLine = (lineIndex: number) => {
-            if (lineIndex >= lines.length) return;
+            if (isCancelled || lineIndex >= lines.length) return;
 
             const line = lines[lineIndex];
             if (typeof line !== 'string') {
@@ -27,13 +27,17 @@ const useTypewriter = (lines: (string | React.ReactNode)[], speed = 50, initialD
             }
 
             let charIndex = 0;
-            const currentLine: (string | React.ReactNode)[] = [...displayedLines.slice(0, lineIndex), ''];
-            setDisplayedLines(currentLine);
+            // Initialize the current line in the state
+            setDisplayedLines(prev => [...prev, '']);
 
             const typeChar = () => {
+                if (isCancelled) return;
                 if (charIndex < line.length) {
-                    currentLine[lineIndex] = line.substring(0, charIndex + 1);
-                    setDisplayedLines([...currentLine]);
+                    setDisplayedLines(prev => {
+                        const newLines = [...prev];
+                        newLines[lineIndex] = line.substring(0, charIndex + 1);
+                        return newLines;
+                    });
                     charIndex++;
                     timeouts.push(setTimeout(typeChar, speed));
                 } else {
@@ -46,8 +50,10 @@ const useTypewriter = (lines: (string | React.ReactNode)[], speed = 50, initialD
         timeouts.push(setTimeout(() => typeLine(0), initialDelay));
 
         return () => {
+            isCancelled = true;
             timeouts.forEach(clearTimeout);
         };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [lines, speed, initialDelay]);
 
     return displayedLines;
@@ -107,9 +113,9 @@ export default function Error({
                 <section className="p-4 h-64 overflow-y-auto text-sm text-foreground">
                     {displayedText.map((line, index) => (
                         <div key={index}>
-                            {typeof line === 'string' && index !== displayedText.length-1 && <span className="text-primary">$&nbsp;</span>}
+                            {typeof line === 'string' && <span className="text-primary mr-2">$&nbsp;</span>}
                             {line}
-                            {typeof line === 'string' && index === displayedText.length-1 && <span className="inline-block w-2 h-4 bg-primary animate-pulse ml-1" />}
+                            {index === displayedText.length - 1 && typeof line === 'string' && <span className="inline-block w-2 h-4 bg-primary animate-pulse ml-1" />}
                         </div>
                     ))}
                 </section>
