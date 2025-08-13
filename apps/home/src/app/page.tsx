@@ -249,7 +249,7 @@ export default function HomePage() {
                     </p>
                 </div>
             </div>
-             <div id="pricing-grid" className="mx-auto grid max-w-6xl items-start gap-16 lg:grid-cols-3 justify-items-center">
+             <div id="pricing-grid" className="mx-auto grid max-w-6xl items-start gap-32 lg:grid-cols-3 justify-items-center">
                 <div className="pricing-card-wrapper">
                     <PricingCard {...pricingTiers.hobby} />
                 </div>
