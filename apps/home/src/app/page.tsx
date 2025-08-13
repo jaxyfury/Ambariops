@@ -17,6 +17,7 @@ import { PricingCard } from '@/components/pricing-card';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ThunderCursor } from '@/components/thunder-cursor';
+import { TestimonialsMarquee } from '@/components/testimonials-marquee';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -72,6 +73,18 @@ const testimonials = [
     name: 'Chen W.',
     role: 'Senior Data Analyst',
     avatar: 'https://avatar.vercel.sh/chen',
+  },
+  {
+    quote: "The performance monitoring is top-notch. The historical data charts helped us spot a memory leak we'd been chasing for weeks.",
+    name: 'Isabella F.',
+    role: 'Site Reliability Engineer',
+    avatar: 'https://avatar.vercel.sh/isabella',
+  },
+    {
+    quote: "Onboarding a new cluster used to be a day-long affair. With AmberOps' wizard, I had our new staging environment up and running in under an hour.",
+    name: 'David K.',
+    role: 'Infrastructure Lead',
+    avatar: 'https://avatar.vercel.sh/david',
   },
 ];
 
@@ -159,20 +172,6 @@ export default function HomePage() {
         y: 60,
         scale: 0.95,
         stagger: 0.15,
-        duration: 0.8,
-        ease: "power3.out",
-      });
-
-      // Testimonials Section Animation
-      gsap.from(".testimonial-card", {
-        scrollTrigger: {
-          trigger: "#testimonials-grid",
-          start: "top 80%",
-        },
-        opacity: 0,
-        y: 50,
-        scale: 0.9,
-        stagger: 0.2,
         duration: 0.8,
         ease: "power3.out",
       });
@@ -310,7 +309,7 @@ export default function HomePage() {
         
         <section id="pricing" className="w-full py-20 md:py-28 lg:py-32 bg-muted/20">
           <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center pb-12 mb-4">
+            <div className="flex flex-col items-center justify-center space-y-4 text-center pb-12">
                 <div className="space-y-2">
                     <div className="inline-block rounded-lg bg-secondary px-3 py-1 text-sm">Pricing</div>
                     <h2 className="text-3xl font-bold tracking-tighter font-headline sm:text-5xl">
@@ -345,24 +344,8 @@ export default function HomePage() {
                         </h2>
                     </div>
                 </div>
-                <div id="testimonials-grid" className="mx-auto grid max-w-5xl gap-8 py-12 lg:grid-cols-3 md:grid-cols-1">
-                    {testimonials.map((testimonial) => (
-                        <div key={testimonial.name} className="flex flex-col justify-between p-6 rounded-lg border bg-card shadow-sm testimonial-card">
-                            <blockquote className="text-lg text-muted-foreground italic mb-4">"{testimonial.quote}"</blockquote>
-                            <div className="flex items-center gap-3">
-                                <Avatar>
-                                    <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
-                                    <AvatarFallback>{testimonial.name.charAt(0)}</AvatarFallback>
-                                </Avatar>
-                                <div>
-                                    <p className="font-semibold">{testimonial.name}</p>
-                                    <p className="text-sm text-muted-foreground">{testimonial.role}</p>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
             </div>
+            <TestimonialsMarquee testimonials={testimonials} />
         </section>
         
         <section id="faq" className="w-full py-20 md:py-28 lg:py-32 bg-muted/20">
