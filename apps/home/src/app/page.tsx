@@ -10,6 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@amberops/ui/components/ui/
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@amberops/ui/components/ui/accordion';
 import { AnimatedGlobe } from '@/components/animated-globe';
 import { FooterAnimation } from '@/components/footer-animation';
+import { AnimatedThemeToggle } from '@/components/animated-theme-toggle';
 
 const features = [
   {
@@ -80,7 +81,7 @@ const faqItems = [
     },
     {
         question: "How does the AI assistance work?",
-        answer: "We use state-of-the-art large language models (LLMs) from Google (Gemini) to analyze your cluster's metrics and alert data. The AI can then generate natural-language summaries of cluster health and provide step-by-step troubleshooting guides for specific alerts, helping you resolve issues faster."
+        answer: "We use state-of-the-art large language models (LLMs) from Google (Gemini) to analyze your cluster's metrics and alert data. The AI can then generate a natural-language summaries of cluster health and provide step-by-step troubleshooting guides for specific alerts, helping you resolve issues faster."
     }
 ]
 
@@ -122,6 +123,7 @@ export default function HomePage() {
           >
             FAQ
           </Link>
+           <AnimatedThemeToggle />
            <Button asChild variant="ghost">
             <Link href="/auth">Admin Login</Link>
           </Button>
@@ -332,7 +334,7 @@ export default function HomePage() {
           </div>
         </section>
       </main>
-      <footer className="relative flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t overflow-hidden">
+      <footer className="relative flex flex-col gap-2 sm:flex-row py-12 w-full shrink-0 items-center px-4 md:px-6 border-t overflow-hidden min-h-[250px]">
         <div className="flex-grow z-10">
           <p className="text-xs text-muted-foreground">&copy; {new Date().getFullYear()} AmberOps Inc. All rights reserved.</p>
           <nav className="sm:ml-auto flex gap-4 sm:gap-6 mt-2">
