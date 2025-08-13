@@ -1,6 +1,7 @@
 
 'use client';
 
+import { useRef, useLayoutEffect } from 'react';
 import { Button } from '@amberops/ui/components/ui/button'
 import { AmberOpsLogo } from '@amberops/ui/components/icons'
 import Link from 'next/link'
@@ -11,8 +12,13 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@a
 import { AnimatedGlobe } from '@/components/animated-globe';
 import { FooterAnimation } from '@/components/footer-animation';
 import { AnimatedThemeToggle } from '@/components/animated-theme-toggle';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@amberops/ui/components/ui/card';
+import { Card, CardContent } from '@amberops/ui/components/ui/card';
 import { PricingCard } from '@/components/pricing-card';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
+
 
 const features = [
   {
@@ -116,8 +122,65 @@ const pricingTiers = {
 
 
 export default function HomePage() {
+  const mainRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      // Hero Section Animation
+      gsap.from(".hero-element", {
+        opacity: 0,
+        y: 20,
+        duration: 0.8,
+        stagger: 0.2,
+        ease: "power3.out"
+      });
+
+      // Features Section Animation
+      gsap.from(".feature-card", {
+        scrollTrigger: {
+          trigger: "#features-grid",
+          start: "top 80%",
+        },
+        opacity: 0,
+        y: 50,
+        stagger: 0.15,
+        duration: 0.6,
+        ease: "power3.out",
+      });
+      
+      // Testimonials Section Animation
+      gsap.from(".testimonial-card", {
+        scrollTrigger: {
+          trigger: "#testimonials-grid",
+          start: "top 80%",
+        },
+        opacity: 0,
+        y: 50,
+        stagger: 0.2,
+        duration: 0.8,
+        ease: "power3.out",
+      });
+      
+      // FAQ Section Animation
+      gsap.from(".faq-item", {
+        scrollTrigger: {
+          trigger: "#faq-accordion",
+          start: "top 80%",
+        },
+        opacity: 0,
+        y: 30,
+        stagger: 0.1,
+        duration: 0.5,
+        ease: "power3.out",
+      });
+
+    }, mainRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <div className="flex flex-col min-h-dvh bg-background text-foreground">
+    <div ref={mainRef} className="flex flex-col min-h-dvh bg-background text-foreground">
       <header className="sticky top-0 z-50 px-4 lg:px-6 h-16 flex items-center border-b bg-background/80 backdrop-blur-lg">
         <Link href="#" className="flex items-center justify-center gap-2" prefetch={false}>
           <AmberOpsLogo className="h-8 w-8" />
@@ -179,15 +242,15 @@ export default function HomePage() {
             <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 xl:grid-cols-[1fr_500px]">
               <div className="flex flex-col justify-center space-y-4 text-center lg:text-left">
                 <div className="space-y-4">
-                   <div className="inline-block rounded-lg bg-secondary px-3 py-1 text-sm font-semibold text-secondary-foreground">The Ambari UI. Reimagined.</div>
-                  <h1 className="text-4xl font-bold tracking-tighter font-headline sm:text-5xl xl:text-6xl/none">
+                   <div className="inline-block rounded-lg bg-secondary px-3 py-1 text-sm font-semibold text-secondary-foreground hero-element">The Ambari UI. Reimagined.</div>
+                  <h1 className="text-4xl font-bold tracking-tighter font-headline sm:text-5xl xl:text-6xl/none hero-element">
                     Unified Cluster Management, Supercharged by AI
                   </h1>
-                  <p className="max-w-[600px] text-muted-foreground md:text-xl mx-auto lg:mx-0">
+                  <p className="max-w-[600px] text-muted-foreground md:text-xl mx-auto lg:mx-0 hero-element">
                     AmberOps provides a modern, fast, and intuitive frontend for Apache Ambari, supercharged with AI-powered insights to streamline your operations.
                   </p>
                 </div>
-                <div className="flex flex-col gap-2 min-[400px]:flex-row justify-center lg:justify-start">
+                <div className="flex flex-col gap-2 min-[400px]:flex-row justify-center lg:justify-start hero-element">
                   <Button asChild size="lg">
                     <Link href="/auth?action=signup">Get Started for Free</Link>
                   </Button>
@@ -216,9 +279,9 @@ export default function HomePage() {
                 </p>
               </div>
             </div>
-            <div className="mx-auto grid max-w-5xl items-start gap-8 py-12 lg:grid-cols-3 md:grid-cols-2">
+            <div id="features-grid" className="mx-auto grid max-w-5xl items-start gap-8 py-12 lg:grid-cols-3 md:grid-cols-2">
               {features.map((feature) => (
-                <div key={feature.title} className="grid gap-4 text-center p-6 rounded-lg hover:bg-muted/50 transition-all duration-300">
+                <div key={feature.title} className="grid gap-4 text-center p-6 rounded-lg hover:bg-muted/50 transition-all duration-300 feature-card">
                     <div className="mx-auto bg-primary/10 p-3 rounded-full">{feature.icon}</div>
                     <h3 className="text-xl font-bold font-headline">{feature.title}</h3>
                     <p className="text-muted-foreground">{feature.description}</p>
@@ -259,9 +322,9 @@ export default function HomePage() {
                         </h2>
                     </div>
                 </div>
-                <div className="mx-auto grid max-w-5xl gap-8 py-12 lg:grid-cols-3 md:grid-cols-1">
+                <div id="testimonials-grid" className="mx-auto grid max-w-5xl gap-8 py-12 lg:grid-cols-3 md:grid-cols-1">
                     {testimonials.map((testimonial) => (
-                        <div key={testimonial.name} className="flex flex-col justify-between p-6 rounded-lg border bg-card shadow-sm">
+                        <div key={testimonial.name} className="flex flex-col justify-between p-6 rounded-lg border bg-card shadow-sm testimonial-card">
                             <blockquote className="text-lg text-muted-foreground italic mb-4">"{testimonial.quote}"</blockquote>
                             <div className="flex items-center gap-3">
                                 <Avatar>
@@ -293,9 +356,9 @@ export default function HomePage() {
                     </div>
                 </div>
                 <div className="mx-auto max-w-3xl py-12">
-                     <Accordion type="single" collapsible className="w-full">
+                     <Accordion id="faq-accordion" type="single" collapsible className="w-full">
                         {faqItems.map((faq, index) => (
-                        <AccordionItem value={`item-${index + 1}`} key={index}>
+                        <AccordionItem value={`item-${index + 1}`} key={index} className="faq-item">
                             <AccordionTrigger className="text-lg font-semibold">{faq.question}</AccordionTrigger>
                             <AccordionContent className="text-muted-foreground text-base">
                                 {faq.answer}
@@ -378,5 +441,3 @@ export default function HomePage() {
     </div>
   )
 }
-
-    
