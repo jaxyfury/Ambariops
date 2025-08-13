@@ -6,13 +6,13 @@ import '@amberops/design-tokens/globals.css';
 import { cn } from '@amberops/lib';
 import { ThemeProvider } from '@amberops/ui/components/theme-provider';
 import { Toaster as DefaultToaster } from '@amberops/ui/components/ui/toaster';
-import { useToast } from '@amberops/ui/hooks/use-toast';
 import { Toaster } from 'react-hot-toast';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { enableMocking } from '@amberops/api/mocks/browser';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '@/lib/i18n';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Preloader } from '@/components/preloader';
 
 const fontBody = Inter({
   subsets: ['latin'],
@@ -31,10 +31,18 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     if (process.env.NODE_ENV === 'development') {
       enableMocking();
     }
+    // Simulate app loading time
+    const timer = setTimeout(() => {
+        setIsLoading(false);
+    }, 2500);
+
+    return () => clearTimeout(timer);
   }, []);
 
   return (
@@ -54,7 +62,7 @@ export default function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
-              {children}
+              {isLoading ? <Preloader /> : children}
               <Toaster position="bottom-right" />
               <DefaultToaster />
             </ThemeProvider>
