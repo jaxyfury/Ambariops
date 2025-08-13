@@ -7,7 +7,7 @@ import {
   LayoutDashboard,
   Server,
   HardDrive,
-  Siren,
+  AlertTriangle,
   FileText,
   ListChecks,
   ScrollText,
@@ -15,8 +15,7 @@ import {
   AlertCircle,
   Laptop,
   History,
-  PanelLeft,
-  BookOpen,
+  LifeBuoy,
 } from 'lucide-react';
 import {
   Accordion,
@@ -32,7 +31,6 @@ import {
   SidebarHeader,
   SidebarContent,
   SidebarFooter,
-  SidebarTrigger,
 } from '@amberops/ui/components/ui/sidebar';
 import { useSidebar } from '@amberops/ui/hooks/use-sidebar';
 import { AmberOpsLogo } from '@amberops/ui/components/icons';
@@ -49,7 +47,7 @@ export function SidebarNav() {
     { href: '/hosts', label: 'Hosts', icon: Laptop, tooltip: 'Hosts' },
     {
       label: 'Alerts',
-      icon: Siren,
+      icon: AlertTriangle,
       tooltip: 'Alerts',
       subItems: [
         { href: '/alerts', label: 'Current Alerts', tooltip: 'Current Alerts' },
@@ -65,7 +63,7 @@ export function SidebarNav() {
   const bottomNavItems = [
      {
       label: 'Documentation',
-      icon: BookOpen,
+      icon: LifeBuoy,
       tooltip: 'Documentation',
       subItems: [
         { href: '/documentation/dashboard', label: 'Dashboard Guide', tooltip: 'Dashboard Guide' },
@@ -94,22 +92,20 @@ export function SidebarNav() {
             disabled={sidebarState === 'collapsed'}
           >
               <AccordionItem value="accordion-item" className="border-b-0">
-                <SidebarMenuButton
-                  asChild
-                  isActive={isActive(item.href || item.subItems[0].href)}
-                  tooltip={item.tooltip}
-                  className="p-0"
-                >
-                  <AccordionTrigger className={cn(
-                    "peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-none ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:!justify-center group-data-[collapsible=icon]:!p-2 [&>span]:group-data-[collapsible=icon]:hidden [&>svg]:size-4 [&>svg]:shrink-0",
-                    "hover:no-underline"
-                  )}>
-                      <div className="flex items-center gap-2">
-                          <item.icon />
-                          <span className="group-data-[state=collapsed]:hidden">{item.label}</span>
-                      </div>
-                  </AccordionTrigger>
-                </SidebarMenuButton>
+                <AccordionTrigger asChild>
+                  <SidebarMenuButton
+                    isActive={
+                      item.subItems.some((sub: any) => pathname.startsWith(sub.href))
+                    }
+                    tooltip={item.tooltip}
+                    className="p-2"
+                  >
+                    <div className="flex items-center gap-2">
+                        <item.icon />
+                        <span className="group-data-[state=collapsed]:hidden">{item.label}</span>
+                    </div>
+                  </SidebarMenuButton>
+                </AccordionTrigger>
                 <AccordionContent className="p-0 pl-7 pt-1 group-data-[state=collapsed]:hidden">
                   <ul className="space-y-1">
                     {item.subItems.map((subItem: any) => (
