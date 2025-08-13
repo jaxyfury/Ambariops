@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
 import toast from 'react-hot-toast';
-import { GitMerge, Chrome, LogIn, UserPlus } from 'lucide-react';
+import { GitMerge, Chrome, LogIn, UserPlus, Eye, EyeOff } from 'lucide-react';
 import { cn } from '@amberops/lib';
 import { AmberOpsLogo } from '@amberops/ui/components/icons';
 import { AnimatedThemeToggle } from '@/components/animated-theme-toggle';
@@ -35,6 +35,7 @@ const SocialButton = ({ icon, onClick, tooltip }: { icon: React.ReactNode, onCli
 
 const SignUpForm = () => {
     const router = useRouter();
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -83,7 +84,17 @@ const SignUpForm = () => {
             <span>or use your email for registration</span>
             <input type="text" name="name" placeholder="Name" required autoComplete="name" />
             <input type="email" name="email" placeholder="Email" required autoComplete="email" />
-            <input type="password" name="password" placeholder="Password" required autoComplete="new-password" />
+            <div className="relative w-full">
+                <input type={showPassword ? 'text' : 'password'} name="password" placeholder="Password" required autoComplete="new-password" />
+                <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground"
+                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+            </div>
             <button type="submit" className="mt-4">Sign Up</button>
         </form>
     );
@@ -93,6 +104,7 @@ const SignInForm = () => {
     const router = useRouter();
     const [isForgotModalOpen, setIsForgotModalOpen] = useState(false);
     const [forgotEmail, setForgotEmail] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -143,7 +155,18 @@ const SignInForm = () => {
                 </div>
                 <span>or use your email and password</span>
                 <input type="email" name="email" placeholder="Email" required autoComplete="email" />
-                <input type="password" name="password" placeholder="Password" required autoComplete="current-password" />
+                <div className="relative w-full">
+                    <input type={showPassword ? 'text' : 'password'} name="password" placeholder="Password" required autoComplete="current-password" />
+                     <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground"
+                        aria-label={showPassword ? 'Hide password' : 'Show password'}
+                    >
+                        {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                    </button>
+                </div>
+
                 <Button type="button" variant="link" onClick={() => setIsForgotModalOpen(true)} className="text-xs font-normal underline h-auto p-0 my-2 text-muted-foreground hover:text-primary">
                     Forgot Your Password?
                 </Button>
