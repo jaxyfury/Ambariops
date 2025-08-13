@@ -107,7 +107,7 @@ const SignInForm = () => {
             <span>or use your email and password</span>
             <input type="email" name="email" placeholder="Email" required />
             <input type="password" name="password" placeholder="Password" required />
-            <Link href="#" className="text-xs underline my-2">Forgot Your Password?</Link>
+            <button type="button" onClick={() => toast('Forgot Password functionality coming soon!')} className="text-xs underline my-2 bg-transparent p-0 text-muted-foreground normal-case font-normal letter-spacing-normal">Forgot Your Password?</button>
             <button type="submit">Sign In</button>
         </form>
     );
@@ -127,8 +127,8 @@ export default function AuthPage() {
     return (
         <div className="auth-body">
             <header className="fixed top-0 left-0 w-full px-4 lg:px-6 h-16 flex items-center z-50">
-                 <Link href="/" className="flex items-center justify-center gap-2 text-background" prefetch={false}>
-                    <AmberOpsLogo className="h-8 w-8" />
+                 <Link href="/" className="flex items-center justify-center gap-2" prefetch={false}>
+                    <AmberOpsLogo className="h-8 w-8 text-primary" />
                     <span className="text-xl font-semibold font-headline">AmberOps</span>
                 </Link>
                 <div className="ml-auto">
@@ -164,3 +164,4 @@ export default function AuthPage() {
         </div>
     );
 }
+
