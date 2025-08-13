@@ -144,7 +144,9 @@ const SignInForm = () => {
                 <span>or use your email and password</span>
                 <input type="email" name="email" placeholder="Email" required />
                 <input type="password" name="password" placeholder="Password" required />
-                <button type="button" onClick={() => setIsForgotModalOpen(true)} className="text-xs underline my-2 bg-transparent p-0 text-muted-foreground normal-case font-normal letter-spacing-normal hover:text-primary">Forgot Your Password?</button>
+                <Button type="button" variant="link" onClick={() => setIsForgotModalOpen(true)} className="text-xs font-normal underline h-auto p-0 my-2 text-muted-foreground hover:text-primary">
+                    Forgot Your Password?
+                </Button>
                 <button type="submit">Sign In</button>
             </form>
 

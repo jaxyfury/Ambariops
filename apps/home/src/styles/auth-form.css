@@ -46,7 +46,7 @@
     margin: 15px 0 10px;
 }
 
-.auth-container button{
+.auth-container form button[type=submit] {
     background-color: hsl(var(--primary));
     color: hsl(var(--primary-foreground));
     font-size: 12px;
@@ -66,6 +66,18 @@
 .auth-container button.hidden-btn{
     background-color: transparent;
     border: 1px solid hsl(var(--primary-foreground));
+    color: hsl(var(--primary-foreground));
+    font-size: 12px;
+    padding: 10px 45px;
+    border-radius: 8px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-top: 10px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .auth-container form{
@@ -170,7 +182,7 @@
     overflow: hidden;
     transition: all 0.6s ease-in-out;
     border-radius: 150px 0 0 100px;
-    z-index: 1000;
+    z-index: 100;
 }
 
 .auth-container.active .toggle-container{
