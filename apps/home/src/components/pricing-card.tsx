@@ -2,8 +2,8 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-
-declare const VanillaTilt: any;
+import VanillaTilt from 'vanilla-tilt';
+import * as THREE from 'three';
 
 export function PricingCard() {
     const cardContainerRef = useRef<HTMLDivElement>(null);
@@ -12,12 +12,10 @@ export function PricingCard() {
 
     useEffect(() => {
         let isMounted = true;
-        let renderer: any;
-
+        let renderer: THREE.WebGLRenderer;
+        
         async function init() {
             if (!isMounted || !cardContainerRef.current || !canvasRef.current) return;
-
-            const THREE = await import('three');
 
             const DEBUG = false;
             function log(...args: any[]) { if (DEBUG) console.log('[FieryCard]', ...args); }
@@ -185,10 +183,13 @@ export function PricingCard() {
 
             initThree();
             window.addEventListener('resize', onWindowResize);
-            if (typeof VanillaTilt !== 'undefined' && cardContainerRef.current) {
-                VanillaTilt.init(cardContainerRef.current.querySelector(".card"), {
-                    max: 10, speed: 400, glare: true, "max-glare": 0.2
-                });
+            if (cardContainerRef.current) {
+                const cardElement = cardContainerRef.current.querySelector<HTMLElement>(".card");
+                if (cardElement) {
+                    VanillaTilt.init(cardElement, {
+                        max: 10, speed: 400, glare: true, "max-glare": 0.2
+                    });
+                }
             }
         }
 

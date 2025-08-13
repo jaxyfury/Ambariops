@@ -11,7 +11,6 @@ import "@/styles/pricing-card.css";
 import { cn } from "@amberops/lib";
 import { ThemeProvider } from "@amberops/ui/components/theme-provider";
 import { Toaster } from "react-hot-toast";
-import Script from "next/script";
 
 const fontBody = Inter({
   subsets: ['latin'],
@@ -50,9 +49,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <Script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.7.2/dist/vanilla-tilt.min.js" strategy="beforeInteractive" />
-      </head>
+      <head />
       <body
          className={cn(
           'min-h-screen bg-background font-body antialiased text-foreground',
