@@ -12,6 +12,7 @@ import { AnimatedGlobe } from '@/components/animated-globe';
 import { FooterAnimation } from '@/components/footer-animation';
 import { AnimatedThemeToggle } from '@/components/animated-theme-toggle';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@amberops/ui/components/ui/card';
+import { PricingCard } from '@/components/pricing-card';
 
 const features = [
   {
@@ -200,66 +201,8 @@ export default function HomePage() {
           </div>
         </section>
         
-        <section id="pricing" className="w-full py-20 md:py-28 lg:py-32 bg-muted/20">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2">
-                <div className="inline-block rounded-lg bg-secondary px-3 py-1 text-sm">Pricing Plans</div>
-                <h2 className="text-3xl font-bold tracking-tighter font-headline sm:text-5xl">
-                  Find the Right Plan for Your Team
-                </h2>
-                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Start for free and scale as you grow. All plans include our core features and AI-powered insights.
-                </p>
-              </div>
-            </div>
-            <div className="mx-auto grid max-w-5xl items-stretch gap-8 py-12 md:grid-cols-2 lg:grid-cols-3">
-              <div className="relative flex flex-col rounded-lg border bg-card shadow-sm p-6">
-                <h3 className="text-2xl font-bold font-headline">Hobby</h3>
-                <p className="mt-2 text-muted-foreground">For personal projects and small teams.</p>
-                <div className="my-6">
-                  <span className="text-5xl font-bold">$0</span>
-                  <span className="text-muted-foreground">/ month</span>
-                </div>
-                <ul className="flex-1 space-y-3">
-                  <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-primary" />1 Cluster</li>
-                  <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-primary" />Up to 5 Hosts</li>
-                  <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-primary" />Community Support</li>
-                </ul>
-                <Button className="w-full mt-6" variant="outline" asChild><Link href="/auth?action=signup" prefetch={false}>Get Started</Link></Button>
-              </div>
-              <div className="relative flex flex-col rounded-lg border-2 border-primary bg-card shadow-lg p-6">
-                <div className="absolute top-0 -translate-y-1/2 left-1/2 -translate-x-1/2">
-                    <div className="inline-block rounded-full bg-primary px-4 py-1 text-sm font-semibold text-primary-foreground">Most Popular</div>
-                </div>
-                <h3 className="text-2xl font-bold font-headline">Pro</h3>
-                <p className="mt-2 text-muted-foreground">For growing businesses and production use.</p>
-                <div className="my-6">
-                  <span className="text-5xl font-bold">$99</span>
-                  <span className="text-muted-foreground">/ month</span>
-                </div>
-                <ul className="flex-1 space-y-3">
-                  <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-primary" />Up to 5 Clusters</li>
-                  <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-primary" />Up to 50 Hosts</li>
-                  <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-primary" />Priority Email Support</li>
-                </ul>
-                <Button className="w-full mt-6" asChild><Link href="/auth?action=signup" prefetch={false}>Choose Pro</Link></Button>
-              </div>
-              <div className="relative flex flex-col rounded-lg border bg-card shadow-sm p-6">
-                <h3 className="text-2xl font-bold font-headline">Enterprise</h3>
-                <p className="mt-2 text-muted-foreground">For large-scale, mission-critical deployments.</p>
-                <div className="my-6">
-                  <span className="text-5xl font-bold">Custom</span>
-                </div>
-                <ul className="flex-1 space-y-3">
-                  <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-primary" />Unlimited Clusters & Hosts</li>
-                  <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-primary" />Dedicated Support & SLA</li>
-                  <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-primary" />On-premise Deployment Options</li>
-                </ul>
-                <Button className="w-full mt-6" variant="outline">Contact Us</Button>
-              </div>
-            </div>
-          </div>
+        <section id="pricing" className="w-full py-20 md:py-28 lg:py-32 bg-muted/20 flex items-center justify-center">
+            <PricingCard />
         </section>
 
         <section id="testimonials" className="w-full py-20 md:py-28 lg:py-32">
@@ -384,10 +327,12 @@ export default function HomePage() {
             </Link>
           </nav>
         </div>
-        <div className="absolute right-0 bottom-0 z-20">
+        <div className="absolute right-0 bottom-0 z-0">
             <FooterAnimation />
         </div>
       </footer>
     </div>
   )
 }
+
+    
