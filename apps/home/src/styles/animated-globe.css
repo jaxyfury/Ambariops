@@ -10,7 +10,7 @@
 
 .globe {
   width: 300px;
-  height: 300px; /* Make it a perfect circle for a better sphere illusion */
+  height: 300px;
   position: relative;
   transform-style: preserve-3d;
   animation: rotate-globe 30s infinite linear;
@@ -36,7 +36,7 @@
     hsl(var(--primary) / 0.2) 80%
   );
   box-shadow: inset 0 0 40px 10px hsl(var(--primary) / 0.3), 0 0 50px -10px hsl(var(--primary));
-  transform-style: preserve-3d; /* Ensure children are in 3D space */
+  transform-style: preserve-3d;
 }
 
 .globe-outer-shadow {
@@ -67,7 +67,6 @@
   transform-style: preserve-3d;
 }
 
-/* Using a more abstract, techy pattern */
 .globe-worldmap-front,
 .globe-worldmap-back {
   position: absolute;
@@ -103,50 +102,56 @@
 
 .orbit {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 50%;
+  left: 50%;
   width: 100%;
   height: 100%;
   border-radius: 50%;
   transform-style: preserve-3d;
-  animation: rotate-orbit 20s infinite linear;
-  border: 1px solid hsl(var(--primary-foreground) / 0.3);
+  animation: rotate-orbit var(--duration, 20s) infinite linear;
+  border: 1px solid hsl(var(--primary-foreground) / 0.15);
+  transform: translate(-50%, -50%) var(--rotation);
 }
 
 .dot {
   position: absolute;
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background-color: hsl(var(--primary-foreground));
-  box-shadow: 0 0 12px hsl(var(--primary-foreground));
+  box-shadow: 0 0 10px hsl(var(--primary-foreground));
   top: 50%;
-  left: -5px; /* Half of width */
+  left: -4px; /* Half of width */
   transform: translateY(-50%);
+  /* Counter-rotate the dot to keep it facing the camera */
+  animation: counter-rotate-globe 30s infinite linear;
 }
 
-.orbit-1 { animation-duration: 15s; transform: rotateX(65deg) rotateY(20deg); }
-.orbit-2 { animation-duration: 18s; transform: rotateX(65deg) rotateY(80deg); }
-.orbit-3 { animation-duration: 22s; transform: rotateX(65deg) rotateY(140deg); }
-.orbit-4 { animation-duration: 25s; transform: rotateX(65deg) rotateY(200deg); }
-.orbit-5 { animation-duration: 19s; transform: rotateX(65deg) rotateY(260deg); }
-.orbit-6 { animation-duration: 28s; transform: rotateX(65deg) rotateY(320deg); }
-.orbit-7 { animation-duration: 16s; transform: rotateX(25deg) rotateY(45deg); border-style: dashed; }
-.orbit-8 { animation-duration: 21s; transform: rotateX(25deg) rotateY(135deg); border-style: dashed; }
-.orbit-9 { animation-duration: 24s; transform: rotateX(25deg) rotateY(225deg); border-style: dashed; }
-.orbit-10 { animation-duration: 29s; transform: rotateX(25deg) rotateY(315deg); border-style: dashed; }
+@keyframes counter-rotate-globe {
+  from {
+    transform: translateY(-50%) rotateY(0deg) rotateX(-10deg);
+  }
+  to {
+    transform: translateY(-50%) rotateY(-360deg) rotateX(-10deg);
+  }
+}
 
+.orbit-1 { --duration: 15s; --rotation: rotateX(65deg) rotateY(20deg); }
+.orbit-2 { --duration: 18s; --rotation: rotateX(65deg) rotateY(80deg); animation-direction: reverse; }
+.orbit-3 { --duration: 22s; --rotation: rotateX(65deg) rotateY(140deg); }
+.orbit-4 { --duration: 25s; --rotation: rotateX(65deg) rotateY(200deg); animation-direction: reverse; }
+.orbit-5 { --duration: 19s; --rotation: rotateX(65deg) rotateY(260deg); }
+.orbit-6 { --duration: 28s; --rotation: rotateX(65deg) rotateY(320deg); animation-direction: reverse; }
+.orbit-7 { --duration: 16s; --rotation: rotateX(25deg) rotateY(45deg); border-style: dashed; }
+.orbit-8 { --duration: 21s; --rotation: rotateX(25deg) rotateY(135deg); border-style: dashed; animation-direction: reverse; }
+.orbit-9 { --duration: 24s; --rotation: rotateX(25deg) rotateY(225deg); border-style: dashed; }
+.orbit-10 { --duration: 29s; --rotation: rotateX(25deg) rotateY(315deg); border-style: dashed; animation-direction: reverse; }
 
 @keyframes rotate-orbit {
   from {
-    transform: rotateZ(0deg);
+    transform: translate(-50%, -50%) var(--rotation) rotateZ(0deg);
   }
   to {
-    transform: rotateZ(360deg);
+    transform: translate(-50%, -50%) var(--rotation) rotateZ(360deg);
   }
 }
-
-.orbit-1, .orbit-3, .orbit-5, .orbit-7, .orbit-9 { animation-direction: reverse; }
-.orbit-2, .orbit-4, .orbit-6, .orbit-8, .orbit-10 { animation-direction: normal; }
-
-.orbit .dot:nth-child(odd) { left: auto; right: -5px; }
