@@ -310,7 +310,7 @@ export default function HomePage() {
         
         <section id="pricing" className="w-full py-20 md:py-28 lg:py-32 bg-muted/20">
           <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
+            <div className="flex flex-col items-center justify-center space-y-4 text-center pb-12">
                 <div className="space-y-2">
                     <div className="inline-block rounded-lg bg-secondary px-3 py-1 text-sm">Pricing</div>
                     <h2 className="text-3xl font-bold tracking-tighter font-headline sm:text-5xl">
@@ -321,7 +321,7 @@ export default function HomePage() {
                     </p>
                 </div>
             </div>
-             <div id="pricing-grid" className="mx-auto grid max-w-6xl items-center gap-8 lg:grid-cols-3 justify-items-center">
+             <div id="pricing-grid" className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-3 justify-items-center">
                 <div className="pricing-card-wrapper">
                     <PricingCard {...pricingTiers.hobby} />
                 </div>
