@@ -157,6 +157,7 @@ const pricingTiers = {
 
 export default function HomePage() {
   const mainRef = useRef<HTMLDivElement>(null);
+  const featuresRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -166,18 +167,6 @@ export default function HomePage() {
         duration: 0.8,
         stagger: 0.2,
         ease: "power3.out"
-      });
-      
-      gsap.from(".feature-card", {
-        scrollTrigger: {
-          trigger: "#features-grid",
-          start: "top 80%",
-        },
-        opacity: 0,
-        y: 50,
-        stagger: 0.1,
-        duration: 0.6,
-        ease: "power3.out",
       });
 
       gsap.from(".pricing-card-wrapper", {
@@ -209,6 +198,46 @@ export default function HomePage() {
 
     return () => ctx.revert();
   }, []);
+
+    useLayoutEffect(() => {
+        if (!featuresRef.current) return;
+
+        const featureCards = gsap.utils.toArray<HTMLElement>('.feature-panel');
+        
+        const ctx = gsap.context(() => {
+            gsap.set('.feature-panel-content', { y: 100, opacity: 0 });
+
+            featureCards.forEach((card, index) => {
+                const isLast = index === featureCards.length - 1;
+                ScrollTrigger.create({
+                    trigger: card,
+                    start: "top top",
+                    end: () => `bottom ${isLast ? 'bottom' : 'top'}`,
+                    pin: true,
+                    pinSpacing: false,
+                    scrub: 1,
+                    onEnter: () => {
+                         gsap.to(card.querySelector('.feature-panel-content'), {
+                            y: 0,
+                            opacity: 1,
+                            duration: 0.8,
+                            ease: 'power3.out'
+                         });
+                    },
+                    onLeaveBack: () => {
+                        gsap.to(card.querySelector('.feature-panel-content'), {
+                            y: 100,
+                            opacity: 0,
+                            duration: 0.6,
+                            ease: 'power3.in'
+                        });
+                    }
+                });
+            });
+        }, featuresRef);
+
+        return () => ctx.revert();
+    }, []);
 
   return (
     <div ref={mainRef} className="flex flex-col min-h-dvh bg-background text-foreground">
@@ -297,9 +326,9 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section id="features" className="w-full py-20 md:py-28 lg:py-32 bg-muted/20">
+        <section id="features" ref={featuresRef} className="w-full py-20 md:py-28 lg:py-32 bg-muted/20 relative">
             <div className="container mx-auto px-4 md:px-6">
-                <div className="text-center max-w-3xl mx-auto">
+                <div className="sticky top-20 z-10 text-center max-w-3xl mx-auto py-8">
                     <div className="inline-block rounded-lg bg-secondary px-3 py-1 text-sm">Key Features</div>
                     <h2 className="text-3xl font-bold tracking-tighter font-headline sm:text-5xl mt-2">
                         Everything you need. Nothing you don’t.
@@ -308,13 +337,16 @@ export default function HomePage() {
                         AmberOps is packed with features designed to make cluster management faster, easier, and more intelligent. Stop fighting with your tools and start managing your stack.
                     </p>
                 </div>
-                <div id="features-grid" className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 mt-16">
-                    {features.map((feature) => (
-                        <div key={feature.title} className="feature-card">
-                            <div className="p-8">
-                                <div className="mb-4">{feature.icon}</div>
-                                <h3 className="text-xl font-bold font-headline mb-2">{feature.title}</h3>
-                                <p className="text-muted-foreground">{feature.description}</p>
+
+                 <div className="relative mt-16">
+                     {features.map((feature, index) => (
+                        <div key={feature.title} className="feature-panel">
+                            <div className="feature-panel-content max-w-4xl mx-auto text-center">
+                                <div className="inline-block mb-6 p-4 bg-background/50 rounded-full border border-border">
+                                    {feature.icon}
+                                </div>
+                                <h3 className="text-2xl font-bold font-headline mb-4">{feature.title}</h3>
+                                <p className="text-lg text-muted-foreground max-w-2xl mx-auto">{feature.description}</p>
                             </div>
                         </div>
                     ))}
