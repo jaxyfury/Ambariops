@@ -9,6 +9,9 @@ import toast from 'react-hot-toast';
 import { GitMerge, Chrome, LogIn, UserPlus } from 'lucide-react';
 import { cn } from '@amberops/lib';
 
+const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL || 'http://localhost:3000';
+const HOME_URL = process.env.NEXT_PUBLIC_HOME_URL || 'http://localhost:3001';
+
 const SocialButton = ({ icon, onClick }: { icon: React.ReactNode, onClick?: () => void }) => (
     <button type="button" onClick={onClick} className="social-icon">
         {icon}
@@ -25,7 +28,7 @@ const SignUpForm = () => {
         const password = e.currentTarget.password.value;
 
         try {
-            const response = await fetch('http://localhost:3000/api/auth/register', {
+            const response = await fetch(`${WEB_URL}/api/auth/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -43,7 +46,7 @@ const SignUpForm = () => {
                 if (result?.error) {
                      toast.error(result.error || 'Invalid credentials.');
                 } else {
-                     router.push('http://localhost:3000/dashboard');
+                     router.push(`${WEB_URL}/dashboard`);
                 }
             } else {
                 const data = await response.json();
@@ -59,8 +62,8 @@ const SignUpForm = () => {
         <form onSubmit={handleSignup} data-testid="signup-form">
             <h1 className="text-3xl font-bold font-headline mb-3">Create Account</h1>
             <div className="social-icons">
-                 <SocialButton icon={<Chrome size={20} />} onClick={() => signIn('google', { callbackUrl: 'http://localhost:3000/dashboard' })} />
-                 <SocialButton icon={<GitMerge size={20} />} onClick={() => signIn('github', { callbackUrl: 'http://localhost:3000/dashboard' })} />
+                 <SocialButton icon={<Chrome size={20} />} onClick={() => signIn('google', { callbackUrl: `${WEB_URL}/dashboard` })} />
+                 <SocialButton icon={<GitMerge size={20} />} onClick={() => signIn('github', { callbackUrl: `${WEB_URL}/dashboard` })} />
             </div>
             <span>or use your email for registration</span>
             <input type="text" name="name" placeholder="Name" required />
@@ -89,7 +92,7 @@ const SignInForm = () => {
             toast.error(result.error || 'Invalid credentials.');
         } else {
             toast.success('Logged in successfully!');
-            router.push('http://localhost:3000/dashboard');
+            router.push(`${WEB_URL}/dashboard`);
         }
     }
 
@@ -97,8 +100,8 @@ const SignInForm = () => {
         <form onSubmit={handleLogin} data-testid="login-form">
             <h1 className="text-3xl font-bold font-headline mb-3">Sign In</h1>
             <div className="social-icons">
-                 <SocialButton icon={<Chrome size={20} />} onClick={() => signIn('google', { callbackUrl: 'http://localhost:3000/dashboard' })} />
-                 <SocialButton icon={<GitMerge size={20} />} onClick={() => signIn('github', { callbackUrl: 'http://localhost:3000/dashboard' })} />
+                 <SocialButton icon={<Chrome size={20} />} onClick={() => signIn('google', { callbackUrl: `${WEB_URL}/dashboard` })} />
+                 <SocialButton icon={<GitMerge size={20} />} onClick={() => signIn('github', { callbackUrl: `${WEB_URL}/dashboard` })} />
             </div>
             <span>or use your email and password</span>
             <input type="email" name="email" placeholder="Email" required />

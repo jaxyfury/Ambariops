@@ -34,9 +34,10 @@ import { signOut, useSession } from 'next-auth/react';
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
     const { data: session } = useSession();
+    const homeUrl = process.env.NEXT_PUBLIC_HOME_URL || 'http://localhost:3001';
 
     const handleSignOut = async () => {
-        await signOut({ callbackUrl: 'http://localhost:3001/' });
+        await signOut({ callbackUrl: homeUrl });
         toast.success('Successfully logged out!');
     }
 

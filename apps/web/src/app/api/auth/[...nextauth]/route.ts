@@ -54,7 +54,8 @@ export const authOptions: NextAuthOptions = {
     strategy: 'jwt',
   },
   pages: {
-    signIn: 'http://localhost:3001/login',
+    signIn: `${process.env.NEXT_PUBLIC_HOME_URL}/auth`,
+    error: `${process.env.NEXT_PUBLIC_HOME_URL}/auth`,
   },
   callbacks: {
     async session({ session, token }) {

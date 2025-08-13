@@ -1,3 +1,4 @@
+
 import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
@@ -25,6 +26,10 @@ const nextConfig: NextConfig = {
     ],
   },
   transpilePackages: ['@amberops/ui', '@amberops/api', '@amberops/design-tokens'],
+  env: {
+    NEXT_PUBLIC_WEB_URL: process.env.NEXT_PUBLIC_WEB_URL,
+    NEXT_PUBLIC_HOME_URL: process.env.NEXT_PUBLIC_HOME_URL,
+  }
 };
 
 export default nextConfig;

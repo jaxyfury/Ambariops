@@ -12,8 +12,8 @@ export default function LoginPage() {
 
   useEffect(() => {
     // Redirect to the actual login page hosted on the 'home' app.
-    // In a production environment, this would be your main domain.
-    router.replace('http://localhost:3001/login');
+    const homeUrl = process.env.NEXT_PUBLIC_HOME_URL || 'http://localhost:3001';
+    router.replace(`${homeUrl}/auth`);
   }, [router]);
 
   return (

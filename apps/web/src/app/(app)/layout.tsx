@@ -12,13 +12,14 @@ export const dynamic = 'force-dynamic';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
     const { data: session, status } = useSession();
+    const homeUrl = process.env.NEXT_PUBLIC_HOME_URL || 'http://localhost:3001';
 
     if (status === 'loading') {
         return <Preloader />;
     }
 
     if (status === 'unauthenticated') {
-        redirect('http://localhost:3001/auth');
+        redirect(`${homeUrl}/auth`);
     }
 
   return (
