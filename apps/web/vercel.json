@@ -1,4 +1,5 @@
 
 {
-  "installCommand": "pnpm install"
+  "installCommand": "pnpm install",
+  "packageManager": "pnpm@9.1.0"
 }
