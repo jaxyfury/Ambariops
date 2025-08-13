@@ -4,6 +4,7 @@
 import { Button } from '@amberops/ui/components/ui/button'
 import { AmberOpsLogo } from '@amberops/ui/components/icons'
 import Link from 'next/link'
+import Image from 'next/image';
 import { CheckCircle, Shield, Zap, BarChart, HardDrive, Server, Users, ArrowRight } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@amberops/ui/components/ui/avatar';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@amberops/ui/components/ui/accordion';
@@ -155,13 +156,14 @@ export default function HomePage() {
                   </Button>
                 </div>
               </div>
-              <img
+              <Image
                 src="https://placehold.co/600x400.png"
                 width="600"
                 height="400"
-                alt="Hero"
+                alt="AmberOps Dashboard Screenshot"
                 data-ai-hint="dashboard cluster management"
                 className="mx-auto aspect-[3/2] overflow-hidden rounded-xl object-cover sm:w-full lg:order-last border-4 border-background shadow-2xl"
+                priority
               />
             </div>
           </div>
@@ -218,7 +220,7 @@ export default function HomePage() {
                   <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-primary" />Up to 5 Hosts</li>
                   <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-primary" />Community Support</li>
                 </ul>
-                <Button className="w-full mt-6" variant="outline">Get Started</Button>
+                <Button className="w-full mt-6" variant="outline" asChild><Link href="/signup" prefetch={false}>Get Started</Link></Button>
               </div>
               <div className="relative flex flex-col rounded-lg border-2 border-primary bg-card shadow-lg p-6">
                 <div className="absolute top-0 -translate-y-1/2 left-1/2 -translate-x-1/2">
@@ -235,7 +237,7 @@ export default function HomePage() {
                   <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-primary" />Up to 50 Hosts</li>
                   <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-primary" />Priority Email Support</li>
                 </ul>
-                <Button className="w-full mt-6">Choose Pro</Button>
+                <Button className="w-full mt-6" asChild><Link href="/signup" prefetch={false}>Choose Pro</Link></Button>
               </div>
               <div className="relative flex flex-col rounded-lg border bg-card shadow-sm p-6">
                 <h3 className="text-2xl font-bold font-headline">Enterprise</h3>
@@ -294,7 +296,7 @@ export default function HomePage() {
                         </h2>
                          <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                             Have questions? We have answers. If you can't find what you're looking for, feel free to contact us.
-                        </p>
+                         </p>
                     </div>
                 </div>
                 <div className="mx-auto max-w-3xl py-12">

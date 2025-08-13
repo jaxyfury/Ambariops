@@ -45,7 +45,7 @@ export default function SignupPage() {
     }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-muted/20">
+    <div className="flex items-center justify-center min-h-screen bg-muted/20 p-4">
         <Card className="w-full max-w-sm">
         <CardHeader>
             <div className="flex items-center justify-center gap-3 mb-4">
@@ -78,7 +78,7 @@ export default function SignupPage() {
                         </span>
                     </div>
                 </div>
-                <form className="space-y-4" onSubmit={handleSignup}>
+                <form className="space-y-4" onSubmit={handleSignup} data-testid="signup-form">
                     <div className="space-y-2">
                         <Label htmlFor="name">Name</Label>
                         <Input id="name" type="text" placeholder="Your Name" required />
