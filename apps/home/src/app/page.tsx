@@ -5,7 +5,7 @@ import { Button } from '@amberops/ui/components/ui/button'
 import { AmberOpsLogo } from '@amberops/ui/components/icons'
 import Link from 'next/link'
 import Image from 'next/image';
-import { CheckCircle, Shield, Zap, BarChart, HardDrive, Server, Users, ArrowRight, Mail, GitBranch, Terminal, Blocks, Package, Search, Star, MessageSquare, Cpu } from 'lucide-react'
+import { CheckCircle, Shield, Zap, BarChart, HardDrive, Server, Users, ArrowRight, Mail, GitBranch, Terminal, Blocks, Package, Search, Star, MessageSquare, Cpu, Database } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@amberops/ui/components/ui/avatar';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@amberops/ui/components/ui/accordion';
 import { AnimatedGlobe } from '@/components/animated-globe';
@@ -102,7 +102,18 @@ const pricingTiers = {
 }
 
 const integrationIcons = [
-    GitBranch, Terminal, Blocks, Package, Search, HardDrive, Cpu, Users, BarChart, Shield, Zap, Server
+    { icon: Database, name: 'HDFS' },
+    { icon: Users, name: 'YARN' },
+    { icon: GitBranch, name: 'MapReduce' },
+    { icon: Cpu, name: 'Tez' },
+    { icon: Server, name: 'Hive' },
+    { icon: HardDrive, name: 'HBase' },
+    { icon: Shield, name: 'Ranger' },
+    { icon: Zap, name: 'Spark' },
+    { icon: Package, name: 'Zookeeper' },
+    { icon: Search, name: 'Solr' },
+    { icon: BarChart, name: 'Grafana' },
+    { icon: Terminal, name: 'Ambari' },
 ];
 
 
@@ -265,7 +276,7 @@ export default function HomePage() {
         
         <section id="integrations-section" className="w-full py-20 md:py-28 lg:py-32">
           <div className="container px-4 md:px-6 text-center">
-            <p className="text-muted-foreground integration-section-element">Trusted by the world&apos;s most innovative technical teams</p>
+            <p className="text-muted-foreground integration-section-element">Trusted by the world's most innovative technical teams</p>
             <div className="flex justify-center items-center gap-8 md:gap-12 mt-4 mb-12 text-muted-foreground integration-section-element">
                 <p className="font-semibold text-lg">Deda.tech</p>
                 <p className="font-semibold text-lg">Unbabel</p>
@@ -297,7 +308,7 @@ export default function HomePage() {
                         <MessageSquare className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
                         <div>
                             <h3 className="font-semibold">200k+ community members</h3>
-                            <p className="text-sm text-muted-foreground">This wouldn&apos;t be possible without you.</p>
+                            <p className="text-sm text-muted-foreground">This wouldn't be possible without you.</p>
                         </div>
                     </CardContent>
                 </Card>
@@ -308,16 +319,24 @@ export default function HomePage() {
             </h2>
 
             <div className="integrations-grid mt-12 integration-section-element">
-                {Array.from({ length: 48 }).map((_, i) => {
-                    const Icon = integrationIcons[i % integrationIcons.length];
-                    return (
-                        <div key={i} className="integration-icon-container">
-                            <div className="integration-icon">
-                                <Icon className="h-6 w-6" />
-                            </div>
-                        </div>
-                    )
-                })}
+              <div className="integrations-marquee">
+                {[...integrationIcons, ...integrationIcons].map((item, i) => (
+                  <div key={`marquee1-${i}`} className="integration-icon-container">
+                    <div className="integration-icon">
+                      <item.icon className="h-8 w-8" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="integrations-marquee" aria-hidden="true" style={{ animationDelay: '20s' }}>
+                {[...integrationIcons, ...integrationIcons].map((item, i) => (
+                  <div key={`marquee2-${i}`} className="integration-icon-container">
+                    <div className="integration-icon">
+                      <item.icon className="h-8 w-8" />
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
