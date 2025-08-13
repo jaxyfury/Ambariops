@@ -7,7 +7,6 @@ import {
   LayoutDashboard,
   Server,
   HardDrive,
-  AlertTriangle,
   FileText,
   ListChecks,
   ScrollText,
@@ -16,6 +15,7 @@ import {
   Laptop,
   History,
   BookOpen,
+  AlertTriangle,
 } from 'lucide-react';
 import {
   Accordion,
@@ -61,19 +61,7 @@ export function SidebarNav() {
   ];
 
   const bottomNavItems = [
-     {
-      label: 'Documentation',
-      icon: BookOpen,
-      tooltip: 'Documentation',
-      subItems: [
-        { href: '/documentation/dashboard', label: 'Dashboard Guide', tooltip: 'Dashboard Guide' },
-        { href: '/documentation/clusters', label: 'Cluster Management', tooltip: 'Cluster Management' },
-        { href: '/documentation/services', label: 'Service Management', tooltip: 'Service Management' },
-        { href: '/documentation/alerts', label: 'Alerting System', tooltip: 'Alerting System' },
-        { href: '/documentation/advanced-features', label: 'Advanced Features', tooltip: 'Advanced Features' },
-        { href: '/documentation/settings', label: 'Settings', tooltip: 'Settings' },
-      ],
-    },
+    { href: '/documentation', label: 'Documentation', icon: BookOpen, tooltip: 'Documentation' },
     { href: '/settings', label: 'Settings', icon: Settings, tooltip: 'Settings' },
     { href: '/help', label: 'Help', icon: AlertCircle, tooltip: 'Help' },
   ];
