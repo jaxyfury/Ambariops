@@ -23,18 +23,18 @@ const useTypewriter = (lines: (string | React.ReactNode)[], speed = 50, initialD
             const line = lines[lineIndex];
             if (typeof line !== 'string') {
                 currentLines = [...currentLines, line];
-                setDisplayedLines(currentLines);
+                setDisplayedLines([...currentLines]);
                 timeouts.push(setTimeout(() => typeLine(lineIndex + 1), speed));
                 return;
             }
 
             let charIndex = 0;
             currentLines = [...currentLines, ''];
-            setDisplayedLines(currentLines);
+            
 
             const typeChar = () => {
                 if (isCancelled) return;
-                if (charIndex < line.length) {
+                 if (charIndex < line.length) {
                     currentLines[lineIndex] = line.substring(0, charIndex + 1);
                     setDisplayedLines([...currentLines]);
                     charIndex++;
@@ -95,7 +95,7 @@ export default function Error({
   const displayedText = useTypewriter(terminalLines);
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-background p-4 font-mono">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-background p-4 font-mono overflow-y-auto">
        <div className="w-full max-w-4xl text-center">
             <div className="flex items-center justify-center gap-4 mb-8">
                 <AmberOpsLogo className="h-12 w-12" />

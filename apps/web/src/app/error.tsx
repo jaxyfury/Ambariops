@@ -30,7 +30,7 @@ export default function Error({
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-background p-4">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-background p-4 overflow-y-auto">
        <div className="w-full max-w-2xl text-center">
             <div className="flex items-center justify-center gap-4 mb-8">
                 <AmberOpsLogo className="h-12 w-12" />
