@@ -1,7 +1,7 @@
 
 'use client';
 
-import { PageHeader } from '@/components/page-header';
+import { PageHeader } from '@amberops/ui/components/page-header';
 import { fetchActivityLogs } from '@/lib/api/services';
 import { type ColumnDef } from '@tanstack/react-table';
 import type { ActivityLog } from '@amberops/lib';
@@ -177,3 +177,5 @@ export default function ActivityPage() {
     </div>
   );
 }
+
+    

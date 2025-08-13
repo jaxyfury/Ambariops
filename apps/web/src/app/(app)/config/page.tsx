@@ -1,7 +1,7 @@
 
 'use client';
 
-import { PageHeader } from '@/components/page-header';
+import { PageHeader } from '@amberops/ui/components/page-header';
 import { Button } from '@amberops/ui/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@amberops/ui/components/ui/card';
 import { Textarea } from '@amberops/ui/components/ui/textarea';
@@ -99,3 +99,5 @@ export default function ConfigPage() {
     </div>
   );
 }
+
+    

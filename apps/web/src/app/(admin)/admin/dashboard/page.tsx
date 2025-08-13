@@ -1,5 +1,5 @@
 
-import { PageHeader } from '@/components/page-header';
+import { PageHeader } from '@amberops/ui/components/page-header';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@amberops/ui/components/ui/card';
 import { FileText, Users, Shield } from 'lucide-react';
 import Link from 'next/link';
@@ -49,3 +49,5 @@ export default function AdminDashboardPage() {
     </div>
   );
 }
+
+    

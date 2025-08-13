@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { PageHeader } from '@/components/page-header';
+import { PageHeader } from '@amberops/ui/components/page-header';
 import { Button } from '@amberops/ui/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@amberops/ui/components/ui/card';
 import { Badge } from '@amberops/ui/components/ui/badge';
@@ -334,3 +334,5 @@ export default function ClusterDetailPage({ params }: { params: { id: string } }
     </div>
   );
 }
+
+    

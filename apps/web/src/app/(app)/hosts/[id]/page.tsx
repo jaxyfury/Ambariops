@@ -2,7 +2,7 @@
 'use client';
 
 import { notFound, useRouter } from 'next/navigation';
-import { PageHeader } from '@/components/page-header';
+import { PageHeader } from '@amberops/ui/components/page-header';
 import { Button } from '@amberops/ui/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@amberops/ui/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@amberops/ui/components/ui/table';
@@ -10,6 +10,7 @@ import { Badge } from '@amberops/ui/components/ui/badge';
 import { mockHosts, mockServices } from '@amberops/api';
 import { Cpu, MemoryStick, HardDrive, Server, Power, CheckCircle2, XCircle, Clock } from 'lucide-react';
 import toast from 'react-hot-toast';
+import Link from 'next/link';
 
 function getServiceStatusIcon(status: 'started' | 'stopped' | 'maintenance') {
   switch (status) {
@@ -135,3 +136,5 @@ export default function HostDetailPage({ params }: { params: { id: string } }) {
     </div>
   );
 }
+
+    

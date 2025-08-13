@@ -1,7 +1,7 @@
 
 'use client';
 
-import { PageHeader } from '@/components/page-header';
+import { PageHeader } from '@amberops/ui/components/page-header';
 import { Button } from '@amberops/ui/components/ui/button';
 import { Input } from '@amberops/ui/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@amberops/ui/components/ui/table';
@@ -156,3 +156,5 @@ export default function LogsPage() {
     </div>
   );
 }
+
+    

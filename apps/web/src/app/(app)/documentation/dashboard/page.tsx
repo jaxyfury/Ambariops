@@ -1,7 +1,7 @@
 
 'use client';
 
-import { PageHeader } from '@/components/page-header';
+import { PageHeader } from '@amberops/ui/components/page-header';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@amberops/ui/components/ui/card';
 import { Alert, AlertTitle, AlertDescription } from '@amberops/ui/components/ui/alert';
 import { Bot, Rocket, AlertTriangle } from 'lucide-react';
@@ -95,3 +95,5 @@ export default function DashboardDocumentationPage() {
     </div>
   );
 }
+
+    

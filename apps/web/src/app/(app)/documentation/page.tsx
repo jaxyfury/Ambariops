@@ -2,7 +2,7 @@
 'use client';
 
 import Link from 'next/link';
-import { PageHeader } from '@/components/page-header';
+import { PageHeader } from '@amberops/ui/components/page-header';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@amberops/ui/components/ui/card';
 import { ArrowUpRight, BookOpen, LayoutDashboard, Server, Siren, Settings, Wand2, Table, HardDrive } from 'lucide-react';
 
@@ -85,3 +85,5 @@ export default function DocumentationPage() {
     </div>
   );
 }
+
+    

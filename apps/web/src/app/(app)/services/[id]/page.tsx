@@ -2,7 +2,7 @@
 'use client';
 
 import { notFound, useRouter } from 'next/navigation';
-import { PageHeader } from '@/components/page-header';
+import { PageHeader } from '@amberops/ui/components/page-header';
 import { Button } from '@amberops/ui/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@amberops/ui/components/ui/card';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@amberops/ui/components/ui/table';
@@ -128,3 +128,5 @@ export default function ServiceDetailPage({ params }: { params: { id: string } }
     </div>
   );
 }
+
+    

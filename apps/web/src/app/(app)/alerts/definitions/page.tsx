@@ -1,7 +1,7 @@
 
 'use client';
 
-import { PageHeader } from '@/components/page-header';
+import { PageHeader } from '@amberops/ui/components/page-header';
 import { Button } from '@amberops/ui/components/ui/button';
 import { Switch } from '@amberops/ui/components/ui/switch';
 import { Badge } from '@amberops/ui/components/ui/badge';
@@ -263,3 +263,5 @@ export default function AlertDefinitionsPage() {
     </div>
   );
 }
+
+    

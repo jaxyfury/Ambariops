@@ -1,7 +1,7 @@
 
 'use client';
 
-import { PageHeader } from '@/components/page-header';
+import { PageHeader } from '@amberops/ui/components/page-header';
 import {
   Tabs,
   TabsContent,
@@ -43,3 +43,5 @@ export default function SettingsPage() {
     </div>
   );
 }
+
+    

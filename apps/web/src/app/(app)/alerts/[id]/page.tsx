@@ -2,7 +2,7 @@
 'use client';
 
 import { notFound } from 'next/navigation';
-import { PageHeader } from '@/components/page-header';
+import { PageHeader } from '@amberops/ui/components/page-header';
 import { Button } from '@amberops/ui/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@amberops/ui/components/ui/card';
 import { Badge } from '@amberops/ui/components/ui/badge';
@@ -119,3 +119,5 @@ export default function AlertDetailPage({ params }: { params: { id: string } }) 
     </div>
   );
 }
+
+    

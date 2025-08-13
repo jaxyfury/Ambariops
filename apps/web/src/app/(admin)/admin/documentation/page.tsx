@@ -3,7 +3,7 @@
 
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { PageHeader } from '@/components/page-header';
+import { PageHeader } from '@amberops/ui/components/page-header';
 import { Button } from '@amberops/ui/components/ui/button';
 import { MoreHorizontal, PlusCircle, Trash, Edit } from 'lucide-react';
 import { DataTable } from '@/components/data-table';
@@ -139,3 +139,5 @@ export default function AdminDocumentationPage() {
     </>
   );
 }
+
+    

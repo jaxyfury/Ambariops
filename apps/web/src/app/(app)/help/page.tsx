@@ -29,7 +29,7 @@ import { Input } from '@amberops/ui/components/ui/input';
 import { Label } from '@amberops/ui/components/ui/label';
 import { Textarea } from '@amberops/ui/components/ui/textarea';
 import { LifeBuoy, Mail } from 'lucide-react';
-import { PageHeader } from '@/components/page-header';
+import { PageHeader } from '@amberops/ui/components/page-header';
 import toast from 'react-hot-toast';
 
 const faqs = [
@@ -168,3 +168,5 @@ export default function HelpPage() {
     </div>
   );
 }
+
+    

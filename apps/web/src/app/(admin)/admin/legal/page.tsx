@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { PageHeader } from '@/components/page-header';
+import { PageHeader } from '@amberops/ui/components/page-header';
 import { Button } from '@amberops/ui/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@amberops/ui/components/ui/card';
 import { Textarea } from '@amberops/ui/components/ui/textarea';
@@ -94,3 +94,5 @@ export default function AdminLegalPage() {
     </div>
   );
 }
+
+    
