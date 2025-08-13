@@ -60,7 +60,7 @@ export const columns: ColumnDef<Cluster>[] = [
       return (
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          onClick={() => column.toggleSorting()}
         >
           Name
           {column.getIsSorted() === 'desc' ? (
@@ -89,7 +89,7 @@ export const columns: ColumnDef<Cluster>[] = [
     header: ({ column }) => (
         <Button
             variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            onClick={() => column.toggleSorting()}
         >
             Status
             {column.getIsSorted() === 'desc' ? (
@@ -112,7 +112,7 @@ export const columns: ColumnDef<Cluster>[] = [
     header: ({ column }) => (
         <Button
             variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            onClick={() => column.toggleSorting()}
         >
             Hosts
             {column.getIsSorted() === 'desc' ? (
@@ -131,7 +131,7 @@ export const columns: ColumnDef<Cluster>[] = [
     header: ({ column }) => (
         <Button
             variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            onClick={() => column.toggleSorting()}
         >
             Services
             {column.getIsSorted() === 'desc' ? (
@@ -150,7 +150,7 @@ export const columns: ColumnDef<Cluster>[] = [
     header: ({ column }) => (
         <Button
             variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            onClick={() => column.toggleSorting()}
         >
             Active Alerts
             {column.getIsSorted() === 'desc' ? (

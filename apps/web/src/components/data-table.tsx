@@ -248,20 +248,21 @@ export function DataTable<TData, TValue>({
   };
   
  const isFiltered = React.useMemo(() => {
-    const hasColumnFilters = filterKey ? ((table.getColumn(filterKey)?.getFilterValue() as string) ?? '').length > 0 : false;
+    const hasColumnFilters = table.getState().columnFilters.length > 0;
     const pagination = table.getState().pagination;
 
     return hasColumnFilters || 
       table.getState().sorting.length > 0 ||
       density !== 'default' ||
       style !== 'default' ||
-      Object.keys(columnVisibility).length > 0 ||
-      JSON.stringify(columnOrder) !== JSON.stringify(initialColumnOrder) ||
-      Object.keys(rowSelection).length > 0 ||
+      Object.keys(table.getState().columnVisibility).length > 0 ||
+      JSON.stringify(table.getState().columnOrder) !== JSON.stringify(initialColumnOrder) ||
+      Object.keys(table.getState().rowSelection).length > 0 ||
+      Object.keys(table.getState().columnSizing).length > 0 ||
       pagination.pageIndex !== 0 ||
       pagination.pageSize !== 10;
   }, [
-    table, filterKey, density, style, columnVisibility, columnOrder, initialColumnOrder, rowSelection
+    table.getState(), density, style, initialColumnOrder
   ]);
 
   const [isClearing, setIsClearing] = React.useState(false);
@@ -289,7 +290,8 @@ export function DataTable<TData, TValue>({
     table.resetSorting();
     table.setColumnOrder(initialColumnOrder);
     table.resetColumnVisibility();
-    table.resetRowSelection();
+    table.resetRowSelection(true);
+    table.resetColumnSizing();
     table.setPageIndex(0);
     table.setPageSize(10);
     setDensity('default');
@@ -450,6 +452,7 @@ export function DataTable<TData, TValue>({
                         <Button variant="outline" size="sm" onClick={() => {
                           table.setColumnOrder(initialColumnOrder);
                           table.resetColumnVisibility();
+                          table.resetColumnSizing();
                           setDensity('default');
                           setStyle('default');
                         }}>Reset View</Button>
@@ -639,5 +642,3 @@ export function DataTable<TData, TValue>({
     </div>
   )
 }
-
-    

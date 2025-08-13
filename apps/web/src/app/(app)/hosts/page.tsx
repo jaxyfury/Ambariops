@@ -57,7 +57,7 @@ export const columns: ColumnDef<Host>[] = [
         header: ({ column }) => (
             <Button
                 variant="ghost"
-                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                onClick={() => column.toggleSorting()}
             >
                 Name
                 {column.getIsSorted() === 'desc' ? (
@@ -88,7 +88,7 @@ export const columns: ColumnDef<Host>[] = [
         header: ({ column }) => (
             <Button
                 variant="ghost"
-                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                onClick={() => column.toggleSorting()}
             >
                 Status
                 {column.getIsSorted() === 'desc' ? (
@@ -111,7 +111,7 @@ export const columns: ColumnDef<Host>[] = [
         header: ({ column }) => (
             <Button
                 variant="ghost"
-                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                onClick={() => column.toggleSorting()}
             >
                 IP Address
                 {column.getIsSorted() === 'desc' ? (
@@ -139,7 +139,7 @@ export const columns: ColumnDef<Host>[] = [
         header: ({ column }) => (
             <Button
                 variant="ghost"
-                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                onClick={() => column.toggleSorting()}
             >
                 Cluster
                 {column.getIsSorted() === 'desc' ? (
@@ -169,7 +169,7 @@ export const columns: ColumnDef<Host>[] = [
         header: ({ column }) => (
             <Button
                 variant="ghost"
-                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                onClick={() => column.toggleSorting()}
             >
                 OS
                 {column.getIsSorted() === 'desc' ? (
@@ -197,7 +197,7 @@ export const columns: ColumnDef<Host>[] = [
         header: ({ column }) => (
             <Button
                 variant="ghost"
-                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                onClick={() => column.toggleSorting()}
             >
                 Last Heartbeat
                 {column.getIsSorted() === 'desc' ? (

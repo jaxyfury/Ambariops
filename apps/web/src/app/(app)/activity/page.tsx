@@ -59,7 +59,7 @@ export const columns: ColumnDef<ActivityLog>[] = [
         header: ({ column }) => (
             <Button
                 variant="ghost"
-                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                onClick={() => column.toggleSorting()}
             >
                 User
                 {column.getIsSorted() === 'desc' ? (
@@ -89,7 +89,7 @@ export const columns: ColumnDef<ActivityLog>[] = [
         header: ({ column }) => (
             <Button
                 variant="ghost"
-                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                onClick={() => column.toggleSorting()}
             >
                 Action
                 {column.getIsSorted() === 'desc' ? (
@@ -108,7 +108,7 @@ export const columns: ColumnDef<ActivityLog>[] = [
         header: ({ column }) => (
             <Button
                 variant="ghost"
-                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                onClick={() => column.toggleSorting()}
             >
                 Details
                 {column.getIsSorted() === 'desc' ? (
@@ -136,7 +136,7 @@ export const columns: ColumnDef<ActivityLog>[] = [
         header: ({ column }) => (
             <Button
                 variant="ghost"
-                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                onClick={() => column.toggleSorting()}
             >
                 Time
                 {column.getIsSorted() === 'desc' ? (

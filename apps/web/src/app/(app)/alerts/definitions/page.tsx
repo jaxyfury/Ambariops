@@ -48,7 +48,7 @@ export const columns: ColumnDef<AlertDefinition>[] = [
         header: ({ column }) => (
             <Button
                 variant="ghost"
-                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                onClick={() => column.toggleSorting()}
             >
                 Enabled
                 {column.getIsSorted() === 'desc' ? (
@@ -69,7 +69,7 @@ export const columns: ColumnDef<AlertDefinition>[] = [
         header: ({ column }) => (
             <Button
                 variant="ghost"
-                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                onClick={() => column.toggleSorting()}
             >
                 Name
                 {column.getIsSorted() === 'desc' ? (
@@ -97,7 +97,7 @@ export const columns: ColumnDef<AlertDefinition>[] = [
         header: ({ column }) => (
             <Button
                 variant="ghost"
-                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                onClick={() => column.toggleSorting()}
             >
                 Service
                 {column.getIsSorted() === 'desc' ? (
@@ -125,7 +125,7 @@ export const columns: ColumnDef<AlertDefinition>[] = [
         header: ({ column }) => (
             <Button
                 variant="ghost"
-                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                onClick={() => column.toggleSorting()}
             >
                 Type
                 {column.getIsSorted() === 'desc' ? (

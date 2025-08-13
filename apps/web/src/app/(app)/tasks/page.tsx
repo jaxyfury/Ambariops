@@ -69,7 +69,7 @@ export const columns: ColumnDef<Task>[] = [
         header: ({ column }) => (
             <Button
                 variant="ghost"
-                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                onClick={() => column.toggleSorting()}
             >
                 Task ID
                 {column.getIsSorted() === 'desc' ? (
@@ -97,7 +97,7 @@ export const columns: ColumnDef<Task>[] = [
         header: ({ column }) => (
             <Button
                 variant="ghost"
-                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                onClick={() => column.toggleSorting()}
             >
                 Name
                 {column.getIsSorted() === 'desc' ? (
@@ -125,7 +125,7 @@ export const columns: ColumnDef<Task>[] = [
         header: ({ column }) => (
             <Button
                 variant="ghost"
-                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                onClick={() => column.toggleSorting()}
             >
                 Status
                 {column.getIsSorted() === 'desc' ? (
@@ -151,7 +151,7 @@ export const columns: ColumnDef<Task>[] = [
         header: ({ column }) => (
             <Button
                 variant="ghost"
-                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                onClick={() => column.toggleSorting()}
             >
                 Progress
                 {column.getIsSorted() === 'desc' ? (
@@ -175,7 +175,7 @@ export const columns: ColumnDef<Task>[] = [
         header: ({ column }) => (
             <Button
                 variant="ghost"
-                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                onClick={() => column.toggleSorting()}
             >
                 User
                 {column.getIsSorted() === 'desc' ? (
@@ -203,7 +203,7 @@ export const columns: ColumnDef<Task>[] = [
         header: ({ column }) => (
             <Button
                 variant="ghost"
-                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                onClick={() => column.toggleSorting()}
             >
                 Duration
                 {column.getIsSorted() === 'desc' ? (
@@ -221,7 +221,7 @@ export const columns: ColumnDef<Task>[] = [
         header: ({ column }) => (
             <Button
                 variant="ghost"
-                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                onClick={() => column.toggleSorting()}
             >
                 Start Time
                 {column.getIsSorted() === 'desc' ? (
