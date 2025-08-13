@@ -8,9 +8,10 @@ import { Card, CardContent } from '@amberops/ui/components/ui/card';
 import { Skeleton } from '@amberops/ui/components/ui/skeleton';
 import type { LegalDocument } from '@amberops/lib';
 
+const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL || 'http://localhost:3000';
 
 async function fetchLegalDoc(type: 'terms' | 'privacy'): Promise<LegalDocument | null> {
-    const res = await fetch(`/api/v1/legal/${type}`);
+    const res = await fetch(`${WEB_URL}/api/v1/legal/${type}`);
     if (!res.ok) {
         if (res.status === 404) return null;
         throw new Error('Failed to fetch legal document');
@@ -22,7 +23,7 @@ export default function LegalPage({ params }: { params: { type: string } }) {
     const [doc, setDoc] = useState<LegalDocument | null>(null);
     const [isLoading, setIsLoading] = useState(true);
 
-    const docType = params.type === 'terms-of-service' ? 'terms' : 'privacy-policy' ? 'privacy' : null;
+    const docType = params.type === 'terms-of-service' ? 'terms' : params.type === 'privacy-policy' ? 'privacy' : null;
 
     useEffect(() => {
         if (!docType) {
@@ -69,4 +70,3 @@ export default function LegalPage({ params }: { params: { type: string } }) {
         </div>
     );
 }
-

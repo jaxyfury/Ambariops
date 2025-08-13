@@ -1,7 +1,7 @@
 
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import Link from 'next/link'
 import { Button } from '@amberops/ui/components/ui/button';
 import { AmberOpsLogo } from '@amberops/ui/components/icons';
@@ -15,29 +15,28 @@ const useTypewriter = (lines: (string | React.ReactNode)[], speed = 50, initialD
     useEffect(() => {
         let isCancelled = false;
         const timeouts: NodeJS.Timeout[] = [];
+        let currentLines: (string | React.ReactNode)[] = [];
 
         const typeLine = (lineIndex: number) => {
             if (isCancelled || lineIndex >= lines.length) return;
 
             const line = lines[lineIndex];
             if (typeof line !== 'string') {
-                setDisplayedLines(prev => [...prev, line]);
-                typeLine(lineIndex + 1);
+                currentLines = [...currentLines, line];
+                setDisplayedLines(currentLines);
+                timeouts.push(setTimeout(() => typeLine(lineIndex + 1), speed));
                 return;
             }
 
             let charIndex = 0;
-            // Initialize the current line in the state
-            setDisplayedLines(prev => [...prev, '']);
+            currentLines = [...currentLines, ''];
+            setDisplayedLines(currentLines);
 
             const typeChar = () => {
                 if (isCancelled) return;
                 if (charIndex < line.length) {
-                    setDisplayedLines(prev => {
-                        const newLines = [...prev];
-                        newLines[lineIndex] = line.substring(0, charIndex + 1);
-                        return newLines;
-                    });
+                    currentLines[lineIndex] = line.substring(0, charIndex + 1);
+                    setDisplayedLines([...currentLines]);
                     charIndex++;
                     timeouts.push(setTimeout(typeChar, speed));
                 } else {
@@ -80,7 +79,7 @@ export default function Error({
     toast.success('Error details copied to clipboard!');
   };
 
-  const terminalLines = [
+  const terminalLines = useMemo(() => [
       './run amberops-diagnostics --level=critical',
       <span key="line1" className="text-muted-foreground">Searching for system errors...</span>,
       <br key="br1" />,
@@ -91,7 +90,7 @@ export default function Error({
       'An unexpected error occurred. These are not the droids you are looking for.',
       'Please try again, or if the problem persists, view and copy the error details below.',
       <br key="br3" />,
-  ];
+  ], [error.digest, error.message]);
 
   const displayedText = useTypewriter(terminalLines);
 
