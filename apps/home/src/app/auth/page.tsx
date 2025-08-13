@@ -8,9 +8,10 @@ import { signIn } from 'next-auth/react';
 import toast from 'react-hot-toast';
 import { GitMerge, Chrome, LogIn, UserPlus } from 'lucide-react';
 import { cn } from '@amberops/lib';
+import { AmberOpsLogo } from '@amberops/ui/components/icons';
+import { AnimatedThemeToggle } from '@/components/animated-theme-toggle';
 
 const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL || 'http://localhost:3000';
-const HOME_URL = process.env.NEXT_PUBLIC_HOME_URL || 'http://localhost:3001';
 
 const SocialButton = ({ icon, onClick }: { icon: React.ReactNode, onClick?: () => void }) => (
     <button type="button" onClick={onClick} className="social-icon">
@@ -125,6 +126,15 @@ export default function AuthPage() {
 
     return (
         <div className="auth-body">
+            <header className="fixed top-0 left-0 w-full px-4 lg:px-6 h-16 flex items-center z-50">
+                 <Link href="/" className="flex items-center justify-center gap-2 text-background" prefetch={false}>
+                    <AmberOpsLogo className="h-8 w-8" />
+                    <span className="text-xl font-semibold font-headline">AmberOps</span>
+                </Link>
+                <div className="ml-auto">
+                    <AnimatedThemeToggle />
+                </div>
+            </header>
             <div className={cn("auth-container", isActive && "active")} id="container">
                 <div className="form-container sign-up">
                     <SignUpForm />

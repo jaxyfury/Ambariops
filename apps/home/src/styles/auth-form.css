@@ -148,7 +148,8 @@
 .social-icons .social-icon:hover{
     transform: scale(1.1);
     border-color: hsl(var(--primary));
-    color: hsl(var(--primary));
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
 }
 
 .toggle-container{
@@ -160,7 +161,7 @@
     overflow: hidden;
     transition: all 0.6s ease-in-out;
     border-radius: 150px 0 0 100px;
-    z-index: 100;
+    z-index: 1000;
 }
 
 .auth-container.active .toggle-container{
