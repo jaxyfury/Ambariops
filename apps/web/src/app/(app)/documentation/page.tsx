@@ -6,7 +6,7 @@ import { PageHeader } from '@/components/page-header';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@amberops/ui/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@amberops/ui/components/ui/accordion';
 import { Alert, AlertTitle, AlertDescription } from '@amberops/ui/components/ui/alert';
-import { BookOpen, AlertTriangle, ExternalLink } from 'lucide-react';
+import { BookOpen, AlertTriangle } from 'lucide-react';
 
 export default function DocumentationPage() {
   return (
@@ -26,7 +26,7 @@ export default function DocumentationPage() {
             <p className="mb-4 text-muted-foreground">
               Welcome to the AmberOps Console! This guide will walk you through the key features and functionalities. Use the sidebar on the left to navigate between different sections.
             </p>
-            <Accordion type="single" collapsible>
+            <Accordion type="single" collapsible className="w-full">
               <AccordionItem value="item-1">
                 <AccordionTrigger>Dashboard</AccordionTrigger>
                 <AccordionContent>
