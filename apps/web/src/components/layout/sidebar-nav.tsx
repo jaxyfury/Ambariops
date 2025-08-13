@@ -67,6 +67,11 @@ export function SidebarNav() {
       tooltip: 'Documentation',
       subItems: [
         { href: '/documentation/dashboard', label: 'Dashboard Guide', tooltip: 'Dashboard Guide' },
+        { href: '/documentation/clusters', label: 'Cluster Management', tooltip: 'Cluster Management' },
+        { href: '/documentation/services', label: 'Service Management', tooltip: 'Service Management' },
+        { href: '/documentation/alerts', label: 'Alerting System', tooltip: 'Alerting System' },
+        { href: '/documentation/advanced-features', label: 'Advanced Features', tooltip: 'Advanced Features' },
+        { href: '/documentation/settings', label: 'Settings', tooltip: 'Settings' },
       ],
     },
     { href: '/settings', label: 'Settings', icon: Settings, tooltip: 'Settings' },
@@ -123,7 +128,7 @@ export function SidebarNav() {
         ) : (
           <SidebarMenuButton isActive={isActive(item.href)} asChild tooltip={item.tooltip}>
             <Link href={item.href}>
-              <item.icon />
+              <item.icon className="h-4 w-4" />
               <span>{item.label}</span>
             </Link>
           </SidebarMenuButton>
