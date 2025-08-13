@@ -5,12 +5,13 @@ import { Button } from '@amberops/ui/components/ui/button'
 import { AmberOpsLogo } from '@amberops/ui/components/icons'
 import Link from 'next/link'
 import Image from 'next/image';
-import { CheckCircle, Shield, Zap, BarChart, HardDrive, Server, Users, ArrowRight } from 'lucide-react'
+import { CheckCircle, Shield, Zap, BarChart, HardDrive, Server, Users, ArrowRight, Mail } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@amberops/ui/components/ui/avatar';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@amberops/ui/components/ui/accordion';
 import { AnimatedGlobe } from '@/components/animated-globe';
 import { FooterAnimation } from '@/components/footer-animation';
 import { AnimatedThemeToggle } from '@/components/animated-theme-toggle';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@amberops/ui/components/ui/card';
 
 const features = [
   {
@@ -122,6 +123,13 @@ export default function HomePage() {
             prefetch={false}
           >
             FAQ
+          </Link>
+           <Link
+            href="#contact"
+            className="text-sm font-medium hover:text-primary transition-colors underline-offset-4"
+            prefetch={false}
+          >
+            Contact
           </Link>
            <AnimatedThemeToggle />
            <Button asChild variant="ghost">
@@ -308,6 +316,36 @@ export default function HomePage() {
                         </AccordionItem>
                         ))}
                     </Accordion>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" className="w-full py-20 md:py-28 lg:py-32">
+            <div className="container px-4 md:px-6">
+                <div className="flex flex-col items-center justify-center space-y-4 text-center">
+                    <div className="space-y-2">
+                        <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Contact Us</div>
+                        <h2 className="text-3xl font-bold tracking-tighter font-headline sm:text-5xl">
+                            Get in Touch
+                        </h2>
+                        <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                            We're here to help. Reach out to us for sales inquiries, support, or any other questions.
+                        </p>
+                    </div>
+                </div>
+                <div className="mx-auto max-w-lg py-12">
+                    <Card>
+                        <CardContent className="p-6 text-center">
+                             <Mail className="h-12 w-12 mx-auto text-primary mb-4" />
+                            <h3 className="text-xl font-semibold font-headline">Email Us</h3>
+                            <p className="text-muted-foreground mt-2 mb-4">
+                                The best way to get in touch is by email. Send your questions to our support team and we'll get back to you as soon as possible.
+                            </p>
+                            <Button asChild>
+                                <a href="mailto:support@amberops.app">support@amberops.app</a>
+                            </Button>
+                        </CardContent>
+                    </Card>
                 </div>
             </div>
         </section>

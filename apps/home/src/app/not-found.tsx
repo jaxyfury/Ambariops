@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { Button } from '@amberops/ui/components/ui/button';
 import { useEffect, useRef } from 'react';
 import '@/styles/not-found.css';
+import { AmberOpsLogo } from '@amberops/ui/components/icons';
+import { AnimatedThemeToggle } from '@/components/animated-theme-toggle';
 
 export default function NotFound() {
     const cordCanvasRef = useRef<HTMLCanvasElement>(null);
@@ -31,8 +33,9 @@ export default function NotFound() {
             visorCtx.bezierCurveTo(15, 10, 5, 10, 5, 20);
             visorCtx.lineTo(5, 45);
             
-            visorCtx.fillStyle = theme === 'dark' ? '#2f3640' : '#e0e0e0';
-            visorCtx.strokeStyle = theme === 'dark' ? '#f5f6fa' : '#333';
+            const themeIsDark = document.documentElement.classList.contains('dark');
+            visorCtx.fillStyle = themeIsDark ? '#2f3640' : '#e0e0e0';
+            visorCtx.strokeStyle = themeIsDark ? '#f5f6fa' : '#333';
             visorCtx.fill();
             visorCtx.stroke();
         };
@@ -52,7 +55,7 @@ export default function NotFound() {
             cordCtx.moveTo(130, 170);
             cordCtx.bezierCurveTo(250, y1, 345, y2, 400, y3);
             
-            cordCtx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--primary-foreground').trim();
+            cordCtx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();
             cordCtx.lineWidth = 8;
             cordCtx.stroke();
             
@@ -68,22 +71,39 @@ export default function NotFound() {
             y3Forward ? y3 += 1 : y3 -= 1;
         };
         
-        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
         const currentTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
         drawVisor(currentTheme);
         
-        const handleThemeChange = (e: MediaQueryListEvent) => drawVisor(e.matches ? 'dark' : 'light');
-        mediaQuery.addEventListener('change', handleThemeChange);
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.attributeName === 'class') {
+                    const newTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+                    drawVisor(newTheme);
+                }
+            });
+        });
+
+        observer.observe(document.documentElement, { attributes: true });
 
         animate();
         return () => {
             if(animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
-            mediaQuery.removeEventListener('change', handleThemeChange);
+            observer.disconnect();
         };
     }, []);
 
     return (
         <div className="not-found-body">
+            <header className="fixed top-0 left-0 w-full px-4 lg:px-6 h-16 flex items-center z-50">
+                 <Link href="/" className="flex items-center justify-center gap-2 text-foreground" prefetch={false}>
+                    <AmberOpsLogo className="h-8 w-8" />
+                    <span className="text-xl font-semibold font-headline">AmberOps</span>
+                </Link>
+                <div className="ml-auto">
+                    <AnimatedThemeToggle />
+                </div>
+            </header>
+
             <div className="moon"></div>
             <div className="moon__crater moon__crater1"></div>
             <div className="moon__crater moon__crater2"></div>
@@ -103,8 +123,8 @@ export default function NotFound() {
                     <Button asChild>
                         <Link href="/">Go Home</Link>
                     </Button>
-                    <Button variant="outline">
-                        Contact Support
+                    <Button asChild variant="outline">
+                       <Link href="/#contact">Contact Support</Link>
                     </Button>
                 </div>
             </div>
