@@ -2,7 +2,7 @@
 #cards-container {
     --_offset-steps: 4rem;
     --_scale-steps: 15;
-    --_opacity-steps: 20;
+    --_opacity-steps: 10;
     
     --_offset-steps-two: calc(var(--_offset-steps) * -1);
     --_offset-steps-three: calc(var(--_offset-steps) * -2);
@@ -14,7 +14,6 @@
     display: grid;
     grid-template-areas: "stack";
     width: min(calc(100% - 2rem), 30rem);
-    perspective: 1px;
 }
 
 #cards-container article {
