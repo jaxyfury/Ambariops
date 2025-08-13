@@ -130,7 +130,7 @@ export default function HomePage() {
       // Hero Section Animation
       gsap.from(".hero-element", {
         opacity: 0,
-        y: 20,
+        y: 30,
         duration: 0.8,
         stagger: 0.2,
         ease: "power3.out"
@@ -321,7 +321,7 @@ export default function HomePage() {
                     </p>
                 </div>
             </div>
-             <div id="pricing-grid" className="mx-auto grid max-w-6xl items-start gap-8 py-12 lg:grid-cols-3 lg:items-center justify-items-center">
+             <div id="pricing-grid" className="mx-auto grid max-w-6xl items-center gap-8 py-12 lg:grid-cols-3 justify-items-center">
                 <div className="pricing-card-wrapper">
                     <PricingCard {...pricingTiers.hobby} />
                 </div>
@@ -464,5 +464,3 @@ export default function HomePage() {
     </div>
   )
 }
-
-    
