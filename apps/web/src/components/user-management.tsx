@@ -29,6 +29,8 @@ import * as z from 'zod';
 import { formatDistanceToNow } from 'date-fns';
 import toast from 'react-hot-toast';
 import type { User } from '@amberops/lib';
+import { Alert, AlertDescription, AlertTitle } from '@amberops/ui/components/ui/alert';
+import { AlertTriangle } from 'lucide-react';
 
 const userSchema = z.object({
   name: z.string().min(1, 'Name is required'),
@@ -49,7 +51,8 @@ export function UserManagement() {
     data: users = [],
     isLoading,
     isError,
-  } = useQuery<User[]>({
+    error,
+  } = useQuery<User[], Error>({
     queryKey: ['users'],
     queryFn: fetchUsers,
   });
@@ -98,8 +101,8 @@ export function UserManagement() {
       );
       closeModal();
     },
-    onError: () => {
-      toast.error('Failed to save user. Please try again.');
+    onError: (err: Error) => {
+      toast.error(err.message || 'Failed to save user. Please try again.');
     },
   });
 
@@ -109,8 +112,8 @@ export function UserManagement() {
       queryClient.invalidateQueries({ queryKey: ['users'] });
       toast.success('User deleted successfully!');
     },
-    onError: () => {
-      toast.error('Failed to delete user. Please try again.');
+    onError: (err: Error) => {
+      toast.error(err.message || 'Failed to delete user. Please try again.');
     },
   });
 
@@ -122,19 +125,6 @@ export function UserManagement() {
     user.name.toLowerCase().includes(filter.toLowerCase()) ||
     user.email.toLowerCase().includes(filter.toLowerCase())
   );
-
-  if (isError) {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Error</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p>Failed to load users.</p>
-        </CardContent>
-      </Card>
-    );
-  }
 
   return (
     <>
@@ -160,6 +150,15 @@ export function UserManagement() {
                     <UserPlus className="mr-2 h-4 w-4" /> Add User
                 </Button>
             </div>
+          {isError && (
+             <Alert variant="destructive" className="mb-4">
+                <AlertTriangle className="h-4 w-4" />
+                <AlertTitle>Error Fetching Users</AlertTitle>
+                <AlertDescription>
+                    {error?.message || "An unexpected error occurred."}
+                </AlertDescription>
+            </Alert>
+          )}
           <Table>
             <TableHeader>
               <TableRow>

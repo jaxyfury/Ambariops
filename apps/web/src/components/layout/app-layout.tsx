@@ -30,8 +30,16 @@ import Link from 'next/link';
 import toast from 'react-hot-toast';
 import { QuickAccessNav } from '@/components/quick-access-nav';
 import { GlobalSearch } from '@/components/global-search';
+import { signOut, useSession } from 'next-auth/react';
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
+    const { data: session } = useSession();
+
+    const handleSignOut = async () => {
+        await signOut({ callbackUrl: 'http://localhost:3001/' });
+        toast.success('Successfully logged out!');
+    }
+
   return (
     <div className="flex flex-col h-screen">
       <header className="sticky top-0 flex h-16 shrink-0 items-center gap-4 border-b bg-background/80 px-4 backdrop-blur-lg sm:h-auto sm:border-0 sm:bg-transparent sm:px-6 py-2">
@@ -61,15 +69,15 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
               >
                 <Avatar>
                   <AvatarImage
-                    src="https://avatar.vercel.sh/admin"
-                    alt="@admin"
+                    src={session?.user?.image ?? `https://avatar.vercel.sh/${session?.user?.email}`}
+                    alt={session?.user?.name ?? 'User'}
                   />
-                  <AvatarFallback>A</AvatarFallback>
+                  <AvatarFallback>{session?.user?.name?.charAt(0) ?? 'U'}</AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuLabel>{session?.user?.name ?? 'My Account'}</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
                 <Link href="/settings">Settings</Link>
@@ -79,7 +87,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
-                onClick={() => toast.success('Successfully logged out!')}
+                onClick={handleSignOut}
               >
                 Logout
               </DropdownMenuItem>

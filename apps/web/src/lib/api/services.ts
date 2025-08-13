@@ -17,7 +17,8 @@ const apiClient = {
       body: JSON.stringify(data),
     });
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      const errorData = await response.json();
+      throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
     }
     return response.json();
   },
@@ -28,7 +29,8 @@ const apiClient = {
       body: JSON.stringify(data),
     });
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+        const errorData = await response.json();
+      throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
     }
     return response.json();
   },
@@ -37,7 +39,8 @@ const apiClient = {
       method: 'DELETE',
     });
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+        const errorData = await response.json();
+      throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
     }
     return response.json();
   },
