@@ -160,7 +160,6 @@ export default function HomePage() {
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      // Hero Section Animation
       gsap.from(".hero-element", {
         opacity: 0,
         y: 30,
@@ -169,7 +168,18 @@ export default function HomePage() {
         ease: "power3.out"
       });
       
-      // Pricing Section Animation
+      gsap.from(".feature-card", {
+        scrollTrigger: {
+          trigger: "#features-grid",
+          start: "top 80%",
+        },
+        opacity: 0,
+        y: 50,
+        stagger: 0.1,
+        duration: 0.6,
+        ease: "power3.out",
+      });
+
       gsap.from(".pricing-card-wrapper", {
         scrollTrigger: {
             trigger: "#pricing-grid",
@@ -183,7 +193,6 @@ export default function HomePage() {
         ease: "power3.out",
       });
       
-      // FAQ Section Animation
       gsap.from(".faq-item", {
         scrollTrigger: {
           trigger: "#faq-accordion",
@@ -288,38 +297,33 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section id="features" className="features-section-container">
-            <div className="features-sticky-header">
-                <div className="container mx-auto px-4 md:px-6">
-                    <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Key Features</div>
+        <section id="features" className="w-full py-20 md:py-28 lg:py-32 bg-muted/20">
+            <div className="container mx-auto px-4 md:px-6">
+                <div className="text-center max-w-3xl mx-auto">
+                    <div className="inline-block rounded-lg bg-secondary px-3 py-1 text-sm">Key Features</div>
                     <h2 className="text-3xl font-bold tracking-tighter font-headline sm:text-5xl mt-2">
                         Everything you need. Nothing you don’t.
                     </h2>
-                    <p className="max-w-3xl text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed mt-4">
+                    <p className="md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed mt-4 text-muted-foreground">
                         AmberOps is packed with features designed to make cluster management faster, easier, and more intelligent. Stop fighting with your tools and start managing your stack.
                     </p>
                 </div>
-            </div>
-
-            <div className="features-scrolling-content">
-                <div className="container mx-auto px-4 md:px-6">
-                    <div className="features-grid">
-                        {features.map((feature) => (
-                            <div key={feature.title} className="feature-card">
-                                <div className="feature-card-glow" />
-                                <div className="feature-card-content">
-                                    <div className="mb-4">{feature.icon}</div>
-                                    <h3 className="text-xl font-bold font-headline mb-2">{feature.title}</h3>
-                                    <p className="text-muted-foreground">{feature.description}</p>
-                                </div>
+                <div id="features-grid" className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 mt-16">
+                    {features.map((feature) => (
+                        <div key={feature.title} className="feature-card">
+                            <div className="feature-card-glow" />
+                            <div className="feature-card-content">
+                                <div className="mb-4">{feature.icon}</div>
+                                <h3 className="text-xl font-bold font-headline mb-2">{feature.title}</h3>
+                                <p className="text-muted-foreground">{feature.description}</p>
                             </div>
-                        ))}
-                    </div>
+                        </div>
+                    ))}
                 </div>
             </div>
         </section>
         
-        <section id="pricing" className="w-full py-20 md:py-28 lg:py-32 bg-muted/20">
+        <section id="pricing" className="w-full py-20 md:py-28 lg:py-32 bg-background">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center pb-12">
                 <div className="space-y-2">
