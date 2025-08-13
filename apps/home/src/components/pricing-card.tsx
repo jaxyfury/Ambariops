@@ -1,8 +1,7 @@
 
 'use client';
 
-import { useEffect, useRef } from 'react';
-import type VanillaTilt from 'vanilla-tilt';
+import { useEffect, useRef, useId } from 'react';
 import * as THREE from 'three';
 import { cn } from '@amberops/lib';
 import Link from 'next/link';
@@ -21,7 +20,7 @@ export function PricingCard({ title, price, period, description, features, butto
     const cardContainerRef = useRef<HTMLDivElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const animationFrameId = useRef<number>();
-    const cardId = useRef(`card-${title.toLowerCase().replace(/\s+/g, '-')}-${Math.random().toString(36).substring(2, 9)}`);
+    const cardId = useId();
 
 
     useEffect(() => {
@@ -32,8 +31,8 @@ export function PricingCard({ title, price, period, description, features, butto
             if (!isMounted || !cardContainerRef.current || !canvasRef.current) return;
 
             const DEBUG = false;
-            function log(...args: any[]) { if (DEBUG) console.log(`[FieryCard-${cardId.current}]`, ...args); }
-            function warn(...args: any[]) { if (DEBUG) console.warn(`[FieryCard-${cardId.current}]`, ...args); }
+            function log(...args: any[]) { if (DEBUG) console.log(`[FieryCard-${cardId}]`, ...args); }
+            function warn(...args: any[]) { if (DEBUG) console.warn(`[FieryCard-${cardId}]`, ...args); }
 
             let scene: THREE.Scene, camera: THREE.OrthographicCamera, fieryBandMesh: THREE.Mesh;
             let uniforms: any;
@@ -89,6 +88,7 @@ export function PricingCard({ title, price, period, description, features, butto
                     vec2 noiseCoord1 = vec2(normalizedAngle * 8.0 + mediumTime * 0.3, vUv.y * 4.0 - mediumTime * 0.4);
                     float fireDetail1 = turbulence(noiseCoord1, 1.0, 4);
                     vec2 noiseCoord2 = vec2(normalizedAngle * 6.0 - mediumTime * 0.5, vUv.y * 3.0 + mediumTime * 0.3);
+                    float fireDetail2 = turbulence(noiseCoord2, 0.8, 3);
                     float fireDetail = fireDetail1 * 0.6 + fireDetail2 * 0.4;
                     fireDetail = pow(fireDetail, 1.2); 
                     float widthModulation = 1.0 - pow(abs(vUv.y - 0.5) * 1.8, 2.0);
@@ -224,13 +224,13 @@ export function PricingCard({ title, price, period, description, features, butto
             }
             window.removeEventListener('resize', () => {}); 
         };
-    }, []);
+    }, [cardId]);
 
     const buttonLink = title === 'Enterprise' ? '#contact' : '/auth?action=signup';
 
     return (
         <div ref={cardContainerRef} className={cn("card-container", isFeatured && "scale-105")}>
-            <canvas id={cardId.current} ref={canvasRef}></canvas>
+            <canvas id={cardId} ref={canvasRef}></canvas>
             <div className="card" data-tilt data-tilt-max="10" data-tilt-speed="400" data-tilt-perspective="1000" data-tilt-glare data-tilt-max-glare="0.2">
                 <h2 className="card-title">{title}</h2>
                 <p className="card-price">
