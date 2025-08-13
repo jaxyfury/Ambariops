@@ -1,74 +1,149 @@
 
+'use client';
+
 import { Button } from '@amberops/ui/components/ui/button'
 import { AmberOpsLogo } from '@amberops/ui/components/icons'
 import Link from 'next/link'
-import { CheckCircle, Shield, Zap, BarChart } from 'lucide-react'
+import { CheckCircle, Shield, Zap, BarChart, HardDrive, Server, Users, ArrowRight } from 'lucide-react'
+import { Avatar, AvatarFallback, AvatarImage } from '@amberops/ui/components/ui/avatar';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@amberops/ui/components/ui/accordion';
 
 const features = [
   {
     icon: <Zap className="h-8 w-8 text-primary" />,
     title: 'Blazing Fast UI',
-    description: 'A modern, responsive interface built with Next.js for a seamless user experience.',
+    description: 'A modern, responsive interface built with Next.js for a seamless user experience that leaves legacy systems behind.',
   },
   {
     icon: <Shield className="h-8 w-8 text-primary" />,
     title: 'Secure & Reliable',
-    description: 'Enterprise-grade security features to keep your cluster data safe and sound.',
+    description: 'Enterprise-grade security features to keep your cluster data safe, with robust authentication and authorization.',
   },
     {
     icon: <BarChart className="h-8 w-8 text-primary" />,
     title: 'AI-Powered Insights',
-    description: 'Leverage generative AI to get health summaries and troubleshooting steps in seconds.',
+    description: 'Leverage generative AI to get health summaries and actionable troubleshooting steps in plain English.',
+  },
+   {
+    icon: <Server className="h-8 w-8 text-primary" />,
+    title: 'Unified Cluster View',
+    description: 'Manage all your clusters from a single, intuitive dashboard. No more context switching.',
+  },
+   {
+    icon: <HardDrive className="h-8 w-8 text-primary" />,
+    title: 'Simplified Service Mgmt',
+    description: 'Start, stop, and configure services across all hosts with just a few clicks. Track operations in real-time.',
+  },
+   {
+    icon: <Users className="h-8 w-8 text-primary" />,
+    title: 'User & Access Control',
+    description: 'Fine-grained user management with roles and permissions to ensure secure access for your entire team.',
   },
 ];
+
+const testimonials = [
+  {
+    quote: "AmberOps has revolutionized how we manage our data clusters. The AI-powered troubleshooting is like having another senior engineer on the team. We've reduced downtime by over 30%.",
+    name: 'Sarah L.',
+    role: 'Lead DevOps Engineer',
+    avatar: 'https://avatar.vercel.sh/sarah',
+  },
+  {
+    quote: "The interface is just... better. It's fast, intuitive, and I can find what I need in seconds. I can't imagine going back to the old Ambari UI.",
+    name: 'Mike R.',
+    role: 'Platform Engineering Manager',
+    avatar: 'https://avatar.vercel.sh/mike',
+  },
+   {
+    quote: "As a data analyst, I don't want to fight with the tooling. AmberOps gives me the quick insights I need on service health without having to dive into complex configs. It just works.",
+    name: 'Chen W.',
+    role: 'Senior Data Analyst',
+    avatar: 'https://avatar.vercel.sh/chen',
+  },
+];
+
+const faqItems = [
+    {
+        question: "What is AmberOps?",
+        answer: "AmberOps is a modern, fast, and intuitive frontend replacement for the standard Apache Ambari web UI. It's designed to streamline cluster management with a better user experience and powerful AI-driven features."
+    },
+    {
+        question: "Can I connect my existing Ambari-managed cluster?",
+        answer: "Yes! AmberOps is designed to work with your existing Ambari backend. You can add your cluster by providing your Ambari server URL and credentials, and AmberOps will act as a new, more powerful interface for it."
+    },
+    {
+        question: "Is there a free plan?",
+        answer: "Absolutely. Our 'Hobby' plan is free forever and is perfect for individuals and small teams to manage a single cluster with up to 5 hosts. You can explore all the core features without any cost."
+    },
+    {
+        question: "How does the AI assistance work?",
+        answer: "We use state-of-the-art large language models (LLMs) from Google (Gemini) to analyze your cluster's metrics and alert data. The AI can then generate natural-language summaries of cluster health and provide step-by-step troubleshooting guides for specific alerts, helping you resolve issues faster."
+    }
+]
 
 
 export default function HomePage() {
   return (
-    <div className="flex flex-col min-h-screen bg-background">
-      <header className="px-4 lg:px-6 h-16 flex items-center border-b">
+    <div className="flex flex-col min-h-dvh bg-background text-foreground">
+      <header className="sticky top-0 z-50 px-4 lg:px-6 h-16 flex items-center border-b bg-background/80 backdrop-blur-lg">
         <Link href="#" className="flex items-center justify-center gap-2" prefetch={false}>
           <AmberOpsLogo className="h-8 w-8" />
           <span className="text-xl font-semibold font-headline">AmberOps</span>
         </Link>
-        <nav className="ml-auto flex gap-4 sm:gap-6">
+        <nav className="ml-auto items-center hidden md:flex gap-4 sm:gap-6">
           <Link
             href="#features"
-            className="text-sm font-medium hover:underline underline-offset-4"
+            className="text-sm font-medium hover:text-primary transition-colors underline-offset-4"
             prefetch={false}
           >
             Features
           </Link>
-          <Link
-            href="#"
-            className="text-sm font-medium hover:underline underline-offset-4"
+           <Link
+            href="#pricing"
+            className="text-sm font-medium hover:text-primary transition-colors underline-offset-4"
             prefetch={false}
           >
             Pricing
           </Link>
           <Link
             href="/documentation"
-            className="text-sm font-medium hover:underline underline-offset-4"
+            className="text-sm font-medium hover:text-primary transition-colors underline-offset-4"
             prefetch={false}
           >
             Docs
           </Link>
-           <Button asChild variant="outline">
+           <Link
+            href="#faq"
+            className="text-sm font-medium hover:text-primary transition-colors underline-offset-4"
+            prefetch={false}
+          >
+            FAQ
+          </Link>
+           <Button asChild variant="ghost">
             <Link href="/login">Admin Login</Link>
           </Button>
+           <Button asChild>
+            <Link href="/signup">Get Started <ArrowRight className="ml-2 h-4 w-4" /></Link>
+          </Button>
         </nav>
+        <Button asChild variant="outline" className="ml-auto md:hidden">
+            <Link href="/login">Login</Link>
+        </Button>
       </header>
       <main className="flex-1">
-        <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-muted/20">
-          <div className="container px-4 md:px-6">
-            <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
+        <section className="w-full py-20 md:py-32 lg:py-40 bg-muted/20 relative overflow-hidden">
+             <div className="absolute top-0 left-0 -translate-x-1/4 -translate-y-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
+             <div className="absolute bottom-0 right-0 translate-x-1/4 translate-y-1/4 w-96 h-96 bg-secondary/20 rounded-full blur-3xl" />
+          <div className="container px-4 md:px-6 relative">
+            <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 xl:grid-cols-[1fr_550px]">
               <div className="flex flex-col justify-center space-y-4">
-                <div className="space-y-2">
+                <div className="space-y-4">
+                   <div className="inline-block rounded-lg bg-secondary px-3 py-1 text-sm font-semibold text-secondary-foreground">The Ambari UI. Reimagined.</div>
                   <h1 className="text-4xl font-bold tracking-tighter font-headline sm:text-5xl xl:text-6xl/none">
                     The Future of Cluster Management is Here
                   </h1>
                   <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                    AmberOps provides a modern, fast, and intuitive frontend for Apache Ambari, supercharged with AI-powered insights.
+                    AmberOps provides a modern, fast, and intuitive frontend for Apache Ambari, supercharged with AI-powered insights to streamline your operations.
                   </p>
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
@@ -86,12 +161,13 @@ export default function HomePage() {
                 height="400"
                 alt="Hero"
                 data-ai-hint="dashboard cluster management"
-                className="mx-auto aspect-[3/2] overflow-hidden rounded-xl object-cover sm:w-full lg:order-last"
+                className="mx-auto aspect-[3/2] overflow-hidden rounded-xl object-cover sm:w-full lg:order-last border-4 border-background shadow-2xl"
               />
             </div>
           </div>
         </section>
-        <section id="features" className="w-full py-12 md:py-24 lg:py-32">
+
+        <section id="features" className="w-full py-20 md:py-28 lg:py-32">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
@@ -100,14 +176,14 @@ export default function HomePage() {
                   Everything you need. Nothing you don’t.
                 </h2>
                 <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  AmberOps is packed with features to make cluster management faster, easier, and more intelligent.
+                  AmberOps is packed with features designed to make cluster management faster, easier, and more intelligent. Stop fighting with your tools and start managing your stack.
                 </p>
               </div>
             </div>
-            <div className="mx-auto grid max-w-5xl items-start gap-12 py-12 lg:grid-cols-3">
+            <div className="mx-auto grid max-w-5xl items-start gap-8 py-12 lg:grid-cols-3 md:grid-cols-2">
               {features.map((feature) => (
-                <div key={feature.title} className="grid gap-4 text-center">
-                    <div className="mx-auto">{feature.icon}</div>
+                <div key={feature.title} className="grid gap-4 text-center p-6 rounded-lg hover:bg-muted/50 transition-all duration-300">
+                    <div className="mx-auto bg-primary/10 p-3 rounded-full">{feature.icon}</div>
                     <h3 className="text-xl font-bold font-headline">{feature.title}</h3>
                     <p className="text-muted-foreground">{feature.description}</p>
                 </div>
@@ -115,14 +191,136 @@ export default function HomePage() {
             </div>
           </div>
         </section>
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-muted/20">
+        
+        <section id="pricing" className="w-full py-20 md:py-28 lg:py-32 bg-muted/20">
+          <div className="container px-4 md:px-6">
+            <div className="flex flex-col items-center justify-center space-y-4 text-center">
+              <div className="space-y-2">
+                <div className="inline-block rounded-lg bg-secondary px-3 py-1 text-sm">Pricing Plans</div>
+                <h2 className="text-3xl font-bold tracking-tighter font-headline sm:text-5xl">
+                  Find the Right Plan for Your Team
+                </h2>
+                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                  Start for free and scale as you grow. All plans include our core features and AI-powered insights.
+                </p>
+              </div>
+            </div>
+            <div className="mx-auto grid max-w-5xl items-stretch gap-8 py-12 md:grid-cols-2 lg:grid-cols-3">
+              <div className="relative flex flex-col rounded-lg border bg-card shadow-sm p-6">
+                <h3 className="text-2xl font-bold font-headline">Hobby</h3>
+                <p className="mt-2 text-muted-foreground">For personal projects and small teams.</p>
+                <div className="my-6">
+                  <span className="text-5xl font-bold">$0</span>
+                  <span className="text-muted-foreground">/ month</span>
+                </div>
+                <ul className="flex-1 space-y-3">
+                  <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-primary" />1 Cluster</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-primary" />Up to 5 Hosts</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-primary" />Community Support</li>
+                </ul>
+                <Button className="w-full mt-6" variant="outline">Get Started</Button>
+              </div>
+              <div className="relative flex flex-col rounded-lg border-2 border-primary bg-card shadow-lg p-6">
+                <div className="absolute top-0 -translate-y-1/2 left-1/2 -translate-x-1/2">
+                    <div className="inline-block rounded-full bg-primary px-4 py-1 text-sm font-semibold text-primary-foreground">Most Popular</div>
+                </div>
+                <h3 className="text-2xl font-bold font-headline">Pro</h3>
+                <p className="mt-2 text-muted-foreground">For growing businesses and production use.</p>
+                <div className="my-6">
+                  <span className="text-5xl font-bold">$99</span>
+                  <span className="text-muted-foreground">/ month</span>
+                </div>
+                <ul className="flex-1 space-y-3">
+                  <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-primary" />Up to 5 Clusters</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-primary" />Up to 50 Hosts</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-primary" />Priority Email Support</li>
+                </ul>
+                <Button className="w-full mt-6">Choose Pro</Button>
+              </div>
+              <div className="relative flex flex-col rounded-lg border bg-card shadow-sm p-6">
+                <h3 className="text-2xl font-bold font-headline">Enterprise</h3>
+                <p className="mt-2 text-muted-foreground">For large-scale, mission-critical deployments.</p>
+                <div className="my-6">
+                  <span className="text-5xl font-bold">Custom</span>
+                </div>
+                <ul className="flex-1 space-y-3">
+                  <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-primary" />Unlimited Clusters & Hosts</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-primary" />Dedicated Support & SLA</li>
+                  <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-primary" />On-premise Deployment Options</li>
+                </ul>
+                <Button className="w-full mt-6" variant="outline">Contact Us</Button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="testimonials" className="w-full py-20 md:py-28 lg:py-32">
+            <div className="container px-4 md:px-6">
+                 <div className="flex flex-col items-center justify-center space-y-4 text-center">
+                    <div className="space-y-2">
+                        <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">What Our Users Say</div>
+                        <h2 className="text-3xl font-bold tracking-tighter font-headline sm:text-5xl">
+                        Trusted by Teams Who Demand a Better Way
+                        </h2>
+                    </div>
+                </div>
+                <div className="mx-auto grid max-w-5xl gap-8 py-12 lg:grid-cols-3 md:grid-cols-1">
+                    {testimonials.map((testimonial) => (
+                        <div key={testimonial.name} className="flex flex-col justify-between p-6 rounded-lg border bg-card shadow-sm">
+                            <blockquote className="text-lg text-muted-foreground italic mb-4">"{testimonial.quote}"</blockquote>
+                            <div className="flex items-center gap-3">
+                                <Avatar>
+                                    <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
+                                    <AvatarFallback>{testimonial.name.charAt(0)}</AvatarFallback>
+                                </Avatar>
+                                <div>
+                                    <p className="font-semibold">{testimonial.name}</p>
+                                    <p className="text-sm text-muted-foreground">{testimonial.role}</p>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </section>
+        
+        <section id="faq" className="w-full py-20 md:py-28 lg:py-32 bg-muted/20">
+            <div className="container px-4 md:px-6">
+                <div className="flex flex-col items-center justify-center space-y-4 text-center">
+                    <div className="space-y-2">
+                        <div className="inline-block rounded-lg bg-secondary px-3 py-1 text-sm">FAQ</div>
+                        <h2 className="text-3xl font-bold tracking-tighter font-headline sm:text-5xl">
+                            Frequently Asked Questions
+                        </h2>
+                         <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                            Have questions? We have answers. If you can't find what you're looking for, feel free to contact us.
+                        </p>
+                    </div>
+                </div>
+                <div className="mx-auto max-w-3xl py-12">
+                     <Accordion type="single" collapsible className="w-full">
+                        {faqItems.map((faq, index) => (
+                        <AccordionItem value={`item-${index + 1}`} key={index}>
+                            <AccordionTrigger className="text-lg font-semibold">{faq.question}</AccordionTrigger>
+                            <AccordionContent className="text-muted-foreground text-base">
+                                {faq.answer}
+                            </AccordionContent>
+                        </AccordionItem>
+                        ))}
+                    </Accordion>
+                </div>
+            </div>
+        </section>
+
+
+        <section className="w-full py-20 md:py-24 lg:py-32">
           <div className="container grid items-center justify-center gap-4 px-4 text-center md:px-6">
             <div className="space-y-3">
               <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight font-headline">
                 Ready to Modernize Your Stack?
               </h2>
               <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                Sign up today and experience the future of cluster management.
+                Sign up today and experience the future of cluster management. Go from zero to hero in minutes.
               </p>
             </div>
             <div className="mx-auto w-full max-w-sm space-y-2">
@@ -137,7 +335,7 @@ export default function HomePage() {
         </section>
       </main>
       <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
-        <p className="text-xs text-muted-foreground">&copy; 2024 AmberOps Inc. All rights reserved.</p>
+        <p className="text-xs text-muted-foreground">&copy; {new Date().getFullYear()} AmberOps Inc. All rights reserved.</p>
         <nav className="sm:ml-auto flex gap-4 sm:gap-6">
           <Link href="#" className="text-xs hover:underline underline-offset-4" prefetch={false}>
             Terms of Service
