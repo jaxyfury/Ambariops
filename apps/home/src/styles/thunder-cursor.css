@@ -1,0 +1,78 @@
+.thunder-cursor-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s linear;
+}
+
+.thunder-cursor-dot {
+    width: 8px;
+    height: 8px;
+    background-color: hsl(var(--primary));
+    border-radius: 50%;
+    box-shadow: 0 0 10px hsl(var(--primary)), 0 0 20px hsl(var(--primary));
+    transform: translate(-50%, -50%);
+}
+
+.thunder-cursor-trail {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    background: radial-gradient(circle, hsla(var(--primary), 0.3) 0%, transparent 70%);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse 1.5s infinite ease-out;
+}
+
+.thunder-cursor-sparks {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 1px;
+    height: 1px;
+}
+
+.spark {
+    position: absolute;
+    width: 2px;
+    height: 4px;
+    background-color: hsl(var(--primary));
+    border-radius: 50%;
+    opacity: 0;
+    animation: spark-fly 0.8s ease-out infinite;
+}
+
+.spark:nth-child(1) { animation-delay: 0s; }
+.spark:nth-child(2) { animation-delay: 0.2s; }
+.spark:nth-child(3) { animation-delay: 0.4s; }
+.spark:nth-child(4) { animation-delay: 0.6s; }
+
+@keyframes pulse {
+    0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+    100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; }
+}
+
+@keyframes spark-fly {
+    0% {
+        transform: rotate(calc(var(--angle) * 1deg)) translateY(0) scaleY(1);
+        opacity: 1;
+    }
+    100% {
+        transform: rotate(calc(var(--angle) * 1deg)) translateY(25px) scaleY(0);
+        opacity: 0;
+    }
+}
+
+.spark:nth-child(1) { --angle: 45; }
+.spark:nth-child(2) { --angle: 135; }
+.spark:nth-child(3) { --angle: 225; }
+.spark:nth-child(4) { --angle: 315; }
+
+/* Hide default cursor */
+body {
+    cursor: none;
+}

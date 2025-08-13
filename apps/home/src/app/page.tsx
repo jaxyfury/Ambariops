@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useRef, useLayoutEffect } from 'react';
@@ -16,6 +15,7 @@ import { Card, CardContent } from '@amberops/ui/components/ui/card';
 import { PricingCard } from '@/components/pricing-card';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ThunderCursor } from '@/components/thunder-cursor';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -181,6 +181,7 @@ export default function HomePage() {
 
   return (
     <div ref={mainRef} className="flex flex-col min-h-dvh bg-background text-foreground">
+      <ThunderCursor />
       <header className="sticky top-0 z-50 px-4 lg:px-6 h-16 flex items-center border-b bg-background/80 backdrop-blur-lg">
         <Link href="#" className="flex items-center justify-center gap-2" prefetch={false}>
           <AmberOpsLogo className="h-8 w-8" />

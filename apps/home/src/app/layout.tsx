@@ -1,4 +1,3 @@
-
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from 'next/font/google';
 import "@amberops/design-tokens/globals.css";
@@ -8,6 +7,7 @@ import "@/styles/animated-globe.css";
 import "@/styles/footer-animation.css";
 import "@/styles/not-found.css";
 import "@/styles/pricing-card.css";
+import "@/styles/thunder-cursor.css";
 import { cn } from "@amberops/lib";
 import { ThemeProvider } from "@amberops/ui/components/theme-provider";
 import { Toaster } from "react-hot-toast";
