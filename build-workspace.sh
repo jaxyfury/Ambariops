@@ -42,7 +42,7 @@ echo "--- Installing project dependencies with pnpm ---"
 pnpm install
 
 # --- 4. Build Everything ---
-echo "--- Building the web application ---"
+echo "--- Building all applications and packages ---"
 pnpm build
 
 echo "--- Building Storybook ---"
@@ -54,4 +54,4 @@ npx playwright install --with-deps # Ensure browsers are installed
 pnpm test:e2e
 
 echo "--- Workspace setup complete and verified! ---"
-echo "You can now run 'sh run.sh' to start the development server."
+echo "You can now run 'sh run.sh' to start the development servers."
