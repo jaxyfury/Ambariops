@@ -249,15 +249,19 @@ export function DataTable<TData, TValue>({
   
  const isFiltered = React.useMemo(() => {
     const hasColumnFilters = filterKey ? ((table.getColumn(filterKey)?.getFilterValue() as string) ?? '').length > 0 : false;
-    
+    const pagination = table.getState().pagination;
+
     return hasColumnFilters || 
       table.getState().sorting.length > 0 ||
       density !== 'default' ||
       style !== 'default' ||
       Object.keys(columnVisibility).length > 0 ||
-      JSON.stringify(columnOrder) !== JSON.stringify(initialColumnOrder);
+      JSON.stringify(columnOrder) !== JSON.stringify(initialColumnOrder) ||
+      Object.keys(rowSelection).length > 0 ||
+      pagination.pageIndex !== 0 ||
+      pagination.pageSize !== 10;
   }, [
-    table, filterKey, density, style, columnVisibility, columnOrder, initialColumnOrder
+    table, filterKey, density, style, columnVisibility, columnOrder, initialColumnOrder, rowSelection
   ]);
 
   const [isClearing, setIsClearing] = React.useState(false);
@@ -285,6 +289,9 @@ export function DataTable<TData, TValue>({
     table.resetSorting();
     table.setColumnOrder(initialColumnOrder);
     table.resetColumnVisibility();
+    table.resetRowSelection();
+    table.setPageIndex(0);
+    table.setPageSize(10);
     setDensity('default');
     setStyle('default');
   };
