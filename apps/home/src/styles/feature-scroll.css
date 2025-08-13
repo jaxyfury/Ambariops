@@ -1,10 +1,13 @@
 
-.feature-panel {
-    min-height: 100vh;
+.feature-section-header {
     width: 100%;
+}
+
+.feature-panel {
     display: flex;
     justify-content: center;
     align-items: center;
+    min-height: 100vh;
 }
 
 .feature-panel-content {

@@ -168,19 +168,6 @@ export default function HomePage() {
         stagger: 0.2,
         ease: "power3.out"
       });
-
-      gsap.from(".pricing-card-wrapper", {
-        scrollTrigger: {
-            trigger: "#pricing-grid",
-            start: "top 85%",
-        },
-        opacity: 0,
-        y: 60,
-        scale: 0.95,
-        stagger: 0.15,
-        duration: 0.8,
-        ease: "power3.out",
-      });
       
       gsap.from(".faq-item", {
         scrollTrigger: {
@@ -201,21 +188,26 @@ export default function HomePage() {
 
     useLayoutEffect(() => {
         if (!featuresRef.current) return;
-
+        const container = featuresRef.current;
         const featureCards = gsap.utils.toArray<HTMLElement>('.feature-panel');
         
         const ctx = gsap.context(() => {
             gsap.set('.feature-panel-content', { y: 100, opacity: 0 });
 
+            ScrollTrigger.create({
+                trigger: container,
+                start: "top top",
+                end: () => `+=${featureCards.length * window.innerHeight}`,
+                pin: '.feature-section-header',
+                scrub: 1,
+                anticipatePin: 1,
+            });
+
             featureCards.forEach((card, index) => {
-                const isLast = index === featureCards.length - 1;
                 ScrollTrigger.create({
                     trigger: card,
-                    start: "top top",
-                    end: () => `bottom ${isLast ? 'bottom' : 'top'}`,
-                    pin: true,
-                    pinSpacing: false,
-                    scrub: 1,
+                    start: `top center`,
+                    end: `bottom center`,
                     onEnter: () => {
                          gsap.to(card.querySelector('.feature-panel-content'), {
                             y: 0,
@@ -326,9 +318,9 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section id="features" ref={featuresRef} className="w-full py-20 md:py-28 lg:py-32 bg-muted/20 relative">
-            <div className="container mx-auto px-4 md:px-6">
-                <div className="sticky top-20 z-10 text-center max-w-3xl mx-auto py-8">
+        <section id="features" className="w-full py-20 md:py-28 lg:py-32 bg-muted/20 relative">
+            <div ref={featuresRef} className="container mx-auto px-4 md:px-6">
+                <div className="feature-section-header sticky top-20 z-10 text-center max-w-3xl mx-auto py-8">
                     <div className="inline-block rounded-lg bg-secondary px-3 py-1 text-sm">Key Features</div>
                     <h2 className="text-3xl font-bold tracking-tighter font-headline sm:text-5xl mt-2">
                         Everything you need. Nothing you don’t.
@@ -338,18 +330,20 @@ export default function HomePage() {
                     </p>
                 </div>
 
-                 <div className="relative mt-16">
-                     {features.map((feature, index) => (
-                        <div key={feature.title} className="feature-panel">
-                            <div className="feature-panel-content max-w-4xl mx-auto text-center">
-                                <div className="inline-block mb-6 p-4 bg-background/50 rounded-full border border-border">
-                                    {feature.icon}
+                <div className="relative mt-16">
+                     <div style={{ height: `${features.length * 100}vh` }}>
+                        {features.map((feature, index) => (
+                            <div key={feature.title} className="feature-panel h-screen">
+                                <div className="feature-panel-content max-w-4xl mx-auto text-center">
+                                    <div className="inline-block mb-6 p-4 bg-background/50 rounded-full border border-border">
+                                        {feature.icon}
+                                    </div>
+                                    <h3 className="text-2xl font-bold font-headline mb-4">{feature.title}</h3>
+                                    <p className="text-lg text-muted-foreground max-w-2xl mx-auto">{feature.description}</p>
                                 </div>
-                                <h3 className="text-2xl font-bold font-headline mb-4">{feature.title}</h3>
-                                <p className="text-lg text-muted-foreground max-w-2xl mx-auto">{feature.description}</p>
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             </div>
         </section>
