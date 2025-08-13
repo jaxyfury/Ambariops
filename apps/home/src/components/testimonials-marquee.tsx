@@ -16,8 +16,9 @@ interface TestimonialsMarqueeProps {
 
 const TestimonialCard = ({ testimonial }: { testimonial: Testimonial }) => (
     <div className="testimonial-card">
-        <blockquote className="text-lg text-muted-foreground italic mb-4">"{testimonial.quote}"</blockquote>
-        <div className="flex items-center gap-3 mt-auto">
+        <span className="smoke-effect" />
+        <blockquote className="text-lg text-muted-foreground italic mb-4 z-10">"{testimonial.quote}"</blockquote>
+        <div className="flex items-center gap-3 mt-auto z-10">
             <Avatar>
                 <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
                 <AvatarFallback>{testimonial.name.charAt(0)}</AvatarFallback>
