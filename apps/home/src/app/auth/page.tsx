@@ -17,6 +17,7 @@ import { Button } from '@amberops/ui/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@amberops/ui/components/ui/tooltip';
 
 const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL || 'http://localhost:3000';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
 
 const SocialButton = ({ icon, onClick, tooltip }: { icon: React.ReactNode, onClick?: () => void, tooltip: string }) => (
     <TooltipProvider>
@@ -44,7 +45,7 @@ const SignUpForm = () => {
         const password = e.currentTarget.password.value;
 
         try {
-            const response = await fetch(`${WEB_URL}/api/auth/register`, {
+            const response = await fetch(`${API_URL}/auth/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -127,7 +128,7 @@ const SignInForm = () => {
 
     const handleForgotPassword = async () => {
         try {
-            const response = await fetch(`${WEB_URL}/api/auth/forgot-password`, {
+            const response = await fetch(`${API_URL}/auth/forgot-password`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: forgotEmail }),

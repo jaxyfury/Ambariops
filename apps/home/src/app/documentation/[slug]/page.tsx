@@ -8,10 +8,10 @@ import { Card, CardContent } from '@amberops/ui/components/ui/card';
 import { Skeleton } from '@amberops/ui/components/ui/skeleton';
 import type { DocumentationArticle } from '@amberops/lib';
 
-const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL || 'http://localhost:3000';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
 
 async function fetchArticle(slug: string): Promise<DocumentationArticle | null> {
-    const res = await fetch(`${WEB_URL}/api/v1/documentation/${slug}`);
+    const res = await fetch(`${API_URL}/v1/documentation/${slug}`);
     if (!res.ok) {
         if (res.status === 404) return null;
         throw new Error('Failed to fetch article');

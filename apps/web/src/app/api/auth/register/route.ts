@@ -3,23 +3,12 @@ import { NextResponse } from 'next/server';
 import clientPromise from '@/lib/mongodb';
 import bcrypt from 'bcryptjs';
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": process.env.NEXT_PUBLIC_HOME_URL || "*",
-  "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type, Authorization",
-};
-
-export async function OPTIONS() {
-  return NextResponse.json({}, { headers: corsHeaders });
-}
-
-
 export async function POST(request: Request) {
   try {
     const { name, email, password } = await request.json();
 
     if (!name || !email || !password) {
-      return NextResponse.json({ message: 'Missing required fields' }, { status: 400, headers: corsHeaders });
+      return NextResponse.json({ message: 'Missing required fields' }, { status: 400 });
     }
 
     const client = await clientPromise;
@@ -27,7 +16,7 @@ export async function POST(request: Request) {
 
     const existingUser = await db.collection('users').findOne({ email });
     if (existingUser) {
-      return NextResponse.json({ message: 'User with this email already exists' }, { status: 409, headers: corsHeaders });
+      return NextResponse.json({ message: 'User with this email already exists' }, { status: 409 });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -42,9 +31,9 @@ export async function POST(request: Request) {
       updatedAt: new Date(),
     });
 
-    return NextResponse.json({ message: 'User created successfully', userId: result.insertedId }, { status: 201, headers: corsHeaders });
+    return NextResponse.json({ message: 'User created successfully', userId: result.insertedId }, { status: 201 });
   } catch (error) {
     console.error('Registration error:', error);
-    return NextResponse.json({ message: 'An internal server error occurred' }, { status: 500, headers: corsHeaders });
+    return NextResponse.json({ message: 'An internal server error occurred' }, { status: 500 });
   }
 }

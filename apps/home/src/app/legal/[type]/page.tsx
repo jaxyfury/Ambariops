@@ -8,10 +8,10 @@ import { Card, CardContent } from '@amberops/ui/components/ui/card';
 import { Skeleton } from '@amberops/ui/components/ui/skeleton';
 import type { LegalDocument } from '@amberops/lib';
 
-const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL || 'http://localhost:3000';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
 
 async function fetchLegalDoc(type: 'terms' | 'privacy'): Promise<LegalDocument | null> {
-    const res = await fetch(`${WEB_URL}/api/v1/legal/${type}`);
+    const res = await fetch(`${API_URL}/v1/legal/${type}`);
     if (!res.ok) {
         if (res.status === 404) return null;
         throw new Error('Failed to fetch legal document');
