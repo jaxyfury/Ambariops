@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from 'next/font/google';
 import "@amberops/design-tokens/globals.css";
+import "@/styles/animated-theme.css";
 import { cn } from "@amberops/lib";
 import { ThemeProvider } from "@amberops/ui/components/theme-provider";
 import { Toaster } from "react-hot-toast";
@@ -45,7 +46,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
          className={cn(
-          'min-h-screen bg-background font-body antialiased',
+          'min-h-screen bg-background font-body antialiased text-foreground',
           fontBody.variable,
           fontHeadline.variable
         )}

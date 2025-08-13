@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { CheckCircle, Shield, Zap, BarChart, HardDrive, Server, Users, ArrowRight } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@amberops/ui/components/ui/avatar';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@amberops/ui/components/ui/accordion';
+import { AnimatedThemeToggle } from '@/components/animated-theme-toggle';
 
 const features = [
   {
@@ -133,6 +134,9 @@ export default function HomePage() {
       </header>
       <main className="flex-1">
         <section className="w-full py-20 md:py-32 lg:py-40 bg-muted/20 relative overflow-hidden">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
+                <AnimatedThemeToggle />
+            </div>
              <div className="absolute top-0 left-0 -translate-x-1/4 -translate-y-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
              <div className="absolute bottom-0 right-0 translate-x-1/4 translate-y-1/4 w-96 h-96 bg-secondary/20 rounded-full blur-3xl" />
           <div className="container px-4 md:px-6 relative">
