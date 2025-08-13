@@ -11,14 +11,15 @@ import { Input } from '@amberops/ui/components/ui/input';
 import { Label } from '@amberops/ui/components/ui/label';
 import { Tooltip, TooltipTrigger, TooltipContent } from '@amberops/ui/components/ui/tooltip';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@amberops/ui/components/ui/card';
-import { Stepper, StepperItem, StepperContent, StepperTrigger, StepperIndicator, StepperSeparator, StepperLabel, useStepper, StepperNumber } from '@amberops/ui/components/ui/stepper';
-import { mockClusters } from '@amberops/api';
+import { Stepper, StepperItem, StepperTrigger, StepperIndicator, StepperNumber, StepperLabel, useStepper, StepperSeparator, StepperContent } from '@amberops/ui/components/ui/stepper';
 import { ArrowUpRight, PlusCircle, ArrowUpDown, Server, AlertTriangle, ArrowDown, ArrowUp } from 'lucide-react';
 import { DataTable } from '@/components/data-table';
 import { type ColumnDef } from '@tanstack/react-table';
 import type { Cluster } from '@amberops/lib';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import toast from 'react-hot-toast';
+import { useQuery } from '@tanstack/react-query';
+import { fetchClusters } from '@/lib/api/services';
 
 function getStatusBadgeVariant(status: 'healthy' | 'unhealthy' | 'degraded'): 'default' | 'destructive' | 'secondary' {
   switch (status) {
@@ -257,7 +258,7 @@ function AddClusterDialog({ isOpen, onOpenChange }: { isOpen: boolean, onOpenCha
                 <StepperIndicator step={0}>
                   <StepperNumber>1</StepperNumber>
                 </StepperIndicator>
-                <StepperLabel step={0}>Cluster Details</StepperLabel>
+                <StepperLabel>Cluster Details</StepperLabel>
               </StepperTrigger>
               <StepperSeparator />
             </StepperItem>
@@ -266,7 +267,7 @@ function AddClusterDialog({ isOpen, onOpenChange }: { isOpen: boolean, onOpenCha
                 <StepperIndicator step={1}>
                   <StepperNumber>2</StepperNumber>
                 </StepperIndicator>
-                <StepperLabel step={1}>Credentials</StepperLabel>
+                <StepperLabel>Credentials</StepperLabel>
               </StepperTrigger>
               <StepperSeparator />
             </StepperItem>
@@ -275,7 +276,7 @@ function AddClusterDialog({ isOpen, onOpenChange }: { isOpen: boolean, onOpenCha
                 <StepperIndicator step={2}>
                   <StepperNumber>3</StepperNumber>
                 </StepperIndicator>
-                <StepperLabel step={2}>Confirmation</StepperLabel>
+                <StepperLabel>Confirmation</StepperLabel>
               </StepperTrigger>
             </StepperItem>
           </div>
@@ -324,18 +325,12 @@ function AddClusterDialog({ isOpen, onOpenChange }: { isOpen: boolean, onOpenCha
   );
 }
 
-
 export default function ClustersPage() {
-  const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1500); 
-    return () => clearTimeout(timer);
-  }, []);
-
+  const { data: clusters = [], isLoading } = useQuery<Cluster[]>({
+      queryKey: ['clusters'],
+      queryFn: fetchClusters,
+  });
 
   return (
     <div>
@@ -348,7 +343,7 @@ export default function ClustersPage() {
       />
       <DataTable 
         columns={columns} 
-        data={mockClusters} 
+        data={clusters} 
         isLoading={isLoading} 
         filterKey="name"
         renderCard={(cluster) => <ClusterCard cluster={cluster} />}

@@ -9,13 +9,15 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@amberops/ui/components/ui/badge";
 import { Select, SelectTrigger, SelectContent, SelectValue, SelectItem } from "@amberops/ui/components/ui/select";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@amberops/ui/components/ui/tooltip";
-import { mockClusters, mockAlerts } from "@amberops/api";
+import { Skeleton } from "@amberops/ui/components/ui/skeleton";
+import { fetchClusters, fetchAlerts } from "@/lib/api/services";
 import { ArrowUpRight, Cpu, MemoryStick, Server, Siren, Rocket } from "lucide-react";
 import Link from 'next/link';
 import { ClusterHealthSummary } from "@/components/cluster-health-summary";
-import { useState } from "react";
-import type { Cluster } from "@amberops/lib";
+import { useState, useEffect } from "react";
+import type { Cluster, Alert } from "@amberops/lib";
 import { OnboardingTour } from "@/components/onboarding-tour";
+import { useQuery } from '@tanstack/react-query';
 
 function getStatusColor(status: 'healthy' | 'unhealthy' | 'degraded') {
   switch (status) {
@@ -41,15 +43,27 @@ function getSeverityBadgeVariant(severity: 'critical' | 'warning' | 'info'): 'de
 }
 
 export default function DashboardPage() {
-    const totalClusters = mockClusters.length;
-    const totalAlerts = mockAlerts.filter(a => a.status === 'triggered').length;
-    const healthyClusters = mockClusters.filter(c => c.status === 'healthy').length;
+    const { data: clusters = [], isLoading: isLoadingClusters } = useQuery<Cluster[]>({
+        queryKey: ['clusters'],
+        queryFn: fetchClusters,
+    });
+    
+    const { data: alerts = [], isLoading: isLoadingAlerts } = useQuery<Alert[]>({
+        queryKey: ['alerts'],
+        queryFn: fetchAlerts,
+    });
 
-    const [selectedCluster, setSelectedCluster] = useState<Cluster>(mockClusters[1]);
+    const [selectedCluster, setSelectedCluster] = useState<Cluster | null>(null);
     const [runTour, setRunTour] = useState(false);
 
+    useEffect(() => {
+        if (clusters.length > 0 && !selectedCluster) {
+            setSelectedCluster(clusters[1] || clusters[0]);
+        }
+    }, [clusters, selectedCluster]);
+
     const handleClusterChange = (clusterId: string) => {
-        const cluster = mockClusters.find(c => c.id === clusterId);
+        const cluster = clusters.find(c => c.id === clusterId);
         if (cluster) {
             setSelectedCluster(cluster);
         }
@@ -63,6 +77,9 @@ export default function DashboardPage() {
         }
     });
 
+    const totalClusters = clusters.length;
+    const totalAlerts = alerts.filter(a => a.status === 'triggered').length;
+    const healthyClusters = clusters.filter(c => c.status === 'healthy').length;
 
     return (
         <div>
@@ -84,7 +101,7 @@ export default function DashboardPage() {
                         <Server className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">{totalClusters}</div>
+                        {isLoadingClusters ? <Skeleton className="h-8 w-16" /> : <div className="text-2xl font-bold">{totalClusters}</div>}
                         <p className="text-xs text-muted-foreground">{healthyClusters} healthy</p>
                     </CardContent>
                 </Card>
@@ -94,7 +111,7 @@ export default function DashboardPage() {
                         <Siren className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">{totalAlerts}</div>
+                         {isLoadingAlerts ? <Skeleton className="h-8 w-16" /> : <div className="text-2xl font-bold">{totalAlerts}</div>}
                         <p className="text-xs text-muted-foreground text-red-500">Immediate attention needed</p>
                     </CardContent>
                 </Card>
@@ -137,38 +154,46 @@ export default function DashboardPage() {
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {mockClusters.map((cluster) => (
-                                <TableRow key={cluster.id}>
-                                    <TableCell>
-                                        <Tooltip>
-                                            <TooltipTrigger asChild>
-                                                <div className="flex items-center gap-2">
-                                                    <span className={`h-2.5 w-2.5 rounded-full ${getStatusColor(cluster.status)}`} />
-                                                    <span className="capitalize">{cluster.status}</span>
-                                                </div>
-                                            </TooltipTrigger>
-                                            <TooltipContent>
-                                                <p>Cluster status: {cluster.status}</p>
-                                            </TooltipContent>
-                                        </Tooltip>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Tooltip>
-                                            <TooltipTrigger asChild>
-                                                <Link href={`/clusters/${cluster.id}`} className="font-medium hover:underline truncate block max-w-[150px]">
-                                                    {cluster.name}
-                                                </Link>
-                                            </TooltipTrigger>
-                                            <TooltipContent>
-                                                <p>{cluster.name}</p>
-                                            </TooltipContent>
-                                        </Tooltip>
-                                    </TableCell>
-                                    <TableCell>{cluster.hostCount}</TableCell>
-                                    <TableCell>{cluster.alertCount}</TableCell>
-                                    <TableCell className="text-right">{cluster.cpuUsage}%</TableCell>
-                                </TableRow>
-                                ))}
+                                {isLoadingClusters ? (
+                                     Array.from({ length: 3 }).map((_, i) => (
+                                        <TableRow key={i}>
+                                            <TableCell colSpan={5}><Skeleton className="h-6 w-full" /></TableCell>
+                                        </TableRow>
+                                    ))
+                                ) : (
+                                    clusters.map((cluster) => (
+                                    <TableRow key={cluster.id}>
+                                        <TableCell>
+                                            <Tooltip>
+                                                <TooltipTrigger asChild>
+                                                    <div className="flex items-center gap-2">
+                                                        <span className={`h-2.5 w-2.5 rounded-full ${getStatusColor(cluster.status)}`} />
+                                                        <span className="capitalize">{cluster.status}</span>
+                                                    </div>
+                                                </TooltipTrigger>
+                                                <TooltipContent>
+                                                    <p>Cluster status: {cluster.status}</p>
+                                                </TooltipContent>
+                                            </Tooltip>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Tooltip>
+                                                <TooltipTrigger asChild>
+                                                    <Link href={`/clusters/${cluster.id}`} className="font-medium hover:underline truncate block max-w-[150px]">
+                                                        {cluster.name}
+                                                    </Link>
+                                                </TooltipTrigger>
+                                                <TooltipContent>
+                                                    <p>{cluster.name}</p>
+                                                </TooltipContent>
+                                            </Tooltip>
+                                        </TableCell>
+                                        <TableCell>{cluster.hostCount}</TableCell>
+                                        <TableCell>{cluster.alertCount}</TableCell>
+                                        <TableCell className="text-right">{cluster.cpuUsage}%</TableCell>
+                                    </TableRow>
+                                    ))
+                                )}
                             </TableBody>
                         </Table>
                     </CardContent>
@@ -188,7 +213,14 @@ export default function DashboardPage() {
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {mockAlerts.filter(a => a.status === 'triggered').slice(0, 4).map((alert) => (
+                                {isLoadingAlerts ? (
+                                    Array.from({ length: 3 }).map((_, i) => (
+                                        <TableRow key={i}>
+                                            <TableCell colSpan={3}><Skeleton className="h-6 w-full" /></TableCell>
+                                        </TableRow>
+                                    ))
+                                ) : (
+                                alerts.filter(a => a.status === 'triggered').slice(0, 4).map((alert) => (
                                 <TableRow key={alert.id}>
                                     <TableCell>
                                         <Badge variant={getSeverityBadgeVariant(alert.severity)}>{alert.severity}</Badge>
@@ -216,7 +248,7 @@ export default function DashboardPage() {
                                         </Tooltip>
                                     </TableCell>
                                 </TableRow>
-                                ))}
+                                )))}
                             </TableBody>
                         </Table>
                     </CardContent>
@@ -238,19 +270,23 @@ export default function DashboardPage() {
                             Select a cluster to generate an AI-powered health summary.
                         </CardDescription>
                         </div>
-                        <Select onValueChange={handleClusterChange} defaultValue={selectedCluster.id}>
-                            <SelectTrigger className="w-[280px]">
-                                <SelectValue placeholder="Select a cluster" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                {mockClusters.map(cluster => (
-                                    <SelectItem key={cluster.id} value={cluster.id}>{cluster.name}</SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
+                        {isLoadingClusters ? (
+                            <Skeleton className="h-10 w-[280px]" />
+                        ) : (
+                            <Select onValueChange={handleClusterChange} value={selectedCluster?.id}>
+                                <SelectTrigger className="w-[280px]">
+                                    <SelectValue placeholder="Select a cluster" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {clusters.map(cluster => (
+                                        <SelectItem key={cluster.id} value={cluster.id}>{cluster.name}</SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                        )}
                     </CardHeader>
                     <CardContent>
-                         <ClusterHealthSummary cluster={selectedCluster} />
+                         {selectedCluster && <ClusterHealthSummary cluster={selectedCluster} />}
                     </CardContent>
                 </Card>
             </div>

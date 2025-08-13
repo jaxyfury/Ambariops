@@ -1,5 +1,5 @@
 
-import type { User } from '@amberops/lib';
+import type { User, Cluster, Service, Host, Alert, AlertDefinition, Task, ActivityLog, LogEntry, ConfigVersion } from '@amberops/lib';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || '/api/v1';
 
@@ -8,7 +8,8 @@ const apiClient = {
   get: async <T>(url: string): Promise<T> => {
     const response = await fetch(`${API_BASE_URL}${url}`);
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      const errorData = await response.json().catch(() => ({ message: 'An unknown error occurred' }));
+      throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
     }
     return response.json();
   },
@@ -50,15 +51,37 @@ const apiClient = {
 
 // User Service
 export const fetchUsers = (): Promise<User[]> => apiClient.get('/users');
+export const addUser = (userData: Omit<User, 'id' | 'lastLogin' | 'avatar'>): Promise<User> => apiClient.post('/users', userData);
+export const updateUser = (userId: string, userData: Partial<User>): Promise<User> => apiClient.put(`/users/${userId}`, userData);
+export const deleteUser = (userId: string): Promise<{ id: string }> => apiClient.delete(`/users/${userId}`);
 
-export const addUser = (
-  userData: Omit<User, 'id' | 'lastLogin' | 'avatar'>,
-): Promise<User> => apiClient.post('/users', userData);
+// Cluster Service
+export const fetchClusters = (): Promise<Cluster[]> => apiClient.get('/clusters');
+export const fetchClusterById = (id: string): Promise<Cluster> => apiClient.get(`/clusters/${id}`);
 
-export const updateUser = (
-  userId: string,
-  userData: Partial<User>,
-): Promise<User> => apiClient.put(`/users/${userId}`, userData);
+// Service Service
+export const fetchServices = (): Promise<Service[]> => apiClient.get('/services');
+export const fetchServiceById = (id: string): Promise<Service> => apiClient.get(`/services/${id}`);
 
-export const deleteUser = (userId: string): Promise<{ id: string }> =>
-  apiClient.delete(`/users/${userId}`);
+// Host Service
+export const fetchHosts = (): Promise<Host[]> => apiClient.get('/hosts');
+export const fetchHostById = (id: string): Promise<Host> => apiClient.get(`/hosts/${id}`);
+
+// Alert Service
+export const fetchAlerts = (): Promise<Alert[]> => apiClient.get('/alerts');
+export const fetchAlertById = (id: string): Promise<Alert> => apiClient.get(`/alerts/${id}`);
+
+// Alert Definition Service
+export const fetchAlertDefinitions = (): Promise<AlertDefinition[]> => apiClient.get('/alert-definitions');
+
+// Task Service
+export const fetchTasks = (): Promise<Task[]> => apiClient.get('/tasks');
+
+// Activity Log Service
+export const fetchActivityLogs = (): Promise<ActivityLog[]> => apiClient.get('/activity');
+
+// Log Entry Service
+export const fetchLogEntries = (): Promise<LogEntry[]> => apiClient.get('/logs');
+
+// Config Version Service
+export const fetchConfigVersions = (): Promise<ConfigVersion[]> => apiClient.get('/config-versions');

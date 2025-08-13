@@ -2,10 +2,9 @@
 'use client';
 
 import { PageHeader } from '@/components/page-header';
-import { mockActivityLogs } from '@amberops/api';
+import { fetchActivityLogs } from '@/lib/api/services';
 import { type ColumnDef } from '@tanstack/react-table';
 import type { ActivityLog } from '@amberops/lib';
-import { useState, useEffect } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import { Avatar, AvatarFallback, AvatarImage } from '@amberops/ui/components/ui/avatar';
 import { Badge } from '@amberops/ui/components/ui/badge';
@@ -14,6 +13,7 @@ import { Checkbox } from '@amberops/ui/components/ui/checkbox';
 import { Tooltip, TooltipTrigger, TooltipContent } from '@amberops/ui/components/ui/tooltip';
 import { ArrowUpDown, ArrowDown, ArrowUp } from 'lucide-react';
 import { DataTable } from '@/components/data-table';
+import { useQuery } from '@tanstack/react-query';
 
 function getActionBadgeVariant(action: 'LOGIN' | 'CREATE' | 'UPDATE' | 'DELETE' | 'RESTART' | 'ACKNOWLEDGE'): 'default' | 'secondary' | 'destructive' | 'outline' {
     switch (action) {
@@ -162,14 +162,10 @@ export const columns: ColumnDef<ActivityLog>[] = [
 ];
 
 export default function ActivityPage() {
-    const [isLoading, setIsLoading] = useState(true);
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
-        setIsLoading(false);
-        }, 1500); 
-        return () => clearTimeout(timer);
-    }, []);
+    const { data: activityLogs = [], isLoading } = useQuery<ActivityLog[]>({
+        queryKey: ['activityLogs'],
+        queryFn: fetchActivityLogs,
+    });
 
   return (
     <div>
@@ -177,7 +173,7 @@ export default function ActivityPage() {
         title="Activity Log"
         description="An immutable log of all user and system activities."
       />
-      <DataTable columns={columns} data={mockActivityLogs} filterKey="details" isLoading={isLoading} />
+      <DataTable columns={columns} data={activityLogs} filterKey="details" isLoading={isLoading} />
     </div>
   );
 }

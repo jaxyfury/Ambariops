@@ -13,13 +13,14 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Label } from '@amberops/ui/components/ui/label';
 import { Input } from '@amberops/ui/components/ui/input';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@amberops/ui/components/ui/select';
-import { mockServices, mockClusters } from '@amberops/api';
+import { fetchServices, fetchClusters } from '@/lib/api/services';
 import { ArrowUpRight, CheckCircle2, XCircle, Clock, HardDrive, MoreHorizontal, Play, Square, RefreshCw, ArrowUpDown, ArrowDown, ArrowUp, PlusCircle } from 'lucide-react';
 import { DataTable } from '@/components/data-table';
 import { type ColumnDef } from '@tanstack/react-table';
-import type { Service } from '@amberops/lib';
-import { useState, useEffect } from 'react';
+import type { Service, Cluster } from '@amberops/lib';
+import { useState } from 'react';
 import toast from 'react-hot-toast';
+import { useQuery } from '@tanstack/react-query';
 
 function getServiceStatusIcon(status: 'started' | 'stopped' | 'maintenance') {
   switch (status) {
@@ -295,6 +296,10 @@ function ServiceCard({ service }: { service: Service }) {
 
 function AddServiceDialog({ isOpen, onOpenChange }: { isOpen: boolean, onOpenChange: (open: boolean) => void }) {
     const [selectedService, setSelectedService] = useState('');
+    const { data: clusters = [] } = useQuery<Cluster[]>({
+        queryKey: ['clusters'],
+        queryFn: fetchClusters,
+    });
 
     const handleAddService = () => {
         toast.success('Task to add new service has been created!');
@@ -325,7 +330,7 @@ function AddServiceDialog({ isOpen, onOpenChange }: { isOpen: boolean, onOpenCha
                                 <SelectValue placeholder="Select a cluster" />
                             </SelectTrigger>
                             <SelectContent>
-                                {mockClusters.map(c => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}
+                                {clusters.map(c => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}
                             </SelectContent>
                         </Select>
                     </div>
@@ -359,17 +364,12 @@ function AddServiceDialog({ isOpen, onOpenChange }: { isOpen: boolean, onOpenCha
     )
 }
 
-
 export default function ServicesPage() {
-    const [isLoading, setIsLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
-        setIsLoading(false);
-        }, 1500); 
-        return () => clearTimeout(timer);
-    }, []);
+    const { data: services = [], isLoading } = useQuery<Service[]>({
+        queryKey: ['services'],
+        queryFn: fetchServices,
+    });
 
   return (
     <div>
@@ -382,7 +382,7 @@ export default function ServicesPage() {
       />
       <DataTable
         columns={columns}
-        data={mockServices}
+        data={services}
         filterKey="name"
         isLoading={isLoading}
         renderCard={(service) => <ServiceCard service={service} />}

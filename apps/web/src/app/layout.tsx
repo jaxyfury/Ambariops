@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Inter, Space_Grotesk } from 'next/font/google';
@@ -12,7 +13,7 @@ import i18n from '@/lib/i18n';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Preloader } from '@/components/preloader';
 import { SessionProvider } from 'next-auth/react';
-import { enableMocking } from '@amberops/api/mocks/browser';
+// import { enableMocking } from '@amberops/api/mocks/browser';
 
 const fontBody = Inter({
   subsets: ['latin'],
@@ -26,9 +27,9 @@ const fontHeadline = Space_Grotesk({
 
 const queryClient = new QueryClient();
 
-if (process.env.NEXT_PUBLIC_ENABLE_MOCKING === 'true') {
-  enableMocking();
-}
+// if (process.env.NEXT_PUBLIC_ENABLE_MOCKING === 'true') {
+//   enableMocking();
+// }
 
 export default function RootLayout({
   children,

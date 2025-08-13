@@ -7,13 +7,13 @@ import { Badge } from '@amberops/ui/components/ui/badge';
 import { Checkbox } from '@amberops/ui/components/ui/checkbox';
 import { Tooltip, TooltipTrigger, TooltipContent } from '@amberops/ui/components/ui/tooltip';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@amberops/ui/components/ui/card';
-import { mockTasks, mockServices, mockClusters } from '@amberops/api';
+import { fetchTasks } from '@/lib/api/services';
 import { CheckCircle, XCircle, Loader, CircleDotDashed, ArrowUpDown, Server, HardDrive, ArrowDown, ArrowUp } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { DataTable } from '@/components/data-table';
 import { type ColumnDef } from '@tanstack/react-table';
 import type { Task } from '@amberops/lib';
-import { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { Button } from '@amberops/ui/components/ui/button';
 
 function getStatusIcon(status: 'running' | 'completed' | 'failed' | 'pending') {
@@ -247,10 +247,6 @@ export const columns: ColumnDef<Task>[] = [
 ]
 
 const SubRowComponent = ({ task }: { task: Task }) => {
-    // This is a mock: in a real app, you'd fetch this data or have it in the task object
-    const service = mockServices.find(s => task.name.includes(s.name));
-    const cluster = service ? mockClusters.find(c => c.id === service.clusterId) : undefined;
-    
     return (
         <div className="bg-muted/50 p-4">
             <Card>
@@ -261,24 +257,6 @@ const SubRowComponent = ({ task }: { task: Task }) => {
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="grid grid-cols-2 gap-4 text-sm">
-                    {cluster && (
-                        <div className="flex items-center gap-2">
-                            <Server className="h-4 w-4 text-muted-foreground" />
-                            <div>
-                                <p className="text-muted-foreground">Cluster</p>
-                                <p className="font-semibold">{cluster.name}</p>
-                            </div>
-                        </div>
-                    )}
-                    {service && (
-                         <div className="flex items-center gap-2">
-                            <HardDrive className="h-4 w-4 text-muted-foreground" />
-                            <div>
-                                <p className="text-muted-foreground">Service</p>
-                                <p className="font-semibold">{service.name}</p>
-                            </div>
-                        </div>
-                    )}
                     <div className="flex items-center gap-2">
                         <p className="text-muted-foreground">Target:</p>
                         <p className="font-semibold">{task.target || 'N/A'}</p>
@@ -289,7 +267,7 @@ const SubRowComponent = ({ task }: { task: Task }) => {
                             <code>
                                 {`[${task.startTime}] INFO: Starting task '${task.name}' initiated by ${task.user}.\n`}
                                 {task.progress > 10 && `[${new Date(new Date(task.startTime).getTime() + 5000).toISOString()}] INFO: Validating parameters for target ${task.target}.\n`}
-                                {task.progress > 40 && `[${new Date(new Date(task.startTime).getTime() + 10000).toISOString()}] INFO: Executing operation on ${cluster?.name || 'cluster'}.\n`}
+                                {task.progress > 40 && `[${new Date(new Date(task.startTime).getTime() + 10000).toISOString()}] INFO: Executing operation on target.\n`}
                                 {task.status === 'failed' && `[${new Date(new Date(task.startTime).getTime() + 15000).toISOString()}] ERROR: Operation failed. See error logs for details.`}
                                 {task.status === 'completed' && `[${new Date(new Date(task.startTime).getTime() + 25000).toISOString()}] INFO: Task completed successfully.`}
                             </code>
@@ -302,14 +280,10 @@ const SubRowComponent = ({ task }: { task: Task }) => {
 }
 
 export default function TasksPage() {
-    const [isLoading, setIsLoading] = useState(true);
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
-        setIsLoading(false);
-        }, 1500); 
-        return () => clearTimeout(timer);
-    }, []);
+    const { data: tasks = [], isLoading } = useQuery<Task[]>({
+        queryKey: ['tasks'],
+        queryFn: fetchTasks,
+    });
 
   return (
     <div>
@@ -319,7 +293,7 @@ export default function TasksPage() {
       />
       <DataTable 
         columns={columns} 
-        data={mockTasks} 
+        data={tasks} 
         filterKey="name" 
         isLoading={isLoading}
         renderSubComponent={(row) => <SubRowComponent task={row} />}

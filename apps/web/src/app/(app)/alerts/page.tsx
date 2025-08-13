@@ -8,13 +8,13 @@ import { Badge } from '@amberops/ui/components/ui/badge';
 import { Checkbox } from '@amberops/ui/components/ui/checkbox';
 import { Tooltip, TooltipTrigger, TooltipContent } from '@amberops/ui/components/ui/tooltip';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@amberops/ui/components/ui/card';
-import { mockAlerts } from '@amberops/api';
+import { fetchAlerts } from '@/lib/api/services';
 import { ArrowUpRight, Siren, ArrowUpDown, Clock, ArrowDown, ArrowUp } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { DataTable } from '@/components/data-table';
 import { type ColumnDef } from '@tanstack/react-table';
 import type { Alert } from '@amberops/lib';
-import { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 
 function getSeverityBadgeVariant(severity: 'critical' | 'warning' | 'info'): 'destructive' | 'secondary' | 'default' {
     switch (severity) {
@@ -276,14 +276,10 @@ function AlertCard({ alert }: { alert: Alert }) {
 }
 
 export default function AlertsPage() {
-    const [isLoading, setIsLoading] = useState(true);
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
-        setIsLoading(false);
-        }, 1500);
-        return () => clearTimeout(timer);
-    }, []);
+    const { data: alerts = [], isLoading } = useQuery<Alert[]>({
+        queryKey: ['alerts'],
+        queryFn: fetchAlerts,
+    });
 
   return (
     <div>
@@ -293,7 +289,7 @@ export default function AlertsPage() {
       />
       <DataTable 
         columns={columns}
-        data={mockAlerts}
+        data={alerts}
         filterKey="name"
         isLoading={isLoading}
         renderCard={(alert) => <AlertCard alert={alert} />}

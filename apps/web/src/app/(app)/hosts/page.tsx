@@ -9,13 +9,14 @@ import { Checkbox } from '@amberops/ui/components/ui/checkbox';
 import { Tooltip, TooltipTrigger, TooltipContent } from '@amberops/ui/components/ui/tooltip';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, Label, Input, DialogFooter } from '@amberops/ui/components/ui/dialog';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@amberops/ui/components/ui/card';
-import { mockHosts } from '@amberops/api';
+import { fetchHosts } from '@/lib/api/services';
 import { ArrowUpRight, PlusCircle, Server, ArrowUpDown, Cpu, MemoryStick, ArrowDown, ArrowUp } from 'lucide-react';
 import { DataTable } from '@/components/data-table';
 import { type ColumnDef } from '@tanstack/react-table';
 import type { Host } from '@amberops/lib';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import toast from 'react-hot-toast';
+import { useQuery } from '@tanstack/react-query';
 
 function getStatusBadgeVariant(status: 'healthy' | 'unhealthy' | 'restarting' | 'maintenance'): 'default' | 'destructive' | 'secondary' | 'secondary' {
   switch (status) {
@@ -276,15 +277,11 @@ function HostCard({ host }: { host: Host }) {
 }
 
 export default function HostsPage() {
-    const [isLoading, setIsLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
-        setIsLoading(false);
-        }, 1500); 
-        return () => clearTimeout(timer);
-    }, []);
+    const { data: hosts = [], isLoading } = useQuery<Host[]>({
+        queryKey: ['hosts'],
+        queryFn: fetchHosts,
+    });
 
     const handleAddHost = () => {
         toast.success('Host registration initiated!');
@@ -329,7 +326,7 @@ export default function HostsPage() {
       />
        <DataTable
         columns={columns}
-        data={mockHosts}
+        data={hosts}
         filterKey="name"
         isLoading={isLoading}
         renderCard={(host) => <HostCard host={host} />}
