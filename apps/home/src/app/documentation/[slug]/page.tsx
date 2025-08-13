@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from 'react';
 import { notFound } from 'next/navigation';
-import { PageHeader } from '@/components/page-header';
+import { PageHeader } from '@amberops/ui';
 import { Card, CardContent } from '@amberops/ui/components/ui/card';
 import { Skeleton } from '@amberops/ui/components/ui/skeleton';
 import type { DocumentationArticle } from '@amberops/lib';

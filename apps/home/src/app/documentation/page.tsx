@@ -2,7 +2,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { PageHeader } from '@/components/page-header';
+import { PageHeader } from '@amberops/ui';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@amberops/ui/components/ui/card';
 import { Skeleton } from '@amberops/ui/components/ui/skeleton';
 import { fetchDocumentationArticles } from '@/lib/api/services';

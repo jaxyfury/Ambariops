@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { PageHeader } from '../../../../apps/web/src/components/page-header';
+import { PageHeader } from '../components/page-header';
 import { Button } from '../components/ui/button';
 import { PlusCircle } from 'lucide-react';
 
