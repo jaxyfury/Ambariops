@@ -33,7 +33,7 @@ export default function SettingsPage() {
         <TabsContent value="users">
           <UserManagement />
         </TabsContent>
-        <TabsContent value="integrations">
+        <TabsContent value="integrations" className="space-y-6">
           <IntegrationsSettings />
         </TabsContent>
         <TabsContent value="api">
