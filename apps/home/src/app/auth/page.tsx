@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, 'useState', 'useEffect' } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
@@ -151,7 +151,7 @@ const SignInForm = () => {
             </form>
 
             <Dialog open={isForgotModalOpen} onOpenChange={setIsForgotModalOpen}>
-                <DialogContent>
+                <DialogContent className="z-[9999]">
                     <DialogHeader>
                         <DialogTitle>Forgot Password</DialogTitle>
                         <DialogDescription>
