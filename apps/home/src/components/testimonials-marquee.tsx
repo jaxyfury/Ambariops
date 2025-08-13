@@ -35,13 +35,13 @@ export function TestimonialsMarquee({ testimonials }: TestimonialsMarqueeProps) 
   return (
     <div className="testimonials-marquee-container">
       <div className="testimonials-marquee">
-        {testimonials.map((testimonial) => (
-          <TestimonialCard key={`${testimonial.name}-1`} testimonial={testimonial} />
+        {testimonials.map((testimonial, i) => (
+          <TestimonialCard key={`${testimonial.name}-${i}-1`} testimonial={testimonial} />
         ))}
       </div>
       <div className="testimonials-marquee" aria-hidden="true">
-        {testimonials.map((testimonial) => (
-            <TestimonialCard key={`${testimonial.name}-2`} testimonial={testimonial} />
+        {testimonials.map((testimonial, i) => (
+            <TestimonialCard key={`${testimonial.name}-${i}-2`} testimonial={testimonial} />
         ))}
       </div>
     </div>
