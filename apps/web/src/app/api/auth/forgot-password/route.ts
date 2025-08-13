@@ -2,13 +2,25 @@
 import { NextResponse } from 'next/server';
 import clientPromise from '@/lib/mongodb';
 import { randomBytes } from 'crypto';
+import bcrypt from 'bcryptjs';
+
+const corsHeaders = {
+  "Access-Control-Allow-Origin": process.env.NEXT_PUBLIC_HOME_URL || "*",
+  "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+};
+
+export async function OPTIONS() {
+  return NextResponse.json({}, { headers: corsHeaders });
+}
+
 
 export async function POST(request: Request) {
   try {
     const { email } = await request.json();
 
     if (!email) {
-      return NextResponse.json({ message: 'Email is required' }, { status: 400 });
+      return NextResponse.json({ message: 'Email is required' }, { status: 400, headers: corsHeaders });
     }
 
     const client = await clientPromise;
@@ -41,10 +53,10 @@ export async function POST(request: Request) {
     }
 
     // Always return a success response to prevent attackers from knowing which emails are registered.
-    return NextResponse.json({ message: 'If an account with that email exists, a password reset link has been sent.' });
+    return NextResponse.json({ message: 'If an account with that email exists, a password reset link has been sent.' }, { headers: corsHeaders });
 
   } catch (error) {
     console.error('Forgot password error:', error);
-    return NextResponse.json({ message: 'An internal server error occurred' }, { status: 500 });
+    return NextResponse.json({ message: 'An internal server error occurred' }, { status: 500, headers: corsHeaders });
   }
 }
