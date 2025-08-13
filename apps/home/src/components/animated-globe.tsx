@@ -1,9 +1,11 @@
 
 'use client';
 
+import React from 'react';
+
 export function AnimatedGlobe() {
   return (
-    <div className="globe-container">
+    <div className="globe-container" role="img" aria-label="An animated 3D globe showing rotating orbits.">
       <div className="globe">
         <div className="globe-sphere" />
         <div className="globe-outer-shadow" />

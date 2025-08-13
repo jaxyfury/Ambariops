@@ -1,26 +1,26 @@
+
 'use client';
 
 import { useRef, useLayoutEffect } from 'react';
+import dynamic from 'next/dynamic';
 import { Button } from '@amberops/ui/components/ui/button'
 import { AmberOpsLogo } from '@amberops/ui/components/icons'
 import Link from 'next/link'
-import Image from 'next/image';
 import { CheckCircle, Shield, Zap, BarChart, HardDrive, Server, Users, ArrowRight, Mail, GitBranch, Terminal, Blocks, Package, Search, Star, MessageSquare, Cpu, Database } from 'lucide-react'
-import { Avatar, AvatarFallback, AvatarImage } from '@amberops/ui/components/ui/avatar';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@amberops/ui/components/ui/accordion';
 import { AnimatedGlobe } from '@/components/animated-globe';
-import { FooterAnimation } from '@/components/footer-animation';
 import { AnimatedThemeToggle } from '@/components/animated-theme-toggle';
 import { Card, CardContent } from '@amberops/ui/components/ui/card';
-import { PricingCard } from '@/components/pricing-card';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { TestimonialsMarquee } from '@/components/testimonials-marquee';
 import { cn } from '@amberops/lib';
-import { FeatureCarousel } from '@/components/feature-carousel';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const FeatureCarousel = dynamic(() => import('@/components/feature-carousel').then(mod => mod.FeatureCarousel));
+const TestimonialsMarquee = dynamic(() => import('@/components/testimonials-marquee').then(mod => mod.TestimonialsMarquee));
+const PricingCard = dynamic(() => import('@/components/pricing-card').then(mod => mod.PricingCard));
+const FooterAnimation = dynamic(() => import('@/components/footer-animation').then(mod => mod.FooterAnimation));
 
 const testimonials = [
   {

@@ -22,7 +22,7 @@ const SocialButton = ({ icon, onClick, tooltip }: { icon: React.ReactNode, onCli
     <TooltipProvider>
         <Tooltip>
             <TooltipTrigger asChild>
-                <button type="button" onClick={onClick} className="social-icon">
+                <button type="button" onClick={onClick} className="social-icon" aria-label={tooltip}>
                     {icon}
                 </button>
             </TooltipTrigger>
