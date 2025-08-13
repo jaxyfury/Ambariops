@@ -13,8 +13,8 @@
     
     display: grid;
     grid-template-areas: "stack";
-    width: min(calc(100% - 2rem), 26rem);
-    perspective: 1000px;
+    width: min(calc(100% - 2rem), 30rem);
+    perspective: 1px;
 }
 
 #cards-container article {
