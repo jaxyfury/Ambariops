@@ -165,8 +165,8 @@ export function PricingCard({ title, price, period, description, features, butto
                     outerShape.lineTo(outerWidth/2, outerHeight/2 - outerRadius);
                     outerShape.quadraticCurveTo(outerWidth/2, outerHeight/2, outerWidth/2 - outerRadius, outerHeight/2);
                     outerShape.lineTo(-outerWidth/2 + outerRadius, outerHeight/2);
-                    outerShape.quadraticCurveTo(-outerWidth/2, outerHeight/2, -innerWidth/2, outerHeight/2 - outerRadius);
-                    outerShape.lineTo(-innerWidth/2, -innerHeight/2 + outerRadius);
+                    outerShape.quadraticCurveTo(-outerWidth/2, outerHeight/2, -outerWidth/2, outerHeight/2 - outerRadius);
+                    outerShape.lineTo(-innerWidth/2, -innerHeight/2 + innerRadius);
                     outerShape.quadraticCurveTo(-innerWidth/2, -innerHeight/2, -innerWidth/2 + outerRadius, -innerHeight/2);
 
                     const innerShapePath = new THREE.Path();
@@ -197,11 +197,13 @@ export function PricingCard({ title, price, period, description, features, butto
             if (cardContainerRef.current) {
                 const cardElement = cardContainerRef.current.querySelector<HTMLElement>(".card");
                 if (cardElement) {
-                    import('vanilla-tilt').then(module => {
+                   import('vanilla-tilt').then(module => {
                         const VanillaTilt = module.default;
-                        VanillaTilt.init(cardElement, {
-                            max: 10, speed: 400, glare: true, "max-glare": 0.2
-                        });
+                        if(cardElement) {
+                             VanillaTilt.init(cardElement, {
+                                max: 10, speed: 400, glare: true, "max-glare": 0.2
+                            });
+                        }
                     });
                 }
             }
@@ -222,10 +224,11 @@ export function PricingCard({ title, price, period, description, features, butto
     }, []);
 
     const buttonLink = title === 'Enterprise' ? '#contact' : '/auth?action=signup';
+    const canvasId = `energy-canvas-${title.toLowerCase().replace(' ', '-')}`;
 
     return (
-        <div className={cn("card-container", isFeatured && "scale-105")}>
-            <canvas id="energy-canvas" ref={canvasRef}></canvas>
+        <div ref={cardContainerRef} className={cn("card-container", isFeatured && "scale-105")}>
+            <canvas id={canvasId} ref={canvasRef}></canvas>
             <div className="card" data-tilt data-tilt-max="10" data-tilt-speed="400" data-tilt-perspective="1000" data-tilt-glare data-tilt-max-glare="0.2">
                 <h2 className="card-title">{title}</h2>
                 <p className="card-price">
