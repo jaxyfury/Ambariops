@@ -2,8 +2,8 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import * as THREE from 'three';
 import type VanillaTilt from 'vanilla-tilt';
+import * as THREE from 'three';
 
 export function PricingCard() {
     const cardContainerRef = useRef<HTMLDivElement>(null);
@@ -185,9 +185,11 @@ export function PricingCard() {
             if (cardContainerRef.current) {
                 const cardElement = cardContainerRef.current.querySelector<HTMLElement>(".card");
                 if (cardElement) {
-                    const VanillaTilt = (await import('vanilla-tilt')).default;
-                    VanillaTilt.init(cardElement, {
-                        max: 10, speed: 400, glare: true, "max-glare": 0.2
+                    import('vanilla-tilt').then(module => {
+                        const VanillaTilt = module.default;
+                        VanillaTilt.init(cardElement, {
+                            max: 10, speed: 400, glare: true, "max-glare": 0.2
+                        });
                     });
                 }
             }

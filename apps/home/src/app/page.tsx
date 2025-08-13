@@ -11,7 +11,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@a
 import { AnimatedGlobe } from '@/components/animated-globe';
 import { FooterAnimation } from '@/components/footer-animation';
 import { AnimatedThemeToggle } from '@/components/animated-theme-toggle';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@amberops/ui/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@amberops/ui/components/ui/card';
 import { PricingCard } from '@/components/pricing-card';
 
 const features = [
@@ -201,8 +201,65 @@ export default function HomePage() {
           </div>
         </section>
         
-        <section id="pricing" className="w-full py-20 md:py-28 lg:py-32 bg-muted/20 flex items-center justify-center">
-            <PricingCard />
+        <section id="pricing" className="w-full py-20 md:py-28 lg:py-32 bg-muted/20">
+          <div className="container px-4 md:px-6">
+            <div className="flex flex-col items-center justify-center space-y-4 text-center">
+                <div className="space-y-2">
+                    <div className="inline-block rounded-lg bg-secondary px-3 py-1 text-sm">Pricing</div>
+                    <h2 className="text-3xl font-bold tracking-tighter font-headline sm:text-5xl">
+                        Find the perfect plan
+                    </h2>
+                    <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                        Start for free and scale as you grow. We have plans for every team size.
+                    </p>
+                </div>
+            </div>
+            <div className="mx-auto grid max-w-5xl items-center gap-8 py-12 lg:grid-cols-3 lg:items-start lg:gap-12">
+                <Card className="flex flex-col">
+                    <CardHeader className="items-center text-center">
+                        <CardTitle className="text-2xl font-headline">Hobby</CardTitle>
+                        <CardDescription>For personal projects & small teams.</CardDescription>
+                        <div className="text-4xl font-bold mt-4">$0<span className="text-sm font-normal text-muted-foreground">/month</span></div>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        <ul className="space-y-2 text-sm text-muted-foreground">
+                            <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-primary" />1 Cluster</li>
+                            <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-primary" />Up to 5 Hosts</li>
+                            <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-primary" />Community Support</li>
+                            <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-primary" />Core Features</li>
+                        </ul>
+                    </CardContent>
+                    <CardFooter className="mt-auto">
+                        <Button asChild variant="outline" className="w-full">
+                            <Link href="/auth?action=signup">Get Started</Link>
+                        </Button>
+                    </CardFooter>
+                </Card>
+
+                <PricingCard />
+
+                <Card className="flex flex-col">
+                    <CardHeader className="items-center text-center">
+                        <CardTitle className="text-2xl font-headline">Enterprise</CardTitle>
+                        <CardDescription>For large-scale, critical deployments.</CardDescription>
+                         <div className="text-4xl font-bold mt-4">Custom</div>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                         <ul className="space-y-2 text-sm text-muted-foreground">
+                            <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-primary" />Unlimited Clusters</li>
+                            <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-primary" />Unlimited Hosts</li>
+                            <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-primary" />Dedicated SLA & Support</li>
+                            <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-primary" />On-premise Deployment</li>
+                        </ul>
+                    </CardContent>
+                    <CardFooter className="mt-auto">
+                        <Button asChild className="w-full">
+                           <Link href="#contact">Contact Sales</Link>
+                        </Button>
+                    </CardFooter>
+                </Card>
+            </div>
+          </div>
         </section>
 
         <section id="testimonials" className="w-full py-20 md:py-28 lg:py-32">
