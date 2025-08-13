@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useRef, useLayoutEffect } from 'react';
@@ -143,11 +144,25 @@ export default function HomePage() {
         },
         opacity: 0,
         y: 50,
-        stagger: 0.15,
+        stagger: 0.1,
         duration: 0.6,
         ease: "power3.out",
       });
       
+      // Pricing Section Animation
+      gsap.from(".pricing-card-wrapper", {
+        scrollTrigger: {
+            trigger: "#pricing-grid",
+            start: "top 85%",
+        },
+        opacity: 0,
+        y: 60,
+        scale: 0.95,
+        stagger: 0.15,
+        duration: 0.8,
+        ease: "power3.out",
+      });
+
       // Testimonials Section Animation
       gsap.from(".testimonial-card", {
         scrollTrigger: {
@@ -156,6 +171,7 @@ export default function HomePage() {
         },
         opacity: 0,
         y: 50,
+        scale: 0.9,
         stagger: 0.2,
         duration: 0.8,
         ease: "power3.out",
@@ -305,10 +321,16 @@ export default function HomePage() {
                     </p>
                 </div>
             </div>
-             <div className="mx-auto grid max-w-6xl items-center gap-8 py-12 lg:grid-cols-3 justify-items-center">
-                <PricingCard {...pricingTiers.hobby} />
-                <PricingCard {...pricingTiers.pro} isFeatured />
-                <PricingCard {...pricingTiers.enterprise} />
+             <div id="pricing-grid" className="mx-auto grid max-w-6xl items-start gap-8 py-12 lg:grid-cols-3 lg:items-center justify-items-center">
+                <div className="pricing-card-wrapper">
+                    <PricingCard {...pricingTiers.hobby} />
+                </div>
+                <div className="pricing-card-wrapper">
+                    <PricingCard {...pricingTiers.pro} isFeatured />
+                </div>
+                <div className="pricing-card-wrapper">
+                    <PricingCard {...pricingTiers.enterprise} />
+                </div>
             </div>
           </div>
         </section>
@@ -442,3 +464,5 @@ export default function HomePage() {
     </div>
   )
 }
+
+    
