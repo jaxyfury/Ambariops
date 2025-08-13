@@ -1,38 +1,77 @@
 # AmberOps Console Monorepo
 
-This repository contains the source code for the AmberOps Console, a modern management console for Apache Ambari-like operations.
+This repository contains the source code for the AmberOps Console, a modern management console for Apache Ambari-like operations, built with a scalable and maintainable monorepo architecture.
 
-## Folder Structure Overview
+## Folder Structure In-Depth
 
-This project is a monorepo managed by `pnpm` workspaces, organized into two separate applications and a collection of shared packages.
+This project is a `pnpm` workspace-based monorepo, a structure chosen for its excellent code-sharing capabilities and clear separation of concerns. It is organized into distinct applications (`apps`) and shared libraries (`packages`).
 
 ```
 /
-├── .github/              # GitHub Actions workflows and issue/PR templates
+├── .github/              # GitHub Actions workflows and templates
 ├── apps/
 │   ├── home/             # Public-facing landing page and authentication app
-│   └── web/              # The core, protected application for cluster management
+│   └── web/              # The core, protected dashboard application
 ├── packages/
-│   ├── api/              # API client, mocking (MSW), and Genkit AI flows
-│   ├── design-tokens/    # Tailwind CSS configuration, theme, and global styles
-│   ├── lib/              # Shared TypeScript types and utility functions
-│   └── ui/               # Reusable React UI components with Storybook stories
-├── tests/                # Playwright end-to-end tests for all applications
-├── .env                  # Environment variables configuration (not committed)
+│   ├── api/              # API client, data mocking, and AI flows
+│   ├── design-tokens/    # Shared theme, global styles, and Tailwind config
+│   ├── lib/              # Shared TypeScript types and core utility functions
+│   └── ui/               # Reusable React UI components and Storybook
+├── tests/                # End-to-end tests for all applications
+├── .env                  # Environment variables (not committed to source control)
 ├── package.json          # Root package manifest managing pnpm workspaces
-├── pnpm-workspace.yaml   # Defines pnpm workspace packages
-└── README.md             # Project README file (this document)
+├── pnpm-workspace.yaml   # Defines the pnpm workspace packages
+└── README.md             # This document
 ```
 
-### Key Folders
+---
 
-*   **`/apps/home`**: A public-facing Next.js application that serves the landing page and handles all user authentication flows (login, signup, etc.).
-*   **`/apps/web`**: The main protected Next.js application. It contains all the pages for cluster management, app-specific components, and the core dashboard layout.
-*   **`/packages/ui`**: A shared library of reusable React components built with ShadCN/Radix. Each component has a corresponding Storybook story for isolated development and testing.
-*   **`/packages/api`**: Contains the API mocking layer built with Mock Service Worker (MSW) and the Genkit AI flows.
-*   **`/packages/lib`**: A shared library for common TypeScript types and utility functions.
-*   **`/packages/design-tokens`**: Holds the shared Tailwind CSS configuration, including theme colors, fonts, and spacing tokens.
-*   **`/tests`**: Contains the end-to-end tests written with Playwright, covering the main user flows of both applications.
+### `apps/` Directory
+
+This directory contains the runnable Next.js applications.
+
+*   #### `apps/home`
+    *   **Purpose**: This is the public-facing entry point for all users. It serves the marketing landing page and handles all authentication flows (login, sign-up, password reset, etc.).
+    *   **Technology**: A standalone Next.js app optimized for fast initial loads and SEO.
+    *   **Key Responsibilities**: User acquisition and authentication. After a user successfully authenticates, this application securely redirects them to the main `web` application. It contains all the UI for login/signup forms and social provider buttons.
+
+*   #### `apps/web`
+    *   **Purpose**: This is the secure, core application that users access after logging in. It contains all the functionality for cluster management and monitoring.
+    *   **Technology**: A feature-rich Next.js application that heavily relies on client-side rendering for its interactive dashboards.
+    *   **Key Responsibilities**: Provides all the main features of AmberOps, including the dashboard, cluster/service/host views, alerting, and settings. It also contains the backend API routes for NextAuth.js.
+
+---
+
+### `packages/` Directory
+
+This directory contains all the shared code, organized into distinct libraries to be consumed by the applications.
+
+*   #### `packages/ui`
+    *   **Purpose**: A comprehensive library of reusable React components, forming the core of the design system.
+    *   **Contents**: Includes all the UI primitives like `Button`, `Card`, `Table`, `Dialog`, etc., built using **ShadCN/Radix**. It also contains **Storybook**, which provides a workshop for developing, documenting, and testing these components in isolation.
+
+*   #### `packages/api`
+    *   **Purpose**: Manages the application's data and AI layers.
+    *   **Contents**:
+        *   **Mock Service Worker (MSW)**: Contains mock API handlers that simulate a real backend. This allows for independent frontend development and robust testing.
+        *   **Genkit AI Flows**: This is where the server-side AI logic is defined using **Google's Genkit**. It includes flows for summarizing cluster health and suggesting troubleshooting steps.
+
+*   #### `packages/lib`
+    *   **Purpose**: A foundational library for shared, non-React code.
+    *   **Contents**: Contains core utilities and type definitions used across the entire monorepo, such as TypeScript types for `Cluster`, `Service`, `Host`, etc., and utility functions like `cn` for class name merging.
+
+*   #### `packages/design-tokens`
+    *   **Purpose**: Centralizes all styling and theme-related configurations.
+    *   **Contents**: The shared **Tailwind CSS** configuration, including the full color palette (for both light and dark modes), fonts, and spacing tokens. This ensures a consistent visual identity across both the `home` and `web` applications.
+
+---
+
+### `tests/` Directory
+
+*   **Purpose**: Contains all end-to-end (E2E) tests for the project, written with **Playwright**.
+*   **Scope**: These tests cover critical user flows across both applications, such as the full authentication journey, navigation, data table interactions (sorting, filtering, exporting), and usage of global features like search and theme toggling.
+
+---
 
 ## Current Progress
 
