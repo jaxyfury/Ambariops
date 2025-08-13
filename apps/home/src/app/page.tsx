@@ -321,7 +321,7 @@ export default function HomePage() {
                     </p>
                 </div>
             </div>
-             <div id="pricing-grid" className="mx-auto grid max-w-6xl items-center gap-8 py-12 lg:grid-cols-3 justify-items-center">
+             <div id="pricing-grid" className="mx-auto grid max-w-6xl items-center gap-8 lg:grid-cols-3 justify-items-center">
                 <div className="pricing-card-wrapper">
                     <PricingCard {...pricingTiers.hobby} />
                 </div>
