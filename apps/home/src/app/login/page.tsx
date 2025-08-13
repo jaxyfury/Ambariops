@@ -13,8 +13,32 @@ import { Input } from '@amberops/ui/components/ui/input'
 import { Label } from '@amberops/ui/components/ui/label'
 import Link from 'next/link'
 import { AmberOpsLogo } from '@amberops/ui/components/icons'
+import { useRouter } from 'next/navigation'
+import { signIn } from 'next-auth/react'
+import toast from 'react-hot-toast'
 
 export default function LoginPage() {
+    const router = useRouter();
+
+    const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const email = e.currentTarget.email.value;
+        const password = e.currentTarget.password.value;
+        
+        const result = await signIn('credentials', {
+            redirect: false,
+            email,
+            password,
+        });
+
+        if (result?.error) {
+            toast.error(result.error);
+        } else {
+            toast.success('Logged in successfully!');
+            router.push('http://localhost:3000/dashboard');
+        }
+    }
+
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
@@ -27,7 +51,7 @@ export default function LoginPage() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form className="space-y-4">
+        <form className="space-y-4" onSubmit={handleLogin}>
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input id="email" type="email" placeholder="admin@example.com" required />
@@ -48,7 +72,7 @@ export default function LoginPage() {
           <Button type="submit" className="w-full">
             Sign in
           </Button>
-          <Button variant="outline" className="w-full">
+          <Button variant="outline" className="w-full" type="button" onClick={() => signIn('google', { callbackUrl: 'http://localhost:3000/dashboard' })}>
             Sign in with Google
           </Button>
         </form>
@@ -62,5 +86,3 @@ export default function LoginPage() {
     </Card>
   );
 }
-
-    

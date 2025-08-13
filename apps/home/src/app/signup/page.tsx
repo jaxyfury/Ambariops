@@ -13,8 +13,36 @@ import { Input } from '@amberops/ui/components/ui/input'
 import { Label } from '@amberops/ui/components/ui/label'
 import Link from 'next/link'
 import { AmberOpsLogo } from '@amberops/ui/components/icons'
+import { useRouter } from 'next/navigation'
+import toast from 'react-hot-toast'
+import { signIn } from 'next-auth/react'
 
 export default function SignupPage() {
+    const router = useRouter();
+
+    const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const name = e.currentTarget.name.value;
+        const email = e.currentTarget.email.value;
+        const password = e.currentTarget.password.value;
+
+        const response = await fetch('/api/auth/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ name, email, password }),
+        });
+
+        if (response.ok) {
+            toast.success('Account created successfully! Redirecting to login...');
+            router.push('/login');
+        } else {
+            const data = await response.json();
+            toast.error(data.message || 'Something went wrong.');
+        }
+    }
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-muted/20">
         <Card className="w-full max-w-sm">
@@ -28,7 +56,7 @@ export default function SignupPage() {
             </CardDescription>
         </CardHeader>
         <CardContent>
-            <form className="space-y-4">
+            <form className="space-y-4" onSubmit={handleSignup}>
                 <div className="space-y-2">
                     <Label htmlFor="name">Name</Label>
                     <Input id="name" type="text" placeholder="Your Name" required />
@@ -44,7 +72,7 @@ export default function SignupPage() {
                 <Button type="submit" className="w-full">
                     Create Account
                 </Button>
-                 <Button variant="outline" className="w-full">
+                 <Button variant="outline" className="w-full" type="button" onClick={() => signIn('google', { callbackUrl: 'http://localhost:3000/dashboard' })}>
                     Sign up with Google
                 </Button>
             </form>
@@ -59,5 +87,3 @@ export default function SignupPage() {
     </div>
   );
 }
-
-    
