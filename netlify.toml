@@ -1,10 +1,7 @@
 
 [build]
-  command = "pnpm install --prod && pnpm build"
-  publish = "apps/web/.next" # Default publish directory, can be overridden in Netlify UI
+  command = "pnpm install --filter ${REPOSITORY_URL##*/}... --prod && pnpm build --filter ${REPOSITORY_URL##*/}"
+  publish = "apps/web/.next"
 
 [build.environment]
-  # Set the Node.js version to match your project
   NODE_VERSION = "20"
-
-# Redirects and headers can be configured here if needed

@@ -1,4 +1,8 @@
 
 {
-  "installCommand": "pnpm install --prod"
+  "build": {
+    "env": {
+      "VERCEL_BUILD_COMMAND": "pnpm install --filter ${VERCEL_GIT_REPO_SLUG}... --prod && pnpm build --filter ${VERCEL_GIT_REPO_SLUG}"
+    }
+  }
 }
