@@ -16,6 +16,7 @@ import {
   Laptop,
   History,
   PanelLeft,
+  BookOpen,
 } from 'lucide-react';
 import {
   Accordion,
@@ -62,6 +63,7 @@ export function SidebarNav() {
   ];
 
   const bottomNavItems = [
+    { href: '/documentation', label: 'Documentation', icon: BookOpen, tooltip: 'Documentation' },
     { href: '/settings', label: 'Settings', icon: Settings, tooltip: 'Settings' },
     { href: '/help', label: 'Help', icon: AlertCircle, tooltip: 'Help' },
   ];
