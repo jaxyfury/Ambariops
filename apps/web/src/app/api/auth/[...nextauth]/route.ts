@@ -1,6 +1,7 @@
 
 import NextAuth, { type NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
+import GitHubProvider from 'next-auth/providers/github';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
 import clientPromise from '@/lib/mongodb';
@@ -19,6 +20,10 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
+    GitHubProvider({
+      clientId: process.env.GITHUB_CLIENT_ID!,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+    }),
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
@@ -33,7 +38,7 @@ export const authOptions: NextAuthOptions = {
         const client = await clientPromise;
         const user = await findUserByEmail(client, credentials.email);
 
-        if (user && bcrypt.compareSync(credentials.password, user.password)) {
+        if (user && user.password && bcrypt.compareSync(credentials.password, user.password)) {
           return {
             id: user._id.toString(),
             name: user.name,
