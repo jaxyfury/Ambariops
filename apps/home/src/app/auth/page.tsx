@@ -14,13 +14,23 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { Input } from '@amberops/ui/components/ui/input';
 import { Label } from '@amberops/ui/components/ui/label';
 import { Button } from '@amberops/ui/components/ui/button';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@amberops/ui/components/ui/tooltip';
 
 const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL || 'http://localhost:3000';
 
-const SocialButton = ({ icon, onClick }: { icon: React.ReactNode, onClick?: () => void }) => (
-    <button type="button" onClick={onClick} className="social-icon">
-        {icon}
-    </button>
+const SocialButton = ({ icon, onClick, tooltip }: { icon: React.ReactNode, onClick?: () => void, tooltip: string }) => (
+    <TooltipProvider>
+        <Tooltip>
+            <TooltipTrigger asChild>
+                <button type="button" onClick={onClick} className="social-icon">
+                    {icon}
+                </button>
+            </TooltipTrigger>
+            <TooltipContent>
+                <p>{tooltip}</p>
+            </TooltipContent>
+        </Tooltip>
+    </TooltipProvider>
 );
 
 const SignUpForm = () => {
@@ -67,8 +77,8 @@ const SignUpForm = () => {
         <form onSubmit={handleSignup} data-testid="signup-form">
             <h1 className="text-3xl font-bold font-headline mb-3">Create Account</h1>
             <div className="social-icons">
-                 <SocialButton icon={<Chrome size={20} />} onClick={() => signIn('google', { callbackUrl: `${WEB_URL}/dashboard` })} />
-                 <SocialButton icon={<GitMerge size={20} />} onClick={() => signIn('github', { callbackUrl: `${WEB_URL}/dashboard` })} />
+                 <SocialButton icon={<Chrome size={20} />} onClick={() => signIn('google', { callbackUrl: `${WEB_URL}/dashboard` })} tooltip="Sign up with Google" />
+                 <SocialButton icon={<GitMerge size={20} />} onClick={() => signIn('github', { callbackUrl: `${WEB_URL}/dashboard` })} tooltip="Sign up with GitHub" />
             </div>
             <span>or use your email for registration</span>
             <input type="text" name="name" placeholder="Name" required />
@@ -128,8 +138,8 @@ const SignInForm = () => {
             <form onSubmit={handleLogin} data-testid="login-form">
                 <h1 className="text-3xl font-bold font-headline mb-3">Sign In</h1>
                 <div className="social-icons">
-                     <SocialButton icon={<Chrome size={20} />} onClick={() => signIn('google', { callbackUrl: `${WEB_URL}/dashboard` })} />
-                     <SocialButton icon={<GitMerge size={20} />} onClick={() => signIn('github', { callbackUrl: `${WEB_URL}/dashboard` })} />
+                     <SocialButton icon={<Chrome size={20} />} onClick={() => signIn('google', { callbackUrl: `${WEB_URL}/dashboard` })} tooltip="Sign in with Google" />
+                     <SocialButton icon={<GitMerge size={20} />} onClick={() => signIn('github', { callbackUrl: `${WEB_URL}/dashboard` })} tooltip="Sign in with GitHub" />
                 </div>
                 <span>or use your email and password</span>
                 <input type="email" name="email" placeholder="Email" required />
