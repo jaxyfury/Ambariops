@@ -1,9 +1,13 @@
+
 {
   "name": "amberops-console-monorepo",
   "private": true,
   "scripts": {
     "dev": "pnpm --filter web dev",
-    "build": "pnpm --filter web build",
+    "dev:home": "pnpm --filter home dev -p 3001",
+    "build": "pnpm --parallel build",
+    "build:web": "pnpm --filter web build",
+    "build:home": "pnpm --filter home build",
     "start": "pnpm --filter web start",
     "lint": "pnpm --filter '*' lint",
     "format": "prettier --write .",
