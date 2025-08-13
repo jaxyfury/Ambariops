@@ -8,7 +8,7 @@ import {
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@amberops/ui/components/ui/card';
 import { Switch } from '@amberops/ui/components/ui/switch';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogTrigger } from '@amberops/ui/components/ui/dialog';
-import { PlusCircle, Slack, GitMerge, Bell, Bot, KeyRound } from 'lucide-react';
+import { PlusCircle, Slack, GitMerge, Bell, Bot, KeyRound, Eye, EyeOff } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { Input } from '@amberops/ui/components/ui/input';
 import { Label } from '@amberops/ui/components/ui/label';
@@ -39,6 +39,7 @@ export function IntegrationsSettings() {
   const [integrations, setIntegrations] = useState(initialIntegrations);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedIntegration, setSelectedIntegration] = useState<string | null>(null);
+  const [isApiKeyVisible, setIsApiKeyVisible] = useState(false);
 
   const toggleIntegration = (name: string, connect: boolean) => {
     setIntegrations(
@@ -75,24 +76,34 @@ export function IntegrationsSettings() {
                 <CardTitle>Generative AI Provider</CardTitle>
             </div>
             <CardDescription>
-             By default, AmberOps uses a shared API key for AI features. You can provide your own Gemini API key which will be securely stored and used only for your requests.
+             Your personal API key will be securely stored and used for all AI-powered features you invoke. By default, AmberOps uses a shared key for demonstration purposes.
             </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
             <div className="space-y-2">
                 <Label htmlFor="gemini-api-key">Your Personal Gemini API Key</Label>
-                <div className="flex gap-2">
-                    <Input id="gemini-api-key" type="password" placeholder="Enter your Gemini API key..." />
+                 <div className="flex items-center gap-2">
+                    <div className="relative flex-grow">
+                        <Input 
+                            id="gemini-api-key" 
+                            type={isApiKeyVisible ? 'text' : 'password'} 
+                            placeholder="Enter your Gemini API key..."
+                            className="pr-10"
+                        />
+                        <Button 
+                            type="button"
+                            variant="ghost" 
+                            size="icon" 
+                            className="absolute right-1 top-1/2 h-7 w-7 -translate-y-1/2 text-muted-foreground"
+                            onClick={() => setIsApiKeyVisible(!isApiKeyVisible)}
+                        >
+                            {isApiKeyVisible ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                            <span className="sr-only">{isApiKeyVisible ? 'Hide key' : 'Show key'}</span>
+                        </Button>
+                    </div>
                     <Button onClick={handleSaveApiKey}>Save Key</Button>
                 </div>
             </div>
-             <Alert variant="default">
-                <KeyRound className="h-4 w-4" />
-                <AlertTitle>How this works</AlertTitle>
-                <AlertDescription>
-                  Your API key is sent to a secure backend, encrypted, and stored. It will be used for all AI-powered features you invoke. This UI is a prototype; a real backend is required for this feature to be fully functional.
-                </AlertDescription>
-            </Alert>
         </CardContent>
       </Card>
 
