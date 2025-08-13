@@ -12,54 +12,49 @@ export default function NotFound() {
     const animationFrameRef = useRef<number>();
 
     useEffect(() => {
-        // Function to draw the visor on the canvas
-        const drawVisor = () => {
-            const canvas = visorCanvasRef.current;
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-            if (!ctx) return;
-            
-            ctx.beginPath();
-            ctx.moveTo(5, 45);
-            ctx.bezierCurveTo(15, 64, 45, 64, 55, 45);
-            ctx.lineTo(55, 20);
-            ctx.bezierCurveTo(55, 15, 50, 10, 45, 10);
-            ctx.lineTo(15, 10);
-            ctx.bezierCurveTo(15, 10, 5, 10, 5, 20);
-            ctx.lineTo(5, 45);
-            
-            ctx.fillStyle = '#2f3640';
-            ctx.strokeStyle = '#f5f6fa';
-            ctx.fill();
-            ctx.stroke();
-        };
-
-        // Animation logic for the cord
+        const visorCanvas = visorCanvasRef.current;
         const cordCanvas = cordCanvasRef.current;
-        if (!cordCanvas) return;
+        if (!visorCanvas || !cordCanvas) return;
 
-        const ctx = cordCanvas.getContext('2d');
-        if (!ctx) return;
+        const visorCtx = visorCanvas.getContext('2d');
+        const cordCtx = cordCanvas.getContext('2d');
+        if (!visorCtx || !cordCtx) return;
+
+        const drawVisor = (theme: 'light' | 'dark' = 'light') => {
+            visorCtx.clearRect(0, 0, visorCanvas.width, visorCanvas.height);
+            visorCtx.beginPath();
+            visorCtx.moveTo(5, 45);
+            visorCtx.bezierCurveTo(15, 64, 45, 64, 55, 45);
+            visorCtx.lineTo(55, 20);
+            visorCtx.bezierCurveTo(55, 15, 50, 10, 45, 10);
+            visorCtx.lineTo(15, 10);
+            visorCtx.bezierCurveTo(15, 10, 5, 10, 5, 20);
+            visorCtx.lineTo(5, 45);
+            
+            visorCtx.fillStyle = theme === 'dark' ? '#2f3640' : '#e0e0e0';
+            visorCtx.strokeStyle = theme === 'dark' ? '#f5f6fa' : '#333';
+            visorCtx.fill();
+            visorCtx.stroke();
+        };
 
         let y1 = 160;
         let y2 = 100;
         let y3 = 100;
-
         let y1Forward = true;
         let y2Forward = false;
         let y3Forward = true;
 
         const animate = () => {
             animationFrameRef.current = requestAnimationFrame(animate);
-            ctx.clearRect(0, 0, cordCanvas.width, cordCanvas.height);
+            cordCtx.clearRect(0, 0, cordCanvas.width, cordCanvas.height);
             
-            ctx.beginPath();
-            ctx.moveTo(130, 170);
-            ctx.bezierCurveTo(250, y1, 345, y2, 400, y3);
+            cordCtx.beginPath();
+            cordCtx.moveTo(130, 170);
+            cordCtx.bezierCurveTo(250, y1, 345, y2, 400, y3);
             
-            ctx.strokeStyle = 'white';
-            ctx.lineWidth = 8;
-            ctx.stroke();
+            cordCtx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--primary-foreground').trim();
+            cordCtx.lineWidth = 8;
+            cordCtx.stroke();
             
             if (y1 <= 100) y1Forward = true;
             if (y1 >= 300) y1Forward = false;
@@ -72,15 +67,18 @@ export default function NotFound() {
             y2Forward ? y2 += 1 : y2 -= 1;
             y3Forward ? y3 += 1 : y3 -= 1;
         };
+        
+        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        const currentTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+        drawVisor(currentTheme);
+        
+        const handleThemeChange = (e: MediaQueryListEvent) => drawVisor(e.matches ? 'dark' : 'light');
+        mediaQuery.addEventListener('change', handleThemeChange);
 
-        drawVisor();
         animate();
-
-        // Cleanup function to cancel animation frame
         return () => {
-            if(animationFrameRef.current) {
-                cancelAnimationFrame(animationFrameRef.current);
-            }
+            if(animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
+            mediaQuery.removeEventListener('change', handleThemeChange);
         };
     }, []);
 

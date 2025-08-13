@@ -99,7 +99,7 @@ export default function Error({
             
              <div className="text-left w-full mx-auto rounded-lg shadow-2xl bg-card border">
                 <header className="bg-muted px-4 py-2 rounded-t-lg flex items-center gap-2">
-                    <div className="w-3 h-3 rounded-full bg-red-500" />
+                    <div className="w-3 h-3 rounded-full bg-destructive" />
                     <div className="w-3 h-3 rounded-full bg-yellow-500" />
                     <div className="w-3 h-3 rounded-full bg-green-500" />
                     <p className="text-center flex-grow text-sm text-muted-foreground">bash - amberops-error-log</p>
@@ -107,7 +107,7 @@ export default function Error({
                 <section className="p-4 h-64 overflow-y-auto text-sm text-foreground">
                     {displayedText.map((line, index) => (
                         <div key={index}>
-                            {typeof line === 'string' && index !== displayedText.length-1 && <span>$&nbsp;</span>}
+                            {typeof line === 'string' && index !== displayedText.length-1 && <span className="text-primary">$&nbsp;</span>}
                             {line}
                             {typeof line === 'string' && index === displayedText.length-1 && <span className="inline-block w-2 h-4 bg-primary animate-pulse ml-1" />}
                         </div>
