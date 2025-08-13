@@ -92,20 +92,19 @@ export function SidebarNav() {
             disabled={sidebarState === 'collapsed'}
           >
               <AccordionItem value="accordion-item" className="border-b-0">
-                <AccordionTrigger asChild>
-                  <SidebarMenuButton
-                    isActive={
-                      item.subItems.some((sub: any) => pathname.startsWith(sub.href))
-                    }
+                <SidebarMenuButton
+                    asChild
+                    isActive={item.subItems.some((sub: any) => pathname.startsWith(sub.href))}
                     tooltip={item.tooltip}
-                    className="p-2"
-                  >
-                    <div className="flex items-center gap-2">
-                        <item.icon />
-                        <span className="group-data-[state=collapsed]:hidden">{item.label}</span>
-                    </div>
-                  </SidebarMenuButton>
-                </AccordionTrigger>
+                    className="p-0"
+                >
+                    <AccordionTrigger className="p-2">
+                        <div className="flex items-center gap-2">
+                            <item.icon />
+                            <span className="group-data-[state=collapsed]:hidden">{item.label}</span>
+                        </div>
+                    </AccordionTrigger>
+                </SidebarMenuButton>
                 <AccordionContent className="p-0 pl-7 pt-1 group-data-[state=collapsed]:hidden">
                   <ul className="space-y-1">
                     {item.subItems.map((subItem: any) => (
