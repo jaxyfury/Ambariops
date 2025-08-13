@@ -1,0 +1,23 @@
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Docker
+Dockerfile
+.dockerignore
+
+# Node
+node_modules
+.next
+npm-debug.log
+pnpm-debug.log
+
+# Editor
+.idea
+.vscode
+
+# OS
+.DS_Store
+Thumbs.db
