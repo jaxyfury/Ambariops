@@ -6,7 +6,7 @@ import { Button } from '@amberops/ui/components/ui/button'
 import { AmberOpsLogo } from '@amberops/ui/components/icons'
 import Link from 'next/link'
 import Image from 'next/image';
-import { CheckCircle, Shield, Zap, BarChart, HardDrive, Server, Users, ArrowRight, Mail, GitBranch, Terminal, Blocks, Package, Search } from 'lucide-react'
+import { CheckCircle, Shield, Zap, BarChart, HardDrive, Server, Users, ArrowRight, Mail, GitBranch, Terminal, Blocks, Package, Search, Star, MessageSquare } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@amberops/ui/components/ui/avatar';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@amberops/ui/components/ui/accordion';
 import { AnimatedGlobe } from '@/components/animated-globe';
@@ -102,6 +102,10 @@ const pricingTiers = {
     }
 }
 
+const integrationIcons = [
+    GitBranch, Terminal, Blocks, Package, Search, HardDrive, Cpu, Users, BarChart, Shield, Zap, Server
+];
+
 
 export default function HomePage() {
   const mainRef = useRef<HTMLDivElement>(null);
@@ -131,6 +135,18 @@ export default function HomePage() {
       gsap.from(".cta-element", {
         scrollTrigger: {
             trigger: "#final-cta",
+            start: "top 80%",
+        },
+        opacity: 0,
+        y: 30,
+        stagger: 0.2,
+        duration: 0.8,
+        ease: "power3.out"
+      });
+      
+      gsap.from(".integration-section-element", {
+        scrollTrigger: {
+            trigger: "#integrations-section",
             start: "top 80%",
         },
         opacity: 0,
@@ -248,6 +264,65 @@ export default function HomePage() {
           </div>
         </section>
         
+        <section id="integrations-section" className="w-full py-20 md:py-28 lg:py-32">
+          <div className="container px-4 md:px-6 text-center">
+            <p className="text-muted-foreground integration-section-element">Trusted by the world&apos;s most innovative technical teams</p>
+            <div className="flex justify-center items-center gap-8 md:gap-12 mt-4 mb-12 text-muted-foreground integration-section-element">
+                <p className="font-semibold text-lg">Deda.tech</p>
+                <p className="font-semibold text-lg">Unbabel</p>
+                <p className="font-semibold text-lg">Microsoft</p>
+                <p className="font-semibold text-lg">Vodafone</p>
+            </div>
+            
+            <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-16 integration-section-element">
+                <Card className="bg-card/50 backdrop-blur-sm">
+                    <CardContent className="p-6 text-left flex items-start gap-4">
+                        <GitBranch className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
+                        <div>
+                            <h3 className="font-semibold">Top 50 on GitHub</h3>
+                            <p className="text-sm text-muted-foreground">Our 129.1k stars place us among the most popular open-source projects.</p>
+                        </div>
+                    </CardContent>
+                </Card>
+                <Card className="bg-card/50 backdrop-blur-sm">
+                    <CardContent className="p-6 text-left flex items-start gap-4">
+                        <Star className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
+                         <div>
+                            <h3 className="font-semibold">4.9/5 stars on G2</h3>
+                            <p className="text-sm text-muted-foreground">To quote ‘A solid automation tool that just works.’</p>
+                        </div>
+                    </CardContent>
+                </Card>
+                <Card className="bg-card/50 backdrop-blur-sm">
+                    <CardContent className="p-6 text-left flex items-start gap-4">
+                        <MessageSquare className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
+                        <div>
+                            <h3 className="font-semibold">200k+ community members</h3>
+                            <p className="text-sm text-muted-foreground">This wouldn&apos;t be possible without you.</p>
+                        </div>
+                    </CardContent>
+                </Card>
+            </div>
+
+            <h2 className="text-3xl font-bold tracking-tighter font-headline sm:text-5xl mt-2 integration-section-element">
+                Plug AI into your own data & <span className="text-primary">over 500 integrations</span>
+            </h2>
+
+            <div className="integrations-grid mt-12 integration-section-element">
+                {Array.from({ length: 48 }).map((_, i) => {
+                    const Icon = integrationIcons[i % integrationIcons.length];
+                    return (
+                        <div key={i} className="integration-icon-container">
+                            <div className="integration-icon">
+                                <Icon className="h-6 w-6" />
+                            </div>
+                        </div>
+                    )
+                })}
+            </div>
+          </div>
+        </section>
+
         <section id="pricing" className="w-full py-20 md:py-28 lg:py-32 bg-background">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center pb-16">

@@ -1,0 +1,130 @@
+
+.integrations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 1rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    --glow-color: hsl(var(--primary) / 0.5);
+    --glow-size: 250px;
+}
+
+.integrations-grid::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: var(--glow-size);
+    height: var(--glow-size);
+    background-image: radial-gradient(circle, var(--glow-color), transparent 70%);
+    filter: blur(80px);
+    opacity: 0.6;
+    animation: pulse-glow 8s ease-in-out infinite;
+    pointer-events: none;
+    z-index: -1;
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.5;
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.2);
+        opacity: 0.7;
+    }
+}
+
+.integration-icon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: shimmer 10s linear infinite;
+    animation-delay: calc(var(--i) * 0.1s);
+}
+
+.integration-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 64px;
+    height: 64px;
+    background-color: hsl(var(--card) / 0.6);
+    border: 1px solid hsl(var(--border) / 0.5);
+    border-radius: 0.75rem;
+    backdrop-filter: blur(4px);
+    transition: all 0.3s ease;
+    color: hsl(var(--muted-foreground));
+}
+
+.integration-icon:hover {
+    transform: translateY(-4px) scale(1.05);
+    background-color: hsl(var(--card));
+    border-color: hsl(var(--primary));
+    color: hsl(var(--primary));
+    box-shadow: 0 0 20px hsl(var(--primary) / 0.2);
+}
+
+
+@keyframes shimmer {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Assign delay for shimmer animation */
+.integrations-grid > div:nth-child(1) { --i: 1; }
+.integrations-grid > div:nth-child(2) { --i: 5; }
+.integrations-grid > div:nth-child(3) { --i: 3; }
+.integrations-grid > div:nth-child(4) { --i: 8; }
+.integrations-grid > div:nth-child(5) { --i: 2; }
+.integrations-grid > div:nth-child(6) { --i: 6; }
+.integrations-grid > div:nth-child(7) { --i: 4; }
+.integrations-grid > div:nth-child(8) { --i: 9; }
+.integrations-grid > div:nth-child(9) { --i: 1; }
+.integrations-grid > div:nth-child(10) { --i: 7; }
+.integrations-grid > div:nth-child(11) { --i: 5; }
+.integrations-grid > div:nth-child(12) { --i: 2; }
+/* ... and so on for all 48 icons */
+.integrations-grid > div:nth-child(13) { --i: 8; }
+.integrations-grid > div:nth-child(14) { --i: 3; }
+.integrations-grid > div:nth-child(15) { --i: 6; }
+.integrations-grid > div:nth-child(16) { --i: 1; }
+.integrations-grid > div:nth-child(17) { --i: 9; }
+.integrations-grid > div:nth-child(18) { --i: 4; }
+.integrations-grid > div:nth-child(19) { --i: 7; }
+.integrations-grid > div:nth-child(20) { --i: 2; }
+.integrations-grid > div:nth-child(21) { --i: 5; }
+.integrations-grid > div:nth-child(22) { --i: 8; }
+.integrations-grid > div:nth-child(23) { --i: 3; }
+.integrations-grid > div:nth-child(24) { --i: 6; }
+.integrations-grid > div:nth-child(25) { --i: 1; }
+.integrations-grid > div:nth-child(26) { --i: 9; }
+.integrations-grid > div:nth-child(27) { --i: 4; }
+.integrations-grid > div:nth-child(28) { --i: 7; }
+.integrations-grid > div:nth-child(29) { --i: 2; }
+.integrations-grid > div:nth-child(30) { --i: 5; }
+.integrations-grid > div:nth-child(31) { --i: 8; }
+.integrations-grid > div:nth-child(32) { --i: 3; }
+.integrations-grid > div:nth-child(33) { --i: 6; }
+.integrations-grid > div:nth-child(34) { --i: 1; }
+.integrations-grid > div:nth-child(35) { --i: 9; }
+.integrations-grid > div:nth-child(36) { --i: 4; }
+.integrations-grid > div:nth-child(37) { --i: 7; }
+.integrations-grid > div:nth-child(38) { --i: 2; }
+.integrations-grid > div:nth-child(39) { --i: 5; }
+.integrations-grid > div:nth-child(40) { --i: 8; }
+.integrations-grid > div:nth-child(41) { --i: 3; }
+.integrations-grid > div:nth-child(42) { --i: 6; }
+.integrations-grid > div:nth-child(43) { --i: 1; }
+.integrations-grid > div:nth-child(44) { --i: 9; }
+.integrations-grid > div:nth-child(45) { --i: 4; }
+.integrations-grid > div:nth-child(46) { --i: 7; }
+.integrations-grid > div:nth-child(47) { --i: 2; }
+.integrations-grid > div:nth-child(48) { --i: 5; }
