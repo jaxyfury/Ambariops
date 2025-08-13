@@ -157,7 +157,7 @@ const pricingTiers = {
 
 export default function HomePage() {
   const mainRef = useRef<HTMLDivElement>(null);
-  const featuresRef = useRef<HTMLDivElement>(null);
+  const featureSectionRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -181,17 +181,33 @@ export default function HomePage() {
         ease: "power3.out",
       });
 
-      if (featuresRef.current) {
-        gsap.from(featuresRef.current.querySelectorAll('.feature-card'), {
-          scrollTrigger: {
-            trigger: featuresRef.current,
-            start: 'top 80%',
-          },
-          opacity: 0,
-          y: 40,
-          stagger: 0.1,
-          duration: 0.6,
-          ease: 'power3.out'
+      if (featureSectionRef.current) {
+        const featureCards = gsap.utils.toArray<HTMLElement>('.feature-card-wrapper');
+        const featureText = gsap.utils.toArray<HTMLElement>('.feature-text-item');
+
+        gsap.set(featureText, { opacity: 0, y: 20 });
+        gsap.to(featureText[0], { opacity: 1, y: 0, duration: 0.3 });
+
+        featureCards.forEach((card, i) => {
+          ScrollTrigger.create({
+            trigger: card,
+            start: "top center",
+            end: "bottom center",
+            onEnter: () => {
+              gsap.to(featureText, { opacity: 0, y: 20, duration: 0.3, overwrite: 'auto' });
+              gsap.to(featureText[i], { opacity: 1, y: 0, duration: 0.3, overwrite: 'auto' });
+              
+              featureCards.forEach(c => (c as HTMLElement).classList.remove('active'));
+              card.classList.add('active');
+            },
+            onEnterBack: () => {
+               gsap.to(featureText, { opacity: 0, y: 20, duration: 0.3, overwrite: 'auto' });
+               gsap.to(featureText[i], { opacity: 1, y: 0, duration: 0.3, overwrite: 'auto' });
+
+               featureCards.forEach(c => (c as HTMLElement).classList.remove('active'));
+               card.classList.add('active');
+            }
+          });
         });
       }
 
@@ -287,32 +303,46 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section id="features" className="w-full py-20 md:py-28 lg:py-32 bg-muted/20">
-            <div className="container mx-auto px-4 md:px-6">
-                 <div className="text-center max-w-3xl mx-auto">
-                    <div className="inline-block rounded-lg bg-secondary px-3 py-1 text-sm">Key Features</div>
-                    <h2 className="text-3xl font-bold tracking-tighter font-headline sm:text-5xl mt-2">
-                        Everything you need. Nothing you don’t.
-                    </h2>
-                    <p className="md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed mt-4 text-muted-foreground">
-                        AmberOps is packed with features designed to make cluster management faster, easier, and more intelligent. Stop fighting with your tools and start managing your stack.
-                    </p>
-                </div>
+        <section id="features" ref={featureSectionRef} className="w-full py-20 md:py-28 lg:py-32 bg-muted/20">
+          <div className="container mx-auto px-4 md:px-6">
+              <div className="text-center max-w-3xl mx-auto mb-16">
+                  <div className="inline-block rounded-lg bg-secondary px-3 py-1 text-sm">Key Features</div>
+                  <h2 className="text-3xl font-bold tracking-tighter font-headline sm:text-5xl mt-2">
+                      Everything you need. Nothing you don’t.
+                  </h2>
+                  <p className="md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed mt-4 text-muted-foreground">
+                      AmberOps is packed with features designed to make cluster management faster, easier, and more intelligent. Stop fighting with your tools and start managing your stack.
+                  </p>
+              </div>
 
-                <div ref={featuresRef} className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
-                    {features.map((feature) => (
-                        <div key={feature.title} className="feature-card">
-                            <div className="feature-card-content">
-                                <div className="p-4 bg-background rounded-full self-start mb-4 border">
-                                    {feature.icon}
-                                </div>
-                                <h3 className="text-xl font-bold font-headline mb-2 text-foreground">{feature.title}</h3>
-                                <p className="text-muted-foreground">{feature.description}</p>
-                            </div>
+              <div className="grid lg:grid-cols-2 gap-8 items-start">
+                  <div className="lg:sticky top-28 h-fit">
+                    <div className="relative h-48">
+                      {features.map((feature, i) => (
+                        <div key={i} className="feature-text-item absolute inset-0">
+                          <h3 className="text-2xl font-bold font-headline mb-3 flex items-center gap-3">
+                            {feature.icon} {feature.title}
+                          </h3>
+                          <p className="text-muted-foreground text-lg">{feature.description}</p>
                         </div>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-8">
+                    {features.map((feature, i) => (
+                      <div key={i} className="feature-card-wrapper">
+                        <div className="feature-card">
+                           <h3 className="text-xl font-bold font-headline flex items-center gap-3 lg:hidden">
+                            {feature.icon} {feature.title}
+                           </h3>
+                           <p className="text-muted-foreground mt-2 lg:hidden">{feature.description}</p>
+                        </div>
+                      </div>
                     ))}
-                </div>
-            </div>
+                  </div>
+              </div>
+          </div>
         </section>
         
         <section id="pricing" className="w-full py-20 md:py-28 lg:py-32 bg-background">
