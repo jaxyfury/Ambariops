@@ -6,7 +6,7 @@ import { Button } from '@amberops/ui/components/ui/button'
 import { AmberOpsLogo } from '@amberops/ui/components/icons'
 import Link from 'next/link'
 import Image from 'next/image';
-import { CheckCircle, Shield, Zap, BarChart, HardDrive, Server, Users, ArrowRight, Mail } from 'lucide-react'
+import { CheckCircle, Shield, Zap, BarChart, HardDrive, Server, Users, ArrowRight, Mail, GitBranch, Terminal, Blocks, Package, Search } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@amberops/ui/components/ui/avatar';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@amberops/ui/components/ui/accordion';
 import { AnimatedGlobe } from '@/components/animated-globe';
@@ -17,6 +17,7 @@ import { PricingCard } from '@/components/pricing-card';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { TestimonialsMarquee } from '@/components/testimonials-marquee';
+import { cn } from '@amberops/lib';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -28,30 +29,50 @@ const features = [
     description: 'A modern, responsive interface built with Next.js for a seamless user experience that leaves legacy systems behind.',
   },
   {
-    icon: <Shield className="h-8 w-8 text-primary" />,
-    title: 'Secure & Reliable',
-    description: 'Enterprise-grade security features to keep your cluster data safe, with robust authentication and authorization.',
-  },
-    {
     icon: <BarChart className="h-8 w-8 text-primary" />,
     title: 'AI-Powered Insights',
     description: 'Leverage generative AI to get health summaries and actionable troubleshooting steps in plain English.',
   },
-   {
+  {
     icon: <Server className="h-8 w-8 text-primary" />,
     title: 'Unified Cluster View',
     description: 'Manage all your clusters from a single, intuitive dashboard. No more context switching.',
   },
-   {
+  {
     icon: <HardDrive className="h-8 w-8 text-primary" />,
     title: 'Simplified Service Mgmt',
     description: 'Start, stop, and configure services across all hosts with just a few clicks. Track operations in real-time.',
   },
-   {
+  {
     icon: <Users className="h-8 w-8 text-primary" />,
     title: 'User & Access Control',
     description: 'Fine-grained user management with roles and permissions to ensure secure access for your entire team.',
   },
+   {
+    icon: <GitBranch className="h-8 w-8 text-primary" />,
+    title: 'Configuration Versioning',
+    description: 'Track changes to service configurations over time and easily rollback to previous versions when needed.',
+  },
+  {
+    icon: <Terminal className="h-8 w-8 text-primary" />,
+    title: 'Mock API for Devs',
+    description: 'Develop locally with a complete mock of the Ambari API, ensuring a smooth and independent workflow.',
+  },
+  {
+    icon: <Blocks className="h-8 w-8 text-primary" />,
+    title: 'Monorepo Architecture',
+    description: 'Built on a modern pnpm monorepo for clean code separation and maximum reusability between packages.',
+  },
+  {
+    icon: <Package className="h-8 w-8 text-primary" />,
+    title: 'Shared Component Library',
+    description: 'A robust set of UI components built with ShadCN and Storybook ensures a consistent and high-quality user interface.',
+  },
+  {
+    icon: <Search className="h-8 w-8 text-primary" />,
+    title: 'Global Search',
+    description: 'Instantly find any host, service, or cluster across your entire infrastructure with a single search.',
+  }
 ];
 
 const testimonials = [
@@ -146,19 +167,6 @@ export default function HomePage() {
         duration: 0.8,
         stagger: 0.2,
         ease: "power3.out"
-      });
-
-      // Features Section Animation
-      gsap.from(".feature-card", {
-        scrollTrigger: {
-          trigger: "#features-grid",
-          start: "top 80%",
-        },
-        opacity: 0,
-        y: 50,
-        stagger: 0.1,
-        duration: 0.6,
-        ease: "power3.out",
       });
       
       // Pricing Section Animation
@@ -280,29 +288,35 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section id="features" className="w-full py-20 md:py-28 lg:py-32">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2">
-                <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Key Features</div>
-                <h2 className="text-3xl font-bold tracking-tighter font-headline sm:text-5xl">
-                  Everything you need. Nothing you don’t.
-                </h2>
-                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  AmberOps is packed with features designed to make cluster management faster, easier, and more intelligent. Stop fighting with your tools and start managing your stack.
-                </p>
-              </div>
-            </div>
-            <div id="features-grid" className="mx-auto grid max-w-5xl items-start gap-8 py-12 lg:grid-cols-3 md:grid-cols-2">
-              {features.map((feature) => (
-                <div key={feature.title} className="grid gap-4 text-center p-6 rounded-lg hover:bg-muted/50 transition-all duration-300 feature-card">
-                    <div className="mx-auto bg-primary/10 p-3 rounded-full">{feature.icon}</div>
-                    <h3 className="text-xl font-bold font-headline">{feature.title}</h3>
-                    <p className="text-muted-foreground">{feature.description}</p>
+        <section id="features" className="features-section-container">
+            <div className="features-sticky-header">
+                <div className="container mx-auto px-4 md:px-6">
+                    <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Key Features</div>
+                    <h2 className="text-3xl font-bold tracking-tighter font-headline sm:text-5xl mt-2">
+                        Everything you need. Nothing you don’t.
+                    </h2>
+                    <p className="max-w-3xl text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed mt-4">
+                        AmberOps is packed with features designed to make cluster management faster, easier, and more intelligent. Stop fighting with your tools and start managing your stack.
+                    </p>
                 </div>
-              ))}
             </div>
-          </div>
+
+            <div className="features-scrolling-content">
+                <div className="container mx-auto px-4 md:px-6">
+                    <div className="features-grid">
+                        {features.map((feature) => (
+                            <div key={feature.title} className="feature-card">
+                                <div className="feature-card-glow" />
+                                <div className="feature-card-content">
+                                    <div className="mb-4">{feature.icon}</div>
+                                    <h3 className="text-xl font-bold font-headline mb-2">{feature.title}</h3>
+                                    <p className="text-muted-foreground">{feature.description}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
         </section>
         
         <section id="pricing" className="w-full py-20 md:py-28 lg:py-32 bg-muted/20">
