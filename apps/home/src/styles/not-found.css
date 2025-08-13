@@ -173,7 +173,7 @@
 }
 
 .astronaut__backpack {
-  background-color: white;
+  background-color: rgb(235, 6, 6);
   position: absolute;
   top: 90px;
   left: 47px;
@@ -282,7 +282,7 @@
 }
 
 .astronaut__wrist-left {
-  background-color: white;
+  background-color: rgb(245, 108, 4);
   position: absolute;
   top: 122px;
   left: 6.5px;
@@ -294,7 +294,7 @@
 }
 
 .astronaut__wrist-right {
-  background-color: white;
+  background-color: rgb(245, 108, 4);
   position: absolute;
   top: 98px;
   left: 141px;
