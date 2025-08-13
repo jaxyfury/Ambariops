@@ -163,7 +163,7 @@ export default function DocumentationPage() {
                <AccordionItem value="item-7">
                 <AccordionTrigger className="text-lg font-semibold">Settings & Management</AccordionTrigger>
                 <AccordionContent className="space-y-4 pt-2">
-                    <p className="text-muted-foreground">The <Link href="/settings" className="text-primary hover:underline">Settings</g-link> page is organized into tabs:</p>
+                    <p className="text-muted-foreground">The <Link href="/settings" className="text-primary hover:underline">Settings</Link> page is organized into tabs:</p>
                      <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
                         <li><b>General:</b> Update your personal information and application theme.</li>
                         <li><b>User Management:</b> Add, edit, or delete users and manage their roles (Admin, Operator, Viewer).</li>
@@ -178,4 +178,3 @@ export default function DocumentationPage() {
     </div>
   );
 }
-
