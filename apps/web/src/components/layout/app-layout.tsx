@@ -31,6 +31,7 @@ import toast from 'react-hot-toast';
 import { QuickAccessNav } from '@/components/quick-access-nav';
 import { GlobalSearch } from '@/components/global-search';
 import { signOut, useSession } from 'next-auth/react';
+import { Shield } from 'lucide-react';
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
     const { data: session } = useSession();
@@ -86,6 +87,17 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
               <DropdownMenuItem asChild>
                 <Link href="/help">Support</Link>
               </DropdownMenuItem>
+               {(session?.user as any)?.role === 'Admin' && (
+                <>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem asChild>
+                        <Link href="/admin/dashboard">
+                            <Shield className="mr-2 h-4 w-4" />
+                            Admin Dashboard
+                        </Link>
+                    </DropdownMenuItem>
+                </>
+              )}
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={handleSignOut}

@@ -5,8 +5,9 @@ import GitHubProvider from 'next-auth/providers/github';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
 import clientPromise from '@/lib/mongodb';
-import { MongoClient } from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb';
 import bcrypt from 'bcryptjs';
+import type { User as AppUser } from '@amberops/lib';
 
 async function findUserByEmail(client: MongoClient, email: string) {
     const usersCollection = client.db().collection('users');
@@ -44,6 +45,7 @@ export const authOptions: NextAuthOptions = {
             name: user.name,
             email: user.email,
             image: user.image,
+            role: user.role, // Pass role to the session token
           };
         }
         return null;
@@ -58,9 +60,17 @@ export const authOptions: NextAuthOptions = {
     error: `${process.env.NEXT_PUBLIC_HOME_URL}/auth`,
   },
   callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.role = (user as any).role;
+        token.sub = user.id;
+      }
+      return token;
+    },
     async session({ session, token }) {
       if (token && session.user) {
-        session.user.id = token.sub as string;
+        (session.user as any).id = token.sub as string;
+        (session.user as any).role = token.role;
       }
       return session;
     },

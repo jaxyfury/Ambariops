@@ -1,5 +1,5 @@
 
-import type { User, Cluster, Service, Host, Alert, AlertDefinition, Task, ActivityLog, LogEntry, ConfigVersion } from '@amberops/lib';
+import type { User, Cluster, Service, Host, Alert, AlertDefinition, Task, ActivityLog, LogEntry, ConfigVersion, DocumentationArticle, LegalDocument } from '@amberops/lib';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || '/api/v1';
 
@@ -85,3 +85,13 @@ export const fetchLogEntries = (): Promise<LogEntry[]> => apiClient.get('/logs')
 
 // Config Version Service
 export const fetchConfigVersions = (): Promise<ConfigVersion[]> => apiClient.get('/config-versions');
+
+// Documentation Service
+export const fetchDocumentationArticles = (): Promise<DocumentationArticle[]> => apiClient.get('/documentation');
+export const addDocumentationArticle = (articleData: Omit<DocumentationArticle, 'id' | 'createdAt' | 'updatedAt'>): Promise<DocumentationArticle> => apiClient.post('/documentation', articleData);
+export const updateDocumentationArticle = (slug: string, articleData: Partial<DocumentationArticle>): Promise<DocumentationArticle> => apiClient.put(`/documentation/${slug}`, articleData);
+export const deleteDocumentationArticle = (slug: string): Promise<{ id: string }> => apiClient.delete(`/documentation/${slug}`);
+
+// Legal Documents Service
+export const fetchLegalDocument = (type: 'terms' | 'privacy'): Promise<LegalDocument> => apiClient.get(`/legal/${type}`);
+export const updateLegalDocument = (type: 'terms' | 'privacy', data: { content: string }): Promise<LegalDocument> => apiClient.put(`/legal/${type}`, data);

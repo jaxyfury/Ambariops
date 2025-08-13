@@ -1,3 +1,4 @@
+
 export type Cluster = {
   id: string;
   name: string;
@@ -115,4 +116,19 @@ export type ActivityLog = {
     action: 'LOGIN' | 'CREATE' | 'UPDATE' | 'DELETE' | 'RESTART' | 'ACKNOWLEDGE';
     details: string;
     timestamp: string;
+};
+
+export type DocumentationArticle = {
+    id: string;
+    title: string;
+    slug: string;
+    content: string;
+    createdAt: string;
+    updatedAt: string;
+};
+
+export type LegalDocument = {
+    type: 'terms' | 'privacy';
+    content: string;
+    updatedAt: string;
 };

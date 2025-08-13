@@ -1,3 +1,4 @@
+
 import { MongoClient } from 'mongodb';
 import {
   mockUsers,
@@ -13,8 +14,20 @@ import {
 } from '../packages/api/src/mocks/mock-data';
 import bcrypt from 'bcryptjs';
 import { config } from 'dotenv';
+import type { DocumentationArticle } from '@amberops/lib';
 
 config({ path: './.env' });
+
+const docs: Omit<DocumentationArticle, 'id' | 'createdAt' | 'updatedAt'>[] = [
+    { slug: 'dashboard', title: 'Dashboard Guide', content: '<h1>Dashboard Guide</h1><p>Your central hub for monitoring the overall health of your infrastructure.</p>' },
+    { slug: 'clusters', title: 'Cluster & Host Management', content: '<h1>Cluster & Host Management</h1><p>Learn how to add, view, and manage your clusters and their associated hosts.</p>' },
+    { slug: 'services', title: 'Service Management', content: '<h1>Service Management</h1><p>Guides on how to manage services like HDFS and YARN, including actions like start, stop, and restart.</p>' },
+];
+
+const legal = [
+    { type: 'terms', content: '<h1>Terms of Service</h1><p>Please read these terms of service carefully before using AmberOps.</p>', updatedAt: new Date() },
+    { type: 'privacy', content: '<h1>Privacy Policy</h1><p>Your privacy is important to us. This privacy statement explains the personal data AmberOps processes, how AmberOps processes it, and for what purposes.</p>', updatedAt: new Date() }
+]
 
 async function seedDatabase() {
   const uri = process.env.MONGODB_URI;
@@ -109,6 +122,18 @@ async function seedDatabase() {
     await db.collection('logEntries').deleteMany({});
     await db.collection('logEntries').insertMany(mockLogEntries);
     console.log('Log Entries seeded.');
+
+    // 11. Seed Documentation
+    console.log('Seeding documentation...');
+    await db.collection('documentation').deleteMany({});
+    await db.collection('documentation').insertMany(docs.map(d => ({...d, createdAt: new Date(), updatedAt: new Date() })));
+    console.log('Documentation seeded.');
+
+    // 12. Seed Legal Docs
+    console.log('Seeding legal documents...');
+    await db.collection('legal').deleteMany({});
+    await db.collection('legal').insertMany(legal);
+    console.log('Legal documents seeded.');
 
 
     console.log('Database seeding completed successfully!');
