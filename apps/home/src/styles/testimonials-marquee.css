@@ -12,7 +12,8 @@
     display: flex;
     flex-shrink: 0;
     justify-content: space-around;
-    gap: 1.5rem;
+    gap: 1.5rem; /* This is the gap between cards */
+    padding-right: 1.5rem; /* This ensures space at the end of the loop */
     min-width: 100%;
     animation: scroll 40s linear infinite;
 }
