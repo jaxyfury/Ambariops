@@ -15,7 +15,7 @@ export function AnimatedThemeToggle() {
 
   if (!mounted) {
     return (
-      <button className="relative z-50 flex h-[50px] w-[50px] scale-[1.5] items-center justify-center rounded-lg bg-secondary" disabled />
+      <button className="relative z-50 flex h-[20px] w-[20px] scale-[1.5] items-center justify-center rounded-lg bg-secondary" disabled />
     );
   }
 
