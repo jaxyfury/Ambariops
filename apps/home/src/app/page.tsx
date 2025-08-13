@@ -195,7 +195,7 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div ref={mainRef} className="flex flex-col min-h-dvh bg-background text-foreground">
+    <div ref={mainRef} className="flex flex-col min-h-dvh bg-background text-foreground home-body">
       <ThunderCursor />
       <header className="sticky top-0 z-50 px-4 lg:px-6 h-16 flex items-center border-b bg-background/80 backdrop-blur-lg">
         <Link href="#" className="flex items-center justify-center gap-2" prefetch={false}>

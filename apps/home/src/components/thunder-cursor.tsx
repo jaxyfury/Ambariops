@@ -1,6 +1,8 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
+import { Zap } from 'lucide-react';
 
 const useMousePosition = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -36,7 +38,9 @@ export function ThunderCursor() {
         transform: `translate3d(${x}px, ${y}px, 0)`,
       }}
     >
-      <div className="thunder-cursor-dot" />
+      <div className="thunder-cursor-icon">
+        <Zap className="h-5 w-5" />
+      </div>
       <div className="thunder-cursor-trail" />
       <div className="thunder-cursor-sparks">
         <div className="spark" />
