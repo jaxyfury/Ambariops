@@ -2,8 +2,8 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import VanillaTilt from 'vanilla-tilt';
 import * as THREE from 'three';
+import type VanillaTilt from 'vanilla-tilt';
 
 export function PricingCard() {
     const cardContainerRef = useRef<HTMLDivElement>(null);
@@ -75,7 +75,6 @@ export function PricingCard() {
                     vec2 noiseCoord1 = vec2(normalizedAngle * 8.0 + mediumTime * 0.3, vUv.y * 4.0 - mediumTime * 0.4);
                     float fireDetail1 = turbulence(noiseCoord1, 1.0, 4);
                     vec2 noiseCoord2 = vec2(normalizedAngle * 6.0 - mediumTime * 0.5, vUv.y * 3.0 + mediumTime * 0.3);
-                    float fireDetail2 = turbulence(noiseCoord2, 1.5, 3);
                     float widthModulation = 1.0 - pow(abs(vUv.y - 0.5) * 1.8, 2.0);
                     widthModulation = clamp(widthModulation, 0.3, 1.0);
                     float fireDetail = fireDetail1 * 0.6 + fireDetail2 * 0.4;
@@ -154,9 +153,9 @@ export function PricingCard() {
                     outerShape.lineTo(outerWidth/2, outerHeight/2 - outerRadius);
                     outerShape.quadraticCurveTo(outerWidth/2, outerHeight/2, outerWidth/2 - outerRadius, outerHeight/2);
                     outerShape.lineTo(-outerWidth/2 + outerRadius, outerHeight/2);
-                    outerShape.quadraticCurveTo(-outerWidth/2, outerHeight/2, -outerWidth/2, outerHeight/2 - outerRadius);
-                    outerShape.lineTo(-outerWidth/2, -outerHeight/2 + outerRadius);
-                    outerShape.quadraticCurveTo(-outerWidth/2, -outerHeight/2, -outerWidth/2 + outerRadius, -outerHeight/2);
+                    outerShape.quadraticCurveTo(-outerWidth/2, outerHeight/2, -innerWidth/2, outerHeight/2 - outerRadius);
+                    outerShape.lineTo(-innerWidth/2, -innerHeight/2 + outerRadius);
+                    outerShape.quadraticCurveTo(-innerWidth/2, -innerHeight/2, -innerWidth/2 + outerRadius, -innerHeight/2);
 
                     const innerShapePath = new THREE.Path();
                     innerShapePath.moveTo(-innerWidth/2 + innerRadius, -innerHeight/2);
@@ -186,6 +185,7 @@ export function PricingCard() {
             if (cardContainerRef.current) {
                 const cardElement = cardContainerRef.current.querySelector<HTMLElement>(".card");
                 if (cardElement) {
+                    const VanillaTilt = (await import('vanilla-tilt')).default;
                     VanillaTilt.init(cardElement, {
                         max: 10, speed: 400, glare: true, "max-glare": 0.2
                     });
