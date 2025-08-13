@@ -63,7 +63,14 @@ export function SidebarNav() {
   ];
 
   const bottomNavItems = [
-    { href: '/documentation', label: 'Documentation', icon: BookOpen, tooltip: 'Documentation' },
+     {
+      label: 'Documentation',
+      icon: BookOpen,
+      tooltip: 'Documentation',
+      subItems: [
+        { href: '/documentation/dashboard', label: 'Dashboard Guide', tooltip: 'Dashboard Guide' },
+      ],
+    },
     { href: '/settings', label: 'Settings', icon: Settings, tooltip: 'Settings' },
     { href: '/help', label: 'Help', icon: AlertCircle, tooltip: 'Help' },
   ];
@@ -71,6 +78,65 @@ export function SidebarNav() {
 
   const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
   const isAlertsActive = isActive('/alerts');
+  const isDocsActive = isActive('/documentation');
+
+  const renderNavMenu = (items: any[]) => {
+    return items.map((item) => (
+      <SidebarMenuItem key={item.label}>
+        {item.subItems ? (
+          <Accordion 
+            type="single" 
+            collapsible 
+            defaultValue={
+              (item.label === 'Alerts' && isAlertsActive) ? "accordion-item" : 
+              (item.label === 'Documentation' && isDocsActive) ? "accordion-item" : undefined
+            }
+            disabled={sidebarState === 'collapsed'}
+          >
+              <AccordionItem value="accordion-item" className="border-b-0">
+                <SidebarMenuButton
+                  asChild
+                  isActive={isActive(item.href || item.subItems[0].href)}
+                  tooltip={item.tooltip}
+                  className="p-0"
+                >
+                  <AccordionTrigger className={cn(
+                    "peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-none ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:!justify-center group-data-[collapsible=icon]:!p-2 [&>span]:group-data-[collapsible=icon]:hidden [&>svg]:size-4 [&>svg]:shrink-0",
+                    "hover:no-underline"
+                  )}>
+                      <div className="flex items-center gap-2">
+                          <item.icon />
+                          <span className="group-data-[state=collapsed]:hidden">{item.label}</span>
+                      </div>
+                  </AccordionTrigger>
+                </SidebarMenuButton>
+                <AccordionContent className="p-0 pl-7 pt-1 group-data-[state=collapsed]:hidden">
+                  <ul className="space-y-1">
+                    {item.subItems.map((subItem: any) => (
+                      <li key={subItem.href}>
+                         <SidebarMenuButton size="sm" isActive={pathname === subItem.href} asChild tooltip={subItem.tooltip}>
+                          <Link href={subItem.href}>
+                            <span>{subItem.label}</span>
+                          </Link>
+                        </SidebarMenuButton>
+                      </li>
+                    ))}
+                  </ul>
+                </AccordionContent>
+              </AccordionItem>
+          </Accordion>
+        ) : (
+          <SidebarMenuButton isActive={isActive(item.href)} asChild tooltip={item.tooltip}>
+            <Link href={item.href}>
+              <item.icon />
+              <span>{item.label}</span>
+            </Link>
+          </SidebarMenuButton>
+        )}
+      </SidebarMenuItem>
+    ))
+  }
+
 
   return (
     <Sidebar>
@@ -82,66 +148,12 @@ export function SidebarNav() {
       </SidebarHeader>
       <SidebarContent>
         <SidebarMenu className="flex-1 p-2">
-          {navItems.map((item) => (
-            <SidebarMenuItem key={item.label}>
-              {item.subItems ? (
-                 <Accordion type="single" collapsible defaultValue={isAlertsActive ? "alerts" : undefined} disabled={sidebarState === 'collapsed'}>
-                    <AccordionItem value="alerts" className="border-b-0">
-                      <SidebarMenuButton
-                        asChild
-                        isActive={isAlertsActive}
-                        tooltip={item.tooltip}
-                        className="p-0"
-                      >
-                        <AccordionTrigger className={cn(
-                          "peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-none ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:!justify-center group-data-[collapsible=icon]:!p-2 [&>span]:group-data-[collapsible=icon]:hidden [&>svg]:size-4 [&>svg]:shrink-0",
-                          "hover:no-underline"
-                        )}>
-                            <div className="flex items-center gap-2">
-                                <item.icon />
-                                <span className="group-data-[state=collapsed]:hidden">{item.label}</span>
-                            </div>
-                        </AccordionTrigger>
-                      </SidebarMenuButton>
-                      <AccordionContent className="p-0 pl-7 pt-1 group-data-[state=collapsed]:hidden">
-                        <ul className="space-y-1">
-                          {item.subItems.map(subItem => (
-                            <li key={subItem.href}>
-                               <SidebarMenuButton size="sm" isActive={pathname === subItem.href} asChild tooltip={subItem.tooltip}>
-                                <Link href={subItem.href}>
-                                  <span>{subItem.label}</span>
-                                </Link>
-                              </SidebarMenuButton>
-                            </li>
-                          ))}
-                        </ul>
-                      </AccordionContent>
-                    </AccordionItem>
-                 </Accordion>
-              ) : (
-                <SidebarMenuButton isActive={isActive(item.href)} asChild tooltip={item.tooltip}>
-                  <Link href={item.href}>
-                    <item.icon />
-                    <span>{item.label}</span>
-                  </Link>
-                </SidebarMenuButton>
-              )}
-            </SidebarMenuItem>
-          ))}
+          {renderNavMenu(navItems)}
         </SidebarMenu>
       </SidebarContent>
       <SidebarFooter>
         <SidebarMenu className="p-2">
-          {bottomNavItems.map((item) => (
-            <SidebarMenuItem key={item.label}>
-              <SidebarMenuButton isActive={isActive(item.href)} asChild tooltip={item.tooltip}>
-                <Link href={item.href}>
-                  <item.icon />
-                  <span>{item.label}</span>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          ))}
+          {renderNavMenu(bottomNavItems)}
         </SidebarMenu>
       </SidebarFooter>
     </Sidebar>
