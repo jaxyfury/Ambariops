@@ -4,7 +4,7 @@
 import { PageHeader } from '@/components/page-header';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@amberops/ui/components/ui/card';
 import { Alert, AlertTitle, AlertDescription } from '@amberops/ui/components/ui/alert';
-import { Bot, Rocket } from 'lucide-react';
+import { Bot, Rocket, AlertTriangle } from 'lucide-react';
 import Link from 'next/link';
 
 export default function DashboardDocumentationPage() {
