@@ -8,7 +8,7 @@ import Image from 'next/image';
 import { CheckCircle, Shield, Zap, BarChart, HardDrive, Server, Users, ArrowRight } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@amberops/ui/components/ui/avatar';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@amberops/ui/components/ui/accordion';
-import { AnimatedThemeToggle } from '@/components/animated-theme-toggle';
+import { AnimatedGlobe } from '@/components/animated-globe';
 
 const features = [
   {
@@ -122,53 +122,44 @@ export default function HomePage() {
             FAQ
           </Link>
            <Button asChild variant="ghost">
-            <Link href="/login">Admin Login</Link>
+            <Link href="/auth">Admin Login</Link>
           </Button>
            <Button asChild>
-            <Link href="/signup">Get Started <ArrowRight className="ml-2 h-4 w-4" /></Link>
+            <Link href="/auth?action=signup">Get Started <ArrowRight className="ml-2 h-4 w-4" /></Link>
           </Button>
         </nav>
         <Button asChild variant="outline" className="ml-auto md:hidden">
-            <Link href="/login">Login</Link>
+            <Link href="/auth">Login</Link>
         </Button>
       </header>
       <main className="flex-1">
-        <section className="w-full py-20 md:py-32 lg:py-40 bg-muted/20 relative overflow-hidden">
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
-                <AnimatedThemeToggle />
-            </div>
+        <section className="w-full py-20 md:py-28 lg:py-32 xl:py-40 relative overflow-hidden">
              <div className="absolute top-0 left-0 -translate-x-1/4 -translate-y-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
              <div className="absolute bottom-0 right-0 translate-x-1/4 translate-y-1/4 w-96 h-96 bg-secondary/20 rounded-full blur-3xl" />
-          <div className="container px-4 md:px-6 relative">
-            <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 xl:grid-cols-[1fr_550px]">
-              <div className="flex flex-col justify-center space-y-4">
+          <div className="container px-4 md:px-6">
+            <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 xl:grid-cols-[1fr_500px]">
+              <div className="flex flex-col justify-center space-y-4 text-center lg:text-left">
                 <div className="space-y-4">
                    <div className="inline-block rounded-lg bg-secondary px-3 py-1 text-sm font-semibold text-secondary-foreground">The Ambari UI. Reimagined.</div>
                   <h1 className="text-4xl font-bold tracking-tighter font-headline sm:text-5xl xl:text-6xl/none">
-                    The Future of Cluster Management is Here
+                    Unified Cluster Management, Supercharged by AI
                   </h1>
-                  <p className="max-w-[600px] text-muted-foreground md:text-xl">
+                  <p className="max-w-[600px] text-muted-foreground md:text-xl mx-auto lg:mx-0">
                     AmberOps provides a modern, fast, and intuitive frontend for Apache Ambari, supercharged with AI-powered insights to streamline your operations.
                   </p>
                 </div>
-                <div className="flex flex-col gap-2 min-[400px]:flex-row">
+                <div className="flex flex-col gap-2 min-[400px]:flex-row justify-center lg:justify-start">
                   <Button asChild size="lg">
-                    <Link href="/signup">Get Started for Free</Link>
+                    <Link href="/auth?action=signup">Get Started for Free</Link>
                   </Button>
                   <Button asChild variant="secondary" size="lg">
                     <Link href="#features">Learn More</Link>
                   </Button>
                 </div>
               </div>
-              <Image
-                src="https://placehold.co/600x400.png"
-                width="600"
-                height="400"
-                alt="AmberOps Dashboard Screenshot"
-                data-ai-hint="dashboard cluster management"
-                className="mx-auto aspect-[3/2] overflow-hidden rounded-xl object-cover sm:w-full lg:order-last border-4 border-background shadow-2xl"
-                priority
-              />
+              <div className="w-full lg:order-last flex items-center justify-center">
+                  <AnimatedGlobe />
+              </div>
             </div>
           </div>
         </section>
@@ -224,7 +215,7 @@ export default function HomePage() {
                   <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-primary" />Up to 5 Hosts</li>
                   <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-primary" />Community Support</li>
                 </ul>
-                <Button className="w-full mt-6" variant="outline" asChild><Link href="/signup" prefetch={false}>Get Started</Link></Button>
+                <Button className="w-full mt-6" variant="outline" asChild><Link href="/auth?action=signup" prefetch={false}>Get Started</Link></Button>
               </div>
               <div className="relative flex flex-col rounded-lg border-2 border-primary bg-card shadow-lg p-6">
                 <div className="absolute top-0 -translate-y-1/2 left-1/2 -translate-x-1/2">
@@ -241,7 +232,7 @@ export default function HomePage() {
                   <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-primary" />Up to 50 Hosts</li>
                   <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-primary" />Priority Email Support</li>
                 </ul>
-                <Button className="w-full mt-6" asChild><Link href="/signup" prefetch={false}>Choose Pro</Link></Button>
+                <Button className="w-full mt-6" asChild><Link href="/auth?action=signup" prefetch={false}>Choose Pro</Link></Button>
               </div>
               <div className="relative flex flex-col rounded-lg border bg-card shadow-sm p-6">
                 <h3 className="text-2xl font-bold font-headline">Enterprise</h3>
@@ -331,7 +322,7 @@ export default function HomePage() {
             </div>
             <div className="mx-auto w-full max-w-sm space-y-2">
                 <Button asChild size="lg" className="w-full">
-                    <Link href="/signup">Sign Up Now</Link>
+                    <Link href="/auth?action=signup">Sign Up Now</Link>
                 </Button>
                 <p className="text-xs text-muted-foreground">
                 Get started for free. No credit card required.

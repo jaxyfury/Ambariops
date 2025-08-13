@@ -4,6 +4,7 @@ import { Inter, Space_Grotesk } from 'next/font/google';
 import "@amberops/design-tokens/globals.css";
 import "@/styles/animated-theme.css";
 import "@/styles/auth-form.css";
+import "@/styles/animated-globe.css";
 import { cn } from "@amberops/lib";
 import { ThemeProvider } from "@amberops/ui/components/theme-provider";
 import { Toaster } from "react-hot-toast";
