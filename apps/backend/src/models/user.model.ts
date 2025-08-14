@@ -8,7 +8,6 @@ export interface IUser extends Omit<IUserType, 'id'>, mongoose.Document {}
 const UserSchema = new Schema<IUser>({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
   role: { type: String, enum: ['Admin', 'Operator', 'Viewer'], default: 'Viewer' },
   image: { type: String },
   lastLogin: { type: Date, default: Date.now },

@@ -14,19 +14,20 @@ import { errorHandler } from './utils/error-handler';
 dotenv.config({ path: '../../.env' });
 
 // Global Mongoose settings for toJSON and toObject transformations
+const transform = (doc: any, ret: { [key: string]: any }) => {
+  ret.id = ret._id?.toString();
+  delete ret._id;
+  delete ret.__v;
+};
+
 mongoose.set('toJSON', {
   virtuals: true,
-  transform: (doc, converted) => {
-    delete converted._id;
-    delete converted.__v;
-  }
+  transform,
 });
+
 mongoose.set('toObject', {
   virtuals: true,
-  transform: (doc, converted) => {
-    delete converted._id;
-    delete converted.__v;
-  }
+  transform,
 });
 
 
