@@ -1,17 +1,16 @@
 
-import { handlers } from '@amberops/api/mocks/handlers';
-import { http } from 'msw';
+import { NextResponse } from 'next/server';
+import clientPromise from '@/lib/mongodb';
 
-const route = http.all('*', async ({request, params}) => {
-    const configHandlers = handlers.filter(handler => {
-        const url = new URL(handler.info.path, request.url);
-        return url.pathname.startsWith('/api/v1/config');
-    });
-
-    for (const handler of configHandlers) {
-        const response = await handler.run({request, params});
-        if(response) return response;
-    }
-});
-
-export { route as GET, route as POST, route as PUT, route as DELETE, route as PATCH };
+export async function GET() {
+  try {
+    const client = await clientPromise;
+    const db = client.db();
+    const versions = await db.collection('configVersions').find({}).sort({ version: -1 }).toArray();
+    const formatted = versions.map(v => ({ ...v, id: v._id.toString() }));
+    return NextResponse.json(formatted);
+  } catch (error) {
+    console.error('Failed to fetch config versions:', error);
+    return NextResponse.json({ message: 'Failed to fetch config versions' }, { status: 500 });
+  }
+}

@@ -3,7 +3,7 @@ import type { User, Cluster, Service, Host, Alert, AlertDefinition, Task, Activi
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || '/api/v1';
 
-// A placeholder for a real API client.
+// A centralized API client.
 const apiClient = {
   get: async <T>(url: string): Promise<T> => {
     const response = await fetch(url);
@@ -20,7 +20,7 @@ const apiClient = {
       body: JSON.stringify(data),
     });
     if (!response.ok) {
-      const errorData = await response.json();
+      const errorData = await response.json().catch(() => ({ message: 'An unknown error occurred' }));
       throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
     }
     return response.json();
@@ -32,7 +32,7 @@ const apiClient = {
       body: JSON.stringify(data),
     });
     if (!response.ok) {
-        const errorData = await response.json();
+        const errorData = await response.json().catch(() => ({ message: 'An unknown error occurred' }));
       throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
     }
     return response.json();
@@ -42,7 +42,7 @@ const apiClient = {
       method: 'DELETE',
     });
     if (!response.ok) {
-        const errorData = await response.json();
+        const errorData = await response.json().catch(() => ({ message: 'An unknown error occurred' }));
       throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
     }
     return response.json();

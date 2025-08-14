@@ -1,16 +1,30 @@
 
-import { handlers } from '@amberops/api/mocks/handlers';
-import { http } from 'msw';
+import { NextResponse } from 'next/server';
+import clientPromise from '@/lib/mongodb';
+import { ObjectId } from 'mongodb';
 
-const route = http.all('*', async ({request, params}) => {
-    const servicesHandlers = handlers.filter(handler => {
-        const url = new URL(handler.info.path, request.url);
-        return url.pathname.startsWith('/api/v1/services');
-    });
-    for (const handler of servicesHandlers) {
-        const response = await handler.run({request, params});
-        if(response) return response;
+export async function GET(request: Request, { params }: { params: { slug?: string[] } }) {
+  try {
+    const client = await clientPromise;
+    const db = client.db();
+    const slug = params.slug?.[0];
+
+    if (slug) {
+      if (!ObjectId.isValid(slug)) {
+        return NextResponse.json({ message: 'Invalid service ID' }, { status: 400 });
+      }
+      const service = await db.collection('services').findOne({ _id: new ObjectId(slug) });
+      if (!service) {
+        return NextResponse.json({ message: 'Service not found' }, { status: 404 });
+      }
+      return NextResponse.json({ ...service, id: service._id.toString() });
     }
-});
 
-export { route as GET, route as POST, route as PUT, route as DELETE, route as PATCH };
+    const services = await db.collection('services').find({}).toArray();
+    const formattedServices = services.map(s => ({ ...s, id: s._id.toString() }));
+    return NextResponse.json(formattedServices);
+  } catch (error) {
+    console.error('Failed to fetch services:', error);
+    return NextResponse.json({ message: 'Failed to fetch services' }, { status: 500 });
+  }
+}

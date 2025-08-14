@@ -1,17 +1,16 @@
 
-import { handlers }from '@amberops/api/mocks/handlers';
-import { http } from 'msw';
+import { NextResponse } from 'next/server';
+import clientPromise from '@/lib/mongodb';
 
-const route = http.all('*', async ({request}) => {
-    const activityHandlers = handlers.filter(handler => {
-        const url = new URL(handler.info.path, request.url);
-        return url.pathname.startsWith('/api/v1/activity');
-    });
-
-    for (const handler of activityHandlers) {
-        const response = await handler.run({request, params: {slug: ''}});
-        if(response) return response;
-    }
-});
-
-export { route as GET, route as POST, route as PUT, route as DELETE, route as PATCH };
+export async function GET() {
+  try {
+    const client = await clientPromise;
+    const db = client.db();
+    const logs = await db.collection('activityLogs').find({}).sort({ timestamp: -1 }).toArray();
+    const formattedLogs = logs.map(log => ({ ...log, id: log._id.toString() }));
+    return NextResponse.json(formattedLogs);
+  } catch (error) {
+    console.error('Failed to fetch activity logs:', error);
+    return NextResponse.json({ message: 'Failed to fetch activity logs' }, { status: 500 });
+  }
+}
