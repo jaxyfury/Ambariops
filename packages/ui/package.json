@@ -9,6 +9,8 @@
     "./components/icons": "./src/components/icons.tsx",
     "./components/page-header": "./src/components/page-header.tsx",
     "./components/theme-provider": "./src/components/theme-provider.tsx",
+    "./components/breadcrumbs": "./src/components/breadcrumbs.tsx",
+    "./components/preloader": "./src/components/preloader.tsx",
     "./hooks/use-toast": "./src/hooks/use-toast.ts",
     "./hooks/use-mobile": "./src/hooks/use-mobile.tsx",
     "./hooks/use-sidebar": "./src/hooks/use-sidebar.tsx",
@@ -92,7 +94,8 @@
     "@amberops/lib": "workspace:*",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.8.2",
-    "xlsx": "^0.18.5"
+    "xlsx": "^0.18.5",
+    "animejs": "^3.2.2"
   },
   "devDependencies": {
     "@storybook/addon-a11y": "^8.1.11",
@@ -109,6 +112,7 @@
     "@types/react-dom": "^18",
     "typescript": "^5",
     "@tanstack/react-table": "^8.17.3",
-    "@tanstack/react-virtual": "^3.5.0"
+    "@tanstack/react-virtual": "^3.5.0",
+    "@types/animejs": "^3.1.12"
   }
 }

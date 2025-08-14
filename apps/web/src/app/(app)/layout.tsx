@@ -2,9 +2,9 @@
 'use client';
 import { AppLayout } from '@/components/layout/app-layout';
 import { SidebarNav } from '@/components/layout/sidebar-nav';
-import { Breadcrumbs } from '@/components/breadcrumbs';
+import { Breadcrumbs } from '@amberops/ui/components/breadcrumbs';
 import { SidebarProvider } from '@amberops/ui/components/ui/sidebar';
-import { Preloader } from '@/components/preloader';
+import { Preloader } from '@amberops/ui/components/preloader';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 

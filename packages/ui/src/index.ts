@@ -2,6 +2,9 @@
 export * from './components/icons';
 export * from './components/page-header';
 export * from './components/theme-provider';
+export * from './components/data-table';
+export * from './components/breadcrumbs';
+export * from './components/preloader';
 
 // Hooks
 export * from './hooks/use-mobile';
