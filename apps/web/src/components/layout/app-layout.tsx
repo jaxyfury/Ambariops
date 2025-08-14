@@ -24,7 +24,7 @@ import {
   TooltipContent,
 } from '@amberops/ui/components/ui/tooltip';
 
-import { ThemeToggle } from '@amberops/ui';
+import { ThemeToggle } from '@amberops/ui/components/theme-toggle';
 import { LanguageSwitcher } from '@/components/language-switcher';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
