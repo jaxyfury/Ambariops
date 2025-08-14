@@ -1,7 +1,7 @@
 
 import { User } from '../models/user.model';
 import bcrypt from 'bcryptjs';
-import type { IUser } from '@amberops/lib';
+import type { User as IUser } from '@amberops/lib';
 import mongoose from 'mongoose';
 
 const toUserResponse = (user: any): IUser => {

@@ -1,6 +1,6 @@
 
 import mongoose, { Schema } from 'mongoose';
-import type { IUser } from '@amberops/lib';
+import type { User as IUser } from '@amberops/lib';
 
 const UserSchema = new Schema<IUser>({
   name: { type: String, required: true },
