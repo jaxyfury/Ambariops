@@ -1,8 +1,7 @@
-
 'use client';
 
 import Link from 'next/link';
-import { PageHeader } from '@amberops/ui/components/page-header';
+import { PageHeader } from '@amberops/ui';
 import { Button } from '@amberops/ui/components/ui/button';
 import { Badge } from '@amberops/ui/components/ui/badge';
 import { Checkbox } from '@amberops/ui/components/ui/checkbox';
