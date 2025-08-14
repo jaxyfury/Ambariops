@@ -7,11 +7,17 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+// For production, it's strongly recommended to use environment variables
+// for all credentials. For local development, the Client ID is hardcoded here
+// to simplify setup. Ensure your GOOGLE_CLIENT_SECRET is set in your .env file.
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '346548165922-6ajf6ehskcer4fooirikr1mkh7kjq2fu.apps.googleusercontent.com';
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
+
 passport.use(
   new GoogleStrategy(
     {
-      clientID: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      clientID: GOOGLE_CLIENT_ID,
+      clientSecret: GOOGLE_CLIENT_SECRET!,
       callbackURL: '/api/auth/google/callback',
     },
     async (accessToken, refreshToken, profile, done) => {

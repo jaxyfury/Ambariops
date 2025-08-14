@@ -96,8 +96,14 @@ router.post('/login', async (req: Request, res: Response) => {
 // Google OAuth
 router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
-router.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: `${homeUrl}/auth` }), (req: Request, res: Response) => {
+router.get('/auth/google/callback', passport.authenticate('google', { 
+    failureRedirect: `${homeUrl}/auth?error=google_failed`,
+    session: false, 
+}), (req: Request, res: Response) => {
     const user = req.user as IUser;
+    if (!user) {
+        return res.redirect(`${homeUrl}/auth?error=auth_failed`);
+    }
     const userPayload = { id: user._id.toString(), name: user.name, email: user.email, role: user.role, avatar: user.avatar };
     const token = jwt.sign(
         userPayload,
@@ -111,8 +117,14 @@ router.get('/auth/google/callback', passport.authenticate('google', { failureRed
 // GitHub OAuth
 router.get('/auth/github', passport.authenticate('github', { scope: ['user:email'] }));
 
-router.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: `${homeUrl}/auth` }), (req: Request, res: Response) => {
+router.get('/auth/github/callback', passport.authenticate('github', { 
+    failureRedirect: `${homeUrl}/auth?error=github_failed`,
+    session: false,
+}), (req: Request, res: Response) => {
     const user = req.user as IUser;
+     if (!user) {
+        return res.redirect(`${homeUrl}/auth?error=auth_failed`);
+    }
     const userPayload = { id: user._id.toString(), name: user.name, email: user.email, role: user.role, avatar: user.avatar };
     const token = jwt.sign(
         userPayload,
