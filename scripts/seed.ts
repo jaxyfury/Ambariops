@@ -14,7 +14,7 @@ import {
   mockPricingTiers,
   mockTestimonials,
   mockFaqs,
-} from '../packages/api/src/mocks/mock-data';
+} from './mock-data';
 import bcrypt from 'bcryptjs';
 import { config } from 'dotenv';
 import type { DocumentationArticle } from '@amberops/lib';
@@ -60,7 +60,7 @@ async function seedDatabase() {
     
     // Add a default user for login
     usersWithHashedPasswords.push({
-      ...{ id: 'u5', name: 'Jay Prakash', email: 'jayprakash@gmail.com', role: 'User', lastLogin: new Date(), avatar: `https://avatar.vercel.sh/jay` },
+      ...{ id: 'u5', name: 'Jay Prakash', email: 'jay@gmail.com', role: 'Viewer', lastLogin: new Date(), avatar: `https://avatar.vercel.sh/jay` },
       password: await bcrypt.hash('123456', 10),
       emailVerified: null,
       createdAt: new Date(),

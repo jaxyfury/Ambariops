@@ -4,9 +4,10 @@
 import { useState, useEffect } from 'react';
 import { Skeleton } from '@amberops/ui/components/ui/skeleton';
 import { summarizeClusterHealth } from '@/app/actions';
-import { mockAlerts } from '@amberops/api/mock-data';
-import type { Cluster } from '@amberops/lib';
+import type { Cluster, Alert } from '@amberops/lib';
 import { Bot } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+import { fetchAlerts } from '@amberops/api/client';
 
 interface ClusterHealthSummaryProps {
   cluster: Cluster;
@@ -16,12 +17,17 @@ export function ClusterHealthSummary({ cluster }: ClusterHealthSummaryProps) {
   const [summary, setSummary] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
 
+  const { data: allAlerts = [] } = useQuery<Alert[]>({
+    queryKey: ['alerts'],
+    queryFn: fetchAlerts,
+  });
+
   useEffect(() => {
     async function getSummary() {
       if (!cluster) return;
       try {
         setLoading(true);
-        const clusterAlerts = mockAlerts.filter((a) => a.clusterId === cluster.id);
+        const clusterAlerts = allAlerts.filter((a) => a.clusterId === cluster.id);
         const result = await summarizeClusterHealth({
           clusterName: cluster.name,
           healthMetrics: JSON.stringify(cluster.healthMetrics),
@@ -36,7 +42,7 @@ export function ClusterHealthSummary({ cluster }: ClusterHealthSummaryProps) {
       }
     }
     getSummary();
-  }, [cluster]);
+  }, [cluster, allAlerts]);
 
   if (!cluster) {
     return <p className="text-sm text-muted-foreground">Please select a cluster to see the summary.</p>
