@@ -11,7 +11,7 @@ import { Label } from '@amberops/ui/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@amberops/ui/components/ui/select';
 import { PageHeader } from '@amberops/ui/components/page-header';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@amberops/ui/components/ui/dialog';
-import { DataTable } from '@/components/data-table';
+import { DataTable } from '@amberops/ui/components/data-table';
 import { type ColumnDef } from '@tanstack/react-table';
 import { Checkbox } from '@amberops/ui/components/ui/checkbox';
 import { Avatar, AvatarFallback, AvatarImage } from '@amberops/ui/components/ui/avatar';

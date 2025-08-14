@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -10,9 +11,9 @@ import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, Dialog
 import { Label } from '@amberops/ui/components/ui/label';
 import { Input } from '@amberops/ui/components/ui/input';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@amberops/ui/components/ui/card';
-import { fetchHosts } from '@/lib/api/services';
+import { fetchHosts } from '@amberops/api/client';
 import { ArrowUpRight, PlusCircle, Server, ArrowUpDown, Cpu, MemoryStick, ArrowDown, ArrowUp } from 'lucide-react';
-import { DataTable } from '@/components/data-table';
+import { DataTable } from '@amberops/ui/components/data-table';
 import { type ColumnDef } from '@tanstack/react-table';
 import type { Host } from '@amberops/lib';
 import { useState } from 'react';

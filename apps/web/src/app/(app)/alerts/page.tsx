@@ -8,10 +8,10 @@ import { Badge } from '@amberops/ui/components/ui/badge';
 import { Checkbox } from '@amberops/ui/components/ui/checkbox';
 import { Tooltip, TooltipTrigger, TooltipContent } from '@amberops/ui/components/ui/tooltip';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@amberops/ui/components/ui/card';
-import { fetchAlerts } from '@/lib/api/services';
+import { fetchAlerts } from '@amberops/api/client';
 import { ArrowUpRight, Siren, ArrowUpDown, Clock, ArrowDown, ArrowUp } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
-import { DataTable } from '@/components/data-table';
+import { DataTable } from '@amberops/ui/components/data-table';
 import { type ColumnDef } from '@tanstack/react-table';
 import type { Alert } from '@amberops/lib';
 import { useQuery } from '@tanstack/react-query';
@@ -297,5 +297,3 @@ export default function AlertsPage() {
     </div>
   );
 }
-
-    

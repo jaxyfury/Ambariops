@@ -13,9 +13,9 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Label } from '@amberops/ui/components/ui/label';
 import { Input } from '@amberops/ui/components/ui/input';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@amberops/ui/components/ui/select';
-import { fetchServices, fetchClusters } from '@/lib/api/services';
+import { fetchServices, fetchClusters } from '@amberops/api/client';
 import { ArrowUpRight, CheckCircle2, XCircle, Clock, HardDrive, MoreHorizontal, Play, Square, RefreshCw, ArrowUpDown, ArrowDown, ArrowUp, PlusCircle } from 'lucide-react';
-import { DataTable } from '@/components/data-table';
+import { DataTable } from '@amberops/ui/components/data-table';
 import { type ColumnDef } from '@tanstack/react-table';
 import type { Service, Cluster } from '@amberops/lib';
 import { useState } from 'react';
@@ -390,5 +390,3 @@ export default function ServicesPage() {
     </div>
   );
 }
-
-    
