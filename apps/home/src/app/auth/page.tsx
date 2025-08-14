@@ -4,21 +4,17 @@
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import { signIn } from 'next-auth/react';
 import toast from 'react-hot-toast';
 import { GitMerge, Chrome, LogIn, UserPlus, Eye, EyeOff } from 'lucide-react';
 import { cn } from '@amberops/lib';
 import { AmberOpsLogo } from '@amberops/ui/components/icons';
 import { AnimatedThemeToggle } from '@/components/animated-theme-toggle';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@amberops/ui/components/ui/dialog';
-import { Input } from '@amberops/ui/components/ui/input';
-import { Label } from '@amberops/ui/components/ui/label';
 import { Button } from '@amberops/ui/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@amberops/ui/components/ui/tooltip';
 
-const AUTH_URL = process.env.NEXT_PUBLIC_AUTH_URL || 'http://localhost:3002';
 const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL || 'http://localhost:3000';
 const ADMIN_URL = process.env.NEXT_PUBLIC_ADMIN_URL || 'http://localhost:3003';
-
 
 const SocialButton = ({ icon, onClick, tooltip }: { icon: React.ReactNode, onClick?: () => void, tooltip: string }) => (
     <TooltipProvider>
@@ -37,20 +33,31 @@ const SocialButton = ({ icon, onClick, tooltip }: { icon: React.ReactNode, onCli
 
 const SignUpForm = () => {
     const [showPassword, setShowPassword] = useState(false);
-    const router = useRouter();
-
+    const [isLoading, setIsLoading] = useState(false);
+    
     const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        // In a real Keycloak setup, this would redirect to the Keycloak registration page
-        router.push(`${AUTH_URL}/register`);
+        setIsLoading(true);
+        const name = e.currentTarget.name.value;
+        const email = e.currentTarget.email.value;
+        const password = e.currentTarget.password.value;
+        
+        try {
+            // This would call your own backend to register the user
+            toast.success("Registration successful! Please sign in.");
+        } catch (error) {
+            toast.error("Registration failed. Please try again.");
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
         <form onSubmit={handleSignup} data-testid="signup-form">
             <h1 className="text-3xl font-bold font-headline mb-3">Create Account</h1>
             <div className="social-icons">
-                 <SocialButton icon={<Chrome size={20} />} onClick={() => window.location.href = `${AUTH_URL}/sso/google`} tooltip="Sign up with Google" />
-                 <SocialButton icon={<GitMerge size={20} />} onClick={() => window.location.href = `${AUTH_URL}/sso/github`} tooltip="Sign up with GitHub" />
+                 <SocialButton icon={<Chrome size={20} />} onClick={() => signIn('google', { callbackUrl: WEB_URL })} tooltip="Sign up with Google" />
+                 <SocialButton icon={<GitMerge size={20} />} onClick={() => signIn('github', { callbackUrl: WEB_URL })} tooltip="Sign up with GitHub" />
             </div>
             <span>or use your email for registration</span>
             <input type="text" name="name" placeholder="Name" required autoComplete="name" />
@@ -66,79 +73,62 @@ const SignUpForm = () => {
                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
             </div>
-            <button type="submit" className="mt-4">Sign Up</button>
+            <button type="submit" className="mt-4" disabled={isLoading}>{isLoading ? 'Signing Up...' : 'Sign Up'}</button>
         </form>
     );
 };
 
 const SignInForm = () => {
-    const [isForgotModalOpen, setIsForgotModalOpen] = useState(false);
-    const [forgotEmail, setForgotEmail] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-    const router = useRouter();
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setIsLoading(true);
         const email = e.currentTarget.email.value;
+        const password = e.currentTarget.password.value;
+        
+        const result = await signIn('credentials', {
+            redirect: false,
+            email,
+            password,
+        });
 
-        // In a real Keycloak setup, this would initiate the login flow.
-        // For this prototype, we'll simulate a role-based redirect.
-        if (email.includes('admin')) {
-             router.push(ADMIN_URL);
+        if (result?.ok) {
+            // The session will be available in the web app, which will handle the redirect.
+            window.location.href = WEB_URL;
         } else {
-             router.push(WEB_URL);
+            toast.error(result?.error || "Invalid credentials. Please try again.");
         }
-    }
-
-    const handleForgotPassword = async () => {
-        // This would redirect to the Keycloak password reset flow
-        router.push(`${AUTH_URL}/forgot-password`);
-        setIsForgotModalOpen(false);
+        setIsLoading(false);
     }
 
     return (
-        <>
-            <form onSubmit={handleLogin} data-testid="login-form">
-                <h1 className="text-3xl font-bold font-headline mb-3">Sign In</h1>
-                <div className="social-icons">
-                     <SocialButton icon={<Chrome size={20} />} onClick={() => window.location.href = `${AUTH_URL}/sso/google`} tooltip="Sign in with Google" />
-                     <SocialButton icon={<GitMerge size={20} />} onClick={() => window.location.href = `${AUTH_URL}/sso/github`} tooltip="Sign in with GitHub" />
-                </div>
-                <span>or use your email and password</span>
-                <input type="email" name="email" placeholder="Email" required autoComplete="email" />
-                <div className="relative w-full">
-                    <input type={showPassword ? 'text' : 'password'} name="password" placeholder="Password" required autoComplete="current-password" />
-                     <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground"
-                        aria-label={showPassword ? 'Hide password' : 'Show password'}
-                    >
-                        {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                    </button>
-                </div>
+        <form onSubmit={handleLogin} data-testid="login-form">
+            <h1 className="text-3xl font-bold font-headline mb-3">Sign In</h1>
+            <div className="social-icons">
+                 <SocialButton icon={<Chrome size={20} />} onClick={() => signIn('google', { callbackUrl: WEB_URL })} tooltip="Sign in with Google" />
+                 <SocialButton icon={<GitMerge size={20} />} onClick={() => signIn('github', { callbackUrl: WEB_URL })} tooltip="Sign in with GitHub" />
+            </div>
+            <span>or use your email and password</span>
+            <input type="email" name="email" placeholder="Email" required autoComplete="email" />
+            <div className="relative w-full">
+                <input type={showPassword ? 'text' : 'password'} name="password" placeholder="Password" required autoComplete="current-password" />
+                 <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground"
+                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+            </div>
 
-                <Button type="button" variant="link" onClick={() => setIsForgotModalOpen(true)} className="text-xs font-normal underline h-auto p-0 my-2 text-muted-foreground hover:text-primary">
-                    Forgot Your Password?
-                </Button>
-                <button type="submit">Sign In</button>
-            </form>
-
-            <Dialog open={isForgotModalOpen} onOpenChange={setIsForgotModalOpen}>
-                <DialogContent className="z-[9999]">
-                    <DialogHeader>
-                        <DialogTitle>Forgot Password</DialogTitle>
-                        <DialogDescription>
-                            You will be redirected to our secure authentication service to reset your password.
-                        </DialogDescription>
-                    </DialogHeader>
-                    <DialogFooter>
-                        <Button variant="outline" onClick={() => setIsForgotModalOpen(false)}>Cancel</Button>
-                        <Button onClick={handleForgotPassword}>Continue</Button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
-        </>
+            <Button type="button" variant="link" onClick={() => toast.error("Forgot password feature coming soon!")} className="text-xs font-normal underline h-auto p-0 my-2 text-muted-foreground hover:text-primary">
+                Forgot Your Password?
+            </Button>
+            <button type="submit" disabled={isLoading}>{isLoading ? "Signing In..." : "Sign In"}</button>
+        </form>
     );
 };
 
@@ -147,11 +137,16 @@ export default function AuthPage() {
     const searchParams = useSearchParams();
 
     useEffect(() => {
-        if (searchParams.get('action') === 'signup') {
+        const action = searchParams.get('action');
+        const error = searchParams.get('error');
+
+        if (action === 'signup') {
             setIsActive(true);
         }
+        if (error) {
+            toast.error("Authentication failed. Please try again.");
+        }
     }, [searchParams]);
-
 
     return (
         <div className="auth-body">

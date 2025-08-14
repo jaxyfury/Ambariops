@@ -23,6 +23,7 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from '@amberops/ui/components/ui/tooltip';
+import { signOut, useSession } from 'next-auth/react';
 
 import { ThemeToggle } from '@/components/theme-toggle';
 import { LanguageSwitcher } from '@/components/language-switcher';
@@ -32,12 +33,12 @@ import { QuickAccessNav } from '@/components/quick-access-nav';
 import { GlobalSearch } from '@/components/global-search';
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
+    const { data: session } = useSession();
     const homeUrl = process.env.NEXT_PUBLIC_HOME_URL || 'http://localhost:3001';
+    const adminUrl = process.env.NEXT_PUBLIC_ADMIN_URL || 'http://localhost:3003';
 
     const handleSignOut = async () => {
-        // In a real app with a dedicated auth service, this would
-        // likely involve clearing tokens and redirecting to the auth app's logout endpoint.
-        window.location.href = `${homeUrl}/auth`;
+        await signOut({ callbackUrl: `${homeUrl}/auth` });
         toast.success('Successfully logged out!');
     }
 
@@ -70,16 +71,21 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
               >
                 <Avatar>
                   <AvatarImage
-                    src={`https://avatar.vercel.sh/operator`}
-                    alt={'Operator'}
+                    src={session?.user?.image ?? `https://avatar.vercel.sh/${session?.user?.name}`}
+                    alt={session?.user?.name ?? 'User'}
                   />
-                  <AvatarFallback>{'O'}</AvatarFallback>
+                  <AvatarFallback>{session?.user?.name?.charAt(0) ?? 'U'}</AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>{'Operator'}</DropdownMenuLabel>
+              <DropdownMenuLabel>{session?.user?.name}</DropdownMenuLabel>
               <DropdownMenuSeparator />
+               {(session?.user as any)?.role === 'Admin' && (
+                <DropdownMenuItem asChild>
+                    <Link href={adminUrl}>Admin Dashboard</Link>
+                </DropdownMenuItem>
+              )}
               <DropdownMenuItem asChild>
                 <Link href="/settings">Settings</Link>
               </DropdownMenuItem>
@@ -88,7 +94,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
-                onClick={handleSignOut}
+                onClick={() => handleSignOut()}
               >
                 Logout
               </DropdownMenuItem>

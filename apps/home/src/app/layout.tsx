@@ -1,3 +1,4 @@
+
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from 'next/font/google';
 import "@amberops/design-tokens/globals.css";
@@ -15,7 +16,6 @@ import { cn } from "@amberops/lib";
 import { ThemeProvider } from "@amberops/ui/components/theme-provider";
 import { Toaster } from "react-hot-toast";
 import { ThunderCursor } from "@/components/thunder-cursor";
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const fontBody = Inter({
   subsets: ['latin'],
@@ -47,8 +47,6 @@ export const metadata: Metadata = {
   },
 };
 
-const queryClient = new QueryClient();
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -64,18 +62,16 @@ export default function RootLayout({
           fontHeadline.variable
         )}
       >
-        <QueryClientProvider client={queryClient}>
-            <ThemeProvider
-                attribute="class"
-                defaultTheme="system"
-                enableSystem
-                disableTransitionOnChange
-            >
-                <ThunderCursor />
-                {children}
-                <Toaster position="bottom-right" />
-            </ThemeProvider>
-        </QueryClientProvider>
+        <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+        >
+            <ThunderCursor />
+            {children}
+            <Toaster position="bottom-right" />
+        </ThemeProvider>
         </body>
     </html>
   );
