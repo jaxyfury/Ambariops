@@ -11,7 +11,7 @@ import api from './api';
 import { errorHandler } from './utils/error-handler';
 
 // Load environment variables from the root .env file
-dotenv.config({ path: '../../.env' });
+dotenv.config({ path: require('path').resolve(__dirname, '../../.env') });
 
 // Global Mongoose settings for toJSON and toObject transformations
 const transform = (doc: any, ret: { [key: string]: any }) => {

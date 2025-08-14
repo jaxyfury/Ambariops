@@ -8,7 +8,7 @@ import passport from './config/passport';
 import authRoutes from './routes/auth';
 
 // Load environment variables from the root of the monorepo
-dotenv.config({ path: '../../.env' });
+dotenv.config({ path: require('path').resolve(__dirname, '../../.env') });
 
 
 const app = express();
