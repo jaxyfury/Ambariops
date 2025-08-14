@@ -33,14 +33,15 @@ const handleSuccessfulLogin = (token: string, user: any) => {
     localStorage.setItem('amberops_user', JSON.stringify(user));
     toast.success('Login successful! Redirecting...');
     
-    let targetUrl;
-    if (user.role === 'Admin') {
-        targetUrl = process.env.NEXT_PUBLIC_ADMIN_URL || 'http://localhost:3003';
-    } else {
-        targetUrl = process.env.NEXT_PUBLIC_WEB_URL || 'http://localhost:3000';
-    }
+    const adminUrl = process.env.NEXT_PUBLIC_ADMIN_URL || 'http://localhost:3003';
+    const webUrl = process.env.NEXT_PUBLIC_WEB_URL || 'http://localhost:3000';
     
-    window.location.href = targetUrl;
+    // Redirect Admin users to the admin dashboard, and all other roles to the main web app.
+    if (user.role === 'Admin') {
+        window.location.href = adminUrl;
+    } else {
+        window.location.href = webUrl;
+    }
 };
 
 const SignUpForm = ({ onSwitch }: { onSwitch: () => void }) => {

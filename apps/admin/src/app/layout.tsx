@@ -1,3 +1,4 @@
+
 'use client';
 
 import '@amberops/design-tokens/globals.css';
@@ -12,6 +13,7 @@ import { useEffect, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { AdminSidebarNav } from '../components/layout/admin-sidebar-nav';
 import { AppLayout } from '../components/layout/app-layout';
+import type { User } from '@amberops/lib';
 
 const fontBody = Inter({
   subsets: ['latin'],
@@ -31,13 +33,39 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const [isLoading, setIsLoading] = useState(true);
+  const [isAuthorized, setIsAuthorized] = useState(false);
 
   useEffect(() => {
-    // This is a simple simulation. In a real app, you'd check a session.
-    // For this prototype, we'll assume if they get here, they are the admin.
-    const timer = setTimeout(() => setIsLoading(false), 500);
-    return () => clearTimeout(timer);
+    try {
+      const storedUser = localStorage.getItem('amberops_user');
+      if (storedUser) {
+        const user: User = JSON.parse(storedUser);
+        if (user.role === 'Admin') {
+          setIsAuthorized(true);
+        } else {
+          // If the user is not an admin, redirect them to the main web app.
+          const webUrl = process.env.NEXT_PUBLIC_WEB_URL || 'http://localhost:3000';
+          window.location.href = webUrl;
+        }
+      } else {
+        // If there's no user, redirect to the login page.
+        const homeUrl = process.env.NEXT_PUBLIC_HOME_URL || 'http://localhost:3001';
+        window.location.href = `${homeUrl}/auth`;
+      }
+    } catch (error) {
+      // Handle potential JSON parsing errors
+      const homeUrl = process.env.NEXT_PUBLIC_HOME_URL || 'http://localhost:3001';
+      window.location.href = `${homeUrl}/auth`;
+    } finally {
+      // Add a small delay to prevent screen flicker before redirects.
+      const timer = setTimeout(() => setIsLoading(false), 200);
+      return () => clearTimeout(timer);
+    }
   }, []);
+
+  if (isLoading || !isAuthorized) {
+    return <Preloader />;
+  }
 
   return (
     <html lang="en" suppressHydrationWarning>
@@ -55,21 +83,17 @@ export default function AdminLayout({
           disableTransitionOnChange
         >
           <QueryClientProvider client={queryClient}>
-            {isLoading ? (
-              <Preloader />
-            ) : (
-              <SidebarProvider>
-                <div className="flex min-h-screen">
-                  <AdminSidebarNav />
-                  <div className="flex flex-1 flex-col">
-                    <AppLayout>
-                      <Breadcrumbs />
-                      {children}
-                    </AppLayout>
-                  </div>
+            <SidebarProvider>
+              <div className="flex min-h-screen">
+                <AdminSidebarNav />
+                <div className="flex flex-1 flex-col">
+                  <AppLayout>
+                    <Breadcrumbs />
+                    {children}
+                  </AppLayout>
                 </div>
-              </SidebarProvider>
-            )}
+              </div>
+            </SidebarProvider>
             <Toaster position="bottom-right" />
           </QueryClientProvider>
         </ThemeProvider>
