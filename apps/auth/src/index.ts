@@ -4,11 +4,12 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import session from 'express-session';
+import path from 'path';
 import passport from './config/passport';
 import authRoutes from './routes/auth';
 
 // Load environment variables from the root of the monorepo
-dotenv.config({ path: require('path').resolve(__dirname, '../../.env') });
+dotenv.config({ path: path.resolve(__dirname, '../../../.env') });
 
 
 const app = express();

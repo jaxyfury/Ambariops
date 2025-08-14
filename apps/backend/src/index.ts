@@ -5,13 +5,14 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
+import path from 'path';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './config/swagger';
 import api from './api';
 import { errorHandler } from './utils/error-handler';
 
 // Load environment variables from the root .env file
-dotenv.config({ path: require('path').resolve(__dirname, '../../.env') });
+dotenv.config({ path: path.resolve(__dirname, '../../../.env') });
 
 // Global Mongoose settings for toJSON and toObject transformations
 const transform = (doc: any, ret: { [key: string]: any }) => {
