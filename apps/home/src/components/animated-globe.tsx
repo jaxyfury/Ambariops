@@ -1,11 +1,14 @@
-
 'use client';
 
 import React from 'react';
 
 export function AnimatedGlobe() {
   return (
-    <div className="globe-container" role="img" aria-label="An animated 3D globe showing rotating orbits.">
+    <div
+      className="globe-container"
+      role="img"
+      aria-label="An animated 3D globe showing rotating orbits."
+    >
       <div className="globe">
         <div className="globe-sphere" />
         <div className="globe-outer-shadow" />
@@ -16,7 +19,7 @@ export function AnimatedGlobe() {
         <div className="globe-inner-shadow" />
         {/* Add orbiting dots */}
         {Array.from({ length: 10 }).map((_, i) => (
-          <div key={i} className={`orbit orbit-${i + 1}`}>
+          <div key={`orbit-${i}`} className={`orbit orbit-${i + 1}`}>
             <div className="dot" />
           </div>
         ))}

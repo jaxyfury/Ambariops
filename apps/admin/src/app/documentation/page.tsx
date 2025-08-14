@@ -1,14 +1,13 @@
-
 'use client';
 
-import { useState } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  addDocumentationArticle,
+  deleteDocumentationArticle,
+  fetchDocumentationArticles,
+  updateDocumentationArticle,
+} from '@amberops/api/client';
+import type { DocumentationArticle } from '@amberops/lib';
 import { PageHeader } from '@amberops/ui/components/page-header';
-import { Button } from '@amberops/ui/components/ui/button';
-import { MoreHorizontal, PlusCircle, Trash, Edit } from 'lucide-react';
-import { DataTable } from '@amberops/ui/components/data-table';
-import { type ColumnDef } from '@tanstack/react-table';
-import { Checkbox } from '@amberops/ui/components/ui/checkbox';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,18 +22,18 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@amberops/ui/components/ui/dialog';
+import { Button } from '@amberops/ui/components/ui/button';
+import { Checkbox } from '@amberops/ui/components/ui/checkbox';
 import { Input } from '@amberops/ui/components/ui/input';
 import { Label } from '@amberops/ui/components/ui/label';
 import { Textarea } from '@amberops/ui/components/ui/textarea';
-import toast from 'react-hot-toast';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { type ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
-import {
-  fetchDocumentationArticles,
-  addDocumentationArticle,
-  updateDocumentationArticle,
-  deleteDocumentationArticle,
-} from '@amberops/api/client';
-import type { DocumentationArticle } from '@amberops/lib';
+import { Edit, MoreHorizontal, PlusCircle, Trash } from 'lucide-react';
+import { useState } from 'react';
+import toast from 'react-hot-toast';
+import { DataTable } from '../../components/data-table';
 
 export default function AdminDocumentationPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -53,6 +52,11 @@ export default function AdminDocumentationPage() {
     queryFn: fetchDocumentationArticles,
   });
 
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setEditingArticle(null);
+  };
+
   const mutation = useMutation({
     mutationFn: (
       articleData: Omit<DocumentationArticle, 'id' | 'createdAt' | 'updatedAt'> & {
@@ -66,7 +70,9 @@ export default function AdminDocumentationPage() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['documentation'] });
-      toast.success(`Article ${editingArticle ? 'updated' : 'created'} successfully!`);
+      toast.success(
+        `Article ${editingArticle ? 'updated' : 'created'} successfully!`,
+      );
       closeModal();
     },
     onError: (error) => {
@@ -93,11 +99,6 @@ export default function AdminDocumentationPage() {
         : { title: '', slug: '', content: '' },
     );
     setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setEditingArticle(null);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -184,7 +185,9 @@ export default function AdminDocumentationPage() {
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogContent className="sm:max-w-3xl" data-testid="article-modal">
           <DialogHeader>
-            <DialogTitle>{editingArticle ? 'Edit' : 'Create'} Article</DialogTitle>
+            <DialogTitle>
+              {editingArticle ? 'Edit' : 'Create'} Article
+            </DialogTitle>
             <DialogDescription>
               Fill in the details for the documentation article.
             </DialogDescription>
@@ -198,7 +201,9 @@ export default function AdminDocumentationPage() {
                 id="title"
                 data-testid="title-input"
                 value={formData.title}
-                onChange={(e) => setFormData((f) => ({ ...f, title: e.target.value }))}
+                onChange={(e) =>
+                  setFormData((f) => ({ ...f, title: e.target.value }))
+                }
                 className="col-span-3"
               />
             </div>
@@ -210,13 +215,15 @@ export default function AdminDocumentationPage() {
                 id="slug"
                 data-testid="slug-input"
                 value={formData.slug}
-                onChange={(e) => setFormData((f) => ({ ...f, slug: e.target.value }))}
+                onChange={(e) =>
+                  setFormData((f) => ({ ...f, slug: e.target.value }))
+                }
                 className="col-span-3"
                 disabled={!!editingArticle}
               />
             </div>
             <div className="grid grid-cols-4 items-start gap-4">
-              <Label htmlFor="content" className="text-right mt-2">
+              <Label htmlFor="content" className="mt-2 text-right">
                 Content
               </Label>
               <Textarea
@@ -231,10 +238,19 @@ export default function AdminDocumentationPage() {
               />
             </div>
             <DialogFooter>
-              <Button type="button" variant="outline" onClick={closeModal}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={closeModal}
+                data-testid="cancel-button"
+              >
                 Cancel
               </Button>
-              <Button type="submit" disabled={mutation.isPending}>
+              <Button
+                type="submit"
+                disabled={mutation.isPending}
+                data-testid="save-button"
+              >
                 {mutation.isPending ? 'Saving...' : 'Save Article'}
               </Button>
             </DialogFooter>

@@ -1,6 +1,19 @@
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@amberops/ui/components/ui/card';
 import { PageHeader } from '@amberops/ui/components/page-header';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@amberops/ui/components/ui/card';
-import { FileText, Users, Shield, Tag, MessageSquare, ListOrdered } from 'lucide-react';
+import {
+  FileText,
+  ListOrdered,
+  MessageSquare,
+  Shield,
+  Tag,
+  Users,
+} from 'lucide-react';
 import Link from 'next/link';
 
 export default function AdminDashboardPage() {
@@ -14,7 +27,8 @@ export default function AdminDashboardPage() {
         <Card data-testid="user-management-card">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Users /> User Management
+              <Users />
+              User Management
             </CardTitle>
             <CardDescription>Add, edit, and remove users.</CardDescription>
           </CardHeader>
@@ -27,7 +41,8 @@ export default function AdminDashboardPage() {
         <Card data-testid="documentation-card">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <FileText /> Documentation
+              <FileText />
+              Documentation
             </CardTitle>
             <CardDescription>Manage documentation articles.</CardDescription>
           </CardHeader>
@@ -40,7 +55,8 @@ export default function AdminDashboardPage() {
         <Card data-testid="legal-docs-card">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Shield /> Legal Documents
+              <Shield />
+              Legal Documents
             </CardTitle>
             <CardDescription>
               Edit Terms of Service and Privacy Policy.
@@ -55,7 +71,8 @@ export default function AdminDashboardPage() {
         <Card data-testid="pricing-tiers-card">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Tag /> Pricing Tiers
+              <Tag />
+              Pricing Tiers
             </CardTitle>
             <CardDescription>
               Create, edit, and manage pricing plans.
@@ -70,7 +87,8 @@ export default function AdminDashboardPage() {
         <Card data-testid="testimonials-card">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <MessageSquare /> Testimonials
+              <MessageSquare />
+              Testimonials
             </CardTitle>
             <CardDescription>Manage customer testimonials.</CardDescription>
           </CardHeader>
@@ -83,7 +101,8 @@ export default function AdminDashboardPage() {
         <Card data-testid="faqs-card">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <ListOrdered /> FAQs
+              <ListOrdered />
+              FAQs
             </CardTitle>
             <CardDescription>Manage Frequently Asked Questions.</CardDescription>
           </CardHeader>

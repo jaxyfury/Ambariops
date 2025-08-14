@@ -1,6 +1,5 @@
-
-import { Header } from "../../components/layout/header";
-import { Footer } from "../../components/layout/footer";
+import { Footer } from '../../components/layout/footer';
+import { Header } from '../../components/layout/header';
 
 export default function LegalLayout({
   children,
@@ -8,7 +7,7 @@ export default function LegalLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="min-h-screen flex-col">
       <Header />
       <main className="flex-1">{children}</main>
       <Footer />

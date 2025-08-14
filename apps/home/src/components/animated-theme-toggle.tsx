@@ -1,10 +1,9 @@
-
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useTheme } from 'next-themes';
-import { Sun, Moon } from 'lucide-react';
 import { cn } from '@amberops/lib';
+import { Moon, Sun } from 'lucide-react';
+import { useTheme } from 'next-themes';
+import { useEffect, useState } from 'react';
 
 export function AnimatedThemeToggle() {
   const [mounted, setMounted] = useState(false);
@@ -15,7 +14,11 @@ export function AnimatedThemeToggle() {
 
   if (!mounted) {
     return (
-      <button type="button" className="relative z-50 flex h-[20px] w-[20px] scale-[1.5] items-center justify-center rounded-lg bg-secondary" disabled />
+      <button
+        type="button"
+        className="relative z-50 flex h-[20px] w-[20px] scale-[1.5] items-center justify-center rounded-lg bg-secondary"
+        disabled
+      />
     );
   }
 
@@ -34,8 +37,16 @@ export function AnimatedThemeToggle() {
     <>
       <div
         id="bg-mask"
-        className={cn('bg-mask', isAnimating && 'animate-background-spread')}
-        style={{ backgroundColor: theme === 'dark' ? 'hsl(var(--background))' : 'hsl(var(--foreground))' }}
+        className={cn(
+          'bg-mask',
+          isAnimating && 'animate-background-spread',
+        )}
+        style={{
+          backgroundColor:
+            theme === 'dark'
+              ? 'hsl(var(--background))'
+              : 'hsl(var(--foreground))',
+        }}
         onAnimationEnd={() => setIsAnimating(false)}
       />
       <button
@@ -47,9 +58,9 @@ export function AnimatedThemeToggle() {
         disabled={isAnimating}
       >
         {theme === 'dark' ? (
-            <Moon className="h-6 w-6" />
+          <Moon className="h-6 w-6" />
         ) : (
-            <Sun className="h-6 w-6" />
+          <Sun className="h-6 w-6" />
         )}
       </button>
     </>

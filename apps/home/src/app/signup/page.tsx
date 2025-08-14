@@ -5,9 +5,9 @@ import { useEffect } from 'react';
 
 // Redirect to the new unified auth page
 export default function SignupPage() {
-    useEffect(() => {
-        redirect('/auth?action=signup');
-    }, []);
+  useEffect(() => {
+    redirect('/auth?action=signup');
+  }, []);
 
-    return null;
+  return null;
 }

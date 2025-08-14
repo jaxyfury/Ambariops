@@ -1,41 +1,50 @@
-
 'use client';
 
-import { useEffect, useRef, useId } from 'react';
-import * as THREE from 'three';
 import { cn } from '@amberops/lib';
 import Link from 'next/link';
+import { useEffect, useId, useRef } from 'react';
+import * as THREE from 'three';
 
 interface PricingCardProps {
-    title: string;
-    price: string;
-    period: string;
-    description: string;
-    features: string[];
-    buttonText: string;
-    isFeatured?: boolean;
+  title: string;
+  price: string;
+  period: string;
+  description: string;
+  features: string[];
+  buttonText: string;
+  isFeatured?: boolean;
 }
 
-export function PricingCard({ title, price, period, description, features, buttonText, isFeatured = false }: PricingCardProps) {
-    const cardContainerRef = useRef<HTMLDivElement>(null);
-    const canvasRef = useRef<HTMLCanvasElement>(null);
-    const animationFrameId = useRef<number>();
-    const cardId = useId();
+export function PricingCard({
+  title,
+  price,
+  period,
+  description,
+  features,
+  buttonText,
+  isFeatured = false,
+}: PricingCardProps) {
+  const cardContainerRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const animationFrameId = useRef<number>();
+  const cardId = useId();
 
-    useEffect(() => {
-        let isMounted = true;
-        let renderer: THREE.WebGLRenderer;
-        
-        async function init() {
-            if (!isMounted || !cardContainerRef.current || !canvasRef.current) return;
+  useEffect(() => {
+    let isMounted = true;
+    let renderer: THREE.WebGLRenderer;
 
-            let scene: THREE.Scene, camera: THREE.OrthographicCamera, fieryBandMesh: THREE.Mesh;
-            let uniforms: any;
+    async function init() {
+      if (!isMounted || !cardContainerRef.current || !canvasRef.current) return;
 
-            const cardContainer = cardContainerRef.current;
-            const canvas = canvasRef.current;
+      let scene: THREE.Scene;
+      let camera: THREE.OrthographicCamera;
+      let fieryBandMesh: THREE.Mesh;
+      let uniforms: any;
 
-            const bandVertexShader = `
+      const cardContainer = cardContainerRef.current;
+      const canvas = canvasRef.current;
+
+      const bandVertexShader = `
                 uniform float time;
                 varying vec2 vUv;
                 varying vec3 vPosition;
@@ -53,7 +62,7 @@ export function PricingCard({ title, price, period, description, features, butto
                 }
             `;
 
-            const fieryBandFragmentShader = `
+      const fieryBandFragmentShader = `
                 uniform float time;
                 uniform vec3 fireColorBase;
                 varying vec2 vUv;
@@ -93,168 +102,265 @@ export function PricingCard({ title, price, period, description, features, butto
                 }
             `;
 
-            const createRingGeometry = () => {
-              if (!cardContainer) return;
-              try {
-                  const cardRect = cardContainer.getBoundingClientRect();
-                  if (cardRect.width === 0 || cardRect.height === 0) { return; }
-                  const gap = 10; const ringThickness = 20; const cornerRadius = 28;
-                  const outerWidth = cardRect.width + 2 * (gap + ringThickness);
-                  const outerHeight = cardRect.height + 2 * (gap + ringThickness);
-                  const outerRadius = cornerRadius + gap + ringThickness;
-                  const innerWidth = cardRect.width + 2 * gap;
-                  const innerHeight = cardRect.height + 2 * gap;
-                  const innerRadius = cornerRadius + gap;
-                  const canvasPadding = 40;
-                  const canvasWidth = outerWidth + canvasPadding;
-                  const canvasHeight = outerHeight + canvasPadding;
+      const createRingGeometry = () => {
+        if (!cardContainer) return;
+        try {
+          const cardRect = cardContainer.getBoundingClientRect();
+          if (cardRect.width === 0 || cardRect.height === 0) {
+            return;
+          }
+          const gap = 10;
+          const ringThickness = 20;
+          const cornerRadius = 28;
+          const outerWidth = cardRect.width + 2 * (gap + ringThickness);
+          const outerHeight = cardRect.height + 2 * (gap + ringThickness);
+          const outerRadius = cornerRadius + gap + ringThickness;
+          const innerWidth = cardRect.width + 2 * gap;
+          const innerHeight = cardRect.height + 2 * gap;
+          const innerRadius = cornerRadius + gap;
+          const canvasPadding = 40;
+          const canvasWidth = outerWidth + canvasPadding;
+          const canvasHeight = outerHeight + canvasPadding;
 
-                  if (renderer) renderer.setSize(canvasWidth, canvasHeight);
-                  if (camera) {
-                      camera.left = -canvasWidth / 2; camera.right = canvasWidth / 2;
-                      camera.top = canvasHeight / 2; camera.bottom = -canvasHeight / 2;
-                      camera.updateProjectionMatrix();
-                  }
-                  if (fieryBandMesh && fieryBandMesh.geometry) fieryBandMesh.geometry.dispose();
+          if (renderer) renderer.setSize(canvasWidth, canvasHeight);
+          if (camera) {
+            camera.left = -canvasWidth / 2;
+            camera.right = canvasWidth / 2;
+            camera.top = canvasHeight / 2;
+            camera.bottom = -canvasHeight / 2;
+            camera.updateProjectionMatrix();
+          }
+          if (fieryBandMesh && fieryBandMesh.geometry)
+            fieryBandMesh.geometry.dispose();
 
-                  const outerShape = new THREE.Shape();
-                  outerShape.moveTo(-outerWidth/2 + outerRadius, -outerHeight/2);
-                  outerShape.lineTo(outerWidth/2 - outerRadius, -outerHeight/2);
-                  outerShape.quadraticCurveTo(outerWidth/2, -outerHeight/2, outerWidth/2, -outerHeight/2 + outerRadius);
-                  outerShape.lineTo(outerWidth/2, outerHeight/2 - outerRadius);
-                  outerShape.quadraticCurveTo(outerWidth/2, outerHeight/2, outerWidth/2 - outerRadius, outerHeight/2);
-                  outerShape.lineTo(-outerWidth/2 + outerRadius, outerHeight/2);
-                  outerShape.quadraticCurveTo(-outerWidth/2, outerHeight/2, -outerWidth/2, outerHeight/2 - outerRadius);
-                  outerShape.lineTo(-outerWidth/2, -outerHeight/2 + outerRadius);
-                  outerShape.quadraticCurveTo(-outerWidth/2, -outerHeight/2, -outerWidth/2 + outerRadius, -outerHeight/2);
-                  
-                  const innerShapePath = new THREE.Path();
-                  innerShapePath.moveTo(-innerWidth / 2 + innerRadius, -innerHeight / 2);
-                  innerShapePath.lineTo(innerWidth / 2 - innerRadius, -innerHeight / 2);
-                  innerShapePath.quadraticCurveTo(innerWidth / 2, -innerHeight / 2, innerWidth / 2, -innerHeight / 2 + innerRadius);
-                  innerShapePath.lineTo(innerWidth / 2, innerHeight / 2 - innerRadius);
-                  innerShapePath.quadraticCurveTo(innerWidth / 2, innerHeight / 2, innerWidth / 2 - innerRadius, innerHeight / 2);
-                  innerShapePath.lineTo(-innerWidth / 2 + innerRadius, innerHeight / 2);
-                  innerShapePath.quadraticCurveTo(-innerWidth / 2, innerHeight / 2, -innerWidth / 2, innerHeight / 2 - innerRadius);
-                  innerShapePath.lineTo(-innerWidth / 2, -innerHeight / 2 + innerRadius);
-                  innerShapePath.quadraticCurveTo(-innerWidth / 2, -innerHeight / 2, -innerWidth / 2 + innerRadius, -innerHeight / 2);
+          const outerShape = new THREE.Shape();
+          outerShape.moveTo(-outerWidth / 2 + outerRadius, -outerHeight / 2);
+          outerShape.lineTo(outerWidth / 2 - outerRadius, -outerHeight / 2);
+          outerShape.quadraticCurveTo(
+            outerWidth / 2,
+            -outerHeight / 2,
+            outerWidth / 2,
+            -outerHeight / 2 + outerRadius,
+          );
+          outerShape.lineTo(outerWidth / 2, outerHeight / 2 - outerRadius);
+          outerShape.quadraticCurveTo(
+            outerWidth / 2,
+            outerHeight / 2,
+            outerWidth / 2 - outerRadius,
+            outerHeight / 2,
+          );
+          outerShape.lineTo(-outerWidth / 2 + outerRadius, outerHeight / 2);
+          outerShape.quadraticCurveTo(
+            -outerWidth / 2,
+            outerHeight / 2,
+            -outerWidth / 2,
+            outerHeight / 2 - outerRadius,
+          );
+          outerShape.lineTo(-outerWidth / 2, -outerHeight / 2 + outerRadius);
+          outerShape.quadraticCurveTo(
+            -outerWidth / 2,
+            -outerHeight / 2,
+            -outerWidth / 2 + outerRadius,
+            -outerHeight / 2,
+          );
 
-                  outerShape.holes.push(innerShapePath);
-                  const ringGeometry = new THREE.ShapeGeometry(outerShape, 48);
-                  if (fieryBandMesh) fieryBandMesh.geometry = ringGeometry;
-              } catch (error) { console.warn("Error creating ring geometry:", error); }
-            }
+          const innerShapePath = new THREE.Path();
+          innerShapePath.moveTo(-innerWidth / 2 + innerRadius, -innerHeight / 2);
+          innerShapePath.lineTo(innerWidth / 2 - innerRadius, -innerHeight / 2);
+          innerShapePath.quadraticCurveTo(
+            innerWidth / 2,
+            -innerHeight / 2,
+            innerWidth / 2,
+            -innerHeight / 2 + innerRadius,
+          );
+          innerShapePath.lineTo(innerWidth / 2, innerHeight / 2 - innerRadius);
+          innerShapePath.quadraticCurveTo(
+            innerWidth / 2,
+            innerHeight / 2,
+            innerWidth / 2 - innerRadius,
+            innerHeight / 2,
+          );
+          innerShapePath.lineTo(-innerWidth / 2 + innerRadius, innerHeight / 2);
+          innerShapePath.quadraticCurveTo(
+            -innerWidth / 2,
+            innerHeight / 2,
+            -innerWidth / 2,
+            innerHeight / 2 - innerRadius,
+          );
+          innerShapePath.lineTo(-innerWidth / 2, -innerHeight / 2 + innerRadius);
+          innerShapePath.quadraticCurveTo(
+            -innerWidth / 2,
+            -innerHeight / 2,
+            -innerWidth / 2 + innerRadius,
+            -innerHeight / 2,
+          );
 
-            const animate = () => {
-              if (!isMounted) return;
-              animationFrameId.current = requestAnimationFrame(animate);
-              if (uniforms) { uniforms.time.value += 0.016; }
-              try { if (renderer && scene && camera) { renderer.render(scene, camera); } }
-              catch (error) { console.warn("Error during rendering:", error); }
-            }
-
-            const initThree = () => {
-              scene = new THREE.Scene();
-              camera = new THREE.OrthographicCamera(-1000, 1000, 1000, -1000, 0.1, 2000);
-              camera.position.z = 100;
-
-              try {
-                  renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-                  uniforms = {
-                      time: { value: 0.0 },
-                      fireColorBase: { value: new THREE.Color(`hsl(${getComputedStyle(document.documentElement).getPropertyValue('--primary')})`) },
-                  };
-                  const material = new THREE.ShaderMaterial({
-                      vertexShader: bandVertexShader,
-                      fragmentShader: fieryBandFragmentShader,
-                      uniforms,
-                      transparent: true,
-                      blending: THREE.AdditiveBlending,
-                      depthWrite: false,
-                      depthTest: false,
-                      side: THREE.DoubleSide,
-                  });
-                  const placeHolderGeometry = new THREE.PlaneGeometry(50, 50);
-                  fieryBandMesh = new THREE.Mesh(placeHolderGeometry, material);
-                  scene.add(fieryBandMesh);
-                  createRingGeometry();
-                  animate();
-              } catch (error) { console.warn("Error in Three.js initialization:", error); }
-            }
-
-            let resizeTimeout: NodeJS.Timeout;
-            const onWindowResize = () => {
-                clearTimeout(resizeTimeout);
-                resizeTimeout = setTimeout(createRingGeometry, 150);
-            }
-
-            initThree();
-            window.addEventListener('resize', onWindowResize);
-            if (cardContainerRef.current) {
-                const cardElement = cardContainerRef.current.querySelector<HTMLElement>(".card");
-                if (cardElement) {
-                   import('vanilla-tilt').then(module => {
-                        const VanillaTilt = module.default;
-                        if(cardElement) {
-                             VanillaTilt.init(cardElement, {
-                                max: 10, speed: 400, glare: true, "max-glare": 0.2
-                            });
-                        }
-                    });
-                }
-            }
+          outerShape.holes.push(innerShapePath);
+          const ringGeometry = new THREE.ShapeGeometry(outerShape, 48);
+          if (fieryBandMesh) fieryBandMesh.geometry = ringGeometry;
+        } catch (error) {
+          console.warn('Error creating ring geometry:', error);
         }
+      };
 
-        init();
+      const animate = () => {
+        if (!isMounted) return;
+        animationFrameId.current = requestAnimationFrame(animate);
+        if (uniforms) {
+          uniforms.time.value += 0.016;
+        }
+        try {
+          if (renderer && scene && camera) {
+            renderer.render(scene, camera);
+          }
+        } catch (error) {
+          console.warn('Error during rendering:', error);
+        }
+      };
 
-        return () => {
-            isMounted = false;
-            if (animationFrameId.current) {
-                cancelAnimationFrame(animationFrameId.current);
+      const initThree = () => {
+        scene = new THREE.Scene();
+        camera = new THREE.OrthographicCamera(
+          -1000,
+          1000,
+          1000,
+          -1000,
+          0.1,
+          2000,
+        );
+        camera.position.z = 100;
+
+        try {
+          renderer = new THREE.WebGLRenderer({
+            canvas,
+            alpha: true,
+            antialias: true,
+          });
+          uniforms = {
+            time: { value: 0.0 },
+            fireColorBase: {
+              value: new THREE.Color(
+                `hsl(${getComputedStyle(
+                  document.documentElement,
+                ).getPropertyValue('--primary')})`,
+              ),
+            },
+          };
+          const material = new THREE.ShaderMaterial({
+            vertexShader: bandVertexShader,
+            fragmentShader: fieryBandFragmentShader,
+            uniforms,
+            transparent: true,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+            depthTest: false,
+            side: THREE.DoubleSide,
+          });
+          const placeHolderGeometry = new THREE.PlaneGeometry(50, 50);
+          fieryBandMesh = new THREE.Mesh(placeHolderGeometry, material);
+          scene.add(fieryBandMesh);
+          createRingGeometry();
+          animate();
+        } catch (error) {
+          console.warn('Error in Three.js initialization:', error);
+        }
+      };
+
+      let resizeTimeout: NodeJS.Timeout;
+      const onWindowResize = () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(createRingGeometry, 150);
+      };
+
+      initThree();
+      window.addEventListener('resize', onWindowResize);
+      if (cardContainerRef.current) {
+        const cardElement =
+          cardContainerRef.current.querySelector<HTMLElement>('.card');
+        if (cardElement) {
+          import('vanilla-tilt').then((module) => {
+            const VanillaTilt = module.default;
+            if (cardElement) {
+              VanillaTilt.init(cardElement, {
+                max: 10,
+                speed: 400,
+                glare: true,
+                'max-glare': 0.2,
+              });
             }
-            if(renderer) {
-                renderer.dispose();
-            }
-            window.removeEventListener('resize', () => {}); 
-        };
-    }, [cardId]);
+          });
+        }
+      }
+    }
 
-    const buttonLink = title === 'Enterprise' ? '#contact' : '/auth?action=signup';
+    init();
 
-    return (
-        <div ref={cardContainerRef} className={cn("card-container", isFeatured && "scale-105")}>
-            <canvas id={cardId} ref={canvasRef} />
-            <div className="card" data-tilt data-tilt-max="10" data-tilt-speed="400" data-tilt-perspective="1000" data-tilt-glare data-tilt-max-glare="0.2">
-                <h2 className="card-title">{title}</h2>
-                <p className="card-price">
-                    {price.match(/^\d+$/) ? (
-                        <>
-                            <span className="currency">$</span>
-                            {price}
-                            <span className="align-baseline text-3xl">.00</span>
-                        </>
-                    ) : (
-                        price
-                    )}
-                    <span className="period">{period}</span>
-                </p>
-                <p className="card-description">
-                    {description}
-                </p>
-                <ul className="features-list">
-                    {features.map((feature, index) => (
-                         <li key={index}>
-                            <svg className="rotating-disc-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="12" cy="12" r="8"/>
-                            </svg>
-                            {feature}
-                        </li>
-                    ))}
-                </ul>
-                <Link href={buttonLink} className="cta-button no-underline text-center">
-                    {buttonText}
-                </Link>
-            </div>
-        </div>
-    );
+    return () => {
+      isMounted = false;
+      if (animationFrameId.current) {
+        cancelAnimationFrame(animationFrameId.current);
+      }
+      if (renderer) {
+        renderer.dispose();
+      }
+      window.removeEventListener('resize', () => {});
+    };
+  }, [cardId]);
+
+  const buttonLink =
+    title === 'Enterprise' ? '#contact' : '/auth?action=signup';
+
+  return (
+    <div
+      ref={cardContainerRef}
+      className={cn('card-container', isFeatured && 'scale-105')}
+    >
+      <canvas id={cardId} ref={canvasRef} />
+      <div
+        className="card"
+        data-tilt
+        data-tilt-max="10"
+        data-tilt-speed="400"
+        data-tilt-perspective="1000"
+        data-tilt-glare
+        data-tilt-max-glare="0.2"
+      >
+        <h2 className="card-title">{title}</h2>
+        <p className="card-price">
+          {price.match(/^\d+$/) ? (
+            <>
+              <span className="currency">$</span>
+              {price}
+              <span className="align-baseline text-3xl">.00</span>
+            </>
+          ) : (
+            price
+          )}
+          <span className="period">{period}</span>
+        </p>
+        <p className="card-description">{description}</p>
+        <ul className="features-list">
+          {features.map((feature, index) => (
+            <li key={index}>
+              <svg
+                className="rotating-disc-svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle cx="12" cy="12" r="8" />
+              </svg>
+              {feature}
+            </li>
+          ))}
+        </ul>
+        <Link
+          href={buttonLink}
+          className="cta-button no-underline text-center"
+        >
+          {buttonText}
+        </Link>
+      </div>
+    </div>
+  );
 }

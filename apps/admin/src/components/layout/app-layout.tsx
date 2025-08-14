@@ -1,11 +1,16 @@
-
 'use client';
 
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@amberops/ui/components/ui/tooltip';
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
 } from '@amberops/ui/components/ui/avatar';
+import { Button } from '@amberops/ui/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,15 +19,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@amberops/ui/components/ui/dropdown-menu';
-import { Button } from '@amberops/ui/components/ui/button';
 import { SidebarTrigger } from '@amberops/ui/components/ui/sidebar';
-import {
-  Tooltip,
-  TooltipTrigger,
-  TooltipContent,
-} from '@amberops/ui/components/ui/tooltip';
-import toast from 'react-hot-toast';
 import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 
 type User = {
   name: string;
@@ -50,8 +49,8 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <div className="flex flex-col h-screen">
-      <header className="sticky top-0 flex h-16 shrink-0 items-center gap-4 border-b bg-background/80 px-4 backdrop-blur-lg sm:h-auto sm:border-0 sm:bg-transparent sm:px-6 py-2">
+    <div className="flex h-screen flex-col">
+      <header className="sticky top-0 flex h-16 shrink-0 items-center gap-4 border-b bg-background/80 px-4 py-2 backdrop-blur-lg sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
         <Tooltip>
           <TooltipTrigger asChild>
             <SidebarTrigger
@@ -65,7 +64,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           </TooltipContent>
         </Tooltip>
 
-        <div className="flex-1 flex items-center justify-center gap-4" />
+        <div className="flex flex-1 items-center justify-center gap-4" />
 
         <div className="flex items-center gap-2">
           <DropdownMenu>
@@ -93,7 +92,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           </DropdownMenu>
         </div>
       </header>
-      <main className="flex-1 p-6 overflow-y-auto relative">{children}</main>
+      <main className="relative flex-1 overflow-y-auto p-6">{children}</main>
     </div>
   );
 }

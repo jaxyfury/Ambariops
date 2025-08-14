@@ -1,18 +1,17 @@
-
 'use client';
 
-import { AppLayout } from '@/components/layout/app-layout';
-import { AdminSidebarNav } from '@/components/layout/admin-sidebar-nav';
+import '@amberops/design-tokens/globals.css';
+import { cn } from '@amberops/lib';
+import { ThemeProvider } from '@amberops/ui';
+import { Preloader } from '@amberops/ui/components/preloader';
 import { Breadcrumbs } from '@amberops/ui/components/breadcrumbs';
 import { SidebarProvider } from '@amberops/ui/components/ui/sidebar';
-import { Preloader } from '@amberops/ui/components/preloader';
-import { useState, useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Toaster } from 'react-hot-toast';
-import { ThemeProvider } from '@amberops/ui';
 import { Inter, Space_Grotesk } from 'next/font/google';
-import { cn } from '@amberops/lib';
-import '@amberops/design-tokens/globals.css';
+import { useEffect, useState } from 'react';
+import { Toaster } from 'react-hot-toast';
+import { AdminSidebarNav } from '../components/layout/admin-sidebar-nav';
+import { AppLayout } from '../components/layout/app-layout';
 
 const fontBody = Inter({
   subsets: ['latin'],
@@ -62,7 +61,7 @@ export default function AdminLayout({
               <SidebarProvider>
                 <div className="flex min-h-screen">
                   <AdminSidebarNav />
-                  <div className="flex-1 flex flex-col">
+                  <div className="flex flex-1 flex-col">
                     <AppLayout>
                       <Breadcrumbs />
                       {children}
