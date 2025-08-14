@@ -8,17 +8,7 @@ set -e
 
 # --- 1. Kill any running processes on the project ports ---
 echo "--- Checking for and stopping any running services... ---"
-PORTS="3000 3001 3002 3003 3004"
-for PORT in $PORTS; do
-  # Use a combination of commands to find and kill the process.
-  # This is more robust across different systems.
-  if lsof -i :$PORT -t >/dev/null ; then
-    echo "Found process on port $PORT. Killing it..."
-    kill -9 $(lsof -t -i:$PORT)
-  else
-    echo "No process found on port $PORT."
-  fi
-done
+sh kill-ports.sh
 echo "--- Port check complete. ---"
 
 
@@ -26,8 +16,13 @@ echo "--- Port check complete. ---"
 OS=$(uname)
 echo "Detected OS: $OS"
 
-# Note the -- separator to pass arguments to the underlying script
-COMMANDS="pnpm --filter home dev -- -p 3001;pnpm --filter admin dev -- -p 3003;pnpm --filter auth-service dev;pnpm --filter backend-service dev;pnpm --filter web dev -- -p 3000"
+COMMANDS=(
+  "pnpm dev:home"
+  "pnpm dev:admin"
+  "pnpm dev:auth"
+  "pnpm dev:backend"
+  "pnpm dev"
+)
 
 run_cmd() {
   cmd="$1"
@@ -40,14 +35,12 @@ run_cmd() {
   
   elif [ "$OS" = "Linux" ]; then
     if command -v gnome-terminal >/dev/null 2>&1; then
-      if ! gnome-terminal -- bash -c "cd '$current_dir' && $cmd; exec bash" >/dev/null 2>&1; then
-        echo "⚠️ gnome-terminal failed to launch. Running in background..."
-        (cd "$current_dir" && eval "$cmd") &
-      fi
-    elif command -v konsole >/dev/null 2>&1; then
-      konsole --hold -e "bash -c \"cd '$current_dir' && $cmd\""
-    elif command -v xterm >/dev/null 2>&1; then
-      xterm -hold -e "cd '$current_dir' && $cmd"
+      # The '&' at the end runs the command in the background
+      gnome-terminal -- bash -c "cd '$current_dir'; $cmd; exec bash" &
+    elif command -v konsole >/dev/null 2>&1;
+      konsole --hold -e "bash -c \"cd '$current_dir' && $cmd\"" &
+    elif command -v xterm >/dev/null 2>&1;
+      xterm -hold -e "cd '$current_dir' && $cmd" &
     else
       echo "⚠️ No supported terminal emulator found. Running in background..."
       (cd '$current_dir' && eval "$cmd") &
@@ -70,12 +63,11 @@ echo "Auth Service: Port 3002"
 echo "Backend Service: Port 3004"
 echo "----------------------------------------"
 
-IFS=';'
-for command in $COMMANDS; do
+for command in "${COMMANDS[@]}"; do
     run_cmd "$command"
+    sleep 2 # Add a small delay between starting services
 done
-unset IFS
 
 echo "✅ All service launch commands have been issued."
-echo "If new terminals did not open, the services are running in the background of this window."
-echo "You can manually stop them later by closing this terminal or using 'sh kill-ports.sh'."
+echo "If new terminals did not open, the services are running in the background."
+echo "You can manually stop them later by running 'sh kill-ports.sh'."

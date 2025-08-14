@@ -17,7 +17,7 @@ import {
 } from '../packages/api/src/mocks/mock-data';
 import bcrypt from 'bcryptjs';
 import { config } from 'dotenv';
-import type { DocumentationArticle } from '@amberops/lib';
+import type { DocumentationArticle, LegalDocument } from '@amberops/lib';
 
 config({ path: './.env' });
 
@@ -27,9 +27,9 @@ const docs: Omit<DocumentationArticle, 'id' | 'createdAt' | 'updatedAt'>[] = [
     { slug: 'services', title: 'Service Management', content: '<h1>Service Management</h1><p>Guides on how to manage services like HDFS and YARN, including actions like start, stop, and restart.</p>' },
 ];
 
-const legal = [
-    { type: 'terms', content: '<h1>Terms of Service</h1><p>Please read these terms of service carefully before using AmberOps.</p>', updatedAt: new Date() },
-    { type: 'privacy', content: '<h1>Privacy Policy</h1><p>Your privacy is important to us. This privacy statement explains the personal data AmberOps processes, how AmberOps processes it, and for what purposes.</p>', updatedAt: new Date() }
+const legal: Omit<LegalDocument, 'updatedAt'>[] = [
+    { type: 'terms', content: '<h1>Terms of Service</h1><p>Please read these terms of service carefully before using AmberOps.</p>' },
+    { type: 'privacy', content: '<h1>Privacy Policy</h1><p>Your privacy is important to us. This privacy statement explains the personal data AmberOps processes, how AmberOps processes it, and for what purposes.</p>' }
 ]
 
 async function seedDatabase() {
@@ -85,31 +85,31 @@ async function seedDatabase() {
     // 2. Seed Clusters
     console.log('Seeding clusters...');
     await db.collection('clusters').deleteMany({});
-    await db.collection('clusters').insertMany(mockClusters);
+    await db.collection('clusters').insertMany(mockClusters.map(c => ({...c, _id: c.id})));
     console.log('Clusters seeded.');
 
     // 3. Seed Services
     console.log('Seeding services...');
     await db.collection('services').deleteMany({});
-    await db.collection('services').insertMany(mockServices);
+    await db.collection('services').insertMany(mockServices.map(s => ({...s, _id: s.id})));
     console.log('Services seeded.');
 
     // 4. Seed Hosts
     console.log('Seeding hosts...');
     await db.collection('hosts').deleteMany({});
-    await db.collection('hosts').insertMany(mockHosts);
+    await db.collection('hosts').insertMany(mockHosts.map(h => ({...h, _id: h.id})));
     console.log('Hosts seeded.');
     
     // 5. Seed Alerts
     console.log('Seeding alerts...');
     await db.collection('alerts').deleteMany({});
-    await db.collection('alerts').insertMany(mockAlerts.map(a => ({...a, timestamp: new Date(a.timestamp)})));
+    await db.collection('alerts').insertMany(mockAlerts.map(a => ({...a, _id: a.id, timestamp: new Date(a.timestamp)})));
     console.log('Alerts seeded.');
 
     // 6. Seed Alert Definitions
     console.log('Seeding alertDefinitions...');
     await db.collection('alertDefinitions').deleteMany({});
-    await db.collection('alertDefinitions').insertMany(mockAlertDefinitions);
+    await db.collection('alertDefinitions').insertMany(mockAlertDefinitions.map(d => ({...d, _id: d.id})));
     console.log('Alert Definitions seeded.');
 
     // 7. Seed Config Versions
@@ -137,12 +137,12 @@ async function seedDatabase() {
               id: user?._id.toString(),
               name: user?.name,
               email: user?.email,
-              avatar: user?.image,
+              avatar: user?.avatar,
             },
         }
     });
     // @ts-ignore
-    await db.collection('activityLogs').insertMany(activityLogsToInsert);
+    await db.collection('activityLogs').insertMany(activityLogsToInsert.map(a => ({...a, _id: a.id})));
     console.log('Activity Logs seeded.');
     
     // 10. Seed Log Entries
@@ -153,32 +153,32 @@ async function seedDatabase() {
 
     // 11. Seed Documentation
     console.log('Seeding documentation...');
-    await db.collection('documentation').deleteMany({});
-    await db.collection('documentation').insertMany(docs.map(d => ({...d, createdAt: new Date(), updatedAt: new Date() })));
+    await db.collection('documentations').deleteMany({});
+    await db.collection('documentations').insertMany(docs.map(d => ({...d, createdAt: new Date(), updatedAt: new Date() })));
     console.log('Documentation seeded.');
 
     // 12. Seed Legal Docs
-    console.log('Seeding legal documents...');
-    await db.collection('legal').deleteMany({});
-    await db.collection('legal').insertMany(legal);
+    console.log('Seeding legals...');
+    await db.collection('legals').deleteMany({});
+    await db.collection('legals').insertMany(legal.map(l => ({...l, updatedAt: new Date() })));
     console.log('Legal documents seeded.');
     
     // 13. Seed Pricing Tiers
-    console.log('Seeding pricing tiers...');
-    await db.collection('pricingTiers').deleteMany({});
-    await db.collection('pricingTiers').insertMany(mockPricingTiers);
+    console.log('Seeding pricingTiers...');
+    await db.collection('pricingtiers').deleteMany({});
+    await db.collection('pricingtiers').insertMany(mockPricingTiers.map(t => ({...t, _id: t.id})));
     console.log('Pricing tiers seeded.');
     
     // 14. Seed Testimonials
     console.log('Seeding testimonials...');
     await db.collection('testimonials').deleteMany({});
-    await db.collection('testimonials').insertMany(mockTestimonials);
+    await db.collection('testimonials').insertMany(mockTestimonials.map(t => ({...t, _id: t.id})));
     console.log('Testimonials seeded.');
     
     // 15. Seed FAQs
-    console.log('Seeding FAQs...');
+    console.log('Seeding faqs...');
     await db.collection('faqs').deleteMany({});
-    await db.collection('faqs').insertMany(mockFaqs);
+    await db.collection('faqs').insertMany(mockFaqs.map(f => ({...f, _id: f.id})));
     console.log('FAQs seeded.');
 
 
