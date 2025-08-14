@@ -83,7 +83,7 @@ Before running the application, you must configure your environment variables.
     ```bash
     cp .env.example .env
     ```
-2.  **Set Required Variables**: Open the new `.env` file and provide a valid `MONGODB_URI`. This is required for the application to connect to its database.
+2.  **Set Required Variables**: Open the new `.env` file and provide a valid `MONGODB_URI` and a `JWT_SECRET`. This is required for the application to connect to its database and for the login service to function.
 3.  **Set Optional Variables**: For features like social login (Google/GitHub) or AI-powered features (Gemini), you will need to provide the corresponding API keys and secrets in the `.env` file.
 
 #### Environment Variable Details

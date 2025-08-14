@@ -21,6 +21,7 @@ This project is a `pnpm` workspace-based monorepo, a structure chosen for its ex
 │   ├── lib/              # Shared TypeScript types and core utility functions
 │   └── ui/               # Reusable React UI components and Storybook
 ├── tests/                # End-to-end tests for all applications
+├── .env.example          # Example environment variables file
 ├── .env                  # Environment variables (not committed to source control)
 ├── package.json          # Root package manifest managing pnpm workspaces
 ├── pnpm-workspace.yaml   # Defines the pnpm workspace packages
@@ -60,7 +61,11 @@ Follow this three-step process to set up and run the project locally.
 
 ### 1. Configure Your Environment
 
-First, create a `.env` file at the project root (you can copy `.env.example`) and add your `MONGODB_URI`. This is required for all backend services to function.
+First, create a `.env` file at the project root by copying the example file:
+```bash
+cp .env.example .env
+```
+Next, open the new `.env` file and add your `MONGODB_URI` and a `JWT_SECRET`. The `JWT_SECRET` is required for the login service to function.
 
 ### 2. Seed the Database
 
