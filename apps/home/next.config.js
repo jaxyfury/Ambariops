@@ -30,12 +30,12 @@ const nextConfig = {
     },
     async rewrites() {
         return [
-            {
-                source: '/api/:path*',
-                destination: `${process.env.NEXT_PUBLIC_API_URL}/:path*`,
-            },
+          {
+            source: '/api/:path*',
+            destination: `http://localhost:3000/api/:path*`,
+          },
         ]
-    }
+    },
 };
 
 module.exports = nextConfig;

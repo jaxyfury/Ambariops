@@ -109,7 +109,7 @@ export function PricingCard({ title, price, period, description, features, butto
                     renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
                     uniforms = {
                         time: { value: 0.0 },
-                        fireColorBase: { value: new THREE.Color(getComputedStyle(document.documentElement).getPropertyValue('--primary')) },
+                        fireColorBase: { value: new THREE.Color(`hsl(${getComputedStyle(document.documentElement).getPropertyValue('--primary')})`) },
                     };
                     material = new THREE.ShaderMaterial({
                         vertexShader: bandVertexShader,
