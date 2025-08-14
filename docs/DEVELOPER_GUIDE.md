@@ -32,7 +32,8 @@ This project is a `pnpm` workspace-based monorepo. This structure is ideal for m
 │   ├── lib/              # Shared TypeScript types and utility functions
 │   └── ui/               # Reusable React UI components with Storybook
 ├── tests/                # Playwright end-to-end tests for all applications
-├── .env                  # Environment variables configuration (not committed)
+├── .env.example          # Example environment variables configuration
+├── .env                  # Your local environment variables (gitignored)
 ├── package.json          # Root package manifest managing pnpm workspaces
 └── tsconfig.base.json    # The shared base TypeScript configuration
 ```
@@ -77,9 +78,12 @@ These scripts provide high-level orchestration for setting up and running the wo
 
 Before running the application, you must configure your environment variables.
 
-1.  **Copy the `.env.example` to `.env`**: Create a `.env` file at the root of the project.
-2.  **Set Required Variables**: You **must** provide a valid `MONGODB_URI` for the application to connect to its database.
-3.  **Set Optional Variables**: For features like social login or AI, you will need to provide the corresponding API keys and secrets.
+1.  **Create your local `.env` file**: At the root of the project, make a copy of the example environment file:
+    ```bash
+    cp .env.example .env
+    ```
+2.  **Set Required Variables**: Open the new `.env` file and provide a valid `MONGODB_URI`. This is required for the application to connect to its database.
+3.  **Set Optional Variables**: For features like social login (Google/GitHub) or AI-powered features (Gemini), you will need to provide the corresponding API keys and secrets in the `.env` file.
 
 #### Environment Variable Details
 
