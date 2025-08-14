@@ -1,9 +1,12 @@
-
 import { test, expect } from '@playwright/test';
 
 test.describe('Main Navigation', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/dashboard');
+    await page.goto('http://localhost:3001/auth');
+    await page.getByPlaceholder('Email').fill('jayprakash@gmail.com');
+    await page.getByPlaceholder('Password').fill('123456');
+    await page.getByRole('button', { name: 'Sign In' }).click();
+    await page.waitForURL('http://localhost:3000/dashboard');
   });
 
   test('should navigate to all main pages from sidebar and show breadcrumbs', async ({ page }) => {
@@ -38,7 +41,6 @@ test.describe('Main Navigation', () => {
     await expect(page).toHaveURL(/.*config/);
     await expect(page.getByRole('heading', { name: 'Configuration Editor' })).toBeVisible();
     await expect(page.getByLabel('Breadcrumb').getByRole('link', { name: 'Config' })).toBeVisible();
-
 
     await page.getByRole('link', { name: 'Tasks / Ops' }).click();
     await expect(page).toHaveURL(/.*tasks/);

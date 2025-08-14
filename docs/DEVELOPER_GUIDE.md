@@ -19,54 +19,57 @@ This project is a `pnpm` workspace-based monorepo. This structure is ideal for m
 
 ```
 /
-├── .github/              # GitHub Actions workflows and issue/PR templates
+├── .github/              # GitHub Actions workflows and templates
 ├── apps/
-│   ├── home/             # Public-facing landing page and authentication app
-│   └── web/              # The core, protected application and API backend
+│   ├── admin/            # Admin dashboard frontend app
+│   ├── auth/             # Standalone Node.js authentication service
+│   ├── backend/          # Standalone Node.js backend API service
+│   ├── home/             # Public-facing landing page and auth frontend
+│   └── web/              # The core, protected user dashboard app
 ├── packages/
 │   ├── api/              # Centralized API client and Genkit AI flows
 │   ├── design-tokens/    # Tailwind CSS configuration, theme, and global styles
 │   ├── lib/              # Shared TypeScript types and utility functions
-│   └── ui/               # Reusable React UI components with Storybook stories
+│   └── ui/               # Reusable React UI components with Storybook
 ├── tests/                # Playwright end-to-end tests for all applications
 ├── .env                  # Environment variables configuration (not committed)
 ├── package.json          # Root package manifest managing pnpm workspaces
-├── pnpm-workspace.yaml   # Defines pnpm workspace packages
 └── tsconfig.base.json    # The shared base TypeScript configuration
 ```
 
 ### Root Level Files
 
 *   **`pnpm-workspace.yaml`**: The heart of the monorepo. This file tells `pnpm` which directories to treat as separate packages, enabling cross-package linking.
-*   **`package.json`**: The root package file. It contains scripts that can orchestrate actions across the entire workspace (e.g., `pnpm build` runs the build script in every package). It also holds the top-level development dependencies.
-*   **`tsconfig.base.json`**: A shared TypeScript configuration file that other `tsconfig.json` files in the monorepo extend. This is where we define path aliases (like `@amberops/ui`) that allow for clean, direct imports between packages.
-*   **`.gitignore`**: The global gitignore file.
-*   **`.lintstagedrc.js` & `commitlint.config.js`**: Configuration for code quality tools that run automatically before commits, ensuring all code adheres to style guides.
+*   **`package.json`**: The root package file. It contains scripts that can orchestrate actions across the entire workspace (e.g., `pnpm build` runs the build script in every package).
+*   **`tsconfig.base.json`**: A shared TypeScript configuration file that other `tsconfig.json` files in the monorepo extend.
 *   **`build-workspace.sh` & `run.sh`**: Helper shell scripts to simplify the setup and local development process.
-*   **`.env`**: The central file for managing all environment variables for both applications.
+*   **`.env`**: The central file for managing all environment variables for all backend services and frontend applications.
 
 ---
 
 ### `apps/` Directory
 
-This directory contains the runnable Next.js applications.
+This directory contains the runnable applications and services.
 
 #### `apps/home`
-*   **Purpose**: The public-facing entry point for all users. It serves the marketing landing page and handles all authentication flows (login, sign-up, password reset, etc.).
-*   **Technology**: A standalone Next.js app optimized for fast initial loads and SEO.
-*   **Key Files**:
-    *   `src/app/page.tsx`: The main landing page component.
-    *   `src/app/auth/page.tsx`: The unified user/admin login and signup form.
-    *   `next.config.js`: Contains a critical `rewrites` rule that proxies authentication API requests to the `web` app's backend.
+*   **Purpose**: The public-facing entry point for all users. It serves the marketing landing page and acts as the **frontend** for the `auth` service.
+*   **Technology**: A standalone Next.js app.
 
 #### `apps/web`
-*   **Purpose**: The secure, core application that users access *after* logging in. This is a feature-rich Single-Page Application (SPA) and also serves as the **API backend** for the entire project.
+*   **Purpose**: The secure, core application that users access *after* logging in.
 *   **Technology**: A Next.js application that heavily relies on client-side rendering for its interactive dashboards.
-*   **Key Files**:
-    *   `src/app/(app)/...`: All the protected pages of the dashboard, organized by feature (e.g., `clusters`, `services`, `alerts`).
-    *   `src/app/api/v1/...`: All backend API routes that connect to the database and serve data to both applications.
-    *   `src/app/api/auth/[...nextauth]/route.ts`: The backend API endpoint for NextAuth.js. It handles session management, communication with OAuth providers (Google, GitHub), and the credentials provider.
-    *   `src/lib/mongodb.ts`: A utility to manage the MongoDB connection pool.
+
+#### `apps/admin`
+*   **Purpose**: The secure dashboard for administrators to manage users and site content.
+*   **Technology**: A standalone Next.js app.
+
+#### `apps/auth`
+*   **Purpose**: A dedicated, standalone **backend service** for authentication.
+*   **Technology**: A Node.js/Express application that handles user registration, login (password & social), and JWT management.
+
+#### `apps/backend`
+*   **Purpose**: A dedicated, standalone **backend service** for all application data.
+*   **Technology**: A Node.js/Express application that provides a REST API for clusters, services, hosts, etc.
 
 ---
 
@@ -75,30 +78,18 @@ This directory contains the runnable Next.js applications.
 This directory contains all the shared code, organized into distinct libraries.
 
 #### `packages/ui`
-*   **Purpose**: A comprehensive library of reusable React components, forming the core of the design system.
-*   **Key Files**:
-    *   `src/components/ui/`: Contains all the UI primitives like `Button.tsx`, `Card.tsx`, `Table.tsx`, etc., built using **ShadCN/Radix**.
-    *   `src/stories/`: Contains **Storybook** files for each component. This allows for isolated development, documentation, and visual testing.
+*   **Purpose**: A comprehensive library of reusable React components (Button, Card, etc.).
+*   **Key Files**: `src/components/ui/` contains all primitives; `src/stories/` contains Storybook files.
 
 #### `packages/api`
 *   **Purpose**: Manages the application's data and AI layers.
-*   **Key Files**:
-    *   `src/client.ts`: The centralized API client used by both `home` and `web` apps to communicate with the backend.
-    *   `src/ai/`: This directory contains all the server-side AI logic built with **Google's Genkit**.
-        *   `genkit.ts`: Initializes and configures the Genkit instance with the necessary plugins (like `googleAI`).
-        *   `flows/`: Contains individual files for each AI-powered feature, such as summarizing cluster health.
+*   **Key Files**: `src/client.ts` is the centralized API client used by all frontend apps to communicate with the `backend` and `auth` services. `src/ai/` contains all server-side Genkit logic.
 
 #### `packages/lib`
-*   **Purpose**: A foundational library for shared, non-React code.
-*   **Key Files**:
-    *   `src/types.ts`: Contains core TypeScript types used across the entire monorepo (e.g., `Cluster`, `Service`, `User`).
-    *   `src/utils.ts`: Contains utility functions like `cn` for merging Tailwind CSS class names.
+*   **Purpose**: A foundational library for shared, non-React code like TypeScript types (`src/types.ts`) and utilities.
 
 #### `packages/design-tokens`
-*   **Purpose**: Centralizes all styling and theme-related configurations.
-*   **Key Files**:
-    *   `tailwind.config.ts`: The shared **Tailwind CSS** configuration, including the full color palette (light and dark modes), fonts, and spacing tokens.
-    *   `globals.css`: Defines the root CSS variables that power the theme.
+*   **Purpose**: Centralizes all styling and theme-related configurations, including the shared Tailwind CSS configuration.
 
 ---
 
@@ -106,16 +97,14 @@ This directory contains all the shared code, organized into distinct libraries.
 
 ### Step 1: Environment Configuration
 
-The first and most important step is to set up your environment variables.
-
-1.  **Copy the `.env.example` to `.env`**: If it doesn't exist, create a `.env` file at the root of the project.
-2.  **Set `MONGODB_URI`**: You **must** provide a valid MongoDB connection string. The application relies on this for user authentication.
-3.  **Set OAuth Credentials** (Optional): If you wish to use Google or GitHub for login, you must obtain and fill in the `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GITHUB_CLIENT_ID`, and `GITHUB_CLIENT_SECRET` variables.
-4.  **Set `GEMINI_API_KEY`** (Optional): To use the AI features, you need a Google Gemini API key.
+1.  **Copy the `.env.example` to `.env`**: Create a `.env` file at the root of the project.
+2.  **Set `MONGODB_URI`**: You **must** provide a valid MongoDB connection string.
+3.  **Set OAuth Credentials** (Optional): To enable Google or GitHub login, fill in the `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, etc., variables.
+4.  **Set `GEMINI_API_KEY`** (Optional): To use the AI features, provide a Google Gemini API key.
 
 ### Step 2: Database Seeding
 
-With your environment configured, you must seed the database with initial data. This script populates your MongoDB instance with all the necessary data for clusters, services, users, etc.
+With your environment configured, seed the database with initial data.
 
 From the project root, run:
 ```bash
@@ -127,57 +116,50 @@ A default admin account will be created with:
 
 ### Step 3: Running the Application Locally
 
-Use this command to start the development servers for both applications simultaneously:
+Use this command to start all development servers simultaneously:
 ```bash
 sh run.sh
 ```
 The servers will be available at:
 *   **Landing Page (`home`)**: `http://localhost:3001`
 *   **Dashboard App (`web`)**: `http://localhost:3000`
+*   **Admin App (`admin`)**: `http://localhost:3003`
+*   **Auth Service (`auth`)**: Port `3002`
+*   **Backend Service (`backend`)**: Port `3004`
 
 ---
 
 ## 4. Testing Strategy
 
-The project employs a multi-layered testing strategy:
-
 *   **End-to-End (E2E) Testing**:
     *   **Tool**: **Playwright**.
     *   **Location**: `tests/` directory.
-    *   **Purpose**: These tests simulate real user journeys across both applications, such as the full authentication flow, navigation, and critical feature interactions (e.g., filtering a data table and exporting it). They are the ultimate guarantee that the applications work as a whole.
+    *   **Purpose**: These tests simulate real user journeys across the applications, including the full authentication flow.
 
 *   **Static Analysis & Linting**:
     *   **Tool**: **ESLint** and **Prettier**.
-    *   **Purpose**: These tools automatically enforce a consistent code style and catch common errors before the code is even run.
+    *   **Purpose**: Enforce a consistent code style and catch common errors.
 
 ---
 
 ## 5. Deployment Guide (for DevOps)
 
-Deploying this monorepo requires a platform that can handle multiple applications and build steps.
+Deploying this monorepo requires a platform that can handle multiple services.
 
 ### Build Process
 
 1.  **Install Dependencies**: `pnpm install`
 2.  **Build All Packages**: `pnpm build`
-    *   This command runs the `build` script defined in the `package.json` of every package in the workspace, creating production-ready assets in their respective `dist` or `.next` folders.
+    *   This command runs the `build` script in every package, creating production-ready assets.
 
 ### Hosting Strategy
 
-The two-app structure requires a hosting solution with a reverse proxy or path-based routing.
+The multi-service architecture requires a hosting solution capable of running multiple Node.js applications and routing traffic accordingly (e.g., using Docker Compose, Kubernetes, or a platform like Vercel/Render with multiple services).
 
-*   **Reverse Proxy (e.g., Nginx)**:
-    *   The `home` app (running on port 3001) should be served for all root traffic (`/`, `/login`, `/signup`).
-    *   The `web` app (running on port 3000) should be served for all traffic under a protected path like `/dashboard` or on a separate subdomain.
-    *   The proxy must be configured to forward requests to the correct internal port based on the incoming request path.
+*   The frontend Next.js apps (`home`, `web`, `admin`) should be run as Node.js servers.
+*   The backend services (`auth`, `backend`) must also be run as Node.js servers.
+*   A reverse proxy (like Nginx) is typically used to route requests from a public domain to the correct internal service based on the path or subdomain.
 
-*   **Environment Variables**:
-    *   All environment variables from the root `.env` file (e.g., `MONGODB_URI`, `GOOGLE_CLIENT_ID`, `NEXTAUTH_SECRET`) must be securely set in the production environment for both applications.
+### Environment Variables
 
-### Continuous Integration (CI/CD)
-
-The GitHub Actions workflow in `.github/workflows/ci.yml` provides a template for the CI process. A full CD pipeline would extend this to:
-1.  Run all checks (lint, build, test).
-2.  Build production Docker images for each application.
-3.  Push the images to a container registry (e.g., Docker Hub, GCR).
-4.  Trigger a deployment to the hosting environment.
+All environment variables from the root `.env` file must be securely set in the production environment for all relevant services.

@@ -1,17 +1,18 @@
-
 import { test, expect } from '@playwright/test';
 
 test.describe('Global Features', () => {
   test.beforeEach(async ({ page }) => {
-    // For these tests, we assume the user is authenticated and on the dashboard.
-    // In a real project, this would be handled by a global setup file.
-    await page.goto('/dashboard');
+    // Log in before each test
+    await page.goto('http://localhost:3001/auth');
+    await page.getByPlaceholder('Email').fill('admin@amberops.com');
+    await page.getByPlaceholder('Password').fill('admin@amberops');
+    await page.getByRole('button', { name: 'Sign In' }).click();
+    await page.waitForURL('http://localhost:3003/dashboard');
   });
 
   test('sidebar can be toggled', async ({ page }) => {
     await expect(page.locator('[data-sidebar="sidebar"]')).toHaveAttribute('data-state', 'expanded');
-    // The collapse button is part of the sidebar itself, so we target it that way
-    await page.locator('[data-sidebar="sidebar"]').getByRole('button', { name: 'Collapse' }).click();
+    await page.locator('[data-testid="sidebar-collapse-button"]').click();
     await expect(page.locator('[data-sidebar="sidebar"]')).toHaveAttribute('data-state', 'collapsed');
   });
 
@@ -28,7 +29,6 @@ test.describe('Global Features', () => {
     await expect(page.getByRole('dialog')).toBeVisible();
     await page.getByPlaceholder('Search for clusters, services, hosts...').fill('Prod');
     
-    // Wait for the API response and results to be visible
     await expect(page.getByRole('link', { name: 'Production Cluster' })).toBeVisible();
   });
   

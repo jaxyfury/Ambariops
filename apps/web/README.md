@@ -9,13 +9,12 @@ This is the main, protected Next.js application for the AmberOps Console. It con
 *   **Technology**:
     *   **Framework**: Built with **Next.js** and the App Router.
     *   **State Management**: Uses **TanStack Query** for managing server state (caching, refetching API data) and **Zustand** or React Context for local UI state.
-    *   **Authentication Backend**: Contains all the server-side API routes for **NextAuth.js** in `src/app/api/auth`. It handles session management and communication with authentication providers (Google, GitHub) and the MongoDB user database.
 
 *   **Key Responsibilities**:
-    *   **Displaying Data**: Renders all the main pages, including the Dashboard, Clusters, Services, Hosts, and Alerts lists.
+    *   **Displaying Data**: Renders all the main pages, including the Dashboard, Clusters, Services, Hosts, and Alerts lists by fetching data from the standalone `backend` service.
     *   **User Interaction**: Handles all user actions, such as starting/stopping services, acknowledging alerts, and editing configurations.
     *   **AI Integration**: This app's client-side components make calls to the Genkit AI flows (defined in `packages/api`) to fetch and display AI-powered insights like health summaries and troubleshooting steps.
-    *   **Security**: All pages within this application are protected and require a valid user session to be accessed. Unauthenticated users attempting to access any page will be redirected to the login page in the `apps/home` application.
+    *   **Security**: All pages within this application are protected. The main layout checks for a valid JSON Web Token (JWT) in `localStorage`. Unauthenticated users are redirected to the login page in the `apps/home` application.
 
 ## Running Locally
 
@@ -27,4 +26,4 @@ pnpm dev
 
 The application will be available at `http://localhost:3000`.
 
-For the complete user experience, including login and signup, you should also run the `home` application on its port (`http://localhost:3001`). You can start both applications simultaneously by running `sh run.sh` from the root directory.
+For the complete user experience, including login and signup, you must also run the `home` and `auth` applications. You can start all applications and services simultaneously by running `sh run.sh` from the root directory.

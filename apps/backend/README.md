@@ -1,29 +1,35 @@
-# Backend Services Placeholder
+# Standalone Backend API Service (Node.js/Express)
 
-This directory is the designated location for all backend API services for the AmberOps Console.
+This directory contains the primary backend API service for the AmberOps Console, built with Node.js, Express, and Mongoose.
 
-## Architectural Vision
+## In-Depth Overview
 
-The AmberOps Console monorepo is architected with a clean separation of concerns between the frontend applications (located in the `apps/` directory) and the backend logic. This `backend/` directory is intended to house a robust, scalable, and independent backend application.
+*   **Purpose**: To provide a dedicated, decoupled REST API for all application data, such as clusters, services, hosts, alerts, and administrative content. This microservice architecture cleanly separates data logic from the frontend applications and the authentication service.
 
-While the current prototype uses Next.js API routes within the `apps/web` application to provide a functional backend, the long-term vision is to replace this with a dedicated backend service built with a technology better suited for enterprise-level data processing and business logic.
+*   **Technology**:
+    *   **Runtime**: Node.js
+    *   **Framework**: Express.js for routing and middleware.
+    *   **Database**: MongoDB with Mongoose for data modeling and validation.
+    *   **CORS**: Configured to allow requests from the frontend applications.
 
-## Recommended Technology: Java & Spring Boot
+*   **API Endpoints**: This service provides a comprehensive set of RESTful endpoints for all core data entities. It implements full CRUD (Create, Read, Update, Delete) functionality for:
+    *   `/api/v1/users`
+    *   `/api/v1/clusters`
+    *   `/api/v1/services`
+    *   `/api/v1/hosts`
+    *   `/api/v1/alerts`
+    *   `/api/v1/documentation`
+    *   `/api/v1/pricing`
+    *   ...and all other data models required by the platform.
 
-A backend built with **Java** and the **Spring Boot** framework is the recommended choice for this project.
+## Running Locally
 
-### Why Java & Spring Boot?
+This service is designed to run as part of the overall development environment.
 
-*   **Robustness & Scalability**: Java's strong typing, performance, and mature ecosystem make it ideal for building reliable, high-performance backend services that can handle heavy loads.
-*   **Enterprise-Ready**: The Spring ecosystem provides out-of-the-box solutions for security, data access (JPA/Hibernate), transaction management, and more, which are critical for an enterprise application like AmberOps.
-*   **Interoperability**: Java has excellent libraries for interacting with the Hadoop ecosystem and other data technologies that are commonly managed by Ambari.
-*   **Talent Pool**: Java is one of the most widely-used programming languages, making it easier to find and onboard developers.
+To start this service along with all other applications, run the following command from the root of the monorepo:
 
-## Implementation Plan
+```bash
+sh run.sh
+```
 
-1.  **Project Setup**: Initialize a new Spring Boot project (e.g., using the Spring Initializr) within this directory.
-2.  **API Development**: Re-implement all the API endpoints currently defined in `apps/web/src/app/api/v1/` as Spring Boot REST controllers.
-3.  **Database Integration**: Use Spring Data JPA to connect to and interact with the MongoDB database.
-4.  **Switch Frontend Configuration**: Once the Java backend is deployed and running, update the `NEXT_PUBLIC_API_BASE_URL` environment variable in the root `.env` file to point to the URL of the new Java service.
-
-Because the frontend applications are built to communicate with a REST API via a centralized client (`packages/api`), **no changes will be needed in the frontend code** to switch to the new backend. This architectural separation provides maximum flexibility and allows the frontend and backend teams to work and deploy independently.
+The backend service will start on port `3004` by default. All AmberOps frontend applications are configured to send their API requests to this service.

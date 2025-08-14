@@ -1,30 +1,35 @@
 import { test, expect } from '@playwright/test';
 
-// This test requires authentication, which would be handled in a real project
-// with a setup that logs in the user before tests run.
-// For this prototype, we'll assume we can navigate directly to the dashboard.
+// This test requires authentication, which is now handled by logging in first.
 test.describe('Dashboard Page', () => {
-  const DASHBOARD_URL = 'http://localhost:3000/dashboard';
+  const WEB_URL = 'http://localhost:3000';
+  const HOME_URL = 'http://localhost:3001';
 
   test.beforeEach(async ({ page }) => {
+    // Log in before each test
+    await page.goto(`${HOME_URL}/auth`);
+    await page.getByPlaceholder('Email').fill('jayprakash@gmail.com');
+    await page.getByPlaceholder('Password').fill('123456');
+    await page.getByRole('button', { name: 'Sign In' }).click();
+    await page.waitForURL(`${WEB_URL}/dashboard`);
+    
     // Clear session storage to ensure the tour runs on each test
-    await page.goto(DASHBOARD_URL);
     await page.evaluate(() => window.sessionStorage.clear());
-    await page.goto(DASHBOARD_URL);
+    await page.goto(`${WEB_URL}/dashboard`);
   });
 
   test('should display the dashboard title', async ({ page }) => {
     await expect(page.getByRole('heading', { name: 'Dashboard' })).toBeVisible();
   });
 
-  test('should display summary cards with correct data', async ({ page }) => {
+  test('should display summary cards', async ({ page }) => {
     await expect(page.getByText('Total Clusters')).toBeVisible();
     await expect(page.getByText('Active Alerts')).toBeVisible();
     await expect(page.getByText('Avg. CPU Usage')).toBeVisible();
     await expect(page.getByText('Avg. Memory Usage')).toBeVisible();
   });
 
-  test('should display cluster status table with mock data', async ({ page }) => {
+  test('should display cluster status table', async ({ page }) => {
     await expect(page.getByRole('table')).nth(0).toBeVisible();
     await expect(page.getByText('Production Cluster')).toBeVisible();
     await expect(page.getByText('Development Cluster')).toBeVisible();
