@@ -21,6 +21,7 @@ import {
   TabsList,
   TabsTrigger,
 } from '@amberops/ui/components/ui/tabs';
+import { Textarea } from '@amberops/ui/components/ui/textarea';
 import { PageHeader } from '@amberops/ui/components/page-header';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
