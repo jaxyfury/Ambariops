@@ -8,7 +8,8 @@ set -e
 
 # --- 1. Kill any running processes on the project ports ---
 echo "--- Checking for and stopping any running services... ---"
-sh ./kill-ports.sh
+# Use a subshell to run kill-ports.sh to avoid script termination issues
+(sh ./kill-ports.sh)
 echo "--- Port check complete. ---"
 
 
