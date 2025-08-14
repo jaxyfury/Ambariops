@@ -5,7 +5,7 @@ services:
     image: mongo:latest
     container_name: amberops_mongodb
     ports:
-      - "27017:27017"
+      - '27017:27017'
     volumes:
       - mongo-data:/data/db
     restart: unless-stopped
@@ -19,7 +19,7 @@ services:
         APP_NAME: auth
     container_name: amberops_auth_service
     ports:
-      - "3002:3000"
+      - '3002:3000'
     environment:
       - MONGODB_URI=mongodb://mongodb:27017/amberops
       - JWT_SECRET=${JWT_SECRET}
@@ -43,7 +43,7 @@ services:
         APP_NAME: backend
     container_name: amberops_backend_service
     ports:
-      - "3004:3000"
+      - '3004:3000'
     environment:
       - MONGODB_URI=mongodb://mongodb:27017/amberops
       - NEXT_PUBLIC_HOME_URL=http://localhost:3001
@@ -62,7 +62,7 @@ services:
         APP_NAME: home
     container_name: amberops_home_app
     ports:
-      - "3001:3000"
+      - '3001:3000'
     environment:
       - NEXT_PUBLIC_AUTH_API_URL=http://auth:3000/api
       - NEXT_PUBLIC_API_BASE_URL=http://backend:3000/api/v1
@@ -82,7 +82,7 @@ services:
         APP_NAME: web
     container_name: amberops_web_app
     ports:
-      - "3000:3000"
+      - '3000:3000'
     environment:
       - NEXT_PUBLIC_API_BASE_URL=http://backend:3000/api/v1
       - NEXT_PUBLIC_HOME_URL=http://localhost:3001
@@ -101,7 +101,7 @@ services:
         APP_NAME: admin
     container_name: amberops_admin_app
     ports:
-      - "3003:3000"
+      - '3003:3000'
     environment:
       - NEXT_PUBLIC_API_BASE_URL=http://backend:3000/api/v1
       - NEXT_PUBLIC_HOME_URL=http://localhost:3001

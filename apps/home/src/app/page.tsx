@@ -1,6 +1,7 @@
+
 import { Button } from '@amberops/ui/components/ui/button';
 import Link from 'next/link';
-import { Mail, ArrowRight, BarChart, Cpu, Database, GitBranch, HardDrive, MessageSquare, Search, Server, Shield, Star, Terminal, Users, Zap, ListOrdered } from 'lucide-react';
+import { Mail, ArrowRight, BarChart, Cpu, Database, GitBranch, HardDrive, MessageSquare, Search, Server, Shield, Star, Terminal, Users, Zap, ListOrdered, Package } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@amberops/ui/components/ui/accordion';
 import { AnimatedGlobe } from '@/components/animated-globe';
 import { Card, CardContent } from '@amberops/ui/components/ui/card';
@@ -142,13 +143,13 @@ export default async function HomePage() {
             </div>
 
             <h2 className="integration-section-element font-headline mt-2 text-3xl font-bold tracking-tighter sm:text-5xl">
-                Plug AI into your own data & <span className="text-primary">over 500 integrations</span>
+                Plug AI into your own data &amp; <span className="text-primary">over 500 integrations</span>
             </h2>
 
             <div className="integrations-grid integration-section-element mt-12">
               <div className="integrations-marquee">
                 {[...integrationIcons, ...integrationIcons].map((item, i) => (
-                  <div key={`marquee1-${i}`} className="integration-icon-container">
+                  <div key={`marquee1-${i}`} className="integration-icon-container" data-testid={`integration-icon-${item.name}`}>
                     <div className="integration-icon">
                       <item.icon className="h-8 w-8" />
                     </div>
@@ -157,7 +158,7 @@ export default async function HomePage() {
               </div>
               <div className="integrations-marquee" aria-hidden="true" style={{ animationDelay: '20s' }}>
                 {[...integrationIcons, ...integrationIcons].map((item, i) => (
-                  <div key={`marquee2-${i}`} className="integration-icon-container">
+                  <div key={`marquee2-${i}`} className="integration-icon-container" data-testid={`integration-icon-clone-${item.name}`}>
                     <div className="integration-icon">
                       <item.icon className="h-8 w-8" />
                     </div>
@@ -238,7 +239,7 @@ export default async function HomePage() {
                      <Accordion id="faq-accordion" type="single" collapsible className="w-full">
                         {faqItems?.length > 0 ? (
                             faqItems.map((faq, index) => (
-                                <AccordionItem value={`item-${index + 1}`} key={faq.id} className="faq-item">
+                                <AccordionItem value={`item-${index + 1}`} key={faq.id} className="faq-item" data-testid={`faq-item-${index}`}>
                                     <AccordionTrigger className="text-lg font-semibold">{faq.question}</AccordionTrigger>
                                     <AccordionContent className="text-base text-muted-foreground">
                                         {faq.answer}

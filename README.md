@@ -31,26 +31,26 @@ This project is a `pnpm` workspace-based monorepo, a structure chosen for its ex
 
 ### `apps/` Directory
 
-*   **`apps/home`**: The public-facing entry point. It serves the marketing landing page and acts as the dedicated frontend for the authentication service.
-*   **`apps/web`**: The secure, core application for end-users, containing all cluster management and monitoring features.
-*   **`apps/admin`**: A separate, secure application for administrators to manage site content (like testimonials and pricing) and users.
-*   **`apps/auth`**: A standalone **Node.js/Express** service that handles all user authentication, including registration, login (password & social), password resets, and JWT management.
-*   **`apps/backend`**: A standalone **Node.js/Express** service that provides the core REST API for all application data (clusters, services, hosts, etc.).
+- **`apps/home`**: The public-facing entry point. It serves the marketing landing page and acts as the dedicated frontend for the authentication service.
+- **`apps/web`**: The secure, core application for end-users, containing all cluster management and monitoring features.
+- **`apps/admin`**: A separate, secure application for administrators to manage site content (like testimonials and pricing) and users.
+- **`apps/auth`**: A standalone **Node.js/Express** service that handles all user authentication, including registration, login (password & social), password resets, and JWT management.
+- **`apps/backend`**: A standalone **Node.js/Express** service that provides the core REST API for all application data (clusters, services, hosts, etc.).
 
 ---
 
 ### `packages/` Directory
 
-*   **`packages/api`**: Manages the application's data and AI layers. Contains the centralized API client used by all frontend apps and the Genkit AI flows.
-*   **`packages/ui`**: A comprehensive library of reusable React components (Button, Card, etc.) with Storybook.
-*   **`packages/lib`**: A foundational library for shared, non-React code like TypeScript types and utilities.
-*   **`packages/design-tokens`**: Centralizes all styling and theme-related configurations, including the shared Tailwind CSS config.
+- **`packages/api`**: Manages the application's data and AI layers. Contains the centralized API client used by all frontend apps and the Genkit AI flows.
+- **`packages/ui`**: A comprehensive library of reusable React components (Button, Card, etc.) with Storybook.
+- **`packages/lib`**: A foundational library for shared, non-React code like TypeScript types and utilities.
+- **`packages/design-tokens`**: Centralizes all styling and theme-related configurations, including the shared Tailwind CSS config.
 
 ---
 
 ### `tests/` Directory
 
-*   **`tests/`**: Contains all end-to-end (E2E) tests for the project, written with **Playwright**.
+- **`tests/`**: Contains all end-to-end (E2E) tests for the project, written with **Playwright**.
 
 ---
 
@@ -71,8 +71,9 @@ pnpm seed
 ```
 
 A default admin account will be created with:
-*   **Email**: `admin@amberops.com`
-*   **Password**: `admin@amberops`
+
+- **Email**: `admin@amberops.com`
+- **Password**: `admin@amberops`
 
 ### 3. Run the Development Servers
 
@@ -83,11 +84,12 @@ sh run.sh
 ```
 
 The servers will be available at:
-*   **Landing Page App (`home`)**: `http://localhost:3001`
-*   **Dashboard App (`web`)**: `http://localhost:3000`
-*   **Admin App (`admin`)**: `http://localhost:3003`
-*   **Auth Service (`auth`)**: Port `3002`
-*   **Backend Service (`backend`)**: Port `3004`
+
+- **Landing Page App (`home`)**: `http://localhost:3001`
+- **Dashboard App (`web`)**: `http://localhost:3000`
+- **Admin App (`admin`)**: `http://localhost:3003`
+- **Auth Service (`auth`)**: Port `3002`
+- **Backend Service (`backend`)**: Port `3004`
 
 ---
 

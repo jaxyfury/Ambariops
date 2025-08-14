@@ -1,9 +1,9 @@
 ---
 name: Feature Request
 about: Suggest a new idea or enhancement for this project
-title: "feat: A brief description of the feature"
-labels: "enhancement, needs-triage"
-assignees: ""
+title: 'feat: A brief description of the feature'
+labels: 'enhancement, needs-triage'
+assignees: ''
 ---
 
 ### Is your feature request related to a problem?

@@ -4,7 +4,6 @@ about: Propose a change to the AmberOps Console
 title: 'feat: [TICKET-NUMBER] Brief description of changes'
 labels: ''
 assignees: ''
-
 ---
 
 ## Description
@@ -34,10 +33,11 @@ Please describe the tests that you ran to verify your changes. Provide instructi
 - [ ] Manual Test
 
 **Test Configuration**:
-*   Firmware version:
-*   Hardware:
-*   Toolchain:
-*   SDK:
+
+- Firmware version:
+- Hardware:
+- Toolchain:
+- SDK:
 
 ## Checklist
 

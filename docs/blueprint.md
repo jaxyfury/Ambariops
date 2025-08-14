@@ -110,6 +110,7 @@
 ---
 
 ### Deliverables:
+
 - Full frontend source code with all above features and tooling configured
 - Clean, modular, documented TypeScript React code
 - Storybook running with documented components and accessibility reports
@@ -124,6 +125,7 @@
 ---
 
 ### Extra notes for AI:
+
 - Use only public NPM packages
 - Follow latest React and Next.js best practices as of 2025
 - Prioritize maintainability, scalability, and developer DX
@@ -143,4 +145,3 @@
 - Use consistent and modern icons from a library like FontAwesome or Material Icons.
 - Employ a grid-based layout for consistency, with responsive design for various screen sizes.
 - Include a dark mode toggle with suitable contrast adjustments.
-

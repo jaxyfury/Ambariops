@@ -1,9 +1,9 @@
 ---
 name: Bug Report
 about: Create a report to help us improve
-title: "bug: A brief description of the bug"
-labels: "bug, needs-triage"
-assignees: ""
+title: 'bug: A brief description of the bug'
+labels: 'bug, needs-triage'
+assignees: ''
 ---
 
 ### Describe the Bug
@@ -33,9 +33,9 @@ If applicable, add screenshots, GIFs, or a video to help explain your problem.
 
 Please complete the following information about your environment:
 
--   **OS**: [e.g., macOS, Windows, Linux]
--   **Browser**: [e.g., Chrome, Firefox, Safari]
--   **Version**: [e.g., v1.2.3]
+- **OS**: [e.g., macOS, Windows, Linux]
+- **Browser**: [e.g., Chrome, Firefox, Safari]
+- **Version**: [e.g., v1.2.3]
 
 ---
 

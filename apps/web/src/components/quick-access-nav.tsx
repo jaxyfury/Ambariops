@@ -37,7 +37,7 @@ import {
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
-import '../styles/quick-access-nav.css';
+import '@amberops/ui/styles/quick-access-nav.css';
 
 interface QuickLinkProps {
   href?: string;
@@ -104,6 +104,7 @@ export function QuickAccessNav() {
             role="button"
             tabIndex={0}
             aria-label="Open quick access menu"
+            data-testid="quick-access-nav-trigger"
           >
             <div className="quick-nav-animation">
               {Array.from({ length: 12 }).map((_, i) => (
@@ -118,7 +119,7 @@ export function QuickAccessNav() {
       </Tooltip>
 
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="z-[9999] max-w-screen-lg data-[state=open]:zoom-in-95">
+        <DialogContent className="z-[9999] max-w-screen-lg data-[state=open]:zoom-in-95" data-testid="quick-access-dialog">
           <DialogHeader>
             <DialogTitle>Quick Access</DialogTitle>
             <DialogDescription>
@@ -169,7 +170,7 @@ export function QuickAccessNav() {
                  <li className="quick-access-item"><QuickLink href="/settings" onClick={closeModal}><Settings /> Go to Settings</QuickLink></li>
                  <li className="quick-access-item"><QuickLink onClick={toggleTheme}><Moon /> Toggle Theme</QuickLink></li>
                  <li className="quick-access-item"><QuickLink onClick={changeLanguage}><Languages /> Change Language</QuickLink></li>
-                 <li className="quick-access-item"><QuickLink href="/help" onClick={closeModal}><BookOpen /> Documentation</QuickLink></li>
+                 <li className="quick-access-item"><QuickLink href="/documentation" onClick={closeModal}><BookOpen /> Documentation</QuickLink></li>
                  <li className="quick-access-item"><QuickLink href="/help" onClick={closeModal}><LifeBuoy /> Contact Support</QuickLink></li>
               </ul>
             </div>

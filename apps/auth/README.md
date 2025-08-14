@@ -4,23 +4,23 @@ This directory contains a complete, standalone authentication service built with
 
 ## In-Depth Overview
 
-*   **Purpose**: To provide a dedicated, decoupled authentication service for the entire AmberOps platform. This is a common pattern in microservice architectures, enhancing security and scalability.
+- **Purpose**: To provide a dedicated, decoupled authentication service for the entire AmberOps platform. This is a common pattern in microservice architectures, enhancing security and scalability.
 
-*   **Technology**:
-    *   **Runtime**: Node.js
-    *   **Framework**: Express.js for routing and middleware.
-    *   **Database**: MongoDB with Mongoose for data modeling and validation.
-    *   **Authentication**: Uses `bcryptjs` for hashing passwords and `jsonwebtoken` for creating secure session tokens.
-    *   **Social Logins**: Integrated with Passport.js to support OAuth providers like Google and GitHub.
-    *   **CORS**: Configured to allow requests from the frontend applications.
+- **Technology**:
+  - **Runtime**: Node.js
+  - **Framework**: Express.js for routing and middleware.
+  - **Database**: MongoDB with Mongoose for data modeling and validation.
+  - **Authentication**: Uses `bcryptjs` for hashing passwords and `jsonwebtoken` for creating secure session tokens.
+  - **Social Logins**: Integrated with Passport.js to support OAuth providers like Google and GitHub.
+  - **CORS**: Configured to allow requests from the frontend applications.
 
-*   **API Endpoints**:
-    *   `POST /api/register`: Handles new user creation.
-    *   `POST /api/login`: Validates user credentials and returns a JWT.
-    *   `POST /api/forgot-password`: Initiates the password reset flow.
-    *   `POST /api/reset-password`: Completes the password reset flow.
-    *   `GET /api/auth/google`, `GET /api/auth/google/callback`: Routes for Google OAuth.
-    *   `GET /api/auth/github`, `GET /api/auth/github/callback`: Routes for GitHub OAuth.
+- **API Endpoints**:
+  - `POST /api/register`: Handles new user creation.
+  - `POST /api/login`: Validates user credentials and returns a JWT.
+  - `POST /api/forgot-password`: Initiates the password reset flow.
+  - `POST /api/reset-password`: Completes the password reset flow.
+  - `GET /api/auth/google`, `GET /api/auth/google/callback`: Routes for Google OAuth.
+  - `GET /api/auth/github`, `GET /api/auth/github/callback`: Routes for GitHub OAuth.
 
 ## Running Locally
 

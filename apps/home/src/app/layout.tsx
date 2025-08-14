@@ -1,3 +1,4 @@
+
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from 'next/font/google';
 import "@amberops/design-tokens/globals.css";
@@ -69,7 +70,7 @@ export default function RootLayout({
         >
             <ThunderCursor />
             {children}
-            <Toaster position="bottom-right" />
+            <Toaster position="bottom-right" data-testid="global-toaster" />
         </ThemeProvider>
         </body>
     </html>

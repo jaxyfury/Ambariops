@@ -6,10 +6,10 @@ Welcome to the AmberOps Console project. This document is the comprehensive, in-
 
 The AmberOps Console is built on a foundation of modern, scalable, and maintainable principles. The key goals are:
 
-*   **Separation of Concerns**: Each part of the project has a distinct and well-defined responsibility.
-*   **Code Reusability**: Shared code is managed in dedicated packages to avoid duplication and ensure consistency.
-*   **Developer Experience**: The project is designed to be easy to set up, run, and contribute to, with a focus on automation and clear documentation.
-*   **Testability**: The architecture is designed to be easily testable at all levels, from individual components to end-to-end user flows.
+- **Separation of Concerns**: Each part of the project has a distinct and well-defined responsibility.
+- **Code Reusability**: Shared code is managed in dedicated packages to avoid duplication and ensure consistency.
+- **Developer Experience**: The project is designed to be easy to set up, run, and contribute to, with a focus on automation and clear documentation.
+- **Testability**: The architecture is designed to be easily testable at all levels, from individual components to end-to-end user flows.
 
 ---
 
@@ -50,27 +50,26 @@ The project includes several shell scripts and `pnpm` commands to automate commo
 
 These scripts provide high-level orchestration for setting up and running the workspace.
 
-| Script                  | Description                                                                                                                              |
-| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| `sh build-workspace.sh` | **First-Time Setup**: Prepares the entire workspace. It installs `nvm`, Node.js, `pnpm`, all dependencies, and runs builds and tests.      |
+| Script                  | Description                                                                                                                                               |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `sh build-workspace.sh` | **First-Time Setup**: Prepares the entire workspace. It installs `nvm`, Node.js, `pnpm`, all dependencies, and runs builds and tests.                     |
 | `sh run.sh`             | **Run All Services**: Starts the development servers for all applications and services simultaneously. This is the primary command for local development. |
-| `sh clean-workspace.sh` | **Full Cleanup**: Stops all running server processes, removes all `node_modules` folders, build caches (`.next`, `dist`), and the `pnpm-lock.yaml` file. |
+| `sh clean-workspace.sh` | **Full Cleanup**: Stops all running server processes, removes all `node_modules` folders, build caches (`.next`, `dist`), and the `pnpm-lock.yaml` file.  |
 
 ### PNPM Commands
 
-| Command           | Description                                                                 |
-| ----------------- | --------------------------------------------------------------------------- |
-| `pnpm install`    | Installs all dependencies across all packages in the workspace.             |
-| `pnpm dev`        | Runs the main `web` dashboard application on `localhost:3000`.              |
-| `pnpm dev:home`   | Runs the `home` landing page application on `localhost:3001`.               |
-| `pnpm dev:admin`  | Runs the `admin` dashboard application on `localhost:3003`.                 |
-| `pnpm dev:auth`   | Runs the `auth` service on port `3002`.                                     |
-| `pnpm dev:backend`| Runs the `backend` API service on port `3004`.                              |
-| `pnpm build`      | Builds all applications and packages for production.                        |
-| `pnpm test:e2e`   | Runs all Playwright end-to-end tests.                                       |
-| `pnpm seed`       | Populates your MongoDB database with initial data for development.          |
-| `pnpm storybook`  | Starts the Storybook server for the `@amberops/ui` component library.         |
-
+| Command            | Description                                                           |
+| ------------------ | --------------------------------------------------------------------- |
+| `pnpm install`     | Installs all dependencies across all packages in the workspace.       |
+| `pnpm dev`         | Runs the main `web` dashboard application on `localhost:3000`.        |
+| `pnpm dev:home`    | Runs the `home` landing page application on `localhost:3001`.         |
+| `pnpm dev:admin`   | Runs the `admin` dashboard application on `localhost:3003`.           |
+| `pnpm dev:auth`    | Runs the `auth` service on port `3002`.                               |
+| `pnpm dev:backend` | Runs the `backend` API service on port `3004`.                        |
+| `pnpm build`       | Builds all applications and packages for production.                  |
+| `pnpm test:e2e`    | Runs all Playwright end-to-end tests.                                 |
+| `pnpm seed`        | Populates your MongoDB database with initial data for development.    |
+| `pnpm storybook`   | Starts the Storybook server for the `@amberops/ui` component library. |
 
 ---
 
@@ -89,42 +88,48 @@ Before running the application, you must configure your environment variables.
 
 #### Environment Variable Details
 
-| Variable                  | Description                                                                | Required? | Example                                         |
-| ------------------------- | -------------------------------------------------------------------------- | --------- | ----------------------------------------------- |
-| `MONGODB_URI`             | The connection string for your MongoDB database.                           | **Yes**   | `mongodb://localhost:27017/amberops`            |
-| `JWT_SECRET`              | A secret key used for signing JSON Web Tokens for session management.      | **Yes**   | `your-very-secret-jwt-key`                      |
-| `GOOGLE_CLIENT_ID`        | The client ID for Google OAuth 2.0.                                        | No        | `your-google-client-id.apps.googleusercontent.com` |
-| `GOOGLE_CLIENT_SECRET`    | The client secret for Google OAuth 2.0.                                    | No        | `GOCSPX-your-google-client-secret`              |
-| `GITHUB_CLIENT_ID`        | The client ID for GitHub OAuth.                                            | No        | `your_github_client_id`                         |
-| `GITHUB_CLIENT_SECRET`    | The client secret for GitHub OAuth.                                        | No        | `your_github_client_secret`                     |
-| `GEMINI_API_KEY`          | Your API key for Google Gemini, used for all AI features.                  | No        | `your_gemini_api_key`                           |
-| `AUTH_PORT`               | The port for the `auth` service. Defaults to `3002`.                       | No        | `3002`                                          |
-| `BACKEND_PORT`            | The port for the `backend` service. Defaults to `3004`.                    | No        | `3004`                                          |
+| Variable               | Description                                                           | Required? | Example                                            |
+| ---------------------- | --------------------------------------------------------------------- | --------- | -------------------------------------------------- |
+| `MONGODB_URI`          | The connection string for your MongoDB database.                      | **Yes**   | `mongodb://localhost:27017/amberops`               |
+| `JWT_SECRET`           | A secret key used for signing JSON Web Tokens for session management. | **Yes**   | `your-very-secret-jwt-key`                         |
+| `GOOGLE_CLIENT_ID`     | The client ID for Google OAuth 2.0.                                   | No        | `your-google-client-id.apps.googleusercontent.com` |
+| `GOOGLE_CLIENT_SECRET` | The client secret for Google OAuth 2.0.                               | No        | `GOCSPX-your-google-client-secret`                 |
+| `GITHUB_CLIENT_ID`     | The client ID for GitHub OAuth.                                       | No        | `your_github_client_id`                            |
+| `GITHUB_CLIENT_SECRET` | The client secret for GitHub OAuth.                                   | No        | `your_github_client_secret`                        |
+| `GEMINI_API_KEY`       | Your API key for Google Gemini, used for all AI features.             | No        | `your_gemini_api_key`                              |
+| `AUTH_PORT`            | The port for the `auth` service. Defaults to `3002`.                  | No        | `3002`                                             |
+| `BACKEND_PORT`         | The port for the `backend` service. Defaults to `3004`.               | No        | `3004`                                             |
 
 ### Step 2: Database Seeding
 
 With your environment configured, seed the database with initial data.
 
 From the project root, run:
+
 ```bash
 pnpm seed
 ```
+
 A default admin account will be created with:
-*   **Email**: `admin@amberops.com`
-*   **Password**: `admin@amberops`
+
+- **Email**: `admin@amberops.com`
+- **Password**: `admin@amberops`
 
 ### Step 3: Running the Application Locally
 
 Use this command to start all development servers simultaneously:
+
 ```bash
 sh run.sh
 ```
+
 The servers will be available at:
-*   **Landing Page (`home`)**: `http://localhost:3001`
-*   **Dashboard App (`web`)**: `http://localhost:3000`
-*   **Admin App (`admin`)**: `http://localhost:3003`
-*   **Auth Service (`auth`)**: Port `3002`
-*   **Backend Service (`backend`)**: Port `3004`
+
+- **Landing Page (`home`)**: `http://localhost:3001`
+- **Dashboard App (`web`)**: `http://localhost:3000`
+- **Admin App (`admin`)**: `http://localhost:3003`
+- **Auth Service (`auth`)**: Port `3002`
+- **Backend Service (`backend`)**: Port `3004`
 
 ---
 
@@ -133,22 +138,29 @@ The servers will be available at:
 For a more isolated and production-like environment, you can run the entire application stack using Docker Compose.
 
 ### Step 1: Install Docker
+
 Ensure you have Docker and Docker Compose installed on your system.
 
 ### Step 2: Configure Environment
+
 Copy the `.env.example` to `.env` and fill in the required variables, just as you would for a local setup. The `docker-compose.yml` file is configured to automatically load these variables.
 
 ### Step 3: Build and Run
+
 From the project root, run the following command:
+
 ```bash
 docker-compose up --build
 ```
+
 This command will:
+
 1.  Build the Docker images for all five services (`home`, `web`, `admin`, `auth`, `backend`).
 2.  Start a container for each service, as well as a MongoDB container for the database.
 3.  The services will be available on the same ports as the local development setup.
 
 To stop all the running containers, press `Ctrl+C` in the terminal, and then run:
+
 ```bash
 docker-compose down
 ```
@@ -157,14 +169,14 @@ docker-compose down
 
 ## 6. Testing Strategy
 
-*   **End-to-End (E2E) Testing**:
-    *   **Tool**: **Playwright**.
-    *   **Location**: `tests/` directory.
-    *   **Purpose**: These tests simulate real user journeys across the applications, including the full authentication flow.
+- **End-to-End (E2E) Testing**:
+  - **Tool**: **Playwright**.
+  - **Location**: `tests/` directory.
+  - **Purpose**: These tests simulate real user journeys across the applications, including the full authentication flow.
 
-*   **Static Analysis & Linting**:
-    *   **Tool**: **ESLint** and **Prettier**.
-    *   **Purpose**: Enforce a consistent code style and catch common errors.
+- **Static Analysis & Linting**:
+  - **Tool**: **ESLint** and **Prettier**.
+  - **Purpose**: Enforce a consistent code style and catch common errors.
 
 ---
 
@@ -176,15 +188,15 @@ Deploying this monorepo requires a platform that can handle multiple services.
 
 1.  **Install Dependencies**: `pnpm install`
 2.  **Build All Packages**: `pnpm build`
-    *   This command runs the `build` script in every package, creating production-ready assets.
+    - This command runs the `build` script in every package, creating production-ready assets.
 
 ### Hosting Strategy
 
 The multi-service architecture requires a hosting solution capable of running multiple Node.js applications and routing traffic accordingly (e.g., using Docker Compose, Kubernetes, or a platform like Vercel/Render with multiple services).
 
-*   The frontend Next.js apps (`home`, `web`, `admin`) should be run as Node.js servers.
-*   The backend services (`auth`, `backend`) must also be run as Node.js servers.
-*   A reverse proxy (like Nginx) is typically used to route requests from a public domain to the correct internal service based on the path or subdomain.
+- The frontend Next.js apps (`home`, `web`, `admin`) should be run as Node.js servers.
+- The backend services (`auth`, `backend`) must also be run as Node.js servers.
+- A reverse proxy (like Nginx) is typically used to route requests from a public domain to the correct internal service based on the path or subdomain.
 
 ### Environment Variables
 

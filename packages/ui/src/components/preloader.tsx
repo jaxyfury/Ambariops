@@ -4,10 +4,7 @@
 import { useEffect, useRef } from 'react';
 import anime from 'animejs';
 import { cn } from '@amberops/lib';
-
-// We have to import the CSS this way because package.json `exports` doesn't support CSS files.
-// This is a workaround for Storybook and downstream apps to be able to use the styles.
-import "../styles/preloader.css";
+import '../styles/preloader.css';
 
 export function Preloader() {
   const preloaderRef = useRef<HTMLDivElement>(null);
@@ -54,31 +51,31 @@ export function Preloader() {
   }, []);
 
   return (
-    <div ref={preloaderRef} className="preloader-body">
+    <div ref={preloaderRef} className="preloader-body" data-testid="preloader">
       <div className="preloader-container">
         <div className="side side-odd">
-          <div className="left"></div>
-          <div className="right"></div>
+          <div className="left" />
+          <div className="right" />
         </div>
         <div className="side side-even">
-          <div className="left"></div>
-          <div className="right"></div>
+          <div className="left" />
+          <div className="right" />
         </div>
         <div className="side side-odd">
-          <div className="left"></div>
-          <div className="right"></div>
+          <div className="left" />
+          <div className="right" />
         </div>
         <div className="side side-even">
-          <div className="left"></div>
-          <div className="right"></div>
+          <div className="left" />
+          <div className="right" />
         </div>
         <div className="side side-odd">
-          <div className="left"></div>
-          <div className="right"></div>
+          <div className="left" />
+          <div className="right" />
         </div>
         <div className="side side-even">
-          <div className="left"></div>
-          <div className="right"></div>
+          <div className="left" />
+          <div className="right" />
         </div>
       </div>
     </div>
