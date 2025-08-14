@@ -3,7 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import apiRoutes from './routes/api';
+import api from './api';
 
 // Load environment variables from the root .env file
 dotenv.config({ path: '../../.env' });
@@ -37,7 +37,7 @@ mongoose.connect(MONGODB_URI)
   });
 
 // API Routes
-app.use('/api/v1', apiRoutes);
+app.use('/api/v1', api);
 
 app.get('/', (req, res) => {
     res.send('AmberOps Backend Service is running.');
