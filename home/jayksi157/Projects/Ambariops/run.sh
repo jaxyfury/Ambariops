@@ -1,0 +1,81 @@
+#!/bin/sh
+
+# This script starts all development servers. It attempts to open new
+# terminal windows for each service, but will fall back to running them
+# in the background if it encounters an error.
+
+set -e
+
+# --- 1. Kill any running processes on the project ports ---
+echo "--- Checking for and stopping any running services... ---"
+PORTS="3000 3001 3002 3003 3004"
+for PORT in $PORTS; do
+  PID=$(lsof -t -i:$PORT || true)
+  if [ -n "$PID" ]; then
+    echo "Found process with PID $PID on port $PORT. Killing it..."
+    kill -9 "$PID"
+    echo "Process on port $PORT killed."
+  else
+    echo "No process found on port $PORT."
+  fi
+done
+echo "--- Port check complete. ---"
+
+
+# --- 2. Start Development Servers ---
+OS=$(uname)
+echo "Detected OS: $OS"
+
+# Note the '--' which ensures arguments are passed to the underlying script
+COMMANDS="pnpm --filter home dev -- -p 3001;pnpm --filter admin dev -- -p 3003;pnpm --filter auth-service dev;pnpm --filter backend-service dev;pnpm --filter web dev -- -p 3000"
+
+run_cmd() {
+  cmd="$1"
+  current_dir=$(pwd)
+
+  echo "Attempting to launch command: $cmd"
+
+  if [ "$OS" = "Darwin" ]; then
+    osascript -e "tell application \"Terminal\" to do script \"cd '$current_dir' && $cmd\""
+  
+  elif [ "$OS" = "Linux" ]; then
+    if command -v gnome-terminal >/dev/null 2>&1; then
+      if ! gnome-terminal -- bash -c "cd '$current_dir' && $cmd; exec bash" >/dev/null 2>&1; then
+        echo "⚠️ gnome-terminal failed to launch. Running in background..."
+        (cd "$current_dir" && eval "$cmd") &
+      fi
+    elif command -v konsole >/dev/null 2>&1; then
+      konsole --hold -e "bash -c \"cd '$current_dir' && $cmd\""
+    elif command -v xterm >/dev/null 2>&1; then
+      xterm -hold -e "cd '$current_dir' && $cmd"
+    else
+      echo "⚠️ No supported terminal emulator found. Running in background..."
+      (cd '$current_dir' && eval "$cmd") &
+    fi
+  
+  elif echo "$OS" | grep -qE 'MINGW|CYGWIN|MSYS'; then
+    start cmd.exe /c "cd /d '$current_dir' && $cmd"
+  
+  else
+    echo "⚠️ Unsupported OS '$OS'. Running in background..."
+    (cd "$current_dir" && eval "$cmd") &
+  fi
+}
+
+echo "--- Starting all development servers ---"
+echo "Home: http://localhost:3001"
+echo "Web: http://localhost:3000"
+echo "Admin: http://localhost:3003"
+echo "Auth Service: Port 3002"
+echo "Backend Service: Port 3004"
+echo "----------------------------------------"
+
+IFS=';'
+for command in $COMMANDS; do
+    run_cmd "$command"
+done
+unset IFS
+
+echo "✅ All service launch commands have been issued."
+echo "If new terminals did not open, the services are running in the background of this window."
+echo "You can manually stop them later by closing this terminal or using 'sh clean-workspace.sh'."
