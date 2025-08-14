@@ -27,7 +27,9 @@ export default function ProtectedAppLayout({
         process.env.NEXT_PUBLIC_HOME_URL || 'http://localhost:3001';
       window.location.href = `${homeUrl}/auth`;
     }
-    setIsLoading(false);
+    // Add a small delay to prevent screen flicker before redirects.
+    const timer = setTimeout(() => setIsLoading(false), 200);
+    return () => clearTimeout(timer);
   }, [router]);
 
   if (isLoading || !isAuthenticated) {

@@ -3,6 +3,7 @@
 
 import { redirect } from 'next/navigation';
 import { useEffect } from 'react';
+import { Preloader } from '@amberops/ui/components/preloader';
 
 // This page is a placeholder to demonstrate the redirect flow.
 export default function LoginPage() {
@@ -12,9 +13,5 @@ export default function LoginPage() {
     window.location.href = `${homeUrl}/auth`;
   }, []);
 
-  return (
-    <div className="flex h-screen items-center justify-center bg-background">
-      <p>Redirecting to login...</p>
-    </div>
-  );
+  return <Preloader />;
 }
