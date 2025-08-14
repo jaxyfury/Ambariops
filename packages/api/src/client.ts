@@ -1,10 +1,11 @@
 
 import type { DocumentationArticle, PricingTier, Testimonial, FAQ } from '@amberops/lib';
 
-const API_URL = '/api';
+// All API calls from the `home` app are proxied through the `web` app
+const API_URL = '/api/v1';
 
 export async function fetchDocumentationArticles(): Promise<DocumentationArticle[]> {
-    const res = await fetch(`${API_URL}/v1/documentation`);
+    const res = await fetch(`${API_URL}/documentation`);
     if (!res.ok) {
         throw new Error('Failed to fetch documentation articles');
     }
@@ -12,7 +13,7 @@ export async function fetchDocumentationArticles(): Promise<DocumentationArticle
 }
 
 export async function fetchPricingTiers(): Promise<PricingTier[]> {
-    const res = await fetch(`${API_URL}/v1/pricing`);
+    const res = await fetch(`${API_URL}/pricing`);
      if (!res.ok) {
         throw new Error('Failed to fetch pricing tiers');
     }
@@ -20,7 +21,7 @@ export async function fetchPricingTiers(): Promise<PricingTier[]> {
 }
 
 export async function fetchTestimonials(): Promise<Testimonial[]> {
-    const res = await fetch(`${API_URL}/v1/testimonials`);
+    const res = await fetch(`${API_URL}/testimonials`);
     if (!res.ok) {
         throw new Error('Failed to fetch testimonials');
     }
@@ -28,11 +29,9 @@ export async function fetchTestimonials(): Promise<Testimonial[]> {
 }
 
 export async function fetchFaqs(): Promise<FAQ[]> {
-    const res = await fetch(`${API_URL}/v1/faqs`);
+    const res = await fetch(`${API_URL}/faqs`);
     if (!res.ok) {
         throw new Error('Failed to fetch FAQs');
     }
     return res.json();
 }
-
-    

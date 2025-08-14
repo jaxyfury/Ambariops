@@ -1,4 +1,3 @@
-import { setupServer } from 'msw/node';
-import { handlers } from './handlers';
 
-export const server = setupServer(...handlers);
+// This file is intentionally left blank as mock data is no longer used.
+export {};

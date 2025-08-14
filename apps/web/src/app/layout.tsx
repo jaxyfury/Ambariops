@@ -26,12 +26,6 @@ const fontHeadline = Space_Grotesk({
 
 const queryClient = new QueryClient();
 
-if (process.env.NEXT_PUBLIC_ENABLE_MOCKING === 'true') {
-  import('@amberops/api/mocks/browser').then(({ enableMocking }) => {
-    enableMocking();
-  });
-}
-
 export default function RootLayout({
   children,
 }: Readonly<{
