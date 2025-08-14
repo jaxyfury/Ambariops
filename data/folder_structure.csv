@@ -1,34 +1,23 @@
 path,type,description
-/.github,directory,Contains GitHub Actions workflows for CI/CD.
-/apps,directory,Contains the main applications of the monorepo.
-/apps/web,directory,The main Next.js frontend application.
-/apps/web/public,directory,Static assets for the web app, including locales for i18n.
-/apps/web/src,directory,Source code for the web application.
-/apps/web/src/app,directory,Next.js App Router pages and layouts.
-/apps/web/src/components,directory,Components specific to the web application.
-/apps/web/src/hooks,directory,Custom React hooks for the web application.
-/apps/web/src/lib,directory,Utilities and i18n configuration specific to the web app.
-/data,directory,Project metadata and tracking files.
-/packages,directory,Shared packages used across the monorepo.
-/packages/api,directory,Handles API mocking (MSW) and AI flows (Genkit).
-/packages/api/src,directory,Source code for the API package.
-/packages/api/src/ai,directory,Contains Genkit AI flow definitions.
-/packages/api/src/mocks,directory,Contains MSW handlers and mock data.
-/packages/design-tokens,directory,Shared design tokens, Tailwind CSS configuration, and global styles.
-/packages/lib,directory,Shared utilities and TypeScript types.
-/packages/lib/src,directory,Source code for the lib package.
-/packages/ui,directory,Shared React component library and Storybook stories.
-/packages/ui/.storybook,directory,Storybook configuration files.
-/packages/ui/src,directory,Source code for the UI package.
-/packages/ui/src/components,directory,Reusable UI components built with ShadCN/Radix.
-/packages/ui/src/stories,directory,Storybook stories for UI components.
-/tests,directory,End-to-end tests using Playwright.
-/.github/workflows/ci.yml,file,Defines the Continuous Integration pipeline.
-/apps/web/next.config.ts,file,Next.js configuration for the web app.
-/apps/web/package.json,file,Package manifest for the web app.
-/apps/web/tailwind.config.ts,file,Tailwind CSS configuration for the web app.
-/apps/web/tsconfig.json,file,TypeScript configuration for the web app.
-/package.json,file,Root package.json managing pnpm workspaces.
-/pnpm-workspace.yaml,file,Defines the pnpm workspaces.
-/README.md,file,The main README file for the project.
-/tsconfig.base.json,file,Base TypeScript configuration shared across the monorepo.
+.github,directory,GitHub Actions workflows and templates
+apps,directory,Contains all deployable applications and services.
+apps/admin,directory,Admin dashboard frontend application (Next.js)
+apps/auth,directory,Standalone Node.js/Express authentication service
+apps/backend,directory,Standalone Node.js/Express backend API service
+apps/home,directory,Public-facing landing page and auth frontend (Next.js)
+apps/web,directory,The core, protected user dashboard application (Next.js)
+docs,directory,Project documentation, including ADRs and developer guides
+packages,directory,Shared libraries (monorepo packages).
+packages/api,directory,Centralized API client and Genkit AI flows
+packages/design-tokens,directory,Shared theme, global styles, and Tailwind config
+packages/lib,directory,Shared TypeScript types and core utility functions
+packages/ui,directory,Reusable React UI components and Storybook
+scripts,directory,Contains scripts for the repository, like database seeding.
+tests,directory,End-to-end tests for all applications (Playwright)
+.env,file,Environment variables (not committed to source control)
+package.json,file,Root package manifest managing pnpm workspaces
+pnpm-workspace.yaml,file,Defines the pnpm workspace packages
+README.md,file,The main project README file.
+clean-workspace.sh,file,Shell script to clean the entire workspace.
+build-workspace.sh,file,Shell script to build the entire workspace.
+run.sh,file,Shell script to run all development servers.
