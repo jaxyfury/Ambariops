@@ -1,19 +1,9 @@
 
 import mongoose, { Schema, Document } from 'mongoose';
+import type { User as IUserType } from '@amberops/lib';
 
-// Note: This model should be kept in sync with the structure
-// used by the seed script and the NextAuth implementation.
-
-export interface IUser extends Document {
-  name: string;
-  email: string;
-  password?: string;
-  role: 'Admin' | 'Operator' | 'Viewer';
-  image: string;
-  lastLogin: Date;
-  createdAt: Date;
-  updatedAt: Date;
-}
+// Extend the shared User type for Mongoose
+export interface IUser extends IUserType, Document {}
 
 const UserSchema: Schema = new Schema({
   name: { type: String, required: true },

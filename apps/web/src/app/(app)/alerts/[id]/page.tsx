@@ -97,8 +97,8 @@ export default function AlertDetailPage({ params }: { params: { id: string } }) 
                             <Clock className="h-5 w-5 mt-1 text-muted-foreground"/>
                             <div>
                                 <p className="text-sm text-muted-foreground">Timestamp</p>
-                                <p className="font-semibold">{new Date(alert.timestamp).toLocaleString()}</p>
-                                <p className="text-sm text-muted-foreground">{formatDistanceToNow(new Date(alert.timestamp), { addSuffix: true })}</p>
+                                <p className="font-semibold">{alert.timestamp.toLocaleString()}</p>
+                                <p className="text-sm text-muted-foreground">{formatDistanceToNow(alert.timestamp, { addSuffix: true })}</p>
                             </div>
                         </div>
                         <div className="flex items-start gap-3">

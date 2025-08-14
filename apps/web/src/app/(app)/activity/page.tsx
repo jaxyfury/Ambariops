@@ -2,7 +2,7 @@
 'use client';
 
 import { PageHeader } from '@amberops/ui/components/page-header';
-import { fetchActivityLogs } from '@/lib/api/services';
+import { fetchActivityLogs } from '@amberops/api/client';
 import { type ColumnDef } from '@tanstack/react-table';
 import type { ActivityLog } from '@amberops/lib';
 import { formatDistanceToNow } from 'date-fns';
@@ -151,10 +151,10 @@ export const columns: ColumnDef<ActivityLog>[] = [
         cell: ({ row }) => (
              <Tooltip>
                 <TooltipTrigger asChild>
-                    <span>{formatDistanceToNow(new Date(row.original.timestamp), { addSuffix: true })}</span>
+                    <span>{formatDistanceToNow(row.original.timestamp, { addSuffix: true })}</span>
                 </TooltipTrigger>
                 <TooltipContent>
-                    <p>{new Date(row.original.timestamp).toLocaleString()}</p>
+                    <p>{row.original.timestamp.toLocaleString()}</p>
                 </TooltipContent>
             </Tooltip>
         )
@@ -177,5 +177,3 @@ export default function ActivityPage() {
     </div>
   );
 }
-
-    

@@ -54,12 +54,13 @@ async function seedDatabase() {
             emailVerified: null, 
             createdAt: new Date(),
             updatedAt: new Date(),
+            lastLogin: new Date(user.lastLogin),
         }))
     );
     
     // Add a default user for login
     usersWithHashedPasswords.push({
-      ...{ id: 'u5', name: 'Jay Prakash', email: 'jayprakash@gmail.com', role: 'User', lastLogin: new Date().toISOString(), avatar: `https://avatar.vercel.sh/jay` },
+      ...{ id: 'u5', name: 'Jay Prakash', email: 'jayprakash@gmail.com', role: 'User', lastLogin: new Date(), avatar: `https://avatar.vercel.sh/jay` },
       password: await bcrypt.hash('123456', 10),
       emailVerified: null,
       createdAt: new Date(),
@@ -67,7 +68,7 @@ async function seedDatabase() {
     });
 
     usersWithHashedPasswords.push({
-        ...{ id: 'u6', name: 'Admin User', email: 'admin@amberops.com', role: 'Admin', lastLogin: new Date().toISOString(), avatar: `https://avatar.vercel.sh/admin` },
+        ...{ id: 'u6', name: 'Admin User', email: 'admin@amberops.com', role: 'Admin', lastLogin: new Date(), avatar: `https://avatar.vercel.sh/admin` },
         password: await bcrypt.hash('admin@amberops', 10),
         emailVerified: null,
         createdAt: new Date(),
@@ -102,7 +103,7 @@ async function seedDatabase() {
     // 5. Seed Alerts
     console.log('Seeding alerts...');
     await db.collection('alerts').deleteMany({});
-    await db.collection('alerts').insertMany(mockAlerts);
+    await db.collection('alerts').insertMany(mockAlerts.map(a => ({...a, timestamp: new Date(a.timestamp)})));
     console.log('Alerts seeded.');
 
     // 6. Seed Alert Definitions
@@ -114,13 +115,13 @@ async function seedDatabase() {
     // 7. Seed Config Versions
     console.log('Seeding configVersions...');
     await db.collection('configVersions').deleteMany({});
-    await db.collection('configVersions').insertMany(mockConfigVersions);
+    await db.collection('configVersions').insertMany(mockConfigVersions.map(v => ({...v, date: new Date(v.date)})));
     console.log('Config Versions seeded.');
     
     // 8. Seed Tasks
     console.log('Seeding tasks...');
     await db.collection('tasks').deleteMany({});
-    await db.collection('tasks').insertMany(mockTasks);
+    await db.collection('tasks').insertMany(mockTasks.map(t => ({...t, startTime: new Date(t.startTime)})));
     console.log('Tasks seeded.');
 
     // 9. Seed Activity Logs
@@ -131,6 +132,7 @@ async function seedDatabase() {
         const user = usersFromDb.find(u => u.email === log.user.email);
         return {
             ...log,
+            timestamp: new Date(log.timestamp),
             user: {
               id: user?._id.toString(),
               name: user?.name,
@@ -146,7 +148,7 @@ async function seedDatabase() {
     // 10. Seed Log Entries
     console.log('Seeding logEntries...');
     await db.collection('logEntries').deleteMany({});
-    await db.collection('logEntries').insertMany(mockLogEntries);
+    await db.collection('logEntries').insertMany(mockLogEntries.map(l => ({...l, timestamp: new Date(l.timestamp)})));
     console.log('Log Entries seeded.');
 
     // 11. Seed Documentation

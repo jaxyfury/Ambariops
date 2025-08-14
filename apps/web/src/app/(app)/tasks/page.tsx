@@ -7,7 +7,7 @@ import { Badge } from '@amberops/ui/components/ui/badge';
 import { Checkbox } from '@amberops/ui/components/ui/checkbox';
 import { Tooltip, TooltipTrigger, TooltipContent } from '@amberops/ui/components/ui/tooltip';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@amberops/ui/components/ui/card';
-import { fetchTasks } from '@/lib/api/services';
+import { fetchTasks } from '@amberops/api/client';
 import { CheckCircle, XCircle, Loader, CircleDotDashed, ArrowUpDown, Server, HardDrive, ArrowDown, ArrowUp } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { DataTable } from '@/components/data-table';
@@ -236,10 +236,10 @@ export const columns: ColumnDef<Task>[] = [
         cell: ({ row }) => (
             <Tooltip>
                 <TooltipTrigger asChild>
-                    <span>{formatDistanceToNow(new Date(row.original.startTime), { addSuffix: true })}</span>
+                    <span>{formatDistanceToNow(row.original.startTime, { addSuffix: true })}</span>
                 </TooltipTrigger>
                 <TooltipContent>
-                    <p>{new Date(row.original.startTime).toLocaleString()}</p>
+                    <p>{row.original.startTime.toLocaleString()}</p>
                 </TooltipContent>
             </Tooltip>
         ),
@@ -265,11 +265,11 @@ const SubRowComponent = ({ task }: { task: Task }) => {
                         <p className="text-muted-foreground mb-2">Logs</p>
                         <pre className="bg-background p-3 rounded text-xs overflow-x-auto">
                             <code>
-                                {`[${task.startTime}] INFO: Starting task '${task.name}' initiated by ${task.user}.\n`}
-                                {task.progress > 10 && `[${new Date(new Date(task.startTime).getTime() + 5000).toISOString()}] INFO: Validating parameters for target ${task.target}.\n`}
-                                {task.progress > 40 && `[${new Date(new Date(task.startTime).getTime() + 10000).toISOString()}] INFO: Executing operation on target.\n`}
-                                {task.status === 'failed' && `[${new Date(new Date(task.startTime).getTime() + 15000).toISOString()}] ERROR: Operation failed. See error logs for details.`}
-                                {task.status === 'completed' && `[${new Date(new Date(task.startTime).getTime() + 25000).toISOString()}] INFO: Task completed successfully.`}
+                                {`[${task.startTime.toISOString()}] INFO: Starting task '${task.name}' initiated by ${task.user}.\n`}
+                                {task.progress > 10 && `[${new Date(task.startTime.getTime() + 5000).toISOString()}] INFO: Validating parameters for target ${task.target}.\n`}
+                                {task.progress > 40 && `[${new Date(task.startTime.getTime() + 10000).toISOString()}] INFO: Executing operation on target.\n`}
+                                {task.status === 'failed' && `[${new Date(task.startTime.getTime() + 15000).toISOString()}] ERROR: Operation failed. See error logs for details.`}
+                                {task.status === 'completed' && `[${new Date(task.startTime.getTime() + 25000).toISOString()}] INFO: Task completed successfully.`}
                             </code>
                         </pre>
                     </div>
@@ -301,5 +301,3 @@ export default function TasksPage() {
     </div>
   );
 }
-
-    

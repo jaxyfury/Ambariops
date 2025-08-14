@@ -60,7 +60,7 @@ export type Alert = {
   clusterName: string;
   serviceName: string;
   hostName?: string;
-  timestamp: string;
+  timestamp: Date;
   description: string;
   relatedLogs: string;
 };
@@ -77,7 +77,7 @@ export type AlertDefinition = {
 export type ConfigVersion = {
   version: number;
   author: string;
-  date: string;
+  date: Date;
   notes: string;
 };
 
@@ -86,7 +86,7 @@ export type Task = {
   name: string;
   status: 'running' | 'completed' | 'failed' | 'pending';
   progress: number;
-  startTime: string;
+  startTime: Date;
   duration: string;
   user: string;
   target?: string;
@@ -94,7 +94,7 @@ export type Task = {
 };
 
 export type LogEntry = {
-  timestamp: string;
+  timestamp: Date;
   level: 'INFO' | 'WARN' | 'ERROR' | 'DEBUG';
   host: string;
   component: string;
@@ -106,7 +106,7 @@ export type User = {
   name: string;
   email: string;
   role: 'Admin' | 'Operator' | 'Viewer';
-  lastLogin: string;
+  lastLogin: Date;
   avatar: string;
 };
 
@@ -115,7 +115,7 @@ export type ActivityLog = {
     user: User;
     action: 'LOGIN' | 'CREATE' | 'UPDATE' | 'DELETE' | 'RESTART' | 'ACKNOWLEDGE';
     details: string;
-    timestamp: string;
+    timestamp: Date;
 };
 
 export type DocumentationArticle = {
@@ -123,14 +123,14 @@ export type DocumentationArticle = {
     title: string;
     slug: string;
     content: string;
-    createdAt: string;
-    updatedAt: string;
+    createdAt: Date;
+    updatedAt: Date;
 };
 
 export type LegalDocument = {
     type: 'terms' | 'privacy';
     content: string;
-    updatedAt: string;
+    updatedAt: Date;
 };
 
 export type PricingTier = {
