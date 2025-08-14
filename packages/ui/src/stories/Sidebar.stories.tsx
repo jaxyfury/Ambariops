@@ -26,11 +26,6 @@ const meta: Meta<typeof Sidebar> = {
   ],
   parameters: {
     layout: 'fullscreen',
-    nextjs: {
-      router: {
-        pathname: '/clusters/prod-cluster-1',
-      },
-    },
   },
   tags: ['autodocs'],
 };
