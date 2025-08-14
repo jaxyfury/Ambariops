@@ -2,16 +2,18 @@
 'use client';
 
 import { notFound } from 'next/navigation';
-import { PageHeader } from '@amberops/ui/components/page-header';
+import { PageHeader } from '@amberops/ui';
 import { Button } from '@amberops/ui/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@amberops/ui/components/ui/card';
 import { Badge } from '@amberops/ui/components/ui/badge';
-import { mockAlerts } from '@amberops/api';
+import { fetchAlertById } from '@amberops/api/client';
+import { useQuery } from '@tanstack/react-query';
 import { formatDistanceToNow } from 'date-fns';
 import { AlertTriangle, Server, HardDrive, Clock } from 'lucide-react';
 import Link from 'next/link';
 import { TroubleshootingSteps } from '@/components/troubleshooting-steps';
 import toast from 'react-hot-toast';
+import { Skeleton } from '@amberops/ui/components/ui/skeleton';
 
 function getSeverityBadgeVariant(severity: 'critical' | 'warning' | 'info'): 'destructive' | 'secondary' | 'default' {
     switch (severity) {
@@ -26,7 +28,27 @@ function getSeverityBadgeVariant(severity: 'critical' | 'warning' | 'info'): 'de
 }
 
 export default function AlertDetailPage({ params }: { params: { id: string } }) {
-  const alert = mockAlerts.find((a) => a.id === params.id);
+  const { data: alert, isLoading } = useQuery({
+    queryKey: ['alert', params.id],
+    queryFn: () => fetchAlertById(params.id),
+  });
+
+  if (isLoading) {
+    return (
+        <div>
+            <PageHeader title={<Skeleton className="h-8 w-64" />} description={<Skeleton className="h-6 w-96" />} />
+            <div className="grid gap-6 lg:grid-cols-3">
+                <div className="lg:col-span-2 space-y-6">
+                    <Skeleton className="h-64 w-full" />
+                    <Skeleton className="h-64 w-full" />
+                </div>
+                <div className="lg:col-span-1">
+                    <Skeleton className="h-96 w-full" />
+                </div>
+            </div>
+        </div>
+    );
+  }
 
   if (!alert) {
     notFound();
@@ -119,5 +141,3 @@ export default function AlertDetailPage({ params }: { params: { id: string } }) 
     </div>
   );
 }
-
-    

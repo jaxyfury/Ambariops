@@ -2,7 +2,7 @@
 'use client';
 
 import Link from 'next/link';
-import { PageHeader } from '@amberops/ui/components/page-header';
+import { PageHeader } from '@amberops/ui';
 import { Button } from '@amberops/ui/components/ui/button';
 import { Badge } from '@amberops/ui/components/ui/badge';
 import { Checkbox } from '@amberops/ui/components/ui/checkbox';
@@ -19,7 +19,7 @@ import type { Cluster } from '@amberops/lib';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useQuery } from '@tanstack/react-query';
-import { fetchClusters } from '@/lib/api/services';
+import { fetchClusters } from '@amberops/api/client';
 
 function getStatusBadgeVariant(status: 'healthy' | 'unhealthy' | 'degraded'): 'default' | 'destructive' | 'secondary' {
   switch (status) {
@@ -255,8 +255,8 @@ function AddClusterDialog({ isOpen, onOpenChange }: { isOpen: boolean, onOpenCha
           <div className="flex w-full">
             <StepperItem step={0}>
               <StepperTrigger>
-                <StepperIndicator step={0}>
-                  <StepperNumber>1</StepperNumber>
+                <StepperIndicator>
+                  <StepperNumber />
                 </StepperIndicator>
                 <StepperLabel>Cluster Details</StepperLabel>
               </StepperTrigger>
@@ -264,8 +264,8 @@ function AddClusterDialog({ isOpen, onOpenChange }: { isOpen: boolean, onOpenCha
             </StepperItem>
             <StepperItem step={1}>
               <StepperTrigger>
-                <StepperIndicator step={1}>
-                  <StepperNumber>2</StepperNumber>
+                <StepperIndicator>
+                  <StepperNumber />
                 </StepperIndicator>
                 <StepperLabel>Credentials</StepperLabel>
               </StepperTrigger>
@@ -273,8 +273,8 @@ function AddClusterDialog({ isOpen, onOpenChange }: { isOpen: boolean, onOpenCha
             </StepperItem>
             <StepperItem step={2}>
               <StepperTrigger>
-                <StepperIndicator step={2}>
-                  <StepperNumber>3</StepperNumber>
+                <StepperIndicator>
+                  <StepperNumber />
                 </StepperIndicator>
                 <StepperLabel>Confirmation</StepperLabel>
               </StepperTrigger>
@@ -351,5 +351,3 @@ export default function ClustersPage() {
     </div>
   );
 }
-
-    

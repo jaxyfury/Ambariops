@@ -1,7 +1,7 @@
 
 'use client';
 
-import { PageHeader } from "@amberops/ui/components/page-header";
+import { PageHeader } from "@amberops/ui";
 import { Button } from "@amberops/ui/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@amberops/ui/components/ui/card";
 import { Progress } from "@amberops/ui/components/ui/progress";
@@ -10,7 +10,7 @@ import { Badge } from "@amberops/ui/components/ui/badge";
 import { Select, SelectTrigger, SelectContent, SelectValue, SelectItem } from "@amberops/ui/components/ui/select";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@amberops/ui/components/ui/tooltip";
 import { Skeleton } from "@amberops/ui/components/ui/skeleton";
-import { fetchClusters, fetchAlerts } from '@/lib/api/services';
+import { fetchClusters, fetchAlerts } from '@amberops/api/client';
 import { ArrowUpRight, Cpu, MemoryStick, Server, Siren, Rocket } from "lucide-react";
 import Link from 'next/link';
 import { ClusterHealthSummary } from "@/components/cluster-health-summary";
@@ -293,5 +293,3 @@ export default function DashboardPage() {
         </div>
     )
 }
-
-    
