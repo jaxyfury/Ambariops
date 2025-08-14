@@ -1,4 +1,5 @@
-
+export * from './page-header';
+export * from './theme-provider';
 export * from './accordion';
 export * from './alert';
 export * from './alert-dialog';
@@ -26,6 +27,7 @@ export * from './separator';
 export * from './sheet';
 export * from './skeleton';
 export * from './slider';
+export * from './stepper';
 export * from './switch';
 export * from './table';
 export * from './tabs';

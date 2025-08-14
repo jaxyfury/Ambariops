@@ -2,13 +2,20 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Data Table Features', () => {
   test.beforeEach(async ({ page }) => {
+    // Log in before each test
+    await page.goto('http://localhost:3001/auth');
+    await page.getByPlaceholder('Email').fill('jayprakash@gmail.com');
+    await page.getByPlaceholder('Password').fill('123456');
+    await page.getByRole('button', { name: 'Sign In' }).click();
+    await page.waitForURL('http://localhost:3000/dashboard');
+    
     await page.goto('/clusters');
     // Wait for the table to finish loading
     await expect(page.locator('[role="cell"]:has-text("Production Cluster")')).toBeVisible();
   });
 
   test('should show and hide clear filter button correctly', async ({ page }) => {
-    const clearButton = page.getByRole('tooltip', { name: 'Clear all filters and customizations' });
+    const clearButton = page.getByRole('button', { name: 'Clear all filters and customizations' });
 
     await expect(clearButton).not.toBeVisible();
 

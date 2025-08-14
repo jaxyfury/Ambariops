@@ -1,8 +1,7 @@
-
 // Components
 export * from './components/icons';
-export * from './components/theme-provider';
 export * from './components/page-header';
+export * from './components/theme-provider';
 
 // Hooks
 export * from './hooks/use-mobile';
