@@ -6,6 +6,27 @@
 
 set -e
 
+# --- 1. Kill any running processes on the project ports ---
+echo "--- Checking for and stopping any running services... ---"
+# Use a space-separated string for POSIX compliance
+PORTS="3000 3001 3002 3003 3004"
+for PORT in $PORTS; do
+  # Use lsof to find the PID, -t for terse output (PID only)
+  # The "|| true" prevents the script from exiting if no process is found
+  PID=$(lsof -t -i:$PORT || true)
+  if [ -n "$PID" ]; then
+    echo "Found process with PID $PID on port $PORT. Killing it..."
+    # Forcefully kill the process
+    kill -9 "$PID"
+    echo "Process on port $PORT killed."
+  else
+    echo "No process found on port $PORT."
+  fi
+done
+echo "--- Port check complete. ---"
+
+
+# --- 2. Start Development Servers ---
 # Detect OS
 OS=$(uname)
 echo "Detected OS: $OS"
@@ -37,7 +58,7 @@ run_cmd() {
       xterm -hold -e "cd '$current_dir' && $cmd"
     else
       echo "⚠️ No supported terminal emulator found. Running in background..."
-      (cd "$current_dir" && $cmd) &
+      (cd '$current_dir' && $cmd) &
     fi
   
   elif echo "$OS" | grep -qE 'MINGW|CYGWIN|MSYS'; then
@@ -67,5 +88,4 @@ unset IFS
 
 echo "✅ All service launch commands have been issued."
 echo "If new terminals did not open, the services are running in the background of this window."
-echo "You can manually stop them later by closing this terminal or using 'pnpm kill-ports'."
-
+echo "You can manually stop them later by closing this terminal or using 'sh clean-workspace.sh'."
