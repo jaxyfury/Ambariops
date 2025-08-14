@@ -4,7 +4,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import toast from 'react-hot-toast';
 import { GitMerge, Chrome, LogIn, UserPlus, Eye, EyeOff } from 'lucide-react';
 import { cn } from '@amberops/lib';
@@ -17,7 +17,6 @@ import { Button } from '@amberops/ui/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@amberops/ui/components/ui/tooltip';
 
 const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL || 'http://localhost:3000';
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
 
 const SocialButton = ({ icon, onClick, tooltip }: { icon: React.ReactNode, onClick?: () => void, tooltip: string }) => (
     <TooltipProvider>
@@ -35,7 +34,6 @@ const SocialButton = ({ icon, onClick, tooltip }: { icon: React.ReactNode, onCli
 );
 
 const SignUpForm = () => {
-    const router = useRouter();
     const [showPassword, setShowPassword] = useState(false);
 
     const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -45,7 +43,7 @@ const SignUpForm = () => {
         const password = e.currentTarget.password.value;
 
         try {
-            const response = await fetch(`${API_URL}/auth/register`, {
+            const response = await fetch(`/api/auth/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -63,7 +61,8 @@ const SignUpForm = () => {
                 if (result?.error) {
                      toast.error(result.error || 'Invalid credentials.');
                 } else {
-                     router.push(`${WEB_URL}/dashboard`);
+                     // The session update will be caught by the parent component's useEffect
+                     // which will handle the redirect.
                 }
             } else {
                 const data = await response.json();
@@ -102,7 +101,6 @@ const SignUpForm = () => {
 };
 
 const SignInForm = () => {
-    const router = useRouter();
     const [isForgotModalOpen, setIsForgotModalOpen] = useState(false);
     const [forgotEmail, setForgotEmail] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -121,14 +119,15 @@ const SignInForm = () => {
         if (result?.error) {
             toast.error(result.error || 'Invalid credentials.');
         } else {
-            toast.success('Logged in successfully!');
-            router.push(`${WEB_URL}/dashboard`);
+             // The session update will be caught by the parent component's useEffect
+             // which will handle the redirect.
+             toast.success('Logged in successfully!');
         }
     }
 
     const handleForgotPassword = async () => {
         try {
-            const response = await fetch(`${API_URL}/auth/forgot-password`, {
+            const response = await fetch(`/api/auth/forgot-password`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: forgotEmail }),
@@ -205,6 +204,8 @@ const SignInForm = () => {
 export default function AuthPage() {
     const [isActive, setIsActive] = useState(false);
     const searchParams = useSearchParams();
+    const router = useRouter();
+    const { data: session, status } = useSession();
 
     useEffect(() => {
         // If the URL has a parameter `action=signup`, activate the signup panel
@@ -212,6 +213,18 @@ export default function AuthPage() {
             setIsActive(true);
         }
     }, [searchParams]);
+
+    useEffect(() => {
+        if (status === 'authenticated') {
+            const user = session.user as any;
+            if (user?.role === 'Admin') {
+                router.push(`${WEB_URL}/admin/dashboard`);
+            } else {
+                router.push(`${WEB_URL}/dashboard`);
+            }
+        }
+    }, [status, session, router]);
+
 
     return (
         <div className="auth-body">
@@ -253,3 +266,4 @@ export default function AuthPage() {
         </div>
     );
 }
+

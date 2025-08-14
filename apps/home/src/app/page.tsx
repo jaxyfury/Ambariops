@@ -186,11 +186,19 @@ export default async function HomePage() {
                 </div>
             </div>
              <div id="pricing-grid" className="mx-auto grid max-w-6xl items-start gap-32 lg:grid-cols-3 justify-items-center">
-                {pricingTiers.map((tier) => (
-                    <div key={tier.id} className="pricing-card-wrapper">
-                        <PricingCard {...tier} buttonText={tier.title === 'Enterprise' ? 'Contact Sales' : 'Get Started'} />
-                    </div>
-                ))}
+                {pricingTiers && pricingTiers.length > 0 ? (
+                    pricingTiers.map((tier) => (
+                        <div key={tier.id} className="pricing-card-wrapper">
+                            <PricingCard {...tier} buttonText={tier.title === 'Enterprise' ? 'Contact Sales' : 'Get Started'} />
+                        </div>
+                    ))
+                ) : (
+                     Array.from({ length: 3 }).map((_, i) => (
+                        <div key={i} className="w-full">
+                            <Skeleton className="h-[450px] w-full rounded-2xl" />
+                        </div>
+                    ))
+                )}
             </div>
           </div>
         </section>
@@ -206,7 +214,15 @@ export default async function HomePage() {
                     </div>
                 </div>
             </div>
-            <TestimonialsMarquee testimonials={testimonials} />
+             {testimonials && testimonials.length > 0 ? (
+                <TestimonialsMarquee testimonials={testimonials} />
+            ) : (
+                <div className="flex gap-6 overflow-hidden p-4">
+                    {Array.from({ length: 4 }).map((_, i) => (
+                        <Skeleton key={i} className="h-48 w-96 rounded-xl" />
+                    ))}
+                </div>
+            )}
         </section>
         
         <section id="faq" className="w-full py-20 md:py-28 lg:py-32 bg-muted/20">
@@ -224,14 +240,23 @@ export default async function HomePage() {
                 </div>
                 <div className="mx-auto max-w-3xl py-12">
                      <Accordion id="faq-accordion" type="single" collapsible className="w-full">
-                        {faqItems.map((faq, index) => (
-                        <AccordionItem value={`item-${index + 1}`} key={faq.id} className="faq-item">
-                            <AccordionTrigger className="text-lg font-semibold">{faq.question}</AccordionTrigger>
-                            <AccordionContent className="text-muted-foreground text-base">
-                                {faq.answer}
-                            </AccordionContent>
-                        </AccordionItem>
-                        ))}
+                        {faqItems && faqItems.length > 0 ? (
+                            faqItems.map((faq, index) => (
+                                <AccordionItem value={`item-${index + 1}`} key={faq.id} className="faq-item">
+                                    <AccordionTrigger className="text-lg font-semibold">{faq.question}</AccordionTrigger>
+                                    <AccordionContent className="text-muted-foreground text-base">
+                                        {faq.answer}
+                                    </AccordionContent>
+                                </AccordionItem>
+                            ))
+                        ) : (
+                             Array.from({ length: 3 }).map((_, i) => (
+                                <div key={i} className="space-y-2 py-4 border-b">
+                                    <Skeleton className="h-6 w-full" />
+                                    <Skeleton className="h-4 w-4/5" />
+                                </div>
+                            ))
+                        )}
                     </Accordion>
                 </div>
             </div>
