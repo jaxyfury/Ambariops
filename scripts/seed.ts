@@ -53,11 +53,21 @@ async function seedDatabase() {
             updatedAt: new Date(),
         }))
     );
+    
+    // Add a default user for login
+    usersWithHashedPasswords.push({
+      ...{ id: 'u5', name: 'Jay Prakash', email: 'jayprakash@gmail.com', role: 'Admin', lastLogin: new Date().toISOString(), avatar: `https://avatar.vercel.sh/jay` },
+      password: await bcrypt.hash('123456', 10),
+      emailVerified: null,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+
 
     // 1. Seed Users
     console.log('Seeding users...');
     await db.collection('users').deleteMany({});
-    await db.collection('users').insertMany(usersWithHashedPasswords);
+    await db.collection('users').insertMany(usersWithHashedPasswords.map(({ id, ...user}) => user));
     console.log('Users seeded.');
 
     // 2. Seed Clusters
@@ -105,12 +115,17 @@ async function seedDatabase() {
     // 9. Seed Activity Logs
     console.log('Seeding activityLogs...');
     await db.collection('activityLogs').deleteMany({});
-    // We need to resolve the user object to an id
+    const usersFromDb = await db.collection('users').find({}).toArray();
     const activityLogsToInsert = mockActivityLogs.map(log => {
-        const user = usersWithHashedPasswords.find(u => u.id === log.user.id);
+        const user = usersFromDb.find(u => u.email === log.user.email);
         return {
             ...log,
-            userId: user?._id, // This assumes user will be found. In real apps, handle this case.
+            user: {
+              id: user?._id.toString(),
+              name: user?.name,
+              email: user?.email,
+              avatar: user?.image,
+            },
         }
     });
     // @ts-ignore

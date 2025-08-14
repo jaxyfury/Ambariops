@@ -36,7 +36,12 @@ const userSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   email: z.string().email('Invalid email address'),
   role: z.enum(['Admin', 'Operator', 'Viewer']),
+  password: z.string().optional(),
+}).refine(data => !data.password || data.password.length >= 6, {
+    message: "Password must be at least 6 characters long.",
+    path: ["password"],
 });
+
 
 type UserFormData = z.infer<typeof userSchema>;
 
@@ -76,7 +81,7 @@ export function UserManagement() {
     if (user) {
       reset({ name: user.name, email: user.email, role: user.role });
     } else {
-      reset({ name: '', email: '', role: 'Viewer' });
+      reset({ name: '', email: '', role: 'Viewer', password: '' });
     }
     setIsModalOpen(true);
   };
@@ -90,7 +95,9 @@ export function UserManagement() {
   const userMutation = useMutation({
     mutationFn: (formData: UserFormData) => {
       if (editingUser) {
-        return updateUser(editingUser.id, formData);
+        // Don't send password if it's empty
+        const { password, ...updateData } = formData;
+        return updateUser(editingUser.id, updateData);
       }
       return addUser(formData);
     },
@@ -118,6 +125,10 @@ export function UserManagement() {
   });
 
   const onSubmit = (data: UserFormData) => {
+    if(!editingUser && !data.password) {
+        toast.error("Password is required for new users.");
+        return;
+    }
     userMutation.mutate(data);
   };
   
@@ -326,6 +337,25 @@ export function UserManagement() {
                   </p>
                 )}
               </div>
+               {!editingUser && (
+                <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="password" className="text-right">
+                    Password
+                    </Label>
+                    <Controller
+                    name="password"
+                    control={control}
+                    render={({ field }) => (
+                        <Input id="password" type="password" {...field} className="col-span-3" />
+                    )}
+                    />
+                    {errors.password && (
+                    <p className="col-start-2 col-span-3 text-red-500 text-xs">
+                        {errors.password.message}
+                    </p>
+                    )}
+                </div>
+               )}
             </div>
             <DialogFooter>
               <Button type="button" variant="outline" onClick={closeModal}>

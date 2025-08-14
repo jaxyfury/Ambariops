@@ -25,15 +25,17 @@ export async function POST(request: Request) {
       name,
       email,
       password: hashedPassword,
+      role: 'Operator', // Default role for new sign-ups
       emailVerified: null,
       image: `https://avatar.vercel.sh/${email}`,
       createdAt: new Date(),
       updatedAt: new Date(),
     });
 
-    return NextResponse.json({ message: 'User created successfully', userId: result.insertedId }, { status: 201 });
+    return NextResponse.json({ message: 'User created successfully', userId: result.insertedId.toString() }, { status: 201 });
   } catch (error) {
     console.error('Registration error:', error);
     return NextResponse.json({ message: 'An internal server error occurred' }, { status: 500 });
   }
 }
+

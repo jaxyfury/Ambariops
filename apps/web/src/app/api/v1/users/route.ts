@@ -1,7 +1,7 @@
 
 import { NextResponse } from 'next/server';
 import clientPromise from '@/lib/mongodb';
-import { ObjectId } from 'mongodb';
+import bcrypt from 'bcryptjs';
 
 export async function GET() {
   try {
@@ -25,26 +25,28 @@ export async function GET() {
 
 export async function POST(request: Request) {
     try {
-        const { name, email, role } = await request.json();
+        const { name, email, role, password } = await request.json();
         
-        if (!name || !email || !role) {
-            return NextResponse.json({ message: 'Missing required fields' }, { status: 400 });
+        if (!name || !email || !role || !password) {
+            return NextResponse.json({ message: 'Missing required fields (name, email, role, password)' }, { status: 400 });
         }
         
         const client = await clientPromise;
         const db = client.db();
         
-        // Check if user already exists
         const existingUser = await db.collection('users').findOne({ email });
         if (existingUser) {
             return NextResponse.json({ message: 'User with this email already exists' }, { status: 409 });
         }
+        
+        const hashedPassword = await bcrypt.hash(password, 10);
 
         const newUser = {
             name,
             email,
             role,
-            avatar: `https://avatar.vercel.sh/${email}`,
+            password: hashedPassword,
+            image: `https://avatar.vercel.sh/${email}`,
             lastLogin: new Date().toISOString(),
             createdAt: new Date(),
             updatedAt: new Date(),
@@ -52,7 +54,9 @@ export async function POST(request: Request) {
 
         const result = await db.collection('users').insertOne(newUser);
         
-        return NextResponse.json({ ...newUser, id: result.insertedId.toString() }, { status: 201 });
+        const { password: _, ...userWithoutPassword } = newUser;
+
+        return NextResponse.json({ ...userWithoutPassword, id: result.insertedId.toString() }, { status: 201 });
 
     } catch (error) {
         console.error('Failed to add user:', error);
