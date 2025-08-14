@@ -29,7 +29,6 @@ export default meta;
 
 type Story = StoryObj<typeof Sidebar>;
 
-// A simple placeholder for the main content area to avoid importing from the app
 const MockAppLayout = ({ children }: { children: React.ReactNode }) => (
     <div className="flex-1 p-6">{children}</div>
 );
@@ -97,5 +96,6 @@ export const Collapsed: Story = {
             <p>The sidebar is collapsed by default.</p>
         </MockAppLayout>
       </SidebarProvider>
+    </div>
   ),
 };
