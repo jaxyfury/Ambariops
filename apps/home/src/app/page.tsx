@@ -41,6 +41,7 @@ async function getPageData() {
         return { pricingTiers, testimonials, faqItems, error: null };
     } catch (error) {
         console.error("Failed to fetch landing page data:", error);
+        // In a real app, you might want to return a more specific error or fallback data
         return { pricingTiers: [], testimonials: [], faqItems: [], error: "Could not load page data." };
     }
 }

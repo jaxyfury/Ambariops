@@ -24,13 +24,10 @@ const nextConfig = {
         return config
     },
     async rewrites() {
-        // This is the key to fixing the CORS issue. It tells Next.js to proxy
-        // any request from the frontend that starts with /api/ to the web app's backend.
-        const webUrl = 'http://localhost:3000';
         return [
             {
                 source: '/api/:path*',
-                destination: `${webUrl}/api/:path*`,
+                destination: 'http://localhost:3000/api/:path*',
             },
         ]
     }
