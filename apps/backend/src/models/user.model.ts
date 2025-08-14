@@ -8,7 +8,7 @@ const UserSchema = new Schema<IUser>({
   password: { type: String, required: true },
   role: { type: String, enum: ['Admin', 'Operator', 'Viewer'], default: 'Viewer' },
   image: { type: String },
-  lastLogin: { type: Date, default: () => new Date() },
+  lastLogin: { type: Date, default: Date.now },
 }, { timestamps: true });
 
 export const User = mongoose.models.User || mongoose.model<IUser>('User', UserSchema);
