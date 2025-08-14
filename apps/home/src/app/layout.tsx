@@ -15,6 +15,7 @@ import { cn } from "@amberops/lib";
 import { ThemeProvider } from "@amberops/ui/components/theme-provider";
 import { Toaster } from "react-hot-toast";
 import { ThunderCursor } from "@/components/thunder-cursor";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const fontBody = Inter({
   subsets: ['latin'],
@@ -46,6 +47,8 @@ export const metadata: Metadata = {
   },
 };
 
+const queryClient = new QueryClient();
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -61,16 +64,18 @@ export default function RootLayout({
           fontHeadline.variable
         )}
       >
-        <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-        >
-            <ThunderCursor />
-            {children}
-            <Toaster position="bottom-right" />
-        </ThemeProvider>
+        <QueryClientProvider client={queryClient}>
+            <ThemeProvider
+                attribute="class"
+                defaultTheme="system"
+                enableSystem
+                disableTransitionOnChange
+            >
+                <ThunderCursor />
+                {children}
+                <Toaster position="bottom-right" />
+            </ThemeProvider>
+        </QueryClientProvider>
         </body>
     </html>
   );

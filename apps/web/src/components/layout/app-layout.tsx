@@ -30,15 +30,14 @@ import Link from 'next/link';
 import toast from 'react-hot-toast';
 import { QuickAccessNav } from '@/components/quick-access-nav';
 import { GlobalSearch } from '@/components/global-search';
-import { signOut, useSession } from 'next-auth/react';
-import { Shield } from 'lucide-react';
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
-    const { data: session } = useSession();
     const homeUrl = process.env.NEXT_PUBLIC_HOME_URL || 'http://localhost:3001';
 
     const handleSignOut = async () => {
-        await signOut({ callbackUrl: homeUrl });
+        // In a real app with a dedicated auth service, this would
+        // likely involve clearing tokens and redirecting to the auth app's logout endpoint.
+        window.location.href = `${homeUrl}/auth`;
         toast.success('Successfully logged out!');
     }
 
@@ -71,15 +70,15 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
               >
                 <Avatar>
                   <AvatarImage
-                    src={session?.user?.image ?? `https://avatar.vercel.sh/${session?.user?.email}`}
-                    alt={session?.user?.name ?? 'User'}
+                    src={`https://avatar.vercel.sh/operator`}
+                    alt={'Operator'}
                   />
-                  <AvatarFallback>{session?.user?.name?.charAt(0) ?? 'U'}</AvatarFallback>
+                  <AvatarFallback>{'O'}</AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>{session?.user?.name ?? 'My Account'}</DropdownMenuLabel>
+              <DropdownMenuLabel>{'Operator'}</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
                 <Link href="/settings">Settings</Link>
@@ -87,17 +86,6 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
               <DropdownMenuItem asChild>
                 <Link href="/help">Support</Link>
               </DropdownMenuItem>
-               {(session?.user as any)?.role === 'Admin' && (
-                <>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem asChild>
-                        <Link href="/admin/dashboard">
-                            <Shield className="mr-2 h-4 w-4" />
-                            Admin Dashboard
-                        </Link>
-                    </DropdownMenuItem>
-                </>
-              )}
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={handleSignOut}

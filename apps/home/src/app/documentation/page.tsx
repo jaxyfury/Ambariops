@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { PageHeader } from '@amberops/ui';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@amberops/ui/components/ui/card';
 import { Skeleton } from '@amberops/ui/components/ui/skeleton';
-import { fetchDocumentationArticles } from '@/lib/api/services';
+import { fetchDocumentationArticles } from '@amberops/api/client';
 import type { DocumentationArticle } from '@amberops/lib';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
@@ -18,9 +18,14 @@ export default function DocumentationLandingPage() {
     useEffect(() => {
         const loadArticles = async () => {
             setIsLoading(true);
-            const fetchedArticles = await fetchDocumentationArticles();
-            setArticles(fetchedArticles);
-            setIsLoading(false);
+            try {
+                const fetchedArticles = await fetchDocumentationArticles();
+                setArticles(fetchedArticles);
+            } catch (error) {
+                console.error("Failed to load articles:", error);
+            } finally {
+                setIsLoading(false);
+            }
         };
         loadArticles();
     }, []);

@@ -26,8 +26,10 @@ const nextConfig: NextConfig = {
   },
   transpilePackages: ['@amberops/ui', '@amberops/api', '@amberops/design-tokens'],
   env: {
-    NEXT_PUBLIC_WEB_URL: process.env.NEXT_PUBLIC_WEB_URL,
     NEXT_PUBLIC_HOME_URL: process.env.NEXT_PUBLIC_HOME_URL,
+    NEXT_PUBLIC_ADMIN_URL: process.env.NEXT_PUBLIC_ADMIN_URL,
+    NEXT_PUBLIC_AUTH_URL: process.env.NEXT_PUBLIC_AUTH_URL,
+    NEXT_PUBLIC_API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL,
   },
 };
 

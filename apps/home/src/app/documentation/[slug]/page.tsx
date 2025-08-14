@@ -7,16 +7,17 @@ import { PageHeader } from '@amberops/ui';
 import { Card, CardContent } from '@amberops/ui/components/ui/card';
 import { Skeleton } from '@amberops/ui/components/ui/skeleton';
 import type { DocumentationArticle } from '@amberops/lib';
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
+import { fetchDocumentationArticles } from '@amberops/api/client';
 
 async function fetchArticle(slug: string): Promise<DocumentationArticle | null> {
-    const res = await fetch(`${API_URL}/v1/documentation/${slug}`);
-    if (!res.ok) {
-        if (res.status === 404) return null;
-        throw new Error('Failed to fetch article');
+    try {
+        // This is not efficient, but works for the prototype without a dedicated 'fetchBySlug' endpoint
+        const articles = await fetchDocumentationArticles();
+        return articles.find(a => a.slug === slug) || null;
+    } catch (error) {
+        console.error("Failed to fetch article:", error);
+        return null;
     }
-    return res.json();
 }
 
 

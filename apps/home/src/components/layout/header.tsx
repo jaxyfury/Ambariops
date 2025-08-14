@@ -52,7 +52,7 @@ export function Header() {
                 </Link>
                 <AnimatedThemeToggle />
                 <Button asChild variant="ghost">
-                    <Link href="/auth">Admin Login</Link>
+                    <Link href="/auth">Login</Link>
                 </Button>
                 <Button asChild>
                     <Link href="/auth?action=signup">Get Started <ArrowRight className="ml-2 h-4 w-4" /></Link>

@@ -4,7 +4,6 @@
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { signIn, useSession } from 'next-auth/react';
 import toast from 'react-hot-toast';
 import { GitMerge, Chrome, LogIn, UserPlus, Eye, EyeOff } from 'lucide-react';
 import { cn } from '@amberops/lib';
@@ -16,7 +15,10 @@ import { Label } from '@amberops/ui/components/ui/label';
 import { Button } from '@amberops/ui/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@amberops/ui/components/ui/tooltip';
 
+const AUTH_URL = process.env.NEXT_PUBLIC_AUTH_URL || 'http://localhost:3002';
 const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL || 'http://localhost:3000';
+const ADMIN_URL = process.env.NEXT_PUBLIC_ADMIN_URL || 'http://localhost:3003';
+
 
 const SocialButton = ({ icon, onClick, tooltip }: { icon: React.ReactNode, onClick?: () => void, tooltip: string }) => (
     <TooltipProvider>
@@ -35,51 +37,20 @@ const SocialButton = ({ icon, onClick, tooltip }: { icon: React.ReactNode, onCli
 
 const SignUpForm = () => {
     const [showPassword, setShowPassword] = useState(false);
+    const router = useRouter();
 
     const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const name = e.currentTarget.name.value;
-        const email = e.currentTarget.email.value;
-        const password = e.currentTarget.password.value;
-
-        try {
-            const response = await fetch(`/api/auth/register`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ name, email, password }),
-            });
-
-            if (response.ok) {
-                toast.success('Account created successfully! Signing in...');
-                const result = await signIn('credentials', {
-                    redirect: false,
-                    email,
-                    password,
-                });
-                if (result?.error) {
-                     toast.error(result.error || 'Invalid credentials.');
-                } else {
-                     // The session update will be caught by the parent component's useEffect
-                     // which will handle the redirect.
-                }
-            } else {
-                const data = await response.json();
-                toast.error(data.message || 'Something went wrong.');
-            }
-        } catch (error) {
-            toast.error('An error occurred during signup.');
-            console.error('Signup error:', error);
-        }
+        // In a real Keycloak setup, this would redirect to the Keycloak registration page
+        router.push(`${AUTH_URL}/register`);
     };
 
     return (
         <form onSubmit={handleSignup} data-testid="signup-form">
             <h1 className="text-3xl font-bold font-headline mb-3">Create Account</h1>
             <div className="social-icons">
-                 <SocialButton icon={<Chrome size={20} />} onClick={() => signIn('google', { callbackUrl: `${WEB_URL}/dashboard` })} tooltip="Sign up with Google" />
-                 <SocialButton icon={<GitMerge size={20} />} onClick={() => signIn('github', { callbackUrl: `${WEB_URL}/dashboard` })} tooltip="Sign up with GitHub" />
+                 <SocialButton icon={<Chrome size={20} />} onClick={() => window.location.href = `${AUTH_URL}/sso/google`} tooltip="Sign up with Google" />
+                 <SocialButton icon={<GitMerge size={20} />} onClick={() => window.location.href = `${AUTH_URL}/sso/github`} tooltip="Sign up with GitHub" />
             </div>
             <span>or use your email for registration</span>
             <input type="text" name="name" placeholder="Name" required autoComplete="name" />
@@ -104,45 +75,25 @@ const SignInForm = () => {
     const [isForgotModalOpen, setIsForgotModalOpen] = useState(false);
     const [forgotEmail, setForgotEmail] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const router = useRouter();
 
     const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const email = e.currentTarget.email.value;
-        const password = e.currentTarget.password.value;
-        
-        const result = await signIn('credentials', {
-            redirect: false,
-            email,
-            password,
-        });
 
-        if (result?.error) {
-            toast.error(result.error || 'Invalid credentials.');
+        // In a real Keycloak setup, this would initiate the login flow.
+        // For this prototype, we'll simulate a role-based redirect.
+        if (email.includes('admin')) {
+             router.push(ADMIN_URL);
         } else {
-             // The session update will be caught by the parent component's useEffect
-             // which will handle the redirect.
-             toast.success('Logged in successfully!');
+             router.push(WEB_URL);
         }
     }
 
     const handleForgotPassword = async () => {
-        try {
-            const response = await fetch(`/api/auth/forgot-password`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: forgotEmail }),
-            });
-            if (response.ok) {
-                toast.success('If an account with that email exists, a password reset link has been sent.');
-            } else {
-                const data = await response.json();
-                toast.error(data.message || 'An error occurred.');
-            }
-        } catch (error) {
-            toast.error('Failed to send reset link.');
-        }
+        // This would redirect to the Keycloak password reset flow
+        router.push(`${AUTH_URL}/forgot-password`);
         setIsForgotModalOpen(false);
-        setForgotEmail('');
     }
 
     return (
@@ -150,8 +101,8 @@ const SignInForm = () => {
             <form onSubmit={handleLogin} data-testid="login-form">
                 <h1 className="text-3xl font-bold font-headline mb-3">Sign In</h1>
                 <div className="social-icons">
-                     <SocialButton icon={<Chrome size={20} />} onClick={() => signIn('google', { callbackUrl: `${WEB_URL}/dashboard` })} tooltip="Sign in with Google" />
-                     <SocialButton icon={<GitMerge size={20} />} onClick={() => signIn('github', { callbackUrl: `${WEB_URL}/dashboard` })} tooltip="Sign in with GitHub" />
+                     <SocialButton icon={<Chrome size={20} />} onClick={() => window.location.href = `${AUTH_URL}/sso/google`} tooltip="Sign in with Google" />
+                     <SocialButton icon={<GitMerge size={20} />} onClick={() => window.location.href = `${AUTH_URL}/sso/github`} tooltip="Sign in with GitHub" />
                 </div>
                 <span>or use your email and password</span>
                 <input type="email" name="email" placeholder="Email" required autoComplete="email" />
@@ -178,22 +129,12 @@ const SignInForm = () => {
                     <DialogHeader>
                         <DialogTitle>Forgot Password</DialogTitle>
                         <DialogDescription>
-                            Enter your email address and we&apos;ll send you a link to reset your password.
+                            You will be redirected to our secure authentication service to reset your password.
                         </DialogDescription>
                     </DialogHeader>
-                    <div className="grid gap-4 py-4">
-                        <Label htmlFor="forgot-email">Email Address</Label>
-                        <Input 
-                            id="forgot-email" 
-                            type="email" 
-                            value={forgotEmail} 
-                            onChange={(e) => setForgotEmail(e.target.value)}
-                            placeholder="you@example.com"
-                        />
-                    </div>
                     <DialogFooter>
                         <Button variant="outline" onClick={() => setIsForgotModalOpen(false)}>Cancel</Button>
-                        <Button onClick={handleForgotPassword}>Send Reset Link</Button>
+                        <Button onClick={handleForgotPassword}>Continue</Button>
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
@@ -204,26 +145,12 @@ const SignInForm = () => {
 export default function AuthPage() {
     const [isActive, setIsActive] = useState(false);
     const searchParams = useSearchParams();
-    const router = useRouter();
-    const { data: session, status } = useSession();
 
     useEffect(() => {
-        // If the URL has a parameter `action=signup`, activate the signup panel
         if (searchParams.get('action') === 'signup') {
             setIsActive(true);
         }
     }, [searchParams]);
-
-    useEffect(() => {
-        if (status === 'authenticated') {
-            const user = session.user as any;
-            if (user?.role === 'Admin') {
-                router.push(`${WEB_URL}/admin/dashboard`);
-            } else {
-                router.push(`${WEB_URL}/dashboard`);
-            }
-        }
-    }, [status, session, router]);
 
 
     return (
@@ -266,4 +193,3 @@ export default function AuthPage() {
         </div>
     );
 }
-

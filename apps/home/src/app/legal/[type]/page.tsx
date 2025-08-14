@@ -7,17 +7,7 @@ import { PageHeader } from '@amberops/ui';
 import { Card, CardContent } from '@amberops/ui/components/ui/card';
 import { Skeleton } from '@amberops/ui/components/ui/skeleton';
 import type { LegalDocument } from '@amberops/lib';
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
-
-async function fetchLegalDoc(type: 'terms' | 'privacy'): Promise<LegalDocument | null> {
-    const res = await fetch(`${API_URL}/v1/legal/${type}`);
-    if (!res.ok) {
-        if (res.status === 404) return null;
-        throw new Error('Failed to fetch legal document');
-    }
-    return res.json();
-}
+import { fetchLegalDocument } from '@amberops/api/client';
 
 export default function LegalPage({ params }: { params: { type: string } }) {
     const [doc, setDoc] = useState<LegalDocument | null>(null);
@@ -33,9 +23,14 @@ export default function LegalPage({ params }: { params: { type: string } }) {
 
         const loadDoc = async () => {
             setIsLoading(true);
-            const fetchedDoc = await fetchLegalDoc(docType);
-            setDoc(fetchedDoc);
-            setIsLoading(false);
+            try {
+                const fetchedDoc = await fetchLegalDocument(docType);
+                 setDoc(fetchedDoc);
+            } catch (error) {
+                console.error("Failed to load legal doc:", error)
+            } finally {
+                setIsLoading(false);
+            }
         };
         
         loadDoc();

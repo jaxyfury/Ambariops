@@ -2,19 +2,18 @@
 import { Button } from '@amberops/ui/components/ui/button'
 import { AmberOpsLogo } from '@amberops/ui/components/icons'
 import Link from 'next/link'
-import { CheckCircle, Shield, Zap, BarChart, HardDrive, Server, Users, ArrowRight, Mail, GitBranch, Terminal, Blocks, Package, Search, Star, MessageSquare, Cpu, Database } from 'lucide-react'
+import { ArrowRight, BarChart, Blocks, Cpu, Database, GitBranch, HardDrive, Mail, MessageSquare, Package, Search, Server, Shield, Star, Terminal, Users, Zap } from 'lucide-react'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@amberops/ui/components/ui/accordion';
 import { AnimatedGlobe } from '@/components/animated-globe';
 import { Card, CardContent } from '@amberops/ui/components/ui/card';
-import { cn } from '@amberops/lib';
-import type { PricingTier, Testimonial, FAQ } from '@amberops/lib';
-import { fetchPricingTiers, fetchTestimonials, fetchFaqs } from '@amberops/api/client';
+import type { FAQ, PricingTier, Testimonial } from '@amberops/lib';
+import { fetchFaqs, fetchPricingTiers, fetchTestimonials } from '@amberops/api/client';
 import { Skeleton } from '@amberops/ui/components/ui/skeleton';
-import { Header } from '@/components/layout/header';
-import { Footer } from '@/components/layout/footer';
 import { FeatureCarousel } from '@/components/feature-carousel';
-import { TestimonialsMarquee } from '@/components/testimonials-marquee';
+import { Footer } from '@/components/layout/footer';
+import { Header } from '@/components/layout/header';
 import { PricingCard } from '@/components/pricing-card';
+import { TestimonialsMarquee } from '@/components/testimonials-marquee';
 
 const integrationIcons = [
     { icon: Database, name: 'HDFS' },
@@ -41,7 +40,6 @@ async function getPageData() {
         return { pricingTiers, testimonials, faqItems, error: null };
     } catch (error) {
         console.error("Failed to fetch landing page data:", error);
-        // In a real app, you might want to return a more specific error or fallback data
         return { pricingTiers: [], testimonials: [], faqItems: [], error: "Could not load page data." };
     }
 }
