@@ -8,15 +8,11 @@ set -e
 
 # --- 1. Kill any running processes on the project ports ---
 echo "--- Checking for and stopping any running services... ---"
-# Use a space-separated string for POSIX compliance
 PORTS="3000 3001 3002 3003 3004"
 for PORT in $PORTS; do
-  # Use lsof to find the PID, -t for terse output (PID only)
-  # The "|| true" prevents the script from exiting if no process is found
   PID=$(lsof -t -i:$PORT || true)
   if [ -n "$PID" ]; then
     echo "Found process with PID $PID on port $PORT. Killing it..."
-    # Forcefully kill the process
     kill -9 "$PID"
     echo "Process on port $PORT killed."
   else
@@ -27,14 +23,11 @@ echo "--- Port check complete. ---"
 
 
 # --- 2. Start Development Servers ---
-# Detect OS
 OS=$(uname)
 echo "Detected OS: $OS"
 
-# Commands to run, as a space-separated string for POSIX compliance.
 COMMANDS="pnpm dev:home;pnpm dev:admin;pnpm dev:auth;pnpm dev:backend;pnpm dev"
 
-# Function to run a command in a new terminal tab/window
 run_cmd() {
   cmd="$1"
   current_dir=$(pwd)
@@ -42,15 +35,13 @@ run_cmd() {
   echo "Attempting to launch command: $cmd"
 
   if [ "$OS" = "Darwin" ]; then
-    # macOS
     osascript -e "tell application \"Terminal\" to do script \"cd '$current_dir' && $cmd\""
   
   elif [ "$OS" = "Linux" ]; then
-    # Try gnome-terminal, but fall back on failure
     if command -v gnome-terminal >/dev/null 2>&1; then
       if ! gnome-terminal -- bash -c "cd '$current_dir' && $cmd; exec bash" >/dev/null 2>&1; then
         echo "⚠️ gnome-terminal failed to launch. Running in background..."
-        (cd "$current_dir" && $cmd) &
+        (cd "$current_dir" && eval "$cmd") &
       fi
     elif command -v konsole >/dev/null 2>&1; then
       konsole --hold -e "bash -c \"cd '$current_dir' && $cmd\""
@@ -58,16 +49,15 @@ run_cmd() {
       xterm -hold -e "cd '$current_dir' && $cmd"
     else
       echo "⚠️ No supported terminal emulator found. Running in background..."
-      (cd '$current_dir' && $cmd) &
+      (cd '$current_dir' && eval "$cmd") &
     fi
   
   elif echo "$OS" | grep -qE 'MINGW|CYGWIN|MSYS'; then
-    # Windows (Git Bash, etc.)
     start cmd.exe /c "cd /d '$current_dir' && $cmd"
   
   else
     echo "⚠️ Unsupported OS '$OS'. Running in background..."
-    (cd "$current_dir" && $cmd) &
+    (cd "$current_dir" && eval "$cmd") &
   fi
 }
 
@@ -79,7 +69,6 @@ echo "Auth Service: Port 3002"
 echo "Backend Service: Port 3004"
 echo "----------------------------------------"
 
-# Use IFS to split the command string and loop through it
 IFS=';'
 for command in $COMMANDS; do
     run_cmd "$command"
