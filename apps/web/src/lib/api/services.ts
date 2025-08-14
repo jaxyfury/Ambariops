@@ -6,7 +6,7 @@ const API_BASE_URL = '/api/v1';
 // A placeholder for a real API client.
 const apiClient = {
   get: async <T>(url: string): Promise<T> => {
-    const response = await fetch(`${API_BASE_URL}${url}`);
+    const response = await fetch(url);
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({ message: 'An unknown error occurred' }));
       throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
@@ -14,7 +14,7 @@ const apiClient = {
     return response.json();
   },
   post: async <T, U>(url: string, data: T): Promise<U> => {
-    const response = await fetch(`${API_BASE_URL}${url}`, {
+    const response = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
@@ -26,7 +26,7 @@ const apiClient = {
     return response.json();
   },
   put: async <T, U>(url: string, data: T): Promise<U> => {
-    const response = await fetch(`${API_BASE_URL}${url}`, {
+    const response = await fetch(url, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
@@ -38,7 +38,7 @@ const apiClient = {
     return response.json();
   },
   delete: async <T>(url: string): Promise<T> => {
-    const response = await fetch(`${API_BASE_URL}${url}`, {
+    const response = await fetch(url, {
       method: 'DELETE',
     });
     if (!response.ok) {
@@ -50,48 +50,49 @@ const apiClient = {
 };
 
 // User Service
-export const fetchUsers = (): Promise<User[]> => apiClient.get('/users');
-export const addUser = (userData: Omit<User, 'id' | 'lastLogin' | 'avatar' | 'password'> & { password?: string }): Promise<User> => apiClient.post('/users', userData);
-export const updateUser = (userId: string, userData: Partial<User>): Promise<User> => apiClient.put(`/users/${userId}`, userData);
-export const deleteUser = (userId: string): Promise<{ id: string }> => apiClient.delete(`/users/${userId}`);
+export const fetchUsers = (): Promise<User[]> => apiClient.get(`${API_BASE_URL}/users`);
+export const addUser = (userData: Omit<User, 'id' | 'lastLogin' | 'avatar' | 'password'> & { password?: string }): Promise<User> => apiClient.post(`${API_BASE_URL}/users`, userData);
+export const updateUser = (userId: string, userData: Partial<User>): Promise<User> => apiClient.put(`${API_BASE_URL}/users/${userId}`, userData);
+export const deleteUser = (userId: string): Promise<{ id: string }> => apiClient.delete(`${API_BASE_URL}/users/${userId}`);
 
 // Cluster Service
-export const fetchClusters = (): Promise<Cluster[]> => apiClient.get('/clusters');
-export const fetchClusterById = (id: string): Promise<Cluster> => apiClient.get(`/clusters/${id}`);
+export const fetchClusters = (): Promise<Cluster[]> => apiClient.get(`${API_BASE_URL}/clusters`);
+export const fetchClusterById = (id: string): Promise<Cluster> => apiClient.get(`${API_BASE_URL}/clusters/${id}`);
 
 // Service Service
-export const fetchServices = (): Promise<Service[]> => apiClient.get('/services');
-export const fetchServiceById = (id: string): Promise<Service> => apiClient.get(`/services/${id}`);
+export const fetchServices = (): Promise<Service[]> => apiClient.get(`${API_BASE_URL}/services`);
+export const fetchServiceById = (id: string): Promise<Service> => apiClient.get(`${API_BASE_URL}/services/${id}`);
 
 // Host Service
-export const fetchHosts = (): Promise<Host[]> => apiClient.get('/hosts');
-export const fetchHostById = (id: string): Promise<Host> => apiClient.get(`/hosts/${id}`);
+export const fetchHosts = (): Promise<Host[]> => apiClient.get(`${API_BASE_URL}/hosts`);
+export const fetchHostById = (id: string): Promise<Host> => apiClient.get(`${API_BASE_URL}/hosts/${id}`);
 
 // Alert Service
-export const fetchAlerts = (): Promise<Alert[]> => apiClient.get('/alerts');
-export const fetchAlertById = (id: string): Promise<Alert> => apiClient.get(`/alerts/${id}`);
+export const fetchAlerts = (): Promise<Alert[]> => apiClient.get(`${API_BASE_URL}/alerts`);
+export const fetchAlertById = (id: string): Promise<Alert> => apiClient.get(`${API_BASE_URL}/alerts/${id}`);
 
 // Alert Definition Service
-export const fetchAlertDefinitions = (): Promise<AlertDefinition[]> => apiClient.get('/alert-definitions');
+export const fetchAlertDefinitions = (): Promise<AlertDefinition[]> => apiClient.get(`${API_BASE_URL}/alert-definitions`);
 
 // Task Service
-export const fetchTasks = (): Promise<Task[]> => apiClient.get('/tasks');
+export const fetchTasks = (): Promise<Task[]> => apiClient.get(`${API_BASE_URL}/tasks`);
 
 // Activity Log Service
-export const fetchActivityLogs = (): Promise<ActivityLog[]> => apiClient.get('/activity');
+export const fetchActivityLogs = (): Promise<ActivityLog[]> => apiClient.get(`${API_BASE_URL}/activity`);
 
 // Log Entry Service
-export const fetchLogEntries = (): Promise<LogEntry[]> => apiClient.get('/logs');
+export const fetchLogEntries = (): Promise<LogEntry[]> => apiClient.get(`${API_BASE_URL}/logs`);
 
 // Config Version Service
-export const fetchConfigVersions = (): Promise<ConfigVersion[]> => apiClient.get('/config-versions');
+export const fetchConfigVersions = (): Promise<ConfigVersion[]> => apiClient.get(`${API_BASE_URL}/config-versions`);
 
 // Documentation Service
-export const fetchDocumentationArticles = (): Promise<DocumentationArticle[]> => apiClient.get('/documentation');
-export const addDocumentationArticle = (articleData: Omit<DocumentationArticle, 'id' | 'createdAt' | 'updatedAt'>): Promise<DocumentationArticle> => apiClient.post('/documentation', articleData);
-export const updateDocumentationArticle = (slug: string, articleData: Partial<DocumentationArticle>): Promise<DocumentationArticle> => apiClient.put(`/documentation/${slug}`, articleData);
-export const deleteDocumentationArticle = (slug: string): Promise<{ id: string }> => apiClient.delete(`/documentation/${slug}`);
+export const fetchDocumentationArticles = (): Promise<DocumentationArticle[]> => apiClient.get(`${API_BASE_URL}/documentation`);
+export const addDocumentationArticle = (articleData: Omit<DocumentationArticle, 'id' | 'createdAt' | 'updatedAt'>): Promise<DocumentationArticle> => apiClient.post(`${API_BASE_URL}/documentation`, articleData);
+export const updateDocumentationArticle = (slug: string, articleData: Partial<DocumentationArticle>): Promise<DocumentationArticle> => apiClient.put(`${API_BASE_URL}/documentation/${slug}`, articleData);
+export const deleteDocumentationArticle = (slug: string): Promise<{ id: string }> => apiClient.delete(`${API_BASE_URL}/documentation/${slug}`);
 
 // Legal Documents Service
-export const fetchLegalDocument = (type: 'terms' | 'privacy'): Promise<LegalDocument> => apiClient.get(`/legal/${type}`);
-export const updateLegalDocument = (type: 'terms' | 'privacy', data: { content: string }): Promise<LegalDocument> => apiClient.put(`/legal/${type}`, data);
+export const fetchLegalDocument = (type: 'terms' | 'privacy'): Promise<LegalDocument> => apiClient.get(`/api/v1/legal/${type}`);
+export const updateLegalDocument = (type: 'terms' | 'privacy', data: { content: string }): Promise<LegalDocument> => apiClient.put(`/api/v1/legal/${type}`, data);
+
