@@ -21,7 +21,7 @@ const UserSchema: Schema = new Schema({
   password: { type: String, required: true },
   role: { type: String, enum: ['Admin', 'Operator', 'Viewer'], default: 'Viewer' },
   image: { type: String },
-  lastLogin: { type: Date, default: Date.now },
+  lastLogin: { type: Date, default: () => new Date() },
 }, { timestamps: true });
 
 export default mongoose.model<IUser>('User', UserSchema);
