@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3001",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 3001",
     "lint": "next lint"
   },
   "dependencies": {
@@ -14,6 +14,8 @@
     "next": "14.2.3",
     "@amberops/ui": "workspace:*",
     "@amberops/design-tokens": "workspace:*",
+    "@amberops/lib": "workspace:*",
+    "@amberops/api": "workspace:*",
     "three": "^0.163.0",
     "vanilla-tilt": "^1.8.1",
     "gsap": "^3.12.5",

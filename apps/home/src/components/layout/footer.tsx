@@ -3,19 +3,18 @@
 
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
-
-const FooterAnimation = dynamic(() => import('@/components/footer-animation').then(mod => mod.FooterAnimation));
+import { FooterAnimation } from '@/components/footer-animation';
 
 export function Footer() {
   return (
-    <footer className="relative flex flex-col gap-2 sm:flex-row py-12 w-full shrink-0 items-center px-4 md:px-6 border-t overflow-hidden min-h-[350px]">
-        <div className="flex-grow z-10">
+    <footer className="relative flex w-full shrink-0 items-center gap-2 overflow-hidden border-t px-4 py-12 sm:flex-row md:px-6 min-h-[350px]">
+        <div className="z-10 flex-grow">
           <p className="text-xs text-muted-foreground">&copy; {new Date().getFullYear()} AmberOps Inc. All rights reserved.</p>
-          <nav className="sm:ml-auto flex gap-4 sm:gap-6 mt-2">
-            <Link href="/legal/terms-of-service" className="text-xs hover:underline underline-offset-4" prefetch={false}>
+          <nav className="mt-2 flex gap-4 sm:ml-auto sm:gap-6">
+            <Link href="/legal/terms-of-service" className="text-xs underline-offset-4 hover:underline" prefetch={false}>
               Terms of Service
             </Link>
-            <Link href="/legal/privacy-policy" className="text-xs hover:underline underline-offset-4" prefetch={false}>
+            <Link href="/legal/privacy-policy" className="text-xs underline-offset-4 hover:underline" prefetch={false}>
               Privacy
             </Link>
           </nav>
@@ -24,5 +23,5 @@ export function Footer() {
             <FooterAnimation />
         </div>
       </footer>
-  )
+  );
 }

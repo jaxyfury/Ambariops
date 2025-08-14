@@ -15,7 +15,7 @@ export function AnimatedThemeToggle() {
 
   if (!mounted) {
     return (
-      <button className="relative z-50 flex h-[20px] w-[20px] scale-[1.5] items-center justify-center rounded-lg bg-secondary" disabled />
+      <button type="button" className="relative z-50 flex h-[20px] w-[20px] scale-[1.5] items-center justify-center rounded-lg bg-secondary" disabled />
     );
   }
 
@@ -34,15 +34,13 @@ export function AnimatedThemeToggle() {
     <>
       <div
         id="bg-mask"
-        className={cn(
-            'bg-mask',
-            isAnimating && 'animate-background-spread'
-        )}
-        style={{ backgroundColor: theme === 'dark' ? 'hsl(var(--background))' : 'hsl(var(--foreground))'}}
+        className={cn('bg-mask', isAnimating && 'animate-background-spread')}
+        style={{ backgroundColor: theme === 'dark' ? 'hsl(var(--background))' : 'hsl(var(--foreground))' }}
         onAnimationEnd={() => setIsAnimating(false)}
       />
       <button
         id="darkmode-btn"
+        type="button"
         onClick={toggleTheme}
         className="relative z-50 flex h-[20px] w-[20px] scale-[1.5] items-center justify-center rounded-lg bg-secondary text-secondary-foreground transition-transform duration-300 hover:scale-[1.6] active:scale-[1.4]"
         aria-label="Toggle theme"

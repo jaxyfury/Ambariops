@@ -22,7 +22,6 @@ export function PricingCard({ title, price, period, description, features, butto
     const animationFrameId = useRef<number>();
     const cardId = useId();
 
-
     useEffect(() => {
         let isMounted = true;
         let renderer: THREE.WebGLRenderer;
@@ -30,13 +29,8 @@ export function PricingCard({ title, price, period, description, features, butto
         async function init() {
             if (!isMounted || !cardContainerRef.current || !canvasRef.current) return;
 
-            const DEBUG = false;
-            function log(...args: any[]) { if (DEBUG) console.log(`[FieryCard-${cardId}]`, ...args); }
-            function warn(...args: any[]) { if (DEBUG) console.warn(`[FieryCard-${cardId}]`, ...args); }
-
             let scene: THREE.Scene, camera: THREE.OrthographicCamera, fieryBandMesh: THREE.Mesh;
             let uniforms: any;
-            let material: THREE.ShaderMaterial;
 
             const cardContainer = cardContainerRef.current;
             const canvas = canvasRef.current;
@@ -99,98 +93,97 @@ export function PricingCard({ title, price, period, description, features, butto
                 }
             `;
 
-            function initThree() {
-                log("Initializing Three.js");
-                scene = new THREE.Scene();
-                camera = new THREE.OrthographicCamera(-1000, 1000, 1000, -1000, 0.1, 2000);
-                camera.position.z = 100;
+            const createRingGeometry = () => {
+              if (!cardContainer) return;
+              try {
+                  const cardRect = cardContainer.getBoundingClientRect();
+                  if (cardRect.width === 0 || cardRect.height === 0) { return; }
+                  const gap = 10; const ringThickness = 20; const cornerRadius = 28;
+                  const outerWidth = cardRect.width + 2 * (gap + ringThickness);
+                  const outerHeight = cardRect.height + 2 * (gap + ringThickness);
+                  const outerRadius = cornerRadius + gap + ringThickness;
+                  const innerWidth = cardRect.width + 2 * gap;
+                  const innerHeight = cardRect.height + 2 * gap;
+                  const innerRadius = cornerRadius + gap;
+                  const canvasPadding = 40;
+                  const canvasWidth = outerWidth + canvasPadding;
+                  const canvasHeight = outerHeight + canvasPadding;
 
-                try {
-                    renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-                    uniforms = {
-                        time: { value: 0.0 },
-                        fireColorBase: { value: new THREE.Color(`hsl(${getComputedStyle(document.documentElement).getPropertyValue('--primary')})`) },
-                    };
-                    material = new THREE.ShaderMaterial({
-                        vertexShader: bandVertexShader,
-                        fragmentShader: fieryBandFragmentShader,
-                        uniforms: uniforms,
-                        transparent: true,
-                        blending: THREE.AdditiveBlending,
-                        depthWrite: false,
-                        depthTest: false,
-                        side: THREE.DoubleSide
-                    });
-                    const placeHolderGeometry = new THREE.PlaneGeometry(50, 50);
-                    fieryBandMesh = new THREE.Mesh(placeHolderGeometry, material);
-                    scene.add(fieryBandMesh);
-                    createRingGeometry();
-                    animate();
-                } catch (error) { warn("Error in Three.js initialization:", error); }
+                  if (renderer) renderer.setSize(canvasWidth, canvasHeight);
+                  if (camera) {
+                      camera.left = -canvasWidth / 2; camera.right = canvasWidth / 2;
+                      camera.top = canvasHeight / 2; camera.bottom = -canvasHeight / 2;
+                      camera.updateProjectionMatrix();
+                  }
+                  if (fieryBandMesh && fieryBandMesh.geometry) fieryBandMesh.geometry.dispose();
+
+                  const outerShape = new THREE.Shape();
+                  outerShape.moveTo(-outerWidth/2 + outerRadius, -outerHeight/2);
+                  outerShape.lineTo(outerWidth/2 - outerRadius, -outerHeight/2);
+                  outerShape.quadraticCurveTo(outerWidth/2, -outerHeight/2, outerWidth/2, -outerHeight/2 + outerRadius);
+                  outerShape.lineTo(outerWidth/2, outerHeight/2 - outerRadius);
+                  outerShape.quadraticCurveTo(outerWidth/2, outerHeight/2, outerWidth/2 - outerRadius, outerHeight/2);
+                  outerShape.lineTo(-outerWidth/2 + outerRadius, outerHeight/2);
+                  outerShape.quadraticCurveTo(-outerWidth/2, outerHeight/2, -outerWidth/2, outerHeight/2 - outerRadius);
+                  outerShape.lineTo(-outerWidth/2, -outerHeight/2 + outerRadius);
+                  outerShape.quadraticCurveTo(-outerWidth/2, -outerHeight/2, -outerWidth/2 + outerRadius, -outerHeight/2);
+                  
+                  const innerShapePath = new THREE.Path();
+                  innerShapePath.moveTo(-innerWidth / 2 + innerRadius, -innerHeight / 2);
+                  innerShapePath.lineTo(innerWidth / 2 - innerRadius, -innerHeight / 2);
+                  innerShapePath.quadraticCurveTo(innerWidth / 2, -innerHeight / 2, innerWidth / 2, -innerHeight / 2 + innerRadius);
+                  innerShapePath.lineTo(innerWidth / 2, innerHeight / 2 - innerRadius);
+                  innerShapePath.quadraticCurveTo(innerWidth / 2, innerHeight / 2, innerWidth / 2 - innerRadius, innerHeight / 2);
+                  innerShapePath.lineTo(-innerWidth / 2 + innerRadius, innerHeight / 2);
+                  innerShapePath.quadraticCurveTo(-innerWidth / 2, innerHeight / 2, -innerWidth / 2, innerHeight / 2 - innerRadius);
+                  innerShapePath.lineTo(-innerWidth / 2, -innerHeight / 2 + innerRadius);
+                  innerShapePath.quadraticCurveTo(-innerWidth / 2, -innerHeight / 2, -innerWidth / 2 + innerRadius, -innerHeight / 2);
+
+                  outerShape.holes.push(innerShapePath);
+                  const ringGeometry = new THREE.ShapeGeometry(outerShape, 48);
+                  if (fieryBandMesh) fieryBandMesh.geometry = ringGeometry;
+              } catch (error) { console.warn("Error creating ring geometry:", error); }
             }
 
-            function animate() {
-                if (!isMounted) return;
-                animationFrameId.current = requestAnimationFrame(animate);
-                if (uniforms) { uniforms.time.value += 0.016; }
-                try { if (renderer && scene && camera) { renderer.render(scene, camera); } }
-                catch (error) { warn("Error during rendering:", error); }
+            const animate = () => {
+              if (!isMounted) return;
+              animationFrameId.current = requestAnimationFrame(animate);
+              if (uniforms) { uniforms.time.value += 0.016; }
+              try { if (renderer && scene && camera) { renderer.render(scene, camera); } }
+              catch (error) { console.warn("Error during rendering:", error); }
             }
 
-            function createRingGeometry() {
-                try {
-                    const cardRect = cardContainer.getBoundingClientRect();
-                    if (cardRect.width === 0 || cardRect.height === 0) { return; }
-                    const gap = 10; const ringThickness = 20; const cornerRadius = 28;
-                    const outerWidth = cardRect.width + 2 * (gap + ringThickness);
-                    const outerHeight = cardRect.height + 2 * (gap + ringThickness);
-                    const outerRadius = cornerRadius + gap + ringThickness;
-                    const innerWidth = cardRect.width + 2 * gap;
-                    const innerHeight = cardRect.height + 2 * gap;
-                    const innerRadius = cornerRadius + gap;
-                    const canvasPadding = 40;
-                    const canvasWidth = outerWidth + canvasPadding;
-                    const canvasHeight = outerHeight + canvasPadding;
+            const initThree = () => {
+              scene = new THREE.Scene();
+              camera = new THREE.OrthographicCamera(-1000, 1000, 1000, -1000, 0.1, 2000);
+              camera.position.z = 100;
 
-                    if (renderer) renderer.setSize(canvasWidth, canvasHeight);
-                    if (camera) {
-                        camera.left = -canvasWidth / 2; camera.right = canvasWidth / 2;
-                        camera.top = canvasHeight / 2; camera.bottom = -canvasHeight / 2;
-                        camera.updateProjectionMatrix();
-                    }
-                    if (fieryBandMesh && fieryBandMesh.geometry) fieryBandMesh.geometry.dispose();
-
-                    const outerShape = new THREE.Shape();
-                    outerShape.moveTo(-outerWidth/2 + outerRadius, -outerHeight/2);
-                    outerShape.lineTo(outerWidth/2 - outerRadius, -outerHeight/2);
-                    outerShape.quadraticCurveTo(outerWidth/2, -outerHeight/2, outerWidth/2, -outerHeight/2 + outerRadius);
-                    outerShape.lineTo(outerWidth/2, outerHeight/2 - outerRadius);
-                    outerShape.quadraticCurveTo(outerWidth/2, outerHeight/2, outerWidth/2 - outerRadius, outerHeight/2);
-                    outerShape.lineTo(-outerWidth/2 + outerRadius, outerHeight/2);
-                    outerShape.quadraticCurveTo(-outerWidth/2, outerHeight/2, -outerWidth/2, outerHeight/2 - outerRadius);
-                    outerShape.lineTo(-outerWidth/2, -outerHeight/2 + outerRadius);
-                    outerShape.quadraticCurveTo(-outerWidth/2, -outerHeight/2, -outerWidth/2 + outerRadius, -outerHeight/2);
-                    
-                    const innerShapePath = new THREE.Path();
-                    innerShapePath.moveTo(-innerWidth / 2 + innerRadius, -innerHeight / 2);
-                    innerShapePath.lineTo(innerWidth / 2 - innerRadius, -innerHeight / 2);
-                    innerShapePath.quadraticCurveTo(innerWidth / 2, -innerHeight / 2, innerWidth / 2, -innerHeight / 2 + innerRadius);
-                    innerShapePath.lineTo(innerWidth / 2, innerHeight / 2 - innerRadius);
-                    innerShapePath.quadraticCurveTo(innerWidth / 2, innerHeight / 2, innerWidth / 2 - innerRadius, innerHeight / 2);
-                    innerShapePath.lineTo(-innerWidth / 2 + innerRadius, innerHeight / 2);
-                    innerShapePath.quadraticCurveTo(-innerWidth / 2, innerHeight / 2, -innerWidth / 2, innerHeight / 2 - innerRadius);
-                    innerShapePath.lineTo(-innerWidth / 2, -innerHeight / 2 + innerRadius);
-                    innerShapePath.quadraticCurveTo(-innerWidth / 2, -innerHeight / 2, -innerWidth / 2 + innerRadius, -innerHeight / 2);
-
-
-                    outerShape.holes.push(innerShapePath);
-                    const ringGeometry = new THREE.ShapeGeometry(outerShape, 48);
-                    if (fieryBandMesh) fieryBandMesh.geometry = ringGeometry;
-                } catch (error) { warn("Error creating ring geometry:", error); }
+              try {
+                  renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+                  uniforms = {
+                      time: { value: 0.0 },
+                      fireColorBase: { value: new THREE.Color(`hsl(${getComputedStyle(document.documentElement).getPropertyValue('--primary')})`) },
+                  };
+                  const material = new THREE.ShaderMaterial({
+                      vertexShader: bandVertexShader,
+                      fragmentShader: fieryBandFragmentShader,
+                      uniforms,
+                      transparent: true,
+                      blending: THREE.AdditiveBlending,
+                      depthWrite: false,
+                      depthTest: false,
+                      side: THREE.DoubleSide,
+                  });
+                  const placeHolderGeometry = new THREE.PlaneGeometry(50, 50);
+                  fieryBandMesh = new THREE.Mesh(placeHolderGeometry, material);
+                  scene.add(fieryBandMesh);
+                  createRingGeometry();
+                  animate();
+              } catch (error) { console.warn("Error in Three.js initialization:", error); }
             }
 
             let resizeTimeout: NodeJS.Timeout;
-            function onWindowResize() {
+            const onWindowResize = () => {
                 clearTimeout(resizeTimeout);
                 resizeTimeout = setTimeout(createRingGeometry, 150);
             }
@@ -230,7 +223,7 @@ export function PricingCard({ title, price, period, description, features, butto
 
     return (
         <div ref={cardContainerRef} className={cn("card-container", isFeatured && "scale-105")}>
-            <canvas id={cardId} ref={canvasRef}></canvas>
+            <canvas id={cardId} ref={canvasRef} />
             <div className="card" data-tilt data-tilt-max="10" data-tilt-speed="400" data-tilt-perspective="1000" data-tilt-glare data-tilt-max-glare="0.2">
                 <h2 className="card-title">{title}</h2>
                 <p className="card-price">
@@ -238,7 +231,7 @@ export function PricingCard({ title, price, period, description, features, butto
                         <>
                             <span className="currency">$</span>
                             {price}
-                            <span className="text-3xl align-baseline">.00</span>
+                            <span className="align-baseline text-3xl">.00</span>
                         </>
                     ) : (
                         price
@@ -258,7 +251,7 @@ export function PricingCard({ title, price, period, description, features, butto
                         </li>
                     ))}
                 </ul>
-                <Link href={buttonLink} className="cta-button text-center no-underline">
+                <Link href={buttonLink} className="cta-button no-underline text-center">
                     {buttonText}
                 </Link>
             </div>

@@ -7,43 +7,43 @@ import { ArrowRight } from 'lucide-react';
 
 export function Header() {
     return (
-        <header className="sticky top-0 z-50 px-4 lg:px-6 h-16 flex items-center border-b bg-background/80 backdrop-blur-lg">
+        <header className="sticky top-0 z-50 flex h-16 items-center border-b bg-background/80 px-4 backdrop-blur-lg lg:px-6">
             <Link href="/" className="flex items-center justify-center gap-2" prefetch={false}>
                 <AmberOpsLogo className="h-8 w-8" />
-                <span className="text-xl font-semibold font-headline">AmberOps</span>
+                <span className="font-headline text-xl font-semibold">AmberOps</span>
             </Link>
-            <nav className="ml-auto items-center hidden md:flex gap-4 sm:gap-6">
+            <nav className="ml-auto hidden items-center gap-4 sm:gap-6 md:flex">
                 <Link
                     href="/#features"
-                    className="text-sm font-medium hover:text-primary transition-colors underline-offset-4"
+                    className="text-sm font-medium underline-offset-4 transition-colors hover:text-primary"
                     prefetch={false}
                 >
                     Features
                 </Link>
                 <Link
                     href="/#pricing"
-                    className="text-sm font-medium hover:text-primary transition-colors underline-offset-4"
+                    className="text-sm font-medium underline-offset-4 transition-colors hover:text-primary"
                     prefetch={false}
                 >
                     Pricing
                 </Link>
                 <Link
                     href="/documentation"
-                    className="text-sm font-medium hover:text-primary transition-colors underline-offset-4"
+                    className="text-sm font-medium underline-offset-4 transition-colors hover:text-primary"
                     prefetch={false}
                 >
                     Docs
                 </Link>
                 <Link
                     href="/#faq"
-                    className="text-sm font-medium hover:text-primary transition-colors underline-offset-4"
+                    className="text-sm font-medium underline-offset-4 transition-colors hover:text-primary"
                     prefetch={false}
                 >
                     FAQ
                 </Link>
                 <Link
                     href="/#contact"
-                    className="text-sm font-medium hover:text-primary transition-colors underline-offset-4"
+                    className="text-sm font-medium underline-offset-4 transition-colors hover:text-primary"
                     prefetch={false}
                 >
                     Contact
@@ -59,5 +59,5 @@ export function Header() {
                 <Link href="/auth">Login</Link>
             </Button>
         </header>
-    )
+    );
 }

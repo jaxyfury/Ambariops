@@ -1,4 +1,3 @@
-
 'use client';
 
 import Link from 'next/link';
@@ -22,7 +21,8 @@ export default function NotFound() {
         const cordCtx = cordCanvas.getContext('2d');
         if (!visorCtx || !cordCtx) return;
 
-        const drawVisor = (theme: 'light' | 'dark' = 'light') => {
+        const drawVisor = () => {
+            if (!visorCtx) return;
             visorCtx.clearRect(0, 0, visorCanvas.width, visorCanvas.height);
             visorCtx.beginPath();
             visorCtx.moveTo(5, 45);
@@ -66,24 +66,18 @@ export default function NotFound() {
             if (y3 <= 100) y3Forward = true;
             if (y3 >= 317) y3Forward = false;
             
-            y1Forward ? y1 += 1 : y1 -= 1;
-            y2Forward ? y2 += 1 : y2 -= 1;
-            y3Forward ? y3 += 1 : y3 -= 1;
+            y1Forward ? (y1 += 1) : (y1 -= 1);
+            y2Forward ? (y2 += 1) : (y2 -= 1);
+            y3Forward ? (y3 += 1) : (y3 -= 1);
         };
         
-        const currentTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
-        drawVisor(currentTheme);
+        drawVisor();
         
-        const observer = new MutationObserver((mutations) => {
-            mutations.forEach((mutation) => {
-                if (mutation.attributeName === 'class') {
-                    const newTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
-                    drawVisor(newTheme);
-                }
-            });
+        const observer = new MutationObserver(() => {
+            drawVisor();
         });
 
-        observer.observe(document.documentElement, { attributes: true });
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
         animate();
         return () => {
@@ -94,32 +88,32 @@ export default function NotFound() {
 
     return (
         <div className="not-found-body">
-            <header className="fixed top-0 left-0 w-full px-4 lg:px-6 h-16 flex items-center z-50">
+            <header className="fixed top-0 left-0 z-50 flex h-16 w-full items-center px-4 lg:px-6">
                  <Link href="/" className="flex items-center justify-center gap-2 text-foreground" prefetch={false}>
                     <AmberOpsLogo className="h-8 w-8" />
-                    <span className="text-xl font-semibold font-headline">AmberOps</span>
+                    <span className="font-headline text-xl font-semibold">AmberOps</span>
                 </Link>
                 <div className="ml-auto">
                     <AnimatedThemeToggle />
                 </div>
             </header>
 
-            <div className="moon"></div>
-            <div className="moon__crater moon__crater1"></div>
-            <div className="moon__crater moon__crater2"></div>
-            <div className="moon__crater moon__crater3"></div>
+            <div className="moon" />
+            <div className="moon__crater moon__crater1" />
+            <div className="moon__crater moon__crater2" />
+            <div className="moon__crater moon__crater3" />
 
-            <div className="star star1"></div>
-            <div className="star star2"></div>
-            <div className="star star3"></div>
-            <div className="star star4"></div>
-            <div className="star star5"></div>
+            <div className="star star1" />
+            <div className="star star2" />
+            <div className="star star3" />
+            <div className="star star4" />
+            <div className="star star5" />
 
             <div className="error">
                 <div className="error__title">404</div>
                 <div className="error__subtitle">Hmmm...</div>
                 <div className="error__description">It looks like one of the developers fell asleep at the keyboard.</div>
-                 <div className="flex gap-2 mt-4">
+                 <div className="mt-4 flex gap-2">
                     <Button asChild>
                         <Link href="/">Go Home</Link>
                     </Button>
@@ -130,30 +124,30 @@ export default function NotFound() {
             </div>
 
             <div className="astronaut">
-                <div className="astronaut__backpack"></div>
-                <div className="astronaut__body"></div>
-                <div className="astronaut__body__chest"></div>
-                <div className="astronaut__arm-left1"></div>
-                <div className="astronaut__arm-left2"></div>
-                <div className="astronaut__arm-right1"></div>
-                <div className="astronaut__arm-right2"></div>
-                <div className="astronaut__arm-thumb-left"></div>
-                <div className="astronaut__arm-thumb-right"></div>
-                <div className="astronaut__leg-left"></div>
-                <div className="astronaut__leg-right"></div>
-                <div className="astronaut__foot-left"></div>
-                <div className="astronaut__foot-right"></div>
-                <div className="astronaut__wrist-left"></div>
-                <div className="astronaut__wrist-right"></div>
+                <div className="astronaut__backpack" />
+                <div className="astronaut__body" />
+                <div className="astronaut__body__chest" />
+                <div className="astronaut__arm-left1" />
+                <div className="astronaut__arm-left2" />
+                <div className="astronaut__arm-right1" />
+                <div className="astronaut__arm-right2" />
+                <div className="astronaut__arm-thumb-left" />
+                <div className="astronaut__arm-thumb-right" />
+                <div className="astronaut__leg-left" />
+                <div className="astronaut__leg-right" />
+                <div className="astronaut__foot-left" />
+                <div className="astronaut__foot-right" />
+                <div className="astronaut__wrist-left" />
+                <div className="astronaut__wrist-right" />
                 
                 <div className="astronaut__cord">
-                    <canvas ref={cordCanvasRef} id="cord" height="500px" width="500px"></canvas>
+                    <canvas ref={cordCanvasRef} id="cord" height="500px" width="500px" />
                 </div>
                 
                 <div className="astronaut__head">
-                    <canvas ref={visorCanvasRef} id="visor" width="60px" height="60px"></canvas>
-                    <div className="astronaut__head-visor-flare1"></div>
-                    <div className="astronaut__head-visor-flare2"></div>
+                    <canvas ref={visorCanvasRef} id="visor" width="60px" height="60px" />
+                    <div className="astronaut__head-visor-flare1" />
+                    <div className="astronaut__head-visor-flare2" />
                 </div>
             </div>
         </div>

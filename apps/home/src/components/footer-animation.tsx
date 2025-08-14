@@ -1,10 +1,6 @@
 
 'use client';
 
-/* eslint-disable max-len */
-
-import { cn } from '@amberops/lib';
-
 const Tree = () => (
   <g className="fill-primary">
     <path
@@ -335,7 +331,7 @@ const Leaves = () => (
 
 export function FooterAnimation() {
     return (
-        <div className="w-[400px] h-[332px]">
+        <div className="h-[332px] w-[400px]">
             <svg width="100%" height="100%" viewBox="0 0 1006 830" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g id="undraw_Tree_swing_646s 1" clipPath="url(#clip0)">
                     <Tree />
