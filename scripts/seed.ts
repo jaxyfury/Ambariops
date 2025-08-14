@@ -14,7 +14,7 @@ import {
   mockPricingTiers,
   mockTestimonials,
   mockFaqs,
-} from './mock-data';
+} from '../packages/api/src/mocks/mock-data';
 import bcrypt from 'bcryptjs';
 import { config } from 'dotenv';
 import type { DocumentationArticle } from '@amberops/lib';

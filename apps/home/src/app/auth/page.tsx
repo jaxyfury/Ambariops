@@ -33,7 +33,6 @@ const handleSuccessfulLogin = (token: string, user: any) => {
     localStorage.setItem('amberops_user', JSON.stringify(user));
     toast.success('Login successful! Redirecting...');
     
-    // Updated logic to correctly handle roles
     let targetUrl;
     if (user.role === 'Admin') {
         targetUrl = process.env.NEXT_PUBLIC_ADMIN_URL || 'http://localhost:3003';
@@ -183,6 +182,7 @@ function AuthPageComponent() {
             try {
                 const user = JSON.parse(decodeURIComponent(userParam));
                 handleSuccessfulLogin(token, user);
+                // Clear the URL parameters after successful login
                 router.replace('/auth');
             } catch (e) {
                 console.error("Failed to parse user from URL", e);
