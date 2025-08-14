@@ -78,7 +78,7 @@ function LandingPageContent() {
         setFaqItems(faqs);
       } catch (err) {
         console.error('Failed to fetch landing page data:', err);
-        setError('Could not load page data.');
+        // setError('Could not load page data.');
       } finally {
         setIsLoading(false);
       }
