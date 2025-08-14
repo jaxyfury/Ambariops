@@ -5,6 +5,8 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
+import swaggerUi from 'swagger-ui-express';
+import swaggerSpec from './config/swagger';
 import api from './api';
 import { errorHandler } from './utils/error-handler';
 
@@ -50,11 +52,14 @@ mongoose.connect(MONGODB_URI)
     process.exit(1);
   });
 
+// Swagger API Docs
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 // API Routes
 app.use('/api/v1', api);
 
 app.get('/', (req, res) => {
-    res.send('AmberOps Backend Service is running.');
+    res.send('AmberOps Backend Service is running. Visit /api-docs for API documentation.');
 });
 
 // 404 Handler for unknown routes
