@@ -12,8 +12,10 @@ import {
   mockUsers,
   mockActivityLogs,
   mockPricingTiers,
+  mockTestimonials,
+  mockFaqs,
 } from './mock-data';
-import type { User, Task, PricingTier } from '@amberops/lib';
+import type { User, Task, PricingTier, Testimonial, FAQ } from '@amberops/lib';
 
 let taskIdCounter = mockTasks.length > 0 ? Math.max(...mockTasks.map(t => t.id)) + 1 : 1;
 
@@ -217,12 +219,62 @@ export const handlers = [
   http.delete('/api/v1/pricing/:id', ({ params }) => {
       const { id } = params;
       const initialLength = mockPricingTiers.length;
-      mockPricingTiers = mockPricingTiers.filter(t => t.id !== id);
+      const tierIndex = mockPricingTiers.findIndex(t => t.id === id);
 
-      if (mockPricingTiers.length === initialLength) {
-          return new HttpResponse(null, { status: 404 });
+      if (tierIndex === -1) {
+        return new HttpResponse(null, { status: 404 });
       }
 
+      mockPricingTiers.splice(tierIndex, 1);
+
       return HttpResponse.json({ id });
+  }),
+
+  // Testimonials
+  http.get('/api/v1/testimonials', () => HttpResponse.json(mockTestimonials)),
+  http.post('/api/v1/testimonials', async ({ request }) => {
+    const newTestimonial = await request.json() as Omit<Testimonial, 'id'>;
+    const testimonial: Testimonial = { id: `test-${Date.now()}`, ...newTestimonial };
+    mockTestimonials.push(testimonial);
+    return HttpResponse.json(testimonial, { status: 201 });
+  }),
+  http.put('/api/v1/testimonials/:id', async ({ params, request }) => {
+    const { id } = params;
+    const updatedData = await request.json() as Partial<Testimonial>;
+    const index = mockTestimonials.findIndex(t => t.id === id);
+    if (index === -1) return new HttpResponse(null, { status: 404 });
+    mockTestimonials[index] = { ...mockTestimonials[index], ...updatedData };
+    return HttpResponse.json(mockTestimonials[index]);
+  }),
+  http.delete('/api/v1/testimonials/:id', ({ params }) => {
+    const { id } = params;
+    const index = mockTestimonials.findIndex(t => t.id === id);
+    if (index === -1) return new HttpResponse(null, { status: 404 });
+    mockTestimonials.splice(index, 1);
+    return HttpResponse.json({ id });
+  }),
+
+  // FAQs
+  http.get('/api/v1/faqs', () => HttpResponse.json(mockFaqs)),
+    http.post('/api/v1/faqs', async ({ request }) => {
+    const newFaq = await request.json() as Omit<FAQ, 'id'>;
+    const faq: FAQ = { id: `faq-${Date.now()}`, ...newFaq };
+    mockFaqs.push(faq);
+    return HttpResponse.json(faq, { status: 201 });
+  }),
+  http.put('/api/v1/faqs/:id', async ({ params, request }) => {
+    const { id } = params;
+    const updatedData = await request.json() as Partial<FAQ>;
+    const index = mockFaqs.findIndex(f => f.id === id);
+    if (index === -1) return new HttpResponse(null, { status: 404 });
+    mockFaqs[index] = { ...mockFaqs[index], ...updatedData };
+    return HttpResponse.json(mockFaqs[index]);
+  }),
+  http.delete('/api/v1/faqs/:id', ({ params }) => {
+    const { id } = params;
+    const index = mockFaqs.findIndex(f => f.id === id);
+    if (index === -1) return new HttpResponse(null, { status: 404 });
+    mockFaqs.splice(index, 1);
+    return HttpResponse.json({ id });
   }),
 ];

@@ -1,4 +1,5 @@
-import type { Cluster, Service, Host, Alert, AlertDefinition, ConfigVersion, Task, LogEntry, User, ActivityLog, PricingTier } from '@amberops/lib/types';
+
+import type { Cluster, Service, Host, Alert, AlertDefinition, ConfigVersion, Task, LogEntry, User, ActivityLog, PricingTier, Testimonial, FAQ } from '@amberops/lib/types';
 
 const generateHistoricalData = (days: number, cpuMax: number, memMax: number, diskMax: number, netMax: number) => {
   const data = [];
@@ -165,5 +166,52 @@ export let mockPricingTiers: PricingTier[] = [
         description: "For large-scale, critical deployments.",
         features: ["Unlimited Clusters", "Unlimited Hosts", "Dedicated SLA & Support", "On-premise Deployment"],
         isFeatured: false,
+    }
+];
+
+export let mockTestimonials: Testimonial[] = [
+  {
+    id: 'test-1',
+    quote: "AmberOps has revolutionized how we manage our data clusters. The AI-powered troubleshooting is like having another senior engineer on the team. We've reduced downtime by over 30%.",
+    name: 'Sarah L.',
+    role: 'Lead DevOps Engineer',
+    avatar: 'https://avatar.vercel.sh/sarah',
+  },
+  {
+    id: 'test-2',
+    quote: "The interface is just... better. It's fast, intuitive, and I can find what I need in seconds. I can't imagine going back to the old Ambari UI.",
+    name: 'Mike R.',
+    role: 'Platform Engineering Manager',
+    avatar: 'https://avatar.vercel.sh/mike',
+  },
+   {
+    id: 'test-3',
+    quote: "As a data analyst, I don't want to fight with the tooling. AmberOps gives me the quick insights I need on service health without having to dive into complex configs. It just works.",
+    name: 'Chen W.',
+    role: 'Senior Data Analyst',
+    avatar: 'https://avatar.vercel.sh/chen',
+  },
+];
+
+export let mockFaqs: FAQ[] = [
+    {
+        id: 'faq-1',
+        question: "What is AmberOps?",
+        answer: "AmberOps is a modern, fast, and intuitive frontend replacement for the standard Apache Ambari web UI. It's designed to streamline cluster management with a better user experience and powerful AI-driven features."
+    },
+    {
+        id: 'faq-2',
+        question: "Can I connect my existing Ambari-managed cluster?",
+        answer: "Yes! AmberOps is designed to work with your existing Ambari backend. You can add your cluster by providing your Ambari server URL and credentials, and AmberOps will act as a new, more powerful interface for it."
+    },
+    {
+        id: 'faq-3',
+        question: "Is there a free plan?",
+        answer: "Absolutely. Our 'Hobby' plan is free forever and is perfect for individuals and small teams to manage a single cluster with up to 5 hosts. You can explore all the core features without any cost."
+    },
+    {
+        id: 'faq-4',
+        question: "How does the AI assistance work?",
+        answer: "We use state-of-the-art large language models (LLMs) from Google (Gemini) to analyze your cluster's metrics and alert data. The AI can then generate a natural-language summaries of cluster health and provide step-by-step troubleshooting guides for specific alerts, helping you resolve issues faster."
     }
 ];

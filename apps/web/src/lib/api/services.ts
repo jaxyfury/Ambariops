@@ -1,5 +1,5 @@
 
-import type { User, Cluster, Service, Host, Alert, AlertDefinition, Task, ActivityLog, LogEntry, ConfigVersion, DocumentationArticle, LegalDocument, PricingTier } from '@amberops/lib';
+import type { User, Cluster, Service, Host, Alert, AlertDefinition, Task, ActivityLog, LogEntry, ConfigVersion, DocumentationArticle, LegalDocument, PricingTier, Testimonial, FAQ } from '@amberops/lib';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_ENABLE_MOCKING === 'true'
   ? '/api/v1'
@@ -103,3 +103,15 @@ export const fetchPricingTiers = (): Promise<PricingTier[]> => apiClient.get(`${
 export const addPricingTier = (tierData: Omit<PricingTier, 'id'>): Promise<PricingTier> => apiClient.post(`${API_BASE_URL}/pricing`, tierData);
 export const updatePricingTier = (tierId: string, tierData: Partial<PricingTier>): Promise<PricingTier> => apiClient.put(`${API_BASE_URL}/pricing/${tierId}`, tierData);
 export const deletePricingTier = (tierId: string): Promise<{ id: string }> => apiClient.delete(`${API_BASE_URL}/pricing/${tierId}`);
+
+// Testimonials Service
+export const fetchTestimonials = (): Promise<Testimonial[]> => apiClient.get(`${API_BASE_URL}/testimonials`);
+export const addTestimonial = (testimonialData: Omit<Testimonial, 'id'>): Promise<Testimonial> => apiClient.post(`${API_BASE_URL}/testimonials`, testimonialData);
+export const updateTestimonial = (id: string, testimonialData: Partial<Testimonial>): Promise<Testimonial> => apiClient.put(`${API_BASE_URL}/testimonials/${id}`, testimonialData);
+export const deleteTestimonial = (id: string): Promise<{ id: string }> => apiClient.delete(`${API_BASE_URL}/testimonials/${id}`);
+
+// FAQs Service
+export const fetchFaqs = (): Promise<FAQ[]> => apiClient.get(`${API_BASE_URL}/faqs`);
+export const addFaq = (faqData: Omit<FAQ, 'id'>): Promise<FAQ> => apiClient.post(`${API_BASE_URL}/faqs`, faqData);
+export const updateFaq = (id: string, faqData: Partial<FAQ>): Promise<FAQ> => apiClient.put(`${API_BASE_URL}/faqs/${id}`, faqData);
+export const deleteFaq = (id: string): Promise<{ id: string }> => apiClient.delete(`${API_BASE_URL}/faqs/${id}`);

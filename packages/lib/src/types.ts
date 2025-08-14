@@ -142,3 +142,17 @@ export type PricingTier = {
     features: string[];
     isFeatured: boolean;
 };
+
+export type Testimonial = {
+    id: string;
+    name: string;
+    role: string;
+    quote: string;
+    avatar: string;
+};
+
+export type FAQ = {
+    id: string;
+    question: string;
+    answer: string;
+};

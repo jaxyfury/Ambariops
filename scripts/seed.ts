@@ -11,6 +11,9 @@ import {
   mockTasks,
   mockActivityLogs,
   mockLogEntries,
+  mockPricingTiers,
+  mockTestimonials,
+  mockFaqs,
 } from '../packages/api/src/mocks/mock-data';
 import bcrypt from 'bcryptjs';
 import { config } from 'dotenv';
@@ -157,6 +160,24 @@ async function seedDatabase() {
     await db.collection('legal').deleteMany({});
     await db.collection('legal').insertMany(legal);
     console.log('Legal documents seeded.');
+    
+    // 13. Seed Pricing Tiers
+    console.log('Seeding pricing tiers...');
+    await db.collection('pricingTiers').deleteMany({});
+    await db.collection('pricingTiers').insertMany(mockPricingTiers);
+    console.log('Pricing tiers seeded.');
+    
+    // 14. Seed Testimonials
+    console.log('Seeding testimonials...');
+    await db.collection('testimonials').deleteMany({});
+    await db.collection('testimonials').insertMany(mockTestimonials);
+    console.log('Testimonials seeded.');
+    
+    // 15. Seed FAQs
+    console.log('Seeding FAQs...');
+    await db.collection('faqs').deleteMany({});
+    await db.collection('faqs').insertMany(mockFaqs);
+    console.log('FAQs seeded.');
 
 
     console.log('Database seeding completed successfully!');

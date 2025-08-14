@@ -9,73 +9,21 @@ import Link from 'next/link'
 import { CheckCircle, Shield, Zap, BarChart, HardDrive, Server, Users, ArrowRight, Mail, GitBranch, Terminal, Blocks, Package, Search, Star, MessageSquare, Cpu, Database } from 'lucide-react'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@amberops/ui/components/ui/accordion';
 import { AnimatedGlobe } from '@/components/animated-globe';
-import { AnimatedThemeToggle } from '@/components/animated-theme-toggle';
 import { Card, CardContent } from '@amberops/ui/components/ui/card';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { cn } from '@amberops/lib';
-import type { PricingTier } from '@amberops/lib';
-import { fetchPricingTiers } from '@/lib/api/services';
+import type { PricingTier, Testimonial, FAQ } from '@amberops/lib';
+import { fetchPricingTiers, fetchTestimonials, fetchFaqs } from '@/lib/api/services';
 import { Skeleton } from '@amberops/ui/components/ui/skeleton';
+import { Header } from '@/components/layout/header';
+import { Footer } from '@/components/layout/footer';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const FeatureCarousel = dynamic(() => import('@/components/feature-carousel').then(mod => mod.FeatureCarousel));
 const TestimonialsMarquee = dynamic(() => import('@/components/testimonials-marquee').then(mod => mod.TestimonialsMarquee));
 const PricingCard = dynamic(() => import('@/components/pricing-card').then(mod => mod.PricingCard));
-const FooterAnimation = dynamic(() => import('@/components/footer-animation').then(mod => mod.FooterAnimation));
-
-const testimonials = [
-  {
-    quote: "AmberOps has revolutionized how we manage our data clusters. The AI-powered troubleshooting is like having another senior engineer on the team. We've reduced downtime by over 30%.",
-    name: 'Sarah L.',
-    role: 'Lead DevOps Engineer',
-    avatar: 'https://avatar.vercel.sh/sarah',
-  },
-  {
-    quote: "The interface is just... better. It's fast, intuitive, and I can find what I need in seconds. I can't imagine going back to the old Ambari UI.",
-    name: 'Mike R.',
-    role: 'Platform Engineering Manager',
-    avatar: 'https://avatar.vercel.sh/mike',
-  },
-   {
-    quote: "As a data analyst, I don't want to fight with the tooling. AmberOps gives me the quick insights I need on service health without having to dive into complex configs. It just works.",
-    name: 'Chen W.',
-    role: 'Senior Data Analyst',
-    avatar: 'https://avatar.vercel.sh/chen',
-  },
-  {
-    quote: "The performance monitoring is top-notch. The historical data charts helped us spot a memory leak we'd been chasing for weeks.",
-    name: 'Isabella F.',
-    role: 'Site Reliability Engineer',
-    avatar: 'https://avatar.vercel.sh/isabella',
-  },
-    {
-    quote: "Onboarding a new cluster used to be a day-long affair. With AmberOps' wizard, I had our new staging environment up and running in under an hour.",
-    name: 'David K.',
-    role: 'Infrastructure Lead',
-    avatar: 'https://avatar.vercel.sh/david',
-  },
-];
-
-const faqItems = [
-    {
-        question: "What is AmberOps?",
-        answer: "AmberOps is a modern, fast, and intuitive frontend replacement for the standard Apache Ambari web UI. It's designed to streamline cluster management with a better user experience and powerful AI-driven features."
-    },
-    {
-        question: "Can I connect my existing Ambari-managed cluster?",
-        answer: "Yes! AmberOps is designed to work with your existing Ambari backend. You can add your cluster by providing your Ambari server URL and credentials, and AmberOps will act as a new, more powerful interface for it."
-    },
-    {
-        question: "Is there a free plan?",
-        answer: "Absolutely. Our 'Hobby' plan is free forever and is perfect for individuals and small teams to manage a single cluster with up to 5 hosts. You can explore all the core features without any cost."
-    },
-    {
-        question: "How does the AI assistance work?",
-        answer: "We use state-of-the-art large language models (LLMs) from Google (Gemini) to analyze your cluster's metrics and alert data. The AI can then generate a natural-language summaries of cluster health and provide step-by-step troubleshooting guides for specific alerts, helping you resolve issues faster."
-    }
-]
 
 const integrationIcons = [
     { icon: Database, name: 'HDFS' },
@@ -97,21 +45,44 @@ export default function HomePage() {
   const mainRef = useRef<HTMLDivElement>(null);
   const [pricingTiers, setPricingTiers] = useState<PricingTier[]>([]);
   const [isLoadingPricing, setIsLoadingPricing] = useState(true);
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [isLoadingTestimonials, setIsLoadingTestimonials] = useState(true);
+  const [faqItems, setFaqItems] = useState<FAQ[]>([]);
+  const [isLoadingFaqs, setIsLoadingFaqs] = useState(true);
 
   useEffect(() => {
-    const loadPricing = async () => {
+    const loadData = async () => {
         try {
             setIsLoadingPricing(true);
             const tiers = await fetchPricingTiers();
             setPricingTiers(tiers);
         } catch (error) {
             console.error("Failed to fetch pricing tiers:", error);
-            // Fallback to default or show an error
         } finally {
             setIsLoadingPricing(false);
         }
+
+        try {
+            setIsLoadingTestimonials(true);
+            const fetchedTestimonials = await fetchTestimonials();
+            setTestimonials(fetchedTestimonials);
+        } catch (error) {
+            console.error("Failed to fetch testimonials:", error);
+        } finally {
+            setIsLoadingTestimonials(false);
+        }
+        
+        try {
+            setIsLoadingFaqs(true);
+            const faqs = await fetchFaqs();
+            setFaqItems(faqs);
+        } catch (error) {
+            console.error("Failed to fetch FAQs:", error);
+        } finally {
+            setIsLoadingFaqs(false);
+        }
     };
-    loadPricing();
+    loadData();
   }, []);
 
   useLayoutEffect(() => {
@@ -167,59 +138,7 @@ export default function HomePage() {
 
   return (
     <div ref={mainRef} className="flex flex-col min-h-dvh bg-background text-foreground">
-      <header className="sticky top-0 z-50 px-4 lg:px-6 h-16 flex items-center border-b bg-background/80 backdrop-blur-lg">
-        <Link href="#" className="flex items-center justify-center gap-2" prefetch={false}>
-          <AmberOpsLogo className="h-8 w-8" />
-          <span className="text-xl font-semibold font-headline">AmberOps</span>
-        </Link>
-        <nav className="ml-auto items-center hidden md:flex gap-4 sm:gap-6">
-          <Link
-            href="#features"
-            className="text-sm font-medium hover:text-primary transition-colors underline-offset-4"
-            prefetch={false}
-          >
-            Features
-          </Link>
-           <Link
-            href="#pricing"
-            className="text-sm font-medium hover:text-primary transition-colors underline-offset-4"
-            prefetch={false}
-          >
-            Pricing
-          </Link>
-          <Link
-            href="/documentation"
-            className="text-sm font-medium hover:text-primary transition-colors underline-offset-4"
-            prefetch={false}
-          >
-            Docs
-          </Link>
-           <Link
-            href="#faq"
-            className="text-sm font-medium hover:text-primary transition-colors underline-offset-4"
-            prefetch={false}
-          >
-            FAQ
-          </Link>
-           <Link
-            href="#contact"
-            className="text-sm font-medium hover:text-primary transition-colors underline-offset-4"
-            prefetch={false}
-          >
-            Contact
-          </Link>
-           <AnimatedThemeToggle />
-           <Button asChild variant="ghost">
-            <Link href="/auth">Admin Login</Link>
-          </Button>
-           <Button asChild>
-            <Link href="/auth?action=signup">Get Started <ArrowRight className="ml-2 h-4 w-4" /></Link>
-          </Button>
-        </nav>
-        <Button asChild variant="outline" className="ml-auto md:hidden">
-            <Link href="/auth">Login</Link>
-        </Button>
-      </header>
+      <Header />
       <main className="flex-1">
         <section className="w-full py-20 md:py-28 lg:py-32 xl:py-40 relative overflow-hidden">
              <div className="absolute top-0 left-0 -translate-x-1/4 -translate-y-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
@@ -377,7 +296,13 @@ export default function HomePage() {
                     </div>
                 </div>
             </div>
-            <TestimonialsMarquee testimonials={testimonials} />
+            {isLoadingTestimonials ? (
+                <div className="flex justify-center mt-8">
+                    <Skeleton className="h-48 w-full max-w-6xl" />
+                </div>
+            ) : (
+                 <TestimonialsMarquee testimonials={testimonials} />
+            )}
         </section>
         
         <section id="faq" className="w-full py-20 md:py-28 lg:py-32 bg-muted/20">
@@ -395,14 +320,24 @@ export default function HomePage() {
                 </div>
                 <div className="mx-auto max-w-3xl py-12">
                      <Accordion id="faq-accordion" type="single" collapsible className="w-full">
-                        {faqItems.map((faq, index) => (
-                        <AccordionItem value={`item-${index + 1}`} key={index} className="faq-item">
-                            <AccordionTrigger className="text-lg font-semibold">{faq.question}</AccordionTrigger>
-                            <AccordionContent className="text-muted-foreground text-base">
-                                {faq.answer}
-                            </AccordionContent>
-                        </AccordionItem>
-                        ))}
+                        {isLoadingFaqs ? (
+                             Array.from({ length: 4 }).map((_, i) => (
+                                 <div key={i} className="faq-item border-b">
+                                     <div className="py-4">
+                                        <Skeleton className="h-6 w-full" />
+                                     </div>
+                                 </div>
+                             ))
+                        ) : (
+                            faqItems.map((faq, index) => (
+                            <AccordionItem value={`item-${index + 1}`} key={faq.id} className="faq-item">
+                                <AccordionTrigger className="text-lg font-semibold">{faq.question}</AccordionTrigger>
+                                <AccordionContent className="text-muted-foreground text-base">
+                                    {faq.answer}
+                                </AccordionContent>
+                            </AccordionItem>
+                            ))
+                        )}
                     </Accordion>
                 </div>
             </div>
@@ -461,22 +396,7 @@ export default function HomePage() {
           </div>
         </section>
       </main>
-      <footer className="relative flex flex-col gap-2 sm:flex-row py-12 w-full shrink-0 items-center px-4 md:px-6 border-t overflow-hidden min-h-[350px]">
-        <div className="flex-grow z-10">
-          <p className="text-xs text-muted-foreground">&copy; {new Date().getFullYear()} AmberOps Inc. All rights reserved.</p>
-          <nav className="sm:ml-auto flex gap-4 sm:gap-6 mt-2">
-            <Link href="/legal/terms-of-service" className="text-xs hover:underline underline-offset-4" prefetch={false}>
-              Terms of Service
-            </Link>
-            <Link href="/legal/privacy-policy" className="text-xs hover:underline underline-offset-4" prefetch={false}>
-              Privacy
-            </Link>
-          </nav>
-        </div>
-        <div className="absolute right-0 bottom-0 z-0">
-            <FooterAnimation />
-        </div>
-      </footer>
+      <Footer />
     </div>
   )
 }
