@@ -31,11 +31,9 @@ run_cmd() {
     osascript -e "tell application \"Terminal\" to do script \"cd '$current_dir' && pnpm $cmd\""
   
   elif [ "$OS" = "Linux" ]; then
-    # For Linux, try gnome-terminal, otherwise run in background.
-    if command -v gnome-terminal >/dev/null 2>&1; then
-      gnome-terminal -- bash -c "echo 'Starting pnpm $cmd...'; pnpm --prefix '$current_dir' $cmd; echo 'Process finished, press Enter to close'; read" &
-    else
-      echo "⚠️ gnome-terminal not found. Running 'pnpm $cmd' in the background..."
+    # For Linux, try gnome-terminal. If it fails for any reason, run in the background.
+    if ! gnome-terminal -- bash -c "echo 'Starting pnpm $cmd...'; pnpm --prefix '$current_dir' $cmd; echo 'Process finished, press Enter to close'; read" >/dev/null 2>&1; then
+      echo "⚠️ gnome-terminal failed to launch. Running 'pnpm $cmd' in the background..."
       pnpm --prefix "$current_dir" "$cmd" &
     fi
   
