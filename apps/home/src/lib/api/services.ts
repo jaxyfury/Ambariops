@@ -3,7 +3,7 @@
 
 import type { DocumentationArticle, PricingTier, Testimonial, FAQ } from '@amberops/lib';
 
-const API_URL = '/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
 
 // In a larger app, this might be a shared client, but for the home app's limited needs,
 // a direct fetch is clean and simple.
