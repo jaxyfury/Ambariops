@@ -7,7 +7,6 @@ import { Breadcrumbs } from '@amberops/ui/components/breadcrumbs';
 import { SidebarProvider } from '@amberops/ui/components/ui/sidebar';
 import { Preloader } from '@amberops/ui/components/preloader';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 
 export default function ProtectedAppLayout({
   children,
@@ -16,7 +15,6 @@ export default function ProtectedAppLayout({
 }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const router = useRouter();
 
   useEffect(() => {
     // This check runs only on the client-side
@@ -29,7 +27,7 @@ export default function ProtectedAppLayout({
       window.location.href = `${homeUrl}/auth`;
     }
     setIsLoading(false);
-  }, [router]);
+  }, []);
 
   if (isLoading || !isAuthenticated) {
     return <Preloader />;
