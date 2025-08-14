@@ -11,8 +11,9 @@ import {
   mockLogEntries,
   mockUsers,
   mockActivityLogs,
+  mockPricingTiers,
 } from './mock-data';
-import type { User, Task } from '@amberops/lib';
+import type { User, Task, PricingTier } from '@amberops/lib';
 
 let taskIdCounter = mockTasks.length > 0 ? Math.max(...mockTasks.map(t => t.id)) + 1 : 1;
 
@@ -184,5 +185,44 @@ export const handlers = [
 
     mockUsers.splice(userIndex, 1);
     return HttpResponse.json({ id: userId });
+  }),
+  
+  // Pricing Tiers
+  http.get('/api/v1/pricing', () => {
+    return HttpResponse.json(mockPricingTiers);
+  }),
+  
+  http.post('/api/v1/pricing', async ({ request }) => {
+      const newTierData = await request.json() as Omit<PricingTier, 'id'>;
+      const newTier: PricingTier = {
+          id: `tier-${Date.now()}`,
+          ...newTierData,
+      };
+      mockPricingTiers.push(newTier);
+      return HttpResponse.json(newTier, { status: 201 });
+  }),
+
+  http.put('/api/v1/pricing/:id', async ({ params, request }) => {
+      const { id } = params;
+      const updatedData = await request.json() as Partial<PricingTier>;
+      const tierIndex = mockPricingTiers.findIndex(t => t.id === id);
+
+      if (tierIndex === -1) {
+          return new HttpResponse(null, { status: 404 });
+      }
+      mockPricingTiers[tierIndex] = { ...mockPricingTiers[tierIndex], ...updatedData };
+      return HttpResponse.json(mockPricingTiers[tierIndex]);
+  }),
+
+  http.delete('/api/v1/pricing/:id', ({ params }) => {
+      const { id } = params;
+      const initialLength = mockPricingTiers.length;
+      mockPricingTiers = mockPricingTiers.filter(t => t.id !== id);
+
+      if (mockPricingTiers.length === initialLength) {
+          return new HttpResponse(null, { status: 404 });
+      }
+
+      return HttpResponse.json({ id });
   }),
 ];

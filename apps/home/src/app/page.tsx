@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useRef, useLayoutEffect } from 'react';
+import { useRef, useLayoutEffect, useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { Button } from '@amberops/ui/components/ui/button'
 import { AmberOpsLogo } from '@amberops/ui/components/icons'
@@ -14,6 +14,9 @@ import { Card, CardContent } from '@amberops/ui/components/ui/card';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { cn } from '@amberops/lib';
+import type { PricingTier } from '@amberops/lib';
+import { fetchPricingTiers } from '@/lib/api/services';
+import { Skeleton } from '@amberops/ui/components/ui/skeleton';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -74,33 +77,6 @@ const faqItems = [
     }
 ]
 
-const pricingTiers = {
-    hobby: {
-        title: "Hobby",
-        price: "0",
-        period: "/month",
-        description: "For personal projects & small teams.",
-        features: ["1 Cluster", "Up to 5 Hosts", "Community Support", "Core Features"],
-        buttonText: "Get Started"
-    },
-    pro: {
-        title: "Pro Tier Access",
-        price: "99",
-        period: "/month",
-        description: "For growing businesses and production use. Unlock powerful features to scale your operations.",
-        features: ["Up to 5 Clusters", "Up to 50 Hosts", "Priority Email Support", "Advanced AI Features", "Weekly Health Reports"],
-        buttonText: "Choose Pro"
-    },
-    enterprise: {
-        title: "Enterprise",
-        price: "Custom",
-        period: "",
-        description: "For large-scale, critical deployments.",
-        features: ["Unlimited Clusters", "Unlimited Hosts", "Dedicated SLA & Support", "On-premise Deployment"],
-        buttonText: "Contact Sales"
-    }
-}
-
 const integrationIcons = [
     { icon: Database, name: 'HDFS' },
     { icon: Users, name: 'YARN' },
@@ -119,6 +95,24 @@ const integrationIcons = [
 
 export default function HomePage() {
   const mainRef = useRef<HTMLDivElement>(null);
+  const [pricingTiers, setPricingTiers] = useState<PricingTier[]>([]);
+  const [isLoadingPricing, setIsLoadingPricing] = useState(true);
+
+  useEffect(() => {
+    const loadPricing = async () => {
+        try {
+            setIsLoadingPricing(true);
+            const tiers = await fetchPricingTiers();
+            setPricingTiers(tiers);
+        } catch (error) {
+            console.error("Failed to fetch pricing tiers:", error);
+            // Fallback to default or show an error
+        } finally {
+            setIsLoadingPricing(false);
+        }
+    };
+    loadPricing();
+  }, []);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -355,15 +349,19 @@ export default function HomePage() {
                 </div>
             </div>
              <div id="pricing-grid" className="mx-auto grid max-w-6xl items-start gap-32 lg:grid-cols-3 justify-items-center">
-                <div className="pricing-card-wrapper">
-                    <PricingCard {...pricingTiers.hobby} />
-                </div>
-                <div className="pricing-card-wrapper">
-                    <PricingCard {...pricingTiers.pro} isFeatured />
-                </div>
-                <div className="pricing-card-wrapper">
-                    <PricingCard {...pricingTiers.enterprise} />
-                </div>
+                {isLoadingPricing ? (
+                    Array.from({ length: 3 }).map((_, i) => (
+                         <div key={i} className="pricing-card-wrapper">
+                             <Skeleton className="h-[450px] w-[360px] rounded-2xl" />
+                         </div>
+                    ))
+                ) : (
+                    pricingTiers.map((tier) => (
+                        <div key={tier.id} className="pricing-card-wrapper">
+                            <PricingCard {...tier} buttonText={tier.title === 'Enterprise' ? 'Contact Sales' : 'Get Started'} />
+                        </div>
+                    ))
+                )}
             </div>
           </div>
         </section>

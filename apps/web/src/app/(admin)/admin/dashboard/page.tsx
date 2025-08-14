@@ -1,7 +1,7 @@
 
 import { PageHeader } from '@amberops/ui/components/page-header';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@amberops/ui/components/ui/card';
-import { FileText, Users, Shield } from 'lucide-react';
+import { FileText, Users, Shield, Tag } from 'lucide-react';
 import Link from 'next/link';
 
 export default function AdminDashboardPage() {
@@ -42,6 +42,17 @@ export default function AdminDashboardPage() {
           <CardContent>
             <Link href="/admin/legal" className="text-primary hover:underline">
               Manage Legal Docs
+            </Link>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2"><Tag /> Pricing Tiers</CardTitle>
+            <CardDescription>Create, edit, and manage pricing plans.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Link href="/admin/pricing" className="text-primary hover:underline">
+              Manage Pricing
             </Link>
           </CardContent>
         </Card>

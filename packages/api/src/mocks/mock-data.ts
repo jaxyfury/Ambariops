@@ -1,4 +1,4 @@
-import type { Cluster, Service, Host, Alert, AlertDefinition, ConfigVersion, Task, LogEntry, User, ActivityLog } from '@amberops/lib/types';
+import type { Cluster, Service, Host, Alert, AlertDefinition, ConfigVersion, Task, LogEntry, User, ActivityLog, PricingTier } from '@amberops/lib/types';
 
 const generateHistoricalData = (days: number, cpuMax: number, memMax: number, diskMax: number, netMax: number) => {
   const data = [];
@@ -136,4 +136,34 @@ export const mockActivityLogs: ActivityLog[] = [
     { id: 'act-3', user: mockUsers[0], action: 'LOGIN', details: 'User alice@amberops.io logged in', timestamp: new Date(Date.now() - 1000 * 60 * 60).toISOString() },
     { id: 'act-4', user: mockUsers[3], action: 'UPDATE', details: 'Updated user role for charlie@amberops.io to Viewer', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 3).toISOString() },
     { id: 'act-5', user: mockUsers[0], action: 'DELETE', details: 'Deleted cluster: temp-cluster-5', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 25).toISOString() },
+];
+
+export let mockPricingTiers: PricingTier[] = [
+    {
+        id: 'tier-1',
+        title: "Hobby",
+        price: "0",
+        period: "/month",
+        description: "For personal projects & small teams.",
+        features: ["1 Cluster", "Up to 5 Hosts", "Community Support", "Core Features"],
+        isFeatured: false,
+    },
+    {
+        id: 'tier-2',
+        title: "Pro Tier Access",
+        price: "99",
+        period: "/month",
+        description: "For growing businesses and production use. Unlock powerful features to scale your operations.",
+        features: ["Up to 5 Clusters", "Up to 50 Hosts", "Priority Email Support", "Advanced AI Features", "Weekly Health Reports"],
+        isFeatured: true,
+    },
+    {
+        id: 'tier-3',
+        title: "Enterprise",
+        price: "Custom",
+        period: "",
+        description: "For large-scale, critical deployments.",
+        features: ["Unlimited Clusters", "Unlimited Hosts", "Dedicated SLA & Support", "On-premise Deployment"],
+        isFeatured: false,
+    }
 ];

@@ -1,9 +1,9 @@
 
-import type { User, Cluster, Service, Host, Alert, AlertDefinition, Task, ActivityLog, LogEntry, ConfigVersion, DocumentationArticle, LegalDocument } from '@amberops/lib';
+import type { User, Cluster, Service, Host, Alert, AlertDefinition, Task, ActivityLog, LogEntry, ConfigVersion, DocumentationArticle, LegalDocument, PricingTier } from '@amberops/lib';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_ENABLE_MOCKING === 'true'
   ? '/api/v1'
-  : process.env.NEXT_PUBLIC_API_BASE_URL || '/api/v1';
+  : process.env.NEXT_PUBLIC_API_URL;
 
 // A placeholder for a real API client.
 const apiClient = {
@@ -97,3 +97,9 @@ export const deleteDocumentationArticle = (slug: string): Promise<{ id: string }
 // Legal Documents Service
 export const fetchLegalDocument = (type: 'terms' | 'privacy'): Promise<LegalDocument> => apiClient.get(`${API_BASE_URL}/legal/${type}`);
 export const updateLegalDocument = (type: 'terms' | 'privacy', data: { content: string }): Promise<LegalDocument> => apiClient.put(`${API_BASE_URL}/legal/${type}`, data);
+
+// Pricing Tiers Service
+export const fetchPricingTiers = (): Promise<PricingTier[]> => apiClient.get(`${API_BASE_URL}/pricing`);
+export const addPricingTier = (tierData: Omit<PricingTier, 'id'>): Promise<PricingTier> => apiClient.post(`${API_BASE_URL}/pricing`, tierData);
+export const updatePricingTier = (tierId: string, tierData: Partial<PricingTier>): Promise<PricingTier> => apiClient.put(`${API_BASE_URL}/pricing/${tierId}`, tierData);
+export const deletePricingTier = (tierId: string): Promise<{ id: string }> => apiClient.delete(`${API_BASE_URL}/pricing/${tierId}`);

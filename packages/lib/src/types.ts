@@ -132,3 +132,13 @@ export type LegalDocument = {
     content: string;
     updatedAt: string;
 };
+
+export type PricingTier = {
+    id: string;
+    title: string;
+    price: string;
+    period: string;
+    description: string;
+    features: string[];
+    isFeatured: boolean;
+};

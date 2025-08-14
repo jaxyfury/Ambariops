@@ -8,7 +8,8 @@ import {
   FileText,
   Shield,
   Users,
-  LogOut
+  LogOut,
+  Tag,
 } from 'lucide-react';
 import {
   Sidebar,
@@ -30,6 +31,7 @@ export function AdminSidebarNav() {
     { href: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { href: '/admin/documentation', label: 'Documentation', icon: FileText },
     { href: '/admin/legal', label: 'Legal Pages', icon: Shield },
+    { href: '/admin/pricing', label: 'Pricing', icon: Tag },
     { href: '/settings', label: 'User Management', icon: Users },
   ];
 
@@ -79,4 +81,3 @@ export function AdminSidebarNav() {
     </Sidebar>
   );
 }
-
