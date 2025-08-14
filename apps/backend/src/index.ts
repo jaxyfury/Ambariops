@@ -1,9 +1,12 @@
 
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
 import api from './api';
+import { errorHandler } from './utils/error-handler';
 
 // Load environment variables from the root .env file
 dotenv.config({ path: '../../.env' });
@@ -11,7 +14,8 @@ dotenv.config({ path: '../../.env' });
 const app = express();
 const PORT = process.env.BACKEND_PORT || 3004;
 
-// Middleware
+// Basic security middleware
+app.use(helmet());
 app.use(cors({
   origin: [
     process.env.NEXT_PUBLIC_HOME_URL || 'http://localhost:3001',
@@ -21,6 +25,16 @@ app.use(cors({
   credentials: true,
 }));
 app.use(express.json());
+
+// Rate limiting
+const limiter = rateLimit({
+	windowMs: 15 * 60 * 1000, // 15 minutes
+	max: 100, // Limit each IP to 100 requests per windowMs
+	standardHeaders: true, 
+	legacyHeaders: false, 
+});
+app.use(limiter);
+
 
 // Connect to MongoDB
 const MONGODB_URI = process.env.MONGODB_URI;
@@ -42,6 +56,15 @@ app.use('/api/v1', api);
 app.get('/', (req, res) => {
     res.send('AmberOps Backend Service is running.');
 });
+
+// 404 Handler for unknown routes
+app.use((req, res, next) => {
+  res.status(404).json({ message: "Not Found" });
+});
+
+// Centralized error handler
+app.use(errorHandler);
+
 
 app.listen(PORT, () => {
   console.log(`AmberOps Backend Service listening on port ${PORT}`);

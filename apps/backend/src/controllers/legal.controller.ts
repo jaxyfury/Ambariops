@@ -1,9 +1,8 @@
 
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import * as legalService from '../services/legal.service';
-import { handleServiceError } from '../utils/error-handler';
 
-export const getLegalDocument = async (req: Request, res: Response) => {
+export const getLegalDocument = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const doc = await legalService.findLegalDocument(req.params.type as 'terms' | 'privacy');
         if (!doc) {
@@ -11,15 +10,15 @@ export const getLegalDocument = async (req: Request, res: Response) => {
         }
         res.json(doc);
     } catch (error) {
-        handleServiceError(error, res);
+        next(error);
     }
 };
 
-export const updateLegalDocument = async (req: Request, res: Response) => {
+export const updateLegalDocument = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const doc = await legalService.updateLegalDocument(req.params.type as 'terms' | 'privacy', req.body);
         res.json(doc);
     } catch (error) {
-        handleServiceError(error, res);
+        next(error);
     }
 };

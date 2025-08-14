@@ -1,26 +1,29 @@
 # Standalone Backend API Service (Node.js/Express)
 
-This directory contains the primary backend API service for the AmberOps Console, built with Node.js, Express, and Mongoose.
+This directory contains the primary backend API service for the AmberOps Console, built with Node.js, Express, and Mongoose. It follows a modern, scalable, and modular architecture to ensure maintainability and ease of development.
 
-## In-Depth Overview
+## Architecture Overview
 
-*   **Purpose**: To provide a dedicated, decoupled REST API for all application data, such as clusters, services, hosts, alerts, and administrative content. This microservice architecture cleanly separates data logic from the frontend applications and the authentication service.
+The backend is structured using a layered approach to separate concerns, making the codebase clean, organized, and easy to extend.
 
-*   **Technology**:
-    *   **Runtime**: Node.js
-    *   **Framework**: Express.js for routing and middleware.
-    *   **Database**: MongoDB with Mongoose for data modeling and validation.
-    *   **CORS**: Configured to allow requests from the frontend applications.
+*   **`src/models`**: Defines all the Mongoose schemas for the application's data entities (e.g., `user.model.ts`, `cluster.model.ts`). This is the data layer.
+*   **`src/services`**: Contains the core business logic. Each service (e.g., `user.service.ts`) is responsible for interacting with the models to perform database operations (CRUD).
+*   **`src/controllers`**: Handles the incoming HTTP requests. Controllers (e.g., `user.controller.ts`) orchestrate the flow by calling the appropriate services and sending back the response. They contain the request/response handling logic.
+*   **`src/api/routes`**: Defines the API endpoints for each resource (e.g., `user.routes.ts`). These files map HTTP verbs and URL paths to specific controller functions.
+*   **`src/api/index.ts`**: The main API router that aggregates all the individual resource routes and mounts them under the `/api/v1` prefix.
+*   **`src/utils`**: Contains utility functions, such as the centralized `error-handler.ts`.
+*   **`src/index.ts`**: The main entry point for the server. It initializes the Express app, connects to the database, and sets up all global middleware like CORS, Helmet (for security), and rate limiting.
 
-*   **API Endpoints**: This service provides a comprehensive set of RESTful endpoints for all core data entities. It implements full CRUD (Create, Read, Update, Delete) functionality for:
-    *   `/api/v1/users`
-    *   `/api/v1/clusters`
-    *   `/api/v1/services`
-    *   `/api/v1/hosts`
-    *   `/api/v1/alerts`
-    *   `/api/v1/documentation`
-    *   `/api/v1/pricing`
-    *   ...and all other data models required by the platform.
+### Request Flow
+
+A typical request flows through the application as follows:
+`index.ts` -> `api/index.ts` -> `api/routes/*.routes.ts` -> `controllers/*.controller.ts` -> `services/*.service.ts` -> `models/*.model.ts`
+
+## Production-Ready Features
+
+*   **Security**: Uses `helmet` to apply essential security headers, protecting against common web vulnerabilities.
+*   **Rate Limiting**: Implements global rate limiting with `express-rate-limit` to prevent API abuse.
+*   **Centralized Error Handling**: A dedicated middleware ensures that all errors are caught and returned in a consistent JSON format with the correct HTTP status codes.
 
 ## Running Locally
 
