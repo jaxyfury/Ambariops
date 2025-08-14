@@ -34,7 +34,7 @@ import { GlobalSearch } from '@/components/global-search';
 export function AppLayout({ children }: { children: React.ReactNode }) {
     // NOTE: In a real application, user data would come from a global context
     // or a hook that decodes a JWT from the dedicated auth service.
-    const user = { name: 'Admin User', email: 'admin@amberops.com', role: 'Admin', image: `https://avatar.vercel.sh/admin` };
+    const user = { name: 'Dev User', email: 'dev@amberops.com', role: 'Operator', image: `https://avatar.vercel.sh/dev` };
     const homeUrl = process.env.NEXT_PUBLIC_HOME_URL || 'http://localhost:3001';
     const adminUrl = process.env.NEXT_PUBLIC_ADMIN_URL || 'http://localhost:3003';
 

@@ -4,7 +4,6 @@
 import Link from 'next/link';
 import { Button } from '@amberops/ui/components/ui/button';
 import { AmberOpsLogo } from '@amberops/ui/components/icons';
-import { AnimatedThemeToggle } from '@/components/animated-theme-toggle';
 import { ArrowRight } from 'lucide-react';
 
 export function Header() {
@@ -50,7 +49,6 @@ export function Header() {
                 >
                     Contact
                 </Link>
-                <AnimatedThemeToggle />
                 <Button asChild variant="ghost">
                     <Link href="/auth">Login</Link>
                 </Button>

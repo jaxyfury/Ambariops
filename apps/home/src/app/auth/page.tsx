@@ -8,7 +8,6 @@ import toast from 'react-hot-toast';
 import { GitMerge, Chrome, LogIn, UserPlus, Eye, EyeOff } from 'lucide-react';
 import { cn } from '@amberops/lib';
 import { AmberOpsLogo } from '@amberops/ui/components/icons';
-import { AnimatedThemeToggle } from '@/components/animated-theme-toggle';
 import { Button } from '@amberops/ui/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@amberops/ui/components/ui/tooltip';
 
@@ -30,7 +29,7 @@ const SocialButton = ({ icon, onClick, tooltip }: { icon: React.ReactNode, onCli
     </TooltipProvider>
 );
 
-const SignUpForm = () => {
+const SignUpForm = ({ onSwitch }: { onSwitch: () => void }) => {
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     
@@ -42,7 +41,7 @@ const SignUpForm = () => {
         setTimeout(() => {
             toast.success("Registration successful! Please sign in.");
             setIsLoading(false);
-            // Optionally, trigger a switch to the sign-in form
+            onSwitch(); // Switch to the sign-in form
         }, 1000);
     };
 
@@ -75,7 +74,6 @@ const SignUpForm = () => {
 const SignInForm = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const router = useRouter();
 
     const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -143,13 +141,10 @@ export default function AuthPage() {
                     <AmberOpsLogo className="h-8 w-8 text-primary" />
                     <span className="text-xl font-semibold font-headline">AmberOps</span>
                 </Link>
-                <div className="ml-auto">
-                    <AnimatedThemeToggle />
-                </div>
             </header>
             <div className={cn("auth-container", isActive && "active")} id="container">
                 <div className="form-container sign-up">
-                    <SignUpForm />
+                    <SignUpForm onSwitch={() => setIsActive(false)} />
                 </div>
                 <div className="form-container sign-in">
                     <SignInForm />
