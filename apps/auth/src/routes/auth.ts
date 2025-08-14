@@ -36,7 +36,7 @@ router.post('/register', async (req: Request, res: Response) => {
     const savedUser = await newUser.save();
     
     const userResponse = {
-        id: savedUser._id,
+        id: savedUser.id,
         name: savedUser.name,
         email: savedUser.email,
         role: savedUser.role,
@@ -77,7 +77,7 @@ router.post('/login', async (req: Request, res: Response) => {
             return res.status(500).json({ message: 'Server configuration error.' });
         }
         
-        const userPayload = { id: user._id.toString(), name: user.name, email: user.email, role: user.role, avatar: user.avatar };
+        const userPayload = { id: user.id, name: user.name, email: user.email, role: user.role, avatar: user.avatar };
 
         const token = jwt.sign(
             userPayload,
@@ -104,7 +104,7 @@ router.get('/auth/google/callback', passport.authenticate('google', {
     if (!user) {
         return res.redirect(`${homeUrl}/auth?error=auth_failed`);
     }
-    const userPayload = { id: user._id.toString(), name: user.name, email: user.email, role: user.role, avatar: user.avatar };
+    const userPayload = { id: user.id, name: user.name, email: user.email, role: user.role, avatar: user.avatar };
     const token = jwt.sign(
         userPayload,
         process.env.JWT_SECRET!,
@@ -125,7 +125,7 @@ router.get('/auth/github/callback', passport.authenticate('github', {
      if (!user) {
         return res.redirect(`${homeUrl}/auth?error=auth_failed`);
     }
-    const userPayload = { id: user._id.toString(), name: user.name, email: user.email, role: user.role, avatar: user.avatar };
+    const userPayload = { id: user.id, name: user.name, email: user.email, role: user.role, avatar: user.avatar };
     const token = jwt.sign(
         userPayload,
         process.env.JWT_SECRET!,

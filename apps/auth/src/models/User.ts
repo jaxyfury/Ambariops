@@ -3,6 +3,7 @@ import mongoose, { Schema, Document } from 'mongoose';
 
 // Define the interface for the Mongoose document
 export interface IUser extends Document {
+  id: string;
   name: string;
   email: string;
   password?: string;
