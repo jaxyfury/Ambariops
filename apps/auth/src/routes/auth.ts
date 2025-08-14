@@ -39,6 +39,7 @@ router.post('/register', async (req: Request, res: Response) => {
         name: savedUser.name,
         email: savedUser.email,
         role: savedUser.role,
+        avatar: savedUser.image,
     });
   } catch (error: any) {
     res.status(500).json({ message: 'Server error during registration.', error: error.message });
@@ -54,7 +55,7 @@ router.post('/login', async (req: Request, res: Response) => {
             return res.status(400).json({ message: 'Please enter all fields.' });
         }
 
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ email }).select('+password');
         if (!user) {
             return res.status(400).json({ message: 'Invalid credentials.' });
         }
@@ -72,14 +73,16 @@ router.post('/login', async (req: Request, res: Response) => {
             console.error('FATAL ERROR: JWT_SECRET is not defined.');
             return res.status(500).json({ message: 'Server configuration error.' });
         }
+        
+        const userPayload = { id: user._id, name: user.name, email: user.email, role: user.role, image: user.image };
 
         const token = jwt.sign(
-            { id: user._id, name: user.name, email: user.email, role: user.role, image: user.image },
+            userPayload,
             jwtSecret,
             { expiresIn: '1h' }
         );
 
-        res.json({ token, user: { id: user._id, name: user.name, email: user.email, role: user.role, image: user.image } });
+        res.json({ token, user: userPayload });
 
     } catch (error: any) {
         res.status(500).json({ message: 'Server error during login.', error: error.message });
@@ -92,8 +95,9 @@ router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 
 
 router.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: `${homeUrl}/auth` }), (req: Request, res: Response) => {
     const user = req.user as IUser;
+    const userPayload = { id: user._id, name: user.name, email: user.email, role: user.role, image: user.image };
     const token = jwt.sign(
-        { id: user._id, name: user.name, email: user.email, role: user.role, image: user.image },
+        userPayload,
         process.env.JWT_SECRET!,
         { expiresIn: '1h' }
     );
@@ -107,8 +111,9 @@ router.get('/auth/github', passport.authenticate('github', { scope: ['user:email
 
 router.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: `${homeUrl}/auth` }), (req: Request, res: Response) => {
     const user = req.user as IUser;
+    const userPayload = { id: user._id, name: user.name, email: user.email, role: user.role, image: user.image };
     const token = jwt.sign(
-        { id: user._id, name: user.name, email: user.email, role: user.role, image: user.image },
+        userPayload,
         process.env.JWT_SECRET!,
         { expiresIn: '1h' }
     );

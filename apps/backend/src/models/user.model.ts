@@ -3,7 +3,7 @@ import mongoose, { Schema } from 'mongoose';
 import type { User as IUserType } from '@amberops/lib';
 
 // Extend the shared User type for Mongoose
-export interface IUser extends IUserType, mongoose.Document {}
+export interface IUser extends Omit<IUserType, 'id'>, mongoose.Document {}
 
 const UserSchema = new Schema<IUser>({
   name: { type: String, required: true },
