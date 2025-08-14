@@ -14,7 +14,7 @@ This project is a `pnpm` workspace-based monorepo, a structure chosen for its ex
 │   ├── auth/             # Placeholder for a dedicated authentication service (e.g., Keycloak)
 │   ├── home/             # Public-facing landing page application
 │   └── web/              # The core, protected user dashboard application
-├── backend/              # Placeholder for the Java backend API services
+    |__ backend/          # Placeholder for the Java backend API services
 ├── packages/
 │   ├── api/              # Centralized API client and Genkit AI flows
 │   ├── design-tokens/    # Shared theme, global styles, and Tailwind config
