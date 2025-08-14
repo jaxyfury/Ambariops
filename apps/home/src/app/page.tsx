@@ -1,8 +1,4 @@
 
-'use client';
-
-import { useRef, useLayoutEffect, useState, useEffect } from 'react';
-import dynamic from 'next/dynamic';
 import { Button } from '@amberops/ui/components/ui/button'
 import { AmberOpsLogo } from '@amberops/ui/components/icons'
 import Link from 'next/link'
@@ -10,20 +6,15 @@ import { CheckCircle, Shield, Zap, BarChart, HardDrive, Server, Users, ArrowRigh
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@amberops/ui/components/ui/accordion';
 import { AnimatedGlobe } from '@/components/animated-globe';
 import { Card, CardContent } from '@amberops/ui/components/ui/card';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { cn } from '@amberops/lib';
 import type { PricingTier, Testimonial, FAQ } from '@amberops/lib';
 import { fetchPricingTiers, fetchTestimonials, fetchFaqs } from '@amberops/api/client';
 import { Skeleton } from '@amberops/ui/components/ui/skeleton';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
-
-gsap.registerPlugin(ScrollTrigger);
-
-const FeatureCarousel = dynamic(() => import('@/components/feature-carousel').then(mod => mod.FeatureCarousel));
-const TestimonialsMarquee = dynamic(() => import('@/components/testimonials-marquee').then(mod => mod.TestimonialsMarquee));
-const PricingCard = dynamic(() => import('@/components/pricing-card').then(mod => mod.PricingCard));
+import { FeatureCarousel } from '@/components/feature-carousel';
+import { TestimonialsMarquee } from '@/components/testimonials-marquee';
+import { PricingCard } from '@/components/pricing-card';
 
 const integrationIcons = [
     { icon: Database, name: 'HDFS' },
@@ -40,104 +31,30 @@ const integrationIcons = [
     { icon: Terminal, name: 'Ambari' },
 ];
 
+async function getPageData() {
+    try {
+        const [pricingTiers, testimonials, faqItems] = await Promise.all([
+            fetchPricingTiers(),
+            fetchTestimonials(),
+            fetchFaqs()
+        ]);
+        return { pricingTiers, testimonials, faqItems, error: null };
+    } catch (error) {
+        console.error("Failed to fetch landing page data:", error);
+        return { pricingTiers: [], testimonials: [], faqItems: [], error: "Could not load page data." };
+    }
+}
 
-export default function HomePage() {
-  const mainRef = useRef<HTMLDivElement>(null);
-  const [pricingTiers, setPricingTiers] = useState<PricingTier[]>([]);
-  const [isLoadingPricing, setIsLoadingPricing] = useState(true);
-  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
-  const [isLoadingTestimonials, setIsLoadingTestimonials] = useState(true);
-  const [faqItems, setFaqItems] = useState<FAQ[]>([]);
-  const [isLoadingFaqs, setIsLoadingFaqs] = useState(true);
 
-  useEffect(() => {
-    const loadData = async () => {
-        try {
-            setIsLoadingPricing(true);
-            const tiers = await fetchPricingTiers();
-            setPricingTiers(tiers);
-        } catch (error) {
-            console.error("Failed to fetch pricing tiers:", error);
-        } finally {
-            setIsLoadingPricing(false);
-        }
+export default async function HomePage() {
+  const { pricingTiers, testimonials, faqItems, error } = await getPageData();
 
-        try {
-            setIsLoadingTestimonials(true);
-            const fetchedTestimonials = await fetchTestimonials();
-            setTestimonials(fetchedTestimonials);
-        } catch (error) {
-            console.error("Failed to fetch testimonials:", error);
-        } finally {
-            setIsLoadingTestimonials(false);
-        }
-        
-        try {
-            setIsLoadingFaqs(true);
-            const faqs = await fetchFaqs();
-            setFaqItems(faqs);
-        } catch (error) {
-            console.error("Failed to fetch FAQs:", error);
-        } finally {
-            setIsLoadingFaqs(false);
-        }
-    };
-    loadData();
-  }, []);
-
-  useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.from(".hero-element", {
-        opacity: 0,
-        y: 30,
-        duration: 0.8,
-        stagger: 0.2,
-        ease: "power3.out"
-      });
-      
-      gsap.from(".faq-item", {
-        scrollTrigger: {
-          trigger: "#faq-accordion",
-          start: "top 80%",
-        },
-        opacity: 0,
-        y: 30,
-        stagger: 0.1,
-        duration: 0.5,
-        ease: "power3.out",
-      });
-
-      gsap.from(".cta-element", {
-        scrollTrigger: {
-            trigger: "#final-cta",
-            start: "top 80%",
-        },
-        opacity: 0,
-        y: 30,
-        stagger: 0.2,
-        duration: 0.8,
-        ease: "power3.out"
-      });
-      
-      gsap.from(".integration-section-element", {
-        scrollTrigger: {
-            trigger: "#integrations-section",
-            start: "top 80%",
-        },
-        opacity: 0,
-        y: 30,
-        stagger: 0.2,
-        duration: 0.8,
-        ease: "power3.out"
-      });
-
-    }, mainRef);
-
-    return () => ctx.revert();
-  }, []);
+  if (error) {
+    return <div className="flex items-center justify-center h-screen">Error loading page data. Please try again later.</div>
+  }
 
   return (
-    <div ref={mainRef} className="flex flex-col min-h-dvh bg-background text-foreground">
+    <div className="flex flex-col min-h-dvh bg-background text-foreground">
       <Header />
       <main className="flex-1">
         <section className="w-full py-20 md:py-28 lg:py-32 xl:py-40 relative overflow-hidden">
@@ -268,19 +185,11 @@ export default function HomePage() {
                 </div>
             </div>
              <div id="pricing-grid" className="mx-auto grid max-w-6xl items-start gap-32 lg:grid-cols-3 justify-items-center">
-                {isLoadingPricing ? (
-                    Array.from({ length: 3 }).map((_, i) => (
-                         <div key={i} className="pricing-card-wrapper">
-                             <Skeleton className="h-[450px] w-[360px] rounded-2xl" />
-                         </div>
-                    ))
-                ) : (
-                    pricingTiers.map((tier) => (
-                        <div key={tier.id} className="pricing-card-wrapper">
-                            <PricingCard {...tier} buttonText={tier.title === 'Enterprise' ? 'Contact Sales' : 'Get Started'} />
-                        </div>
-                    ))
-                )}
+                {pricingTiers.map((tier) => (
+                    <div key={tier.id} className="pricing-card-wrapper">
+                        <PricingCard {...tier} buttonText={tier.title === 'Enterprise' ? 'Contact Sales' : 'Get Started'} />
+                    </div>
+                ))}
             </div>
           </div>
         </section>
@@ -296,13 +205,7 @@ export default function HomePage() {
                     </div>
                 </div>
             </div>
-            {isLoadingTestimonials ? (
-                <div className="flex justify-center mt-8">
-                    <Skeleton className="h-48 w-full max-w-6xl" />
-                </div>
-            ) : (
-                 <TestimonialsMarquee testimonials={testimonials} />
-            )}
+            <TestimonialsMarquee testimonials={testimonials} />
         </section>
         
         <section id="faq" className="w-full py-20 md:py-28 lg:py-32 bg-muted/20">
@@ -320,24 +223,14 @@ export default function HomePage() {
                 </div>
                 <div className="mx-auto max-w-3xl py-12">
                      <Accordion id="faq-accordion" type="single" collapsible className="w-full">
-                        {isLoadingFaqs ? (
-                             Array.from({ length: 4 }).map((_, i) => (
-                                 <div key={i} className="faq-item border-b">
-                                     <div className="py-4">
-                                        <Skeleton className="h-6 w-full" />
-                                     </div>
-                                 </div>
-                             ))
-                        ) : (
-                            faqItems.map((faq, index) => (
-                            <AccordionItem value={`item-${index + 1}`} key={faq.id} className="faq-item">
-                                <AccordionTrigger className="text-lg font-semibold">{faq.question}</AccordionTrigger>
-                                <AccordionContent className="text-muted-foreground text-base">
-                                    {faq.answer}
-                                </AccordionContent>
-                            </AccordionItem>
-                            ))
-                        )}
+                        {faqItems.map((faq, index) => (
+                        <AccordionItem value={`item-${index + 1}`} key={faq.id} className="faq-item">
+                            <AccordionTrigger className="text-lg font-semibold">{faq.question}</AccordionTrigger>
+                            <AccordionContent className="text-muted-foreground text-base">
+                                {faq.answer}
+                            </AccordionContent>
+                        </AccordionItem>
+                        ))}
                     </Accordion>
                 </div>
             </div>
@@ -400,5 +293,3 @@ export default function HomePage() {
     </div>
   )
 }
-
-    
