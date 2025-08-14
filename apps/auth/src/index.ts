@@ -1,3 +1,4 @@
+
 import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
@@ -6,7 +7,7 @@ import session from 'express-session';
 import passport from './config/passport';
 import authRoutes from './routes/auth';
 
-// Load environment variables
+// Load environment variables from the root of the monorepo
 dotenv.config({ path: '../../.env' });
 
 
