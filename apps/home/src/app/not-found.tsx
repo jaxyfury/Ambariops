@@ -6,7 +6,7 @@ import { Button } from '@amberops/ui/components/ui/button';
 import { useEffect, useRef } from 'react';
 import '@/styles/not-found.css';
 import { AmberOpsLogo } from '@amberops/ui/components/icons';
-import { AnimatedThemeToggle } from '@/components/animated-theme-toggle';
+import { AnimatedThemeToggle } from '../components/animated-theme-toggle';
 
 export default function NotFound() {
     const cordCanvasRef = useRef<HTMLCanvasElement>(null);
@@ -50,6 +50,7 @@ export default function NotFound() {
 
         const animate = () => {
             animationFrameRef.current = requestAnimationFrame(animate);
+            if (!cordCtx) return;
             cordCtx.clearRect(0, 0, cordCanvas.width, cordCanvas.height);
             
             cordCtx.beginPath();

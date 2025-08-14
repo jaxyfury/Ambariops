@@ -15,7 +15,7 @@ import "@/styles/integrations-grid.css";
 import { cn } from "@amberops/lib";
 import { ThemeProvider } from "@amberops/ui/components/theme-provider";
 import { Toaster } from "react-hot-toast";
-import { ThunderCursor } from "@/components/thunder-cursor";
+import { ThunderCursor } from "../components/thunder-cursor";
 
 const fontBody = Inter({
   subsets: ['latin'],
