@@ -3,9 +3,9 @@
 /.pnpm
 .pnpm-debug.log
 
-# build cache
-.next/
-/out/
+# build output
+dist/
+/build/
 
 # misc
 .DS_Store
@@ -14,9 +14,6 @@
 # environment variables
 .env
 .env*.local
-
-# vercel
-.vercel
 
 # typescript
 *.tsbuildinfo
