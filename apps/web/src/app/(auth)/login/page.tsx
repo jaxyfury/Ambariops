@@ -1,3 +1,4 @@
+
 'use client';
 
 import { redirect } from 'next/navigation';
@@ -8,7 +9,7 @@ export default function LoginPage() {
   useEffect(() => {
     // Redirect to the actual login page hosted on the 'home' app.
     const homeUrl = process.env.NEXT_PUBLIC_HOME_URL || 'http://localhost:3001';
-    redirect(`${homeUrl}/auth`);
+    window.location.href = `${homeUrl}/auth`;
   }, []);
 
   return (
