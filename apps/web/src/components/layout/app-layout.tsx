@@ -28,7 +28,8 @@ import { ThemeToggle } from '@/components/theme-toggle';
 import { LanguageSwitcher } from '@/components/language-switcher';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
-import { QuickAccessNav } from '@/components/quick-access-nav';
+import { QuickAccessNav } from '@amberops/ui/components/quick-access-nav';
+import '@amberops/ui/styles/quick-access-nav.css';
 import { GlobalSearch } from '@/components/global-search';
 import { useEffect, useState } from 'react';
 
@@ -59,8 +60,8 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
     }
 
   return (
-    <div className="flex flex-col h-screen">
-      <header className="sticky top-0 flex h-16 shrink-0 items-center gap-4 border-b bg-background/80 px-4 backdrop-blur-lg sm:h-auto sm:border-0 sm:bg-transparent sm:px-6 py-2">
+    <div className="flex h-screen flex-col">
+      <header className="sticky top-0 flex h-16 shrink-0 items-center gap-4 border-b bg-background/80 px-4 py-2 backdrop-blur-lg sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
         <Tooltip>
           <TooltipTrigger asChild>
             <SidebarTrigger className="sm:hidden" />
@@ -70,7 +71,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           </TooltipContent>
         </Tooltip>
         
-        <div className="flex-1 flex items-center justify-center gap-4">
+        <div className="flex flex-1 items-center justify-center gap-4">
            <GlobalSearch />
            <QuickAccessNav />
         </div>
@@ -118,9 +119,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           </DropdownMenu>
         </div>
       </header>
-      <main className="flex-1 p-6 overflow-y-auto relative">
-        {children}
-      </main>
+      <main className="relative flex-1 overflow-y-auto p-6">{children}</main>
     </div>
   );
 }
