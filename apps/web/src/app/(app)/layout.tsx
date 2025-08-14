@@ -13,11 +13,11 @@ export default function ProtectedAppLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    // This check runs only on the client-side
+    // This check must run on the client side to access localStorage.
     const token = localStorage.getItem('amberops_jwt');
     if (token) {
       setIsAuthenticated(true);
@@ -29,10 +29,20 @@ export default function ProtectedAppLayout({
     setIsLoading(false);
   }, []);
 
-  if (isLoading || !isAuthenticated) {
+  // Show a preloader while we're verifying authentication.
+  // This prevents the redirect loop.
+  if (isLoading) {
     return <Preloader />;
   }
 
+  // If not authenticated after checking, redirect to login.
+  // This part will likely not be visible due to the immediate redirect above,
+  // but it's a safe fallback.
+  if (!isAuthenticated) {
+    return <Preloader />;
+  }
+
+  // If authenticated, render the main app layout.
   return (
     <SidebarProvider>
       <div className="flex min-h-screen">

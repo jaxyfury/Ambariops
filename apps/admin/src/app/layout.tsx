@@ -37,7 +37,9 @@ export default function AdminLayout({
 
   useEffect(() => {
     const storedUser = localStorage.getItem('amberops_user');
-    if (storedUser) {
+    const token = localStorage.getItem('amberops_jwt');
+
+    if (token && storedUser) {
       try {
         const user: User = JSON.parse(storedUser);
         if (user.role === 'Admin') {
@@ -53,7 +55,7 @@ export default function AdminLayout({
         window.location.href = `${homeUrl}/auth`;
       }
     } else {
-      // If there's no user, redirect to the login page.
+      // If there's no user or token, redirect to the login page.
       const homeUrl = process.env.NEXT_PUBLIC_HOME_URL || 'http://localhost:3001';
       window.location.href = `${homeUrl}/auth`;
     }
