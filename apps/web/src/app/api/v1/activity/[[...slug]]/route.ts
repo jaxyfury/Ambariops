@@ -1,17 +1,17 @@
 
-import { handlers } from '@amberops/api/mocks/handlers';
-import { http, passthrough } from 'msw';
+import { handlers }from '@amberops/api/mocks/handlers';
+import { http } from 'msw';
 
-const activityHandlers = handlers.filter(handler => {
-    return handler.info.path.startsWith('/api/v1/activity');
-});
+const route = http.all('*', async ({request}) => {
+    const activityHandlers = handlers.filter(handler => {
+        const url = new URL(handler.info.path, request.url);
+        return url.pathname.startsWith('/api/v1/activity');
+    });
 
-const route = http.all('/api/v1/activity/:slug*', async ({request}) => {
     for (const handler of activityHandlers) {
         const response = await handler.run({request, params: {slug: ''}});
         if(response) return response;
     }
-    return passthrough();
 });
 
 export { route as GET, route as POST, route as PUT, route as DELETE, route as PATCH };
