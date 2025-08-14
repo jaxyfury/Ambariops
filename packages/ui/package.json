@@ -5,6 +5,7 @@
   "main": "src/index.ts",
   "exports": {
     ".": "./src/index.ts",
+    "./components/data-table": "./src/components/data-table.tsx",
     "./components/icons": "./src/components/icons.tsx",
     "./components/page-header": "./src/components/page-header.tsx",
     "./components/theme-provider": "./src/components/theme-provider.tsx",
@@ -88,7 +89,10 @@
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
     "@amberops/design-tokens": "workspace:*",
-    "@amberops/lib": "workspace:*"
+    "@amberops/lib": "workspace:*",
+    "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.8.2",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@storybook/addon-a11y": "^8.1.11",
@@ -103,6 +107,8 @@
     "storybook": "^8.1.11",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "typescript": "^5"
+    "typescript": "^5",
+    "@tanstack/react-table": "^8.17.3",
+    "@tanstack/react-virtual": "^3.5.0"
   }
 }

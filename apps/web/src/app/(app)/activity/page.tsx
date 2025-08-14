@@ -12,7 +12,7 @@ import { Button } from '@amberops/ui/components/ui/button';
 import { Checkbox } from '@amberops/ui/components/ui/checkbox';
 import { Tooltip, TooltipTrigger, TooltipContent } from '@amberops/ui/components/ui/tooltip';
 import { ArrowUpDown, ArrowDown, ArrowUp } from 'lucide-react';
-import { DataTable } from '@/components/data-table';
+import { DataTable } from '@amberops/ui/components/data-table';
 import { useQuery } from '@tanstack/react-query';
 
 function getActionBadgeVariant(action: 'LOGIN' | 'CREATE' | 'UPDATE' | 'DELETE' | 'RESTART' | 'ACKNOWLEDGE'): 'default' | 'secondary' | 'destructive' | 'outline' {
