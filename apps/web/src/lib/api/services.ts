@@ -1,7 +1,9 @@
 
 import type { User, Cluster, Service, Host, Alert, AlertDefinition, Task, ActivityLog, LogEntry, ConfigVersion, DocumentationArticle, LegalDocument } from '@amberops/lib';
 
-const API_BASE_URL = '/api/v1';
+const API_BASE_URL = process.env.NEXT_PUBLIC_ENABLE_MOCKING === 'true'
+  ? '/api/v1'
+  : process.env.NEXT_PUBLIC_API_BASE_URL || '/api/v1';
 
 // A placeholder for a real API client.
 const apiClient = {
@@ -93,6 +95,5 @@ export const updateDocumentationArticle = (slug: string, articleData: Partial<Do
 export const deleteDocumentationArticle = (slug: string): Promise<{ id: string }> => apiClient.delete(`${API_BASE_URL}/documentation/${slug}`);
 
 // Legal Documents Service
-export const fetchLegalDocument = (type: 'terms' | 'privacy'): Promise<LegalDocument> => apiClient.get(`/api/v1/legal/${type}`);
-export const updateLegalDocument = (type: 'terms' | 'privacy', data: { content: string }): Promise<LegalDocument> => apiClient.put(`/api/v1/legal/${type}`, data);
-
+export const fetchLegalDocument = (type: 'terms' | 'privacy'): Promise<LegalDocument> => apiClient.get(`${API_BASE_URL}/legal/${type}`);
+export const updateLegalDocument = (type: 'terms' | 'privacy', data: { content: string }): Promise<LegalDocument> => apiClient.put(`${API_BASE_URL}/legal/${type}`, data);
