@@ -97,10 +97,10 @@ export const fetchLegalDocument = (type: 'terms' | 'privacy'): Promise<LegalDocu
 export const updateLegalDocument = (type: 'terms' | 'privacy', data: { content: string }): Promise<LegalDocument> => apiClient.put(`/legal/${type}`, data);
 
 // Pricing Tiers Service
-export const fetchPricingTiers = (): Promise<PricingTier[]> => apiClient.get(`/pricing`);
-export const addPricingTier = (tierData: Omit<PricingTier, 'id'>): Promise<PricingTier> => apiClient.post(`/pricing`, tierData);
-export const updatePricingTier = (tierId: string, tierData: Partial<PricingTier>): Promise<PricingTier> => apiClient.put(`/pricing/${tierId}`, tierData);
-export const deletePricingTier = (tierId: string): Promise<void> => apiClient.delete(`/pricing/${tierId}`);
+export const fetchPricingTiers = (): Promise<PricingTier[]> => apiClient.get(`/pricingtiers`);
+export const addPricingTier = (tierData: Omit<PricingTier, 'id'>): Promise<PricingTier> => apiClient.post(`/pricingtiers`, tierData);
+export const updatePricingTier = (tierId: string, tierData: Partial<PricingTier>): Promise<PricingTier> => apiClient.put(`/pricingtiers/${tierId}`, tierData);
+export const deletePricingTier = (tierId: string): Promise<void> => apiClient.delete(`/pricingtiers/${tierId}`);
 
 // Testimonials Service
 export const fetchTestimonials = (): Promise<Testimonial[]> => apiClient.get(`/testimonials`);
