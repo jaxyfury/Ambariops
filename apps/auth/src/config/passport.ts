@@ -3,9 +3,6 @@ import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { Strategy as GitHubStrategy } from 'passport-github2';
 import User from '../models/User';
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 // For production, it's strongly recommended to use environment variables
 // for all credentials. For local development, the Client ID is hardcoded here
