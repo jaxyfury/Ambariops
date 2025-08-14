@@ -14,7 +14,6 @@
     "next": "14.2.3",
     "@amberops/ui": "workspace:*",
     "@amberops/design-tokens": "workspace:*",
-    "next-auth": "^4.24.7",
     "three": "^0.163.0",
     "vanilla-tilt": "^1.8.1",
     "gsap": "^3.12.5"

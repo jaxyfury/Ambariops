@@ -5,20 +5,27 @@ import { Breadcrumbs } from '@/components/breadcrumbs';
 import { SidebarProvider } from '@amberops/ui/components/ui/sidebar';
 import { Preloader } from '@/components/preloader';
 import { useEffect, useState } from 'react';
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
 export default function ProtectedAppLayout({ children }: { children: React.ReactNode }) {
-    const { data: session, status } = useSession();
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const router = useRouter();
 
     useEffect(() => {
-        if (status === 'unauthenticated') {
-            router.push('/login');
+        // In a real app with JWT, you'd verify the token with a backend endpoint.
+        // For this prototype, we'll just check if the token exists in localStorage.
+        const token = localStorage.getItem('amberops_jwt');
+        if (token) {
+            setIsAuthenticated(true);
+        } else {
+             const homeUrl = process.env.NEXT_PUBLIC_HOME_URL || 'http://localhost:3001';
+             window.location.href = `${homeUrl}/auth`;
         }
-    }, [status, router]);
+        setIsLoading(false);
+    }, [router]);
 
-    if (status === 'loading' || !session) {
+    if (isLoading || !isAuthenticated) {
         return <Preloader />;
     }
 

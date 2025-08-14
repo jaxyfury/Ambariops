@@ -29,17 +29,32 @@ import Link from 'next/link';
 import toast from 'react-hot-toast';
 import { QuickAccessNav } from '@/components/quick-access-nav';
 import { GlobalSearch } from '@/components/global-search';
-import { signOut, useSession } from 'next-auth/react';
+import { useEffect, useState } from 'react';
+
+type User = {
+  name: string;
+  email: string;
+  role: string;
+  image: string;
+};
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
-    const { data: session } = useSession();
-    const user = session?.user;
-    
+    const [user, setUser] = useState<User | null>(null);
     const adminUrl = process.env.NEXT_PUBLIC_ADMIN_URL || 'http://localhost:3003';
+    const homeUrl = process.env.NEXT_PUBLIC_HOME_URL || 'http://localhost:3001';
 
-    const handleSignOut = async () => {
-        await signOut({ callbackUrl: '/' });
+    useEffect(() => {
+        const storedUser = localStorage.getItem('amberops_user');
+        if (storedUser) {
+            setUser(JSON.parse(storedUser));
+        }
+    }, []);
+
+    const handleSignOut = () => {
+        localStorage.removeItem('amberops_jwt');
+        localStorage.removeItem('amberops_user');
         toast.success('Successfully logged out!');
+        window.location.href = `${homeUrl}/auth`;
     }
 
   return (
@@ -81,7 +96,6 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>{user?.name}</DropdownMenuLabel>
               <DropdownMenuSeparator />
-               {/* @ts-ignore */}
                {user?.role === 'Admin' && (
                 <DropdownMenuItem asChild>
                     <Link href={adminUrl}>Admin Dashboard</Link>
@@ -95,7 +109,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
-                onClick={() => handleSignOut()}
+                onClick={handleSignOut}
               >
                 Logout
               </DropdownMenuItem>

@@ -9,8 +9,8 @@ import { cn } from '@amberops/lib';
 import { AmberOpsLogo } from '@amberops/ui/components/icons';
 import { Button } from '@amberops/ui/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@amberops/ui/components/ui/tooltip';
-import { signIn } from 'next-auth/react';
-import { addUser } from '@amberops/api/client';
+
+const AUTH_API_URL = process.env.NEXT_PUBLIC_AUTH_API_URL || 'http://localhost:3002/api';
 
 const SocialButton = ({ icon, onClick, tooltip }: { icon: React.ReactNode, onClick?: () => void, tooltip: string }) => (
     <TooltipProvider>
@@ -34,16 +34,27 @@ const SignUpForm = ({ onSwitch }: { onSwitch: () => void }) => {
     const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsLoading(true);
-        const name = e.currentTarget.name.value;
-        const email = e.currentTarget.email.value;
-        const password = e.currentTarget.password.value;
+        const name = (e.currentTarget.elements.namedItem('name') as HTMLInputElement).value;
+        const email = (e.currentTarget.elements.namedItem('email') as HTMLInputElement).value;
+        const password = (e.currentTarget.elements.namedItem('password') as HTMLInputElement).value;
         
         try {
-            await addUser({ name, email, password, role: 'Viewer' });
+            const response = await fetch(`${AUTH_API_URL}/register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email, password, role: 'Viewer' })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || 'Registration failed.');
+            }
+            
             toast.success("Registration successful! Please sign in.");
             onSwitch();
         } catch (error: any) {
-            toast.error(error.message || 'Registration failed.');
+            toast.error(error.message);
         } finally {
             setIsLoading(false);
         }
@@ -78,32 +89,41 @@ const SignUpForm = ({ onSwitch }: { onSwitch: () => void }) => {
 const SignInForm = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const router = useRouter();
-    const searchParams = useSearchParams();
-    const callbackUrl = searchParams.get('callbackUrl');
-
+    
     const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsLoading(true);
-        const email = e.currentTarget.email.value;
-        const password = e.currentTarget.password.value;
+        const email = (e.currentTarget.elements.namedItem('email') as HTMLInputElement).value;
+        const password = (e.currentTarget.elements.namedItem('password') as HTMLInputElement).value;
         
-        const result = await signIn('credentials', {
-            redirect: false,
-            email,
-            password,
-        });
+        try {
+             const response = await fetch(`${AUTH_API_URL}/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
 
-        if (result?.error) {
-            toast.error(result.error);
-            setIsLoading(false);
-        } else if (result?.ok) {
-            toast.success('Login successful! Redirecting...');
-             if (email === 'admin@amberops.com') {
-                window.location.href = process.env.NEXT_PUBLIC_ADMIN_URL || '/';
-            } else {
-                window.location.href = callbackUrl || process.env.NEXT_PUBLIC_WEB_URL || '/';
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || 'Login failed.');
             }
+
+            // In a real app, you'd securely store the JWT (e.g., in an httpOnly cookie or localStorage)
+            // and use it in an Authorization header for all subsequent API requests.
+            localStorage.setItem('amberops_jwt', data.token);
+            localStorage.setItem('amberops_user', JSON.stringify(data.user));
+
+            toast.success('Login successful! Redirecting...');
+
+            if (data.user?.role === 'Admin') {
+                window.location.href = process.env.NEXT_PUBLIC_ADMIN_URL || 'http://localhost:3003';
+            } else {
+                window.location.href = process.env.NEXT_PUBLIC_WEB_URL || 'http://localhost:3000';
+            }
+        } catch (error: any) {
+            toast.error(error.message);
+            setIsLoading(false);
         }
     }
 
