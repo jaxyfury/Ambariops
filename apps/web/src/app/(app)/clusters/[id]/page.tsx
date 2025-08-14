@@ -9,7 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@ambe
 import { Badge } from '@amberops/ui/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@amberops/ui/components/ui/table';
 import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from '@amberops/ui/components/ui/chart';
-import { mockClusters, mockServices, mockHosts, mockAlerts } from '@amberops/api';
+import { fetchClusterById, fetchServices, fetchHosts, fetchAlerts } from '@amberops/api/client';
 import {
   AlertTriangle,
   ArrowUpRight,
@@ -27,6 +27,9 @@ import {
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
 import type { ChartConfig } from '@amberops/ui/components/ui/chart';
 import toast from 'react-hot-toast';
+import { useQuery } from '@tanstack/react-query';
+import { Skeleton } from '@amberops/ui/components/ui/skeleton';
+import type { Cluster, Service, Host, Alert } from '@amberops/lib';
 
 function getStatusBadgeVariant(status: 'healthy' | 'unhealthy' | 'degraded'): 'default' | 'destructive' | 'secondary' {
   switch (status) {
@@ -62,15 +65,59 @@ const ioChartConfig = {
 
 
 export default function ClusterDetailPage({ params }: { params: { id: string } }) {
-  const cluster = mockClusters.find((c) => c.id === params.id);
+  const { data: cluster, isLoading: isLoadingCluster } = useQuery<Cluster>({
+    queryKey: ['cluster', params.id],
+    queryFn: () => fetchClusterById(params.id),
+  });
+  
+  const { data: services = [], isLoading: isLoadingServices } = useQuery<Service[]>({
+    queryKey: ['services', params.id],
+    queryFn: async () => {
+        const allServices = await fetchServices();
+        return allServices.filter(s => s.clusterId === params.id);
+    },
+    enabled: !!cluster,
+  });
+
+  const { data: hosts = [], isLoading: isLoadingHosts } = useQuery<Host[]>({
+    queryKey: ['hosts', params.id],
+    queryFn: async () => {
+        const allHosts = await fetchHosts();
+        return allHosts.filter(h => h.clusterId === params.id);
+    },
+     enabled: !!cluster,
+  });
+
+  const { data: alerts = [], isLoading: isLoadingAlerts } = useQuery<Alert[]>({
+    queryKey: ['alerts', params.id],
+    queryFn: async () => {
+        const allAlerts = await fetchAlerts();
+        return allAlerts.filter(a => a.clusterId === params.id && a.status === 'triggered');
+    },
+     enabled: !!cluster,
+  });
+
+  if (isLoadingCluster || isLoadingServices || isLoadingHosts || isLoadingAlerts) {
+    return (
+        <div>
+            <PageHeader title={<Skeleton className="h-8 w-64" />} description={<Skeleton className="h-6 w-96" />} />
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-5 mb-6">
+                {Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} className="h-24 w-full" />)}
+            </div>
+             <div className="grid gap-6 lg:grid-cols-5">
+                <Skeleton className="h-96 lg:col-span-3" />
+                <Skeleton className="h-96 lg:col-span-2" />
+                <Skeleton className="h-96 lg:col-span-5" />
+                <Skeleton className="h-96 lg:col-span-3" />
+                <Skeleton className="h-96 lg:col-span-2" />
+            </div>
+        </div>
+    )
+  }
 
   if (!cluster) {
     notFound();
   }
-
-  const services = mockServices.filter((s) => s.clusterId === cluster.id);
-  const hosts = mockHosts.filter((h) => h.clusterId === cluster.id);
-  const alerts = mockAlerts.filter((a) => a.clusterId === cluster.id && a.status === 'triggered');
 
   const handleRunServiceCheck = () => {
     toast.success('Service check initiated successfully!');
@@ -334,5 +381,3 @@ export default function ClusterDetailPage({ params }: { params: { id: string } }
     </div>
   );
 }
-
-    

@@ -7,10 +7,13 @@ import { Button } from '@amberops/ui/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@amberops/ui/components/ui/card';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@amberops/ui/components/ui/table';
 import { Badge } from '@amberops/ui/components/ui/badge';
-import { mockServices, mockHosts } from '@amberops/api';
+import { fetchServiceById, fetchHosts } from '@amberops/api/client';
 import { Play, Square, RefreshCw, CheckCircle2, XCircle, Clock } from 'lucide-react';
 import toast from 'react-hot-toast';
 import Link from 'next/link';
+import { useQuery } from '@tanstack/react-query';
+import type { Service, Host } from '@amberops/lib';
+import { Skeleton } from '@amberops/ui/components/ui/skeleton';
 
 function getServiceStatusIcon(status: 'started' | 'stopped' | 'maintenance') {
   switch (status) {
@@ -25,13 +28,42 @@ function getServiceStatusIcon(status: 'started' | 'stopped' | 'maintenance') {
 
 export default function ServiceDetailPage({ params }: { params: { id: string } }) {
   const router = useRouter();
-  const service = mockServices.find((s) => s.id === params.id);
+  
+  const { data: service, isLoading: isLoadingService } = useQuery<Service>({
+    queryKey: ['service', params.id],
+    queryFn: () => fetchServiceById(params.id),
+  });
+
+  const { data: serviceHosts = [], isLoading: isLoadingHosts } = useQuery<Host[]>({
+    queryKey: ['serviceHosts', service?.clusterId],
+    queryFn: async () => {
+        if (!service?.clusterId) return [];
+        const allHosts = await fetchHosts();
+        return allHosts.filter(h => h.clusterId === service.clusterId).slice(0, 5);
+    },
+    enabled: !!service,
+  });
+
+  if (isLoadingService) {
+    return (
+        <div>
+            <PageHeader title={<Skeleton className="h-8 w-48" />} description={<Skeleton className="h-6 w-80" />} />
+             <div className="grid gap-6 lg:grid-cols-3">
+                <div className="lg:col-span-1 space-y-6">
+                    <Skeleton className="h-40 w-full" />
+                    <Skeleton className="h-40 w-full" />
+                </div>
+                 <div className="lg:col-span-2">
+                    <Skeleton className="h-80 w-full" />
+                 </div>
+            </div>
+        </div>
+    );
+  }
 
   if (!service) {
     notFound();
   }
-  
-  const serviceHosts = mockHosts.filter(h => h.clusterId === service.clusterId).slice(0, 5);
 
   const handleAction = (action: 'start' | 'stop' | 'restart') => {
       toast.loading(`Request to ${action} ${service.name} sent...`, {
@@ -108,17 +140,25 @@ export default function ServiceDetailPage({ params }: { params: { id: string } }
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {serviceHosts.map(host => (
-                            <TableRow key={host.id}>
-                                <TableCell className="font-medium">
-                                     <Link href={`/hosts/${host.id}`} className="hover:underline">
-                                        {host.name}
-                                    </Link>
-                                </TableCell>
-                                <TableCell>{host.ip}</TableCell>
-                                <TableCell><Badge variant={host.status === 'healthy' ? 'default' : 'destructive'} className="capitalize">{host.status}</Badge></TableCell>
-                            </TableRow>
-                            ))}
+                            {isLoadingHosts ? (
+                                Array.from({length: 3}).map((_, i) => (
+                                    <TableRow key={i}>
+                                        <TableCell colSpan={3}><Skeleton className="h-6 w-full" /></TableCell>
+                                    </TableRow>
+                                ))
+                            ) : (
+                                serviceHosts.map(host => (
+                                    <TableRow key={host.id}>
+                                        <TableCell className="font-medium">
+                                            <Link href={`/hosts/${host.id}`} className="hover:underline">
+                                                {host.name}
+                                            </Link>
+                                        </TableCell>
+                                        <TableCell>{host.ip}</TableCell>
+                                        <TableCell><Badge variant={host.status === 'healthy' ? 'default' : 'destructive'} className="capitalize">{host.status}</Badge></TableCell>
+                                    </TableRow>
+                                ))
+                            )}
                         </TableBody>
                     </Table>
                 </CardContent>
@@ -128,5 +168,3 @@ export default function ServiceDetailPage({ params }: { params: { id: string } }
     </div>
   );
 }
-
-    

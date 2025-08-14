@@ -12,13 +12,14 @@ import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, Dialog
 import { Label } from '@amberops/ui/components/ui/label';
 import { Input } from '@amberops/ui/components/ui/input';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@amberops/ui/components/ui/select';
-import { mockAlertDefinitions } from '@amberops/api';
+import { fetchAlertDefinitions } from '@amberops/api/client';
 import { PlusCircle, MoreHorizontal, ArrowUpDown, ArrowDown, ArrowUp } from 'lucide-react';
 import { DataTable } from '@/components/data-table';
 import { type ColumnDef } from '@tanstack/react-table';
 import type { AlertDefinition } from '@amberops/lib';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import toast from 'react-hot-toast';
+import { useQuery } from '@tanstack/react-query';
 
 export const columns: ColumnDef<AlertDefinition>[] = [
     {
@@ -183,15 +184,11 @@ export const columns: ColumnDef<AlertDefinition>[] = [
 ];
 
 export default function AlertDefinitionsPage() {
-    const [isLoading, setIsLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
-        setIsLoading(false);
-        }, 1500);
-        return () => clearTimeout(timer);
-    }, []);
+    const { data: alertDefinitions = [], isLoading } = useQuery<AlertDefinition[]>({
+        queryKey: ['alertDefinitions'],
+        queryFn: fetchAlertDefinitions,
+    });
 
   const handleCreateDefinition = () => {
     toast.success('New alert definition created!');
@@ -259,9 +256,7 @@ export default function AlertDefinitionsPage() {
             </Dialog>
         )}
       />
-      <DataTable columns={columns} data={mockAlertDefinitions} filterKey="name" isLoading={isLoading} />
+      <DataTable columns={columns} data={alertDefinitions} filterKey="name" isLoading={isLoading} />
     </div>
   );
 }
-
-    
