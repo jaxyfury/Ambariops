@@ -19,6 +19,7 @@ export default function ProtectedAppLayout({
   const router = useRouter();
 
   useEffect(() => {
+    // This check runs only on the client-side
     const token = localStorage.getItem('amberops_jwt');
     if (token) {
       setIsAuthenticated(true);
@@ -27,9 +28,7 @@ export default function ProtectedAppLayout({
         process.env.NEXT_PUBLIC_HOME_URL || 'http://localhost:3001';
       window.location.href = `${homeUrl}/auth`;
     }
-    // Add a small delay to prevent screen flicker before redirects.
-    const timer = setTimeout(() => setIsLoading(false), 200);
-    return () => clearTimeout(timer);
+    setIsLoading(false);
   }, [router]);
 
   if (isLoading || !isAuthenticated) {

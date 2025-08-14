@@ -36,9 +36,9 @@ export default function AdminLayout({
   const [isAuthorized, setIsAuthorized] = useState(false);
 
   useEffect(() => {
-    try {
-      const storedUser = localStorage.getItem('amberops_user');
-      if (storedUser) {
+    const storedUser = localStorage.getItem('amberops_user');
+    if (storedUser) {
+      try {
         const user: User = JSON.parse(storedUser);
         if (user.role === 'Admin') {
           setIsAuthorized(true);
@@ -47,20 +47,17 @@ export default function AdminLayout({
           const webUrl = process.env.NEXT_PUBLIC_WEB_URL || 'http://localhost:3000';
           window.location.href = webUrl;
         }
-      } else {
-        // If there's no user, redirect to the login page.
+      } catch (error) {
+         // If there's an error (e.g., malformed JSON), redirect to login
         const homeUrl = process.env.NEXT_PUBLIC_HOME_URL || 'http://localhost:3001';
         window.location.href = `${homeUrl}/auth`;
       }
-    } catch (error) {
-      // Handle potential JSON parsing errors
+    } else {
+      // If there's no user, redirect to the login page.
       const homeUrl = process.env.NEXT_PUBLIC_HOME_URL || 'http://localhost:3001';
       window.location.href = `${homeUrl}/auth`;
-    } finally {
-      // Add a small delay to prevent screen flicker before redirects.
-      const timer = setTimeout(() => setIsLoading(false), 200);
-      return () => clearTimeout(timer);
     }
+    setIsLoading(false);
   }, []);
 
   if (isLoading || !isAuthorized) {
