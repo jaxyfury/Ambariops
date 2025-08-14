@@ -30,18 +30,17 @@ router.post('/register', async (req: Request, res: Response) => {
       email,
       password: hashedPassword,
       role,
-      image: `https://avatar.vercel.sh/${email}`,
+      avatar: `https://avatar.vercel.sh/${email}`,
     });
 
     const savedUser = await newUser.save();
     
-    // Convert to object and create a response DTO to ensure no sensitive data is returned
     const userResponse = {
         id: savedUser._id,
         name: savedUser.name,
         email: savedUser.email,
         role: savedUser.role,
-        image: savedUser.image,
+        avatar: savedUser.avatar,
     };
 
     res.status(201).json(userResponse);
@@ -78,7 +77,7 @@ router.post('/login', async (req: Request, res: Response) => {
             return res.status(500).json({ message: 'Server configuration error.' });
         }
         
-        const userPayload = { id: user._id, name: user.name, email: user.email, role: user.role, image: user.image };
+        const userPayload = { id: user._id, name: user.name, email: user.email, role: user.role, avatar: user.avatar };
 
         const token = jwt.sign(
             userPayload,
@@ -99,13 +98,12 @@ router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 
 
 router.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: `${homeUrl}/auth` }), (req: Request, res: Response) => {
     const user = req.user as IUser;
-    const userPayload = { id: user._id, name: user.name, email: user.email, role: user.role, image: user.image };
+    const userPayload = { id: user._id, name: user.name, email: user.email, role: user.role, avatar: user.avatar };
     const token = jwt.sign(
         userPayload,
         process.env.JWT_SECRET!,
         { expiresIn: '1h' }
     );
-    // Redirect with token. A real app might set a cookie or use a more secure method.
     res.redirect(`${homeUrl}/auth?token=${token}&user=${encodeURIComponent(JSON.stringify(userPayload))}`);
 });
 
@@ -115,13 +113,12 @@ router.get('/auth/github', passport.authenticate('github', { scope: ['user:email
 
 router.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: `${homeUrl}/auth` }), (req: Request, res: Response) => {
     const user = req.user as IUser;
-    const userPayload = { id: user._id, name: user.name, email: user.email, role: user.role, image: user.image };
+    const userPayload = { id: user._id, name: user.name, email: user.email, role: user.role, avatar: user.avatar };
     const token = jwt.sign(
         userPayload,
         process.env.JWT_SECRET!,
         { expiresIn: '1h' }
     );
-    // Redirect with token
     res.redirect(`${homeUrl}/auth?token=${token}&user=${encodeURIComponent(JSON.stringify(userPayload))}`);
 });
 

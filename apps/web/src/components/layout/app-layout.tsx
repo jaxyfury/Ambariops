@@ -36,7 +36,7 @@ type User = {
   name: string;
   email: string;
   role: string;
-  image: string;
+  avatar: string;
 };
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
@@ -87,7 +87,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
               >
                 <Avatar>
                   <AvatarImage
-                    src={user?.image || ''}
+                    src={user?.avatar || ''}
                     alt={user?.name || ''}
                   />
                   <AvatarFallback>{user?.name?.charAt(0) ?? 'U'}</AvatarFallback>

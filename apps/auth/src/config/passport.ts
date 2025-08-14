@@ -1,3 +1,4 @@
+
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { Strategy as GitHubStrategy } from 'passport-github2';
@@ -24,7 +25,7 @@ passport.use(
           email: profile._json.email,
           password: await require('bcryptjs').hash(require('crypto').randomBytes(16).toString('hex'), 10), // Create a random password for OAuth users
           role: 'Viewer',
-          image: profile._json.picture,
+          avatar: profile._json.picture,
         });
         await newUser.save();
         done(null, newUser);
@@ -58,7 +59,7 @@ passport.use(
                 email: email,
                 password: await require('bcryptjs').hash(require('crypto').randomBytes(16).toString('hex'), 10),
                 role: 'Viewer',
-                image: profile.photos[0].value,
+                avatar: profile.photos[0].value,
             });
             await newUser.save();
             done(null, newUser);

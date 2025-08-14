@@ -1,7 +1,7 @@
 
 import { User } from '../models/user.model';
 import bcrypt from 'bcryptjs';
-import type { User as IUser } from '@amberops/lib';
+import type { User as IUserType } from '@amberops/lib';
 import mongoose from 'mongoose';
 
 export const findAllUsers = async () => {
@@ -20,15 +20,15 @@ export const createUser = async (userData: any) => {
         const salt = await bcrypt.genSalt(10);
         userData.password = await bcrypt.hash(userData.password, salt);
     }
-    if(userData.email && !userData.image) {
-        userData.image = `https://avatar.vercel.sh/${userData.email}`;
+    if(userData.email && !userData.avatar) {
+        userData.avatar = `https://avatar.vercel.sh/${userData.email}`;
     }
     const newUser = new User(userData);
     await newUser.save();
     return newUser.toJSON();
 };
 
-export const updateUser = async (id: string, userData: Partial<IUser>) => {
+export const updateUser = async (id: string, userData: Partial<IUserType>) => {
      if (!mongoose.Types.ObjectId.isValid(id)) {
         return null;
     }
