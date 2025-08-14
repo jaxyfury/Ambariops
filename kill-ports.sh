@@ -13,22 +13,21 @@ PIDS_KILLED=0
 
 for PORT in $PORTS; do
   echo "Checking for process on port $PORT..."
-  # Use lsof to find the PID, -t for terse output (PID only)
-  # The || true prevents the script from exiting if no process is found
-  PID=$(lsof -t -i:"$PORT" || true)
-  if [ -n "$PID" ]; then
-    echo "Found process with PID $PID on port $PORT. Killing it..."
-    # Forcefully kill the process
-    kill -9 "$PID"
-    echo "Process on port $PORT killed."
-    PIDS_KILLED=1
-  else
+  # Use a more robust command to find and kill the process.
+  # The `|| true` prevents the script from exiting if no process is found.
+  kill $(lsof -t -i:$PORT) >/dev/null 2>&1 || true
+  
+  # A small delay to allow the OS to release the port
+  sleep 0.1 
+
+  # Re-check to confirm
+  if ! lsof -t -i:$PORT >/dev/null 2>&1; then
     echo "No process found on port $PORT."
+  else
+    echo "⚠️ Failed to kill process on port $PORT. Trying again with SIGKILL."
+    kill -9 $(lsof -t -i:$PORT) >/dev/null 2>&1 || true
+    PIDS_KILLED=1
   fi
 done
 
-if [ "$PIDS_KILLED" -eq 1 ]; then
-    echo "--- All running processes terminated. ---"
-else
-    echo "--- No running processes found on specified ports. ---"
-fi
+echo "--- Port check complete. ---"
