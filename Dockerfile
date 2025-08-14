@@ -1,46 +1,79 @@
-
-# Stage 1: Base image for installing dependencies
+# Base image for building Node.js applications in the monorepo
+# It includes pnpm for dependency management.
 FROM node:20-slim AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
 
-# Stage 2: Install dependencies
+# --- Dependencies Stage ---
+# Install all dependencies for the entire workspace.
+# This layer is cached and only re-run if dependencies change.
 FROM base AS deps
 WORKDIR /app
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-RUN pnpm install --frozen-lockfile --prod=false
+COPY pnpm-workspace.yaml .
+COPY package.json .
+COPY pnpm-lock.yaml .
+RUN pnpm fetch
 
-# Stage 3: Build the applications
-FROM base AS builder
+# --- Backend Builder Stage ---
+# This stage builds a specific backend service (e.g., auth or backend).
+# It copies only the necessary source code and builds it.
+FROM base AS backend-builder
+ARG APP_NAME
 WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
-RUN pnpm build
+COPY --from=deps /app/pnpm-lock.yaml .
+COPY package.json .
+COPY tsconfig.base.json .
+COPY apps/${APP_NAME}/ ./apps/${APP_NAME}/
+COPY packages/lib/ ./packages/lib/
+RUN pnpm install --filter ${APP_NAME}... --prod
+RUN pnpm --filter ${APP_NAME} build
 
-# Stage 4: Production runner
-FROM base AS runner
+# --- Frontend Builder Stage ---
+# This stage builds a specific Next.js frontend application.
+FROM base AS frontend-builder
+ARG APP_NAME
+WORKDIR /app
+COPY --from=deps /app/pnpm-lock.yaml .
+COPY package.json .
+COPY pnpm-workspace.yaml .
+COPY tsconfig.base.json .
+COPY next.config.ts .
+COPY apps/${APP_NAME}/ ./apps/${APP_NAME}/
+COPY packages/ ./packages/
+RUN pnpm install --filter ${APP_NAME}...
+RUN pnpm --filter ${APP_NAME} build
+
+# =============================================
+# --- Final Image for Backend Services ---
+# =============================================
+FROM base AS backend
+ARG APP_NAME
+ENV NODE_ENV production
 WORKDIR /app
 
-# Copy environment variables and scripts
-COPY .env ./
-COPY run-docker.sh ./
-RUN chmod +x ./run-docker.sh
-
-# Copy built applications and necessary files from the builder stage
-COPY --from=builder /app/apps/web/.next ./apps/web/.next
-COPY --from=builder /app/apps/web/public ./apps/web/public
-COPY --from=builder /app/apps/web/package.json ./apps/web/package.json
-
-COPY --from=builder /app/apps/home/.next ./apps/home/.next
-COPY --from=builder /app/apps/home/public ./apps/home/public
-COPY --from=builder /app/apps/home/package.json ./apps/home/package.json
-
-# Copy production node_modules
-COPY --from=deps /app/node_modules ./node_modules
+COPY --from=backend-builder /app/apps/${APP_NAME}/dist ./apps/${APP_NAME}/dist
+COPY --from=backend-builder /app/apps/${APP_NAME}/package.json ./apps/${APP_NAME}/package.json
+COPY --from=backend-builder /app/node_modules ./node_modules
+COPY --from=backend-builder /app/package.json .
 
 EXPOSE 3000
-EXPOSE 3001
+CMD ["node", "apps/${APP_NAME}/dist/index.js"]
 
-# This script will start both Next.js servers
-CMD ["./run-docker.sh"]
+
+# =============================================
+# --- Final Image for Frontend Apps ---
+# =============================================
+FROM base AS frontend
+ARG APP_NAME
+ENV NODE_ENV production
+WORKDIR /app
+
+COPY --from=frontend-builder /app/apps/${APP_NAME}/.next ./apps/${APP_NAME}/.next
+COPY --from=frontend-builder /app/apps/${APP_NAME}/public ./apps/${APP_NAME}/public
+COPY --from=frontend-builder /app/apps/${APP_NAME}/package.json ./apps/${APP_NAME}/package.json
+COPY --from=frontend-builder /app/node_modules ./node_modules
+COPY --from=frontend-builder /app/package.json .
+
+EXPOSE 3000
+CMD ["pnpm", "--filter", "web", "start"]

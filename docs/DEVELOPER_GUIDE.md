@@ -34,6 +34,8 @@ This project is a `pnpm` workspace-based monorepo. This structure is ideal for m
 ├── tests/                # Playwright end-to-end tests for all applications
 ├── .env.example          # Example environment variables configuration
 ├── .env                  # Your local environment variables (gitignored)
+├── Dockerfile            # Universal Dockerfile for building all services
+├── docker-compose.yml    # Docker Compose file for orchestrating all services
 ├── package.json          # Root package manifest managing pnpm workspaces
 └── tsconfig.base.json    # The shared base TypeScript configuration
 ```
@@ -126,7 +128,34 @@ The servers will be available at:
 
 ---
 
-## 5. Testing Strategy
+## 5. Running with Docker
+
+For a more isolated and production-like environment, you can run the entire application stack using Docker Compose.
+
+### Step 1: Install Docker
+Ensure you have Docker and Docker Compose installed on your system.
+
+### Step 2: Configure Environment
+Copy the `.env.example` to `.env` and fill in the required variables, just as you would for a local setup. The `docker-compose.yml` file is configured to automatically load these variables.
+
+### Step 3: Build and Run
+From the project root, run the following command:
+```bash
+docker-compose up --build
+```
+This command will:
+1.  Build the Docker images for all five services (`home`, `web`, `admin`, `auth`, `backend`).
+2.  Start a container for each service, as well as a MongoDB container for the database.
+3.  The services will be available on the same ports as the local development setup.
+
+To stop all the running containers, press `Ctrl+C` in the terminal, and then run:
+```bash
+docker-compose down
+```
+
+---
+
+## 6. Testing Strategy
 
 *   **End-to-End (E2E) Testing**:
     *   **Tool**: **Playwright**.
@@ -139,7 +168,7 @@ The servers will be available at:
 
 ---
 
-## 6. Deployment Guide (for DevOps)
+## 7. Deployment Guide (for DevOps)
 
 Deploying this monorepo requires a platform that can handle multiple services.
 
