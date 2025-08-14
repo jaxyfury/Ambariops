@@ -76,7 +76,7 @@
   }
 
   * {
-    @apply border-border;
+    @apply tw-border-border;
   }
   body {
     @apply bg-background text-foreground font-body;
