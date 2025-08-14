@@ -1,4 +1,8 @@
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @layer base {
   :root {
     --background: 25 67% 94%;
@@ -107,10 +111,6 @@
     scrollbar-color: hsl(var(--muted-foreground) / 0.5) hsl(var(--background));
   }
 }
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 @layer utilities {
   @keyframes fade-out-slide-out {
