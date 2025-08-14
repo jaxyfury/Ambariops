@@ -7,7 +7,9 @@ import { Button } from '@amberops/ui/components/ui/button';
 import { Badge } from '@amberops/ui/components/ui/badge';
 import { Checkbox } from '@amberops/ui/components/ui/checkbox';
 import { Tooltip, TooltipTrigger, TooltipContent } from '@amberops/ui/components/ui/tooltip';
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, Label, Input, DialogFooter } from '@amberops/ui/components/ui/dialog';
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@amberops/ui/components/ui/dialog';
+import { Label } from '@amberops/ui/components/ui/label';
+import { Input } from '@amberops/ui/components/ui/input';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@amberops/ui/components/ui/card';
 import { fetchHosts } from '@/lib/api/services';
 import { ArrowUpRight, PlusCircle, Server, ArrowUpDown, Cpu, MemoryStick, ArrowDown, ArrowUp } from 'lucide-react';
@@ -334,5 +336,3 @@ export default function HostsPage() {
     </div>
   );
 }
-
-    

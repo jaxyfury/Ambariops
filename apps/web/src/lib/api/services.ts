@@ -1,7 +1,7 @@
 
 import type { User, Cluster, Service, Host, Alert, AlertDefinition, Task, ActivityLog, LogEntry, ConfigVersion, DocumentationArticle, LegalDocument } from '@amberops/lib';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || '/api/v1';
+const API_BASE_URL = '/api/v1';
 
 // A placeholder for a real API client.
 const apiClient = {
@@ -51,7 +51,7 @@ const apiClient = {
 
 // User Service
 export const fetchUsers = (): Promise<User[]> => apiClient.get('/users');
-export const addUser = (userData: Omit<User, 'id' | 'lastLogin' | 'avatar'>): Promise<User> => apiClient.post('/users', userData);
+export const addUser = (userData: Omit<User, 'id' | 'lastLogin' | 'avatar' | 'password'> & { password?: string }): Promise<User> => apiClient.post('/users', userData);
 export const updateUser = (userId: string, userData: Partial<User>): Promise<User> => apiClient.put(`/users/${userId}`, userData);
 export const deleteUser = (userId: string): Promise<{ id: string }> => apiClient.delete(`/users/${userId}`);
 
