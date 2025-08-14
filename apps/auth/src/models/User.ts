@@ -1,3 +1,4 @@
+
 import mongoose, { Schema, Document } from 'mongoose';
 
 // Note: This model should be kept in sync with the structure
@@ -21,8 +22,6 @@ const UserSchema: Schema = new Schema({
   role: { type: String, enum: ['Admin', 'Operator', 'Viewer'], default: 'Viewer' },
   image: { type: String },
   lastLogin: { type: Date, default: Date.now },
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now },
-});
+}, { timestamps: true });
 
 export default mongoose.model<IUser>('User', UserSchema);
