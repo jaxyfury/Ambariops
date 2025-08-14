@@ -63,6 +63,14 @@ async function seedDatabase() {
       updatedAt: new Date(),
     });
 
+    usersWithHashedPasswords.push({
+        ...{ id: 'u6', name: 'Admin User', email: 'admin@amberops.com', role: 'Admin', lastLogin: new Date().toISOString(), avatar: `https://avatar.vercel.sh/admin` },
+        password: await bcrypt.hash('admin@amberops', 10),
+        emailVerified: null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+    });
+
 
     // 1. Seed Users
     console.log('Seeding users...');
