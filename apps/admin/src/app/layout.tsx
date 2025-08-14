@@ -1,4 +1,6 @@
+
 'use client';
+
 import { AppLayout } from '@/components/layout/app-layout';
 import { AdminSidebarNav } from '@/components/layout/admin-sidebar-nav';
 import { Breadcrumbs } from '@amberops/ui/components/breadcrumbs';

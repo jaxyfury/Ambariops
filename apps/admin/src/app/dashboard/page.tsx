@@ -56,7 +56,7 @@ export default function AdminDashboardPage() {
             </Link>
           </CardContent>
         </Card>
-         <Card>
+        <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2"><MessageSquare /> Testimonials</CardTitle>
             <CardDescription>Manage customer testimonials.</CardDescription>
@@ -67,7 +67,7 @@ export default function AdminDashboardPage() {
             </Link>
           </CardContent>
         </Card>
-         <Card>
+        <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2"><ListOrdered /> FAQs</CardTitle>
             <CardDescription>Manage Frequently Asked Questions.</CardDescription>

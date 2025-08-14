@@ -109,7 +109,6 @@ export default function AdminDocumentationPage() {
         actions={<Button onClick={() => openModal()}><PlusCircle className="mr-2 h-4 w-4" /> New Article</Button>}
       />
       <DataTable columns={columns} data={articles} filterKey="title" isLoading={isLoading} />
-      
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogContent className="sm:max-w-3xl">
           <DialogHeader>
