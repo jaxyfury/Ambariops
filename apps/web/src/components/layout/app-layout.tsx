@@ -1,3 +1,4 @@
+
 'use client';
 
 import {
@@ -98,7 +99,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
               <DropdownMenuSeparator />
                {user?.role === 'Admin' && (
                 <DropdownMenuItem asChild>
-                    <Link href={adminUrl}>Admin Dashboard</Link>
+                    <a href={adminUrl}>Admin Dashboard</a>
                 </DropdownMenuItem>
               )}
               <DropdownMenuItem asChild>

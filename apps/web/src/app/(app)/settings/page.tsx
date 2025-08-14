@@ -13,8 +13,6 @@ import { IntegrationsSettings } from '@/components/integrations-settings';
 import { ApiAccessSettings } from '@/components/api-access-settings';
 
 export default function SettingsPage() {
-  // NOTE: This page is simplified. The full User Management tab
-  // has been moved to the dedicated Admin application.
   return (
     <div>
       <PageHeader

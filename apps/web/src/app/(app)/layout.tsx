@@ -1,3 +1,4 @@
+
 'use client';
 import { AppLayout } from '@/components/layout/app-layout';
 import { SidebarNav } from '@/components/layout/sidebar-nav';
@@ -13,8 +14,6 @@ export default function ProtectedAppLayout({ children }: { children: React.React
     const router = useRouter();
 
     useEffect(() => {
-        // In a real app with JWT, you'd verify the token with a backend endpoint.
-        // For this prototype, we'll just check if the token exists in localStorage.
         const token = localStorage.getItem('amberops_jwt');
         if (token) {
             setIsAuthenticated(true);

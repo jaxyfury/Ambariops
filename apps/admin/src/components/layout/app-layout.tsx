@@ -1,3 +1,4 @@
+
 'use client';
 
 import {
@@ -22,16 +23,33 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from '@amberops/ui/components/ui/tooltip';
-import Link from 'next/link';
 import toast from 'react-hot-toast';
+import { useEffect, useState } from 'react';
+
+type User = {
+  name: string;
+  email: string;
+  role: string;
+  image: string;
+};
+
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
-    const user = { name: 'Admin User', email: 'admin@amberops.com', role: 'Admin', image: `https://avatar.vercel.sh/admin` };
+    const [user, setUser] = useState<User | null>(null);
     const homeUrl = process.env.NEXT_PUBLIC_HOME_URL || 'http://localhost:3001';
 
-    const handleSignOut = async () => {
-        window.location.href = `${homeUrl}/auth`;
+     useEffect(() => {
+        const storedUser = localStorage.getItem('amberops_user');
+        if (storedUser) {
+            setUser(JSON.parse(storedUser));
+        }
+    }, []);
+
+    const handleSignOut = () => {
+        localStorage.removeItem('amberops_jwt');
+        localStorage.removeItem('amberops_user');
         toast.success('Successfully logged out!');
+        window.location.href = `${homeUrl}/auth`;
     }
 
   return (
@@ -58,18 +76,18 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
               >
                 <Avatar>
                   <AvatarImage
-                    src={user.image}
-                    alt={user.name}
+                    src={user?.image}
+                    alt={user?.name}
                   />
-                  <AvatarFallback>{user.name?.charAt(0) ?? 'A'}</AvatarFallback>
+                  <AvatarFallback>{user?.name?.charAt(0) ?? 'A'}</AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>{user.name}</DropdownMenuLabel>
+              <DropdownMenuLabel>{user?.name}</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem
-                onClick={() => handleSignOut()}
+                onClick={handleSignOut}
               >
                 Logout
               </DropdownMenuItem>
