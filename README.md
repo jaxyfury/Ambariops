@@ -73,35 +73,32 @@ This directory contains all the shared code, organized into distinct libraries t
 
 ---
 
-## Current Progress
-
-The project has achieved its initial MVP goals. The core architecture is in place, and all primary features are functional using a mocked API.
-
-*   **Separated Applications**: A dedicated `home` app for the landing page and authentication, and a `web` app for the protected dashboard.
-*   **Full Authentication Flow**: User registration and login (Email/Password, Google, GitHub) are implemented using NextAuth.js, with MongoDB as the user store.
-*   **Core UI Modules**: All pages (Dashboard, Clusters, Services, Hosts, Alerts, etc.) are implemented and fetching data from the mock API.
-*   **Component Library**: A robust set of shared UI components is available in `packages/ui`, with Storybook stories and accessibility checks.
-*   **API Mocking**: The entire API is mocked using MSW, allowing for frontend development without a live backend.
-*   **Testing**: A solid foundation for testing is in place, with E2E tests for critical user flows.
-*   **CI/CD**: The GitHub Actions pipeline is configured to run linting, testing, and builds on every pull request.
-*   **AI Integration**: The AI flows for summarizing cluster health and suggesting troubleshooting steps are integrated into the UI.
-
-
 ## Getting Started
 
-Follow this two-step process to set up and run the project.
+Follow this three-step process to set up and run the project locally.
 
-### 1. Build the Workspace (One-Time Setup)
+### 1. Configure Your Environment
 
-This command will install all the necessary tools and dependencies, then build and test the entire project to ensure your environment is set up correctly.
+First, you need to set up your environment variables. The project includes a pre-configured `.env` file that you can use as a starting point.
+
+*   **MongoDB URI**: You must provide your own MongoDB connection string in the `.env` file for the `MONGODB_URI` variable. This is required for user authentication to work.
+*   **OAuth Credentials**: If you plan to use Google or GitHub for authentication, you will need to add your own client IDs and secrets.
+
+### 2. Seed the Database
+
+Once your `.env` file is configured, you can seed your MongoDB database with initial data (including a default admin user). Run the following command from the root of the project:
 
 ```bash
-sh build-workspace.sh
+pnpm seed
 ```
 
-### 2. Run the Development Server
+This script will populate your database with mock users, clusters, services, and other necessary data. A default admin account will be created with the credentials:
+*   **Email**: `admin@amberops.com`
+*   **Password**: `admin@amberops`
 
-After the initial setup, use this command to start the local development servers for both applications simultaneously.
+### 3. Run the Development Servers
+
+With the environment set up and the database seeded, you can start the local development servers for both applications simultaneously:
 
 ```bash
 sh run.sh
@@ -111,12 +108,27 @@ The servers will be available at:
 *   **Landing Page App (`home`)**: `http://localhost:3001`
 *   **Dashboard App (`web`)**: `http://localhost:3000`
 
-## Available Scripts
+---
+
+## Development Workflow
+
+### Using Mock Data vs. a Real Backend
+
+The application is configured to easily switch between using local mock data and a live backend API.
+
+*   **To use Mock Data**: Set `NEXT_PUBLIC_ENABLE_MOCKING=true` in your `.env` file. This is the default and recommended mode for most UI development, as it uses the in-memory data from `packages/api/src/mocks/` and does not require a running backend.
+
+*   **To use a Real Backend**:
+    1.  Set `NEXT_PUBLIC_ENABLE_MOCKING=false` in your `.env` file.
+    2.  Set `NEXT_PUBLIC_API_URL` to the full URL of your live backend API.
+
+### Available Scripts
 
 - `pnpm dev`: Starts the Next.js development server for the `web` app.
 - `pnpm dev:home`: Starts the Next.js development server for the `home` app.
 - `pnpm build`: Builds all packages and apps for production.
 - `pnpm lint`: Lints all code in the repository.
-- `pnpm test`: Runs all unit and integration tests.
 - `pnpm test:e2e`: Runs all Playwright E2E tests.
 - `pnpm storybook`: Starts the Storybook server for UI component development.
+- `pnpm seed`: Seeds the database with initial data.
+```

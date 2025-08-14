@@ -43,6 +43,7 @@ This project is a `pnpm` workspace-based monorepo. This structure is ideal for m
 *   **`.gitignore`**: The global gitignore file.
 *   **`.lintstagedrc.js` & `commitlint.config.js`**: Configuration for code quality tools that run automatically before commits, ensuring all code adheres to style guides.
 *   **`build-workspace.sh` & `run.sh`**: Helper shell scripts to simplify the setup and local development process.
+*   **`.env`**: The central file for managing all environment variables for both applications.
 
 ---
 
@@ -55,16 +56,15 @@ This directory contains the runnable Next.js applications.
 *   **Technology**: A standalone Next.js app optimized for fast initial loads and SEO.
 *   **Key Files**:
     *   `src/app/page.tsx`: The main landing page component.
-    *   `src/app/login/page.tsx`: The user/admin login form.
-    *   `src/app/signup/page.tsx`: The user registration form.
-    *   `package.json`: Contains dependencies specific to the `home` app, like `next`.
+    *   `src/app/auth/page.tsx`: The unified user/admin login and signup form.
+    *   `next.config.js`: Contains a critical `rewrites` rule that proxies API requests to the `web` app's backend, enabling seamless authentication.
 
 #### `apps/web`
 *   **Purpose**: The secure, core application that users access *after* logging in. This is a feature-rich Single-Page Application (SPA).
 *   **Technology**: A Next.js application that heavily relies on client-side rendering for its interactive dashboards.
 *   **Key Files**:
     *   `src/app/(app)/...`: All the protected pages of the dashboard, organized by feature (e.g., `clusters`, `services`, `alerts`).
-    *   `src/app/api/auth/[...nextauth]/route.ts`: The backend API endpoint for NextAuth.js. It handles session management, communication with OAuth providers (Google, GitHub), and the credentials provider. **This is a critical piece of the authentication architecture.**
+    *   `src/app/api/auth/[...nextauth]/route.ts`: The backend API endpoint for NextAuth.js. It handles session management, communication with OAuth providers (Google, GitHub), and the credentials provider.
     *   `src/lib/mongodb.ts`: A utility to manage the MongoDB connection pool.
 
 ---
@@ -101,27 +101,48 @@ This directory contains all the shared code, organized into distinct libraries.
 
 ## 3. Development Workflow
 
-### One-Time Setup
-This command installs all tools and dependencies, then builds and tests the entire project to ensure your environment is set up correctly.
-```bash
-sh build-workspace.sh
-```
+### Step 1: Environment Configuration
 
-### Running Locally
-After the initial setup, use this command to start the local development servers for both applications simultaneously.
+The first and most important step is to set up your environment variables.
+
+1.  **Copy the `.env.example` to `.env`**: If it doesn't exist, create a `.env` file at the root of the project.
+2.  **Set `MONGODB_URI`**: You **must** provide a valid MongoDB connection string. The application relies on this for user authentication.
+3.  **Set OAuth Credentials** (Optional): If you wish to use Google or GitHub for login, you must obtain and fill in the `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GITHUB_CLIENT_ID`, and `GITHUB_CLIENT_SECRET` variables.
+4.  **Set `GEMINI_API_KEY`** (Optional): To use the AI features, you need a Google Gemini API key.
+
+### Step 2: Database Seeding
+
+With your environment configured, you must seed the database with initial data. This script populates your MongoDB instance with mock users (including a default admin), clusters, services, and other essential data.
+
+From the project root, run:
+```bash
+pnpm seed
+```
+A default admin account will be created with:
+*   **Email**: `admin@amberops.com`
+*   **Password**: `admin@amberops`
+
+### Step 3: Running the Application Locally
+
+Use this command to start the development servers for both applications simultaneously:
 ```bash
 sh run.sh
 ```
 The servers will be available at:
-*   **Landing Page App (`home`)**: `http://localhost:3001`
+*   **Landing Page (`home`)**: `http://localhost:3001`
 *   **Dashboard App (`web`)**: `http://localhost:3000`
 
-### Running Storybook
-To work on UI components in isolation, start the Storybook server:
-```bash
-pnpm storybook
-```
-Storybook will be available at `http://localhost:6006`.
+### Switching Between Mock and Real Data
+
+The project is designed to easily switch between a local mock API and a real, live backend.
+
+*   **To Use Mock Data (Default)**:
+    *   In the `.env` file, set `NEXT_PUBLIC_ENABLE_MOCKING=true`.
+    *   This is the ideal mode for most frontend and UI development, as it requires no live backend. Mock Service Worker (MSW) will intercept API calls and return data from `packages/api/src/mocks/mock-data.ts`.
+
+*   **To Use a Real Backend API**:
+    1.  In the `.env` file, set `NEXT_PUBLIC_ENABLE_MOCKING=false`.
+    2.  Set the `NEXT_PUBLIC_API_URL` variable to the full URL of your live API (e.g., `https://api.your-amberops.com/api/v1`).
 
 ---
 
@@ -173,3 +194,4 @@ The GitHub Actions workflow in `.github/workflows/ci.yml` provides a template fo
 2.  Build production Docker images for each application.
 3.  Push the images to a container registry (e.g., Docker Hub, GCR).
 4.  Trigger a deployment to the hosting environment.
+```
