@@ -31,16 +31,12 @@ run_cmd() {
     osascript -e "tell application \"Terminal\" to do script \"cd '$current_dir' && pnpm $cmd\""
   
   elif [ "$OS" = "Linux" ]; then
-    # For Linux, try common terminal emulators
+    # For Linux, try gnome-terminal, otherwise run in background.
     if command -v gnome-terminal >/dev/null 2>&1; then
-      gnome-terminal -- bash -c "cd '$current_dir'; pnpm $cmd; exec bash" >/dev/null 2>&1 &
-    elif command -v konsole >/dev/null 2>&1; then
-      konsole --hold -e "bash -c \"cd '$current_dir' && pnpm $cmd\"" >/dev/null 2>&1 &
-    elif command -v xterm >/dev/null 2>&1; then
-      xterm -hold -e "cd '$current_dir' && pnpm $cmd" >/dev/null 2>&1 &
+      gnome-terminal -- bash -c "echo 'Starting pnpm $cmd...'; pnpm --prefix '$current_dir' $cmd; echo 'Process finished, press Enter to close'; read" &
     else
-      echo "⚠️ No supported terminal emulator found. Running 'pnpm $cmd' in the background..."
-      (cd "$current_dir" && pnpm "$cmd") &
+      echo "⚠️ gnome-terminal not found. Running 'pnpm $cmd' in the background..."
+      pnpm --prefix "$current_dir" "$cmd" &
     fi
   
   elif echo "$OS" | grep -qE 'MINGW|CYGWIN|MSYS'; then
@@ -49,7 +45,7 @@ run_cmd() {
   
   else
     echo "⚠️ Unsupported OS '$OS'. Running 'pnpm $cmd' in the background..."
-    (cd "$current_dir" && pnpm "$cmd") &
+    pnpm --prefix "$current_dir" "$cmd" &
   fi
 }
 
