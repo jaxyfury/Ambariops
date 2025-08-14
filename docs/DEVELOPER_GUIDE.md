@@ -37,70 +37,63 @@ This project is a `pnpm` workspace-based monorepo. This structure is ideal for m
 └── tsconfig.base.json    # The shared base TypeScript configuration
 ```
 
-### Root Level Files
+---
 
-*   **`pnpm-workspace.yaml`**: The heart of the monorepo. This file tells `pnpm` which directories to treat as separate packages, enabling cross-package linking.
-*   **`package.json`**: The root package file. It contains scripts that can orchestrate actions across the entire workspace (e.g., `pnpm build` runs the build script in every package).
-*   **`tsconfig.base.json`**: A shared TypeScript configuration file that other `tsconfig.json` files in the monorepo extend.
-*   **`build-workspace.sh` & `run.sh`**: Helper shell scripts to simplify the setup and local development process.
-*   **`.env`**: The central file for managing all environment variables for all backend services and frontend applications.
+## 3. Scripts and Commands
+
+The project includes several shell scripts and `pnpm` commands to automate common tasks. All commands should be run from the project root.
+
+### Shell Scripts
+
+These scripts provide high-level orchestration for setting up and running the workspace.
+
+| Script                  | Description                                                                                                                              |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `sh build-workspace.sh` | **First-Time Setup**: Prepares the entire workspace. It installs `nvm`, Node.js, `pnpm`, all dependencies, and runs builds and tests.      |
+| `sh run.sh`             | **Run All Services**: Starts the development servers for all applications and services simultaneously. This is the primary command for local development. |
+| `sh clean-workspace.sh` | **Full Cleanup**: Stops all running server processes, removes all `node_modules` folders, build caches (`.next`, `dist`), and the `pnpm-lock.yaml` file. |
+
+### PNPM Commands
+
+| Command           | Description                                                                 |
+| ----------------- | --------------------------------------------------------------------------- |
+| `pnpm install`    | Installs all dependencies across all packages in the workspace.             |
+| `pnpm dev`        | Runs the main `web` dashboard application on `localhost:3000`.              |
+| `pnpm dev:home`   | Runs the `home` landing page application on `localhost:3001`.               |
+| `pnpm dev:admin`  | Runs the `admin` dashboard application on `localhost:3003`.                 |
+| `pnpm dev:auth`   | Runs the `auth` service on port `3002`.                                     |
+| `pnpm dev:backend`| Runs the `backend` API service on port `3004`.                              |
+| `pnpm build`      | Builds all applications and packages for production.                        |
+| `pnpm test:e2e`   | Runs all Playwright end-to-end tests.                                       |
+| `pnpm seed`       | Populates your MongoDB database with initial data for development.          |
+| `pnpm storybook`  | Starts the Storybook server for the `@amberops/ui` component library.         |
+
 
 ---
 
-### `apps/` Directory
-
-This directory contains the runnable applications and services.
-
-#### `apps/home`
-*   **Purpose**: The public-facing entry point for all users. It serves the marketing landing page and acts as the **frontend** for the `auth` service.
-*   **Technology**: A standalone Next.js app.
-
-#### `apps/web`
-*   **Purpose**: The secure, core application that users access *after* logging in.
-*   **Technology**: A Next.js application that heavily relies on client-side rendering for its interactive dashboards.
-
-#### `apps/admin`
-*   **Purpose**: The secure dashboard for administrators to manage users and site content.
-*   **Technology**: A standalone Next.js app.
-
-#### `apps/auth`
-*   **Purpose**: A dedicated, standalone **backend service** for authentication.
-*   **Technology**: A Node.js/Express application that handles user registration, login (password & social), and JWT management.
-
-#### `apps/backend`
-*   **Purpose**: A dedicated, standalone **backend service** for all application data.
-*   **Technology**: A Node.js/Express application that provides a REST API for clusters, services, hosts, etc.
-
----
-
-### `packages/` Directory
-
-This directory contains all the shared code, organized into distinct libraries.
-
-#### `packages/ui`
-*   **Purpose**: A comprehensive library of reusable React components (Button, Card, etc.).
-*   **Key Files**: `src/components/ui/` contains all primitives; `src/stories/` contains Storybook files.
-
-#### `packages/api`
-*   **Purpose**: Manages the application's data and AI layers.
-*   **Key Files**: `src/client.ts` is the centralized API client used by all frontend apps to communicate with the `backend` and `auth` services. `src/ai/` contains all server-side Genkit logic.
-
-#### `packages/lib`
-*   **Purpose**: A foundational library for shared, non-React code like TypeScript types (`src/types.ts`) and utilities.
-
-#### `packages/design-tokens`
-*   **Purpose**: Centralizes all styling and theme-related configurations, including the shared Tailwind CSS configuration.
-
----
-
-## 3. Development Workflow
+## 4. Development Workflow
 
 ### Step 1: Environment Configuration
 
+Before running the application, you must configure your environment variables.
+
 1.  **Copy the `.env.example` to `.env`**: Create a `.env` file at the root of the project.
-2.  **Set `MONGODB_URI`**: You **must** provide a valid MongoDB connection string.
-3.  **Set OAuth Credentials** (Optional): To enable Google or GitHub login, fill in the `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, etc., variables.
-4.  **Set `GEMINI_API_KEY`** (Optional): To use the AI features, provide a Google Gemini API key.
+2.  **Set Required Variables**: You **must** provide a valid `MONGODB_URI` for the application to connect to its database.
+3.  **Set Optional Variables**: For features like social login or AI, you will need to provide the corresponding API keys and secrets.
+
+#### Environment Variable Details
+
+| Variable                  | Description                                                                | Required? | Example                                         |
+| ------------------------- | -------------------------------------------------------------------------- | --------- | ----------------------------------------------- |
+| `MONGODB_URI`             | The connection string for your MongoDB database.                           | **Yes**   | `mongodb://localhost:27017/amberops`            |
+| `JWT_SECRET`              | A secret key used for signing JSON Web Tokens for session management.      | **Yes**   | `your-very-secret-jwt-key`                      |
+| `GOOGLE_CLIENT_ID`        | The client ID for Google OAuth 2.0.                                        | No        | `your-google-client-id.apps.googleusercontent.com` |
+| `GOOGLE_CLIENT_SECRET`    | The client secret for Google OAuth 2.0.                                    | No        | `GOCSPX-your-google-client-secret`              |
+| `GITHUB_CLIENT_ID`        | The client ID for GitHub OAuth.                                            | No        | `your_github_client_id`                         |
+| `GITHUB_CLIENT_SECRET`    | The client secret for GitHub OAuth.                                        | No        | `your_github_client_secret`                     |
+| `GEMINI_API_KEY`          | Your API key for Google Gemini, used for all AI features.                  | No        | `your_gemini_api_key`                           |
+| `AUTH_PORT`               | The port for the `auth` service. Defaults to `3002`.                       | No        | `3002`                                          |
+| `BACKEND_PORT`            | The port for the `backend` service. Defaults to `3004`.                    | No        | `3004`                                          |
 
 ### Step 2: Database Seeding
 
@@ -129,7 +122,7 @@ The servers will be available at:
 
 ---
 
-## 4. Testing Strategy
+## 5. Testing Strategy
 
 *   **End-to-End (E2E) Testing**:
     *   **Tool**: **Playwright**.
@@ -142,7 +135,7 @@ The servers will be available at:
 
 ---
 
-## 5. Deployment Guide (for DevOps)
+## 6. Deployment Guide (for DevOps)
 
 Deploying this monorepo requires a platform that can handle multiple services.
 
