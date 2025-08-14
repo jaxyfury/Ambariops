@@ -7,7 +7,7 @@ import { cn } from '@amberops/lib';
 
 // We have to import the CSS this way because package.json `exports` doesn't support CSS files.
 // This is a workaround for Storybook and downstream apps to be able to use the styles.
-import "../../../apps/web/src/styles/preloader.css";
+import "../styles/preloader.css";
 
 export function Preloader() {
   const preloaderRef = useRef<HTMLDivElement>(null);
