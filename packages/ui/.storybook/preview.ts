@@ -1,5 +1,4 @@
-
-import type { Preview } from "@storybook/react";
+import type { Preview, Decorator } from '@storybook/react';
 import '@amberops/design-tokens/globals.css';
 import { Inter, Space_Grotesk } from 'next/font/google';
 import React from 'react';
@@ -14,6 +13,13 @@ const fontHeadline = Space_Grotesk({
   variable: '--font-headline',
 });
 
+const withRootLayout: Decorator = (Story) => (
+  <div className={`${fontBody.variable} ${fontHeadline.variable} font-body`}>
+    <Story />
+  </div>
+);
+
+
 const preview: Preview = {
   parameters: {
     controls: {
@@ -23,13 +29,7 @@ const preview: Preview = {
       },
     },
   },
-  decorators: [
-    (Story) => (
-      <div className={`${fontBody.variable} ${fontHeadline.variable} font-body`}>
-        <Story />
-      </div>
-    ),
-  ]
+  decorators: [withRootLayout],
 };
 
 export default preview;
