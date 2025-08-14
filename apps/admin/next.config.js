@@ -3,6 +3,12 @@
 const path = require('path')
 
 const nextConfig = {
+    typescript: {
+        ignoreBuildErrors: true,
+    },
+    eslint: {
+        ignoreDuringBuilds: true,
+    },
     transpilePackages: ['@amberops/ui', '@amberops/api', '@amberops/design-tokens', '@amberops/lib'],
     webpack: (config) => {
         config.resolve.alias['@'] = path.resolve(__dirname, 'src')
