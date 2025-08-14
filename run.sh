@@ -10,11 +10,11 @@ set -e
 echo "--- Checking for and stopping any running services... ---"
 PORTS="3000 3001 3002 3003 3004"
 for PORT in $PORTS; do
-  PID=$(lsof -t -i:$PORT || true)
-  if [ -n "$PID" ]; then
-    echo "Found process with PID $PID on port $PORT. Killing it..."
-    kill -9 "$PID"
-    echo "Process on port $PORT killed."
+  # Use a combination of commands to find and kill the process.
+  # This is more robust across different systems.
+  if lsof -i :$PORT -t >/dev/null ; then
+    echo "Found process on port $PORT. Killing it..."
+    kill -9 $(lsof -t -i:$PORT)
   else
     echo "No process found on port $PORT."
   fi
@@ -26,7 +26,8 @@ echo "--- Port check complete. ---"
 OS=$(uname)
 echo "Detected OS: $OS"
 
-COMMANDS="pnpm dev:home;pnpm dev:admin;pnpm dev:auth;pnpm dev:backend;pnpm dev"
+# Note the -- separator to pass arguments to the underlying script
+COMMANDS="pnpm --filter home dev -- -p 3001;pnpm --filter admin dev -- -p 3003;pnpm --filter auth-service dev;pnpm --filter backend-service dev;pnpm --filter web dev -- -p 3000"
 
 run_cmd() {
   cmd="$1"
@@ -77,4 +78,4 @@ unset IFS
 
 echo "✅ All service launch commands have been issued."
 echo "If new terminals did not open, the services are running in the background of this window."
-echo "You can manually stop them later by closing this terminal or using 'sh clean-workspace.sh'."
+echo "You can manually stop them later by closing this terminal or using 'sh kill-ports.sh'."
