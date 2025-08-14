@@ -4,6 +4,6 @@ import * as genericController from '../../controllers/generic.controller';
 import { PricingTier } from '../../models/pricingTier.model';
 
 export default createCrudRoutes(
-    'pricing-tier',
+    'pricingtier',
     genericController.createGenericController(PricingTier, 'PricingTier')
 );
