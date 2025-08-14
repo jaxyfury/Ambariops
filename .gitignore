@@ -4,31 +4,49 @@
 /node_modules
 /.pnpm-store
 
-# Build outputs
+# Build artifacts
 /dist
-/build
 /.next/
 /out/
-/storybook-static
+/build/
+/storybook-static/
+/packages/ui/storybook-static/
 
 # Test results and coverage
 /coverage
-/playwright-report/
 /test-results/
+/playwright-report/
 
-# Misc
-.DS_Store
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Local environment variables
 .env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
-# Logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
+# IDE and editor directories
+.idea
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
-# Vercel
-.vercel
+# OS-generated files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# Other
+pnpm-lock.yaml
