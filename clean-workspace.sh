@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # This script cleans the entire workspace by removing all generated
 # artifacts, caches, and installed dependencies. It's useful for
@@ -11,8 +11,9 @@ echo "--- Starting workspace cleanup ---"
 
 # 1. Kill any running processes on the project ports
 echo "--- Stopping any running development servers ---"
-PORTS=(3000 3001 3002 3003 3004)
-for PORT in "${PORTS[@]}"; do
+# Use a space-separated string for POSIX compliance
+PORTS="3000 3001 3002 3003 3004"
+for PORT in $PORTS; do
   echo "Checking for process on port $PORT..."
   # Use lsof to find the PID, -t for terse output (PID only)
   # The || true prevents the script from exiting if no process is found

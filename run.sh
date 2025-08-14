@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # This script starts the development servers for all frontend applications
 # and the standalone authentication and backend services.
