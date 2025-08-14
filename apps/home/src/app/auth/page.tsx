@@ -4,7 +4,6 @@
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { signIn } from 'next-auth/react';
 import toast from 'react-hot-toast';
 import { GitMerge, Chrome, LogIn, UserPlus, Eye, EyeOff } from 'lucide-react';
 import { cn } from '@amberops/lib';
@@ -38,26 +37,21 @@ const SignUpForm = () => {
     const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsLoading(true);
-        const name = e.currentTarget.name.value;
-        const email = e.currentTarget.email.value;
-        const password = e.currentTarget.password.value;
-        
-        try {
-            // This would call your own backend to register the user
+        // NOTE: In a real application, this would make an API call to your dedicated auth service's registration endpoint.
+        // For this prototype, we'll simulate a successful registration.
+        setTimeout(() => {
             toast.success("Registration successful! Please sign in.");
-        } catch (error) {
-            toast.error("Registration failed. Please try again.");
-        } finally {
             setIsLoading(false);
-        }
+            // Optionally, trigger a switch to the sign-in form
+        }, 1000);
     };
 
     return (
         <form onSubmit={handleSignup} data-testid="signup-form">
             <h1 className="text-3xl font-bold font-headline mb-3">Create Account</h1>
             <div className="social-icons">
-                 <SocialButton icon={<Chrome size={20} />} onClick={() => signIn('google', { callbackUrl: WEB_URL })} tooltip="Sign up with Google" />
-                 <SocialButton icon={<GitMerge size={20} />} onClick={() => signIn('github', { callbackUrl: WEB_URL })} tooltip="Sign up with GitHub" />
+                 <SocialButton icon={<Chrome size={20} />} onClick={() => toast.error("OAuth is handled by the dedicated auth service.")} tooltip="Sign up with Google" />
+                 <SocialButton icon={<GitMerge size={20} />} onClick={() => toast.error("OAuth is handled by the dedicated auth service.")} tooltip="Sign up with GitHub" />
             </div>
             <span>or use your email for registration</span>
             <input type="text" name="name" placeholder="Name" required autoComplete="name" />
@@ -81,34 +75,33 @@ const SignUpForm = () => {
 const SignInForm = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const router = useRouter();
 
     const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsLoading(true);
         const email = e.currentTarget.email.value;
-        const password = e.currentTarget.password.value;
         
-        const result = await signIn('credentials', {
-            redirect: false,
-            email,
-            password,
-        });
-
-        if (result?.ok) {
-            // The session will be available in the web app, which will handle the redirect.
-            window.location.href = WEB_URL;
-        } else {
-            toast.error(result?.error || "Invalid credentials. Please try again.");
-        }
-        setIsLoading(false);
+        // NOTE: In a real application, this form would submit to your dedicated auth service (e.g., Keycloak).
+        // The auth service would then handle the login and redirect back to the correct application with a session.
+        // For this prototype, we'll simulate the redirect based on email.
+        setTimeout(() => {
+            if (email.toLowerCase() === 'admin@amberops.com') {
+                toast.success('Admin login successful! Redirecting...');
+                window.location.href = ADMIN_URL;
+            } else {
+                toast.success('Login successful! Redirecting...');
+                window.location.href = WEB_URL;
+            }
+        }, 1000);
     }
 
     return (
         <form onSubmit={handleLogin} data-testid="login-form">
             <h1 className="text-3xl font-bold font-headline mb-3">Sign In</h1>
             <div className="social-icons">
-                 <SocialButton icon={<Chrome size={20} />} onClick={() => signIn('google', { callbackUrl: WEB_URL })} tooltip="Sign in with Google" />
-                 <SocialButton icon={<GitMerge size={20} />} onClick={() => signIn('github', { callbackUrl: WEB_URL })} tooltip="Sign in with GitHub" />
+                 <SocialButton icon={<Chrome size={20} />} onClick={() => toast.error("OAuth is handled by the dedicated auth service.")} tooltip="Sign in with Google" />
+                 <SocialButton icon={<GitMerge size={20} />} onClick={() => toast.error("OAuth is handled by the dedicated auth service.")} tooltip="Sign in with GitHub" />
             </div>
             <span>or use your email and password</span>
             <input type="email" name="email" placeholder="Email" required autoComplete="email" />
@@ -138,13 +131,8 @@ export default function AuthPage() {
 
     useEffect(() => {
         const action = searchParams.get('action');
-        const error = searchParams.get('error');
-
         if (action === 'signup') {
             setIsActive(true);
-        }
-        if (error) {
-            toast.error("Authentication failed. Please try again.");
         }
     }, [searchParams]);
 

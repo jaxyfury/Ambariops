@@ -4,22 +4,25 @@ import { AppLayout } from '@/components/layout/app-layout';
 import { AdminSidebarNav } from '@/components/layout/admin-sidebar-nav';
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import { SidebarProvider } from '@amberops/ui/components/ui/sidebar';
-import { useSession } from 'next-auth/react';
-import { redirect } from 'next/navigation';
 import { Preloader } from '@/components/preloader';
+import { useState, useEffect } from 'react';
 
-export const dynamic = 'force-dynamic';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-    const { data: session, status } = useSession();
-    const homeUrl = process.env.NEXT_PUBLIC_HOME_URL || 'http://localhost:3001';
+    // NOTE: In a real application with a dedicated auth service (e.g., Keycloak),
+    // this layout would be wrapped in a higher-order component or middleware
+    // that validates the user's session token and checks for the 'Admin' role.
+    // If the check fails, it would redirect to the main login page.
+    // We simulate a loading state here for demonstration purposes.
+    const [isLoading, setIsLoading] = useState(true);
 
-    if (status === 'loading') {
+    useEffect(() => {
+      const timer = setTimeout(() => setIsLoading(false), 500);
+      return () => clearTimeout(timer);
+    }, []);
+
+    if (isLoading) {
         return <Preloader />;
-    }
-
-    if (status === 'unauthenticated' || (session?.user as any)?.role !== 'Admin') {
-        redirect(`${homeUrl}/auth`);
     }
 
   return (

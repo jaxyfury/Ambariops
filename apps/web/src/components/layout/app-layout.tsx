@@ -23,7 +23,6 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from '@amberops/ui/components/ui/tooltip';
-import { signOut, useSession } from 'next-auth/react';
 
 import { ThemeToggle } from '@/components/theme-toggle';
 import { LanguageSwitcher } from '@/components/language-switcher';
@@ -33,12 +32,14 @@ import { QuickAccessNav } from '@/components/quick-access-nav';
 import { GlobalSearch } from '@/components/global-search';
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
-    const { data: session } = useSession();
+    // NOTE: In a real application, user data would come from a global context
+    // or a hook that decodes a JWT from the dedicated auth service.
+    const user = { name: 'Admin User', email: 'admin@amberops.com', role: 'Admin', image: `https://avatar.vercel.sh/admin` };
     const homeUrl = process.env.NEXT_PUBLIC_HOME_URL || 'http://localhost:3001';
     const adminUrl = process.env.NEXT_PUBLIC_ADMIN_URL || 'http://localhost:3003';
 
     const handleSignOut = async () => {
-        await signOut({ callbackUrl: `${homeUrl}/auth` });
+        window.location.href = `${homeUrl}/auth`;
         toast.success('Successfully logged out!');
     }
 
@@ -71,17 +72,17 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
               >
                 <Avatar>
                   <AvatarImage
-                    src={session?.user?.image ?? `https://avatar.vercel.sh/${session?.user?.name}`}
-                    alt={session?.user?.name ?? 'User'}
+                    src={user.image}
+                    alt={user.name}
                   />
-                  <AvatarFallback>{session?.user?.name?.charAt(0) ?? 'U'}</AvatarFallback>
+                  <AvatarFallback>{user.name?.charAt(0) ?? 'U'}</AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>{session?.user?.name}</DropdownMenuLabel>
+              <DropdownMenuLabel>{user.name}</DropdownMenuLabel>
               <DropdownMenuSeparator />
-               {(session?.user as any)?.role === 'Admin' && (
+               {user.role === 'Admin' && (
                 <DropdownMenuItem asChild>
                     <Link href={adminUrl}>Admin Dashboard</Link>
                 </DropdownMenuItem>

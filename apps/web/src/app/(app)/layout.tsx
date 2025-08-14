@@ -4,22 +4,23 @@ import { AppLayout } from '@/components/layout/app-layout';
 import { SidebarNav } from '@/components/layout/sidebar-nav';
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import { SidebarProvider } from '@amberops/ui/components/ui/sidebar';
-import { useSession } from 'next-auth/react';
-import { redirect } from 'next/navigation';
 import { Preloader } from '@/components/preloader';
+import { useEffect, useState } from 'react';
 
-export const dynamic = 'force-dynamic';
+export default function ProtectedAppLayout({ children }: { children: React.ReactNode }) {
+    // NOTE: In a real application with a dedicated auth service (e.g., Keycloak),
+    // this layout would be wrapped in a higher-order component or middleware
+    // that validates the user's session token. If the token is invalid or
+    // expired, it would redirect to the authentication service's login page.
+    // We simulate a loading state here for demonstration purposes.
+    const [isLoading, setIsLoading] = useState(true);
+    
+    useEffect(() => {
+      const timer = setTimeout(() => setIsLoading(false), 500);
+      return () => clearTimeout(timer);
+    }, []);
 
-export default function AppLayout({ children }: { children: React.ReactNode }) {
-    const { status } = useSession({
-        required: true,
-        onUnauthenticated() {
-            const homeUrl = process.env.NEXT_PUBLIC_HOME_URL || 'http://localhost:3001';
-            redirect(`${homeUrl}/auth`);
-        },
-    });
-
-    if (status === 'loading') {
+    if (isLoading) {
         return <Preloader />;
     }
 
