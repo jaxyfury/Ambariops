@@ -11,27 +11,24 @@ import {
 import { GeneralSettings } from '@/components/general-settings';
 import { IntegrationsSettings } from '@/components/integrations-settings';
 import { ApiAccessSettings } from '@/components/api-access-settings';
-import { UserManagement } from '@/components/user-management';
 
 export default function SettingsPage() {
+  // NOTE: This page is simplified. The full User Management tab
+  // has been moved to the dedicated Admin application.
   return (
     <div>
       <PageHeader
         title="Settings"
-        description="Manage application settings and user access."
+        description="Manage application settings and integrations."
       />
       <Tabs defaultValue="general" className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="general">General</TabsTrigger>
-          <TabsTrigger value="users">User Management</TabsTrigger>
           <TabsTrigger value="integrations">Integrations</TabsTrigger>
           <TabsTrigger value="api">API Access</TabsTrigger>
         </TabsList>
         <TabsContent value="general">
           <GeneralSettings />
-        </TabsContent>
-        <TabsContent value="users">
-            <UserManagement />
         </TabsContent>
         <TabsContent value="integrations" className="space-y-6">
           <IntegrationsSettings />
