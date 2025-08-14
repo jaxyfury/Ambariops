@@ -21,7 +21,7 @@ import {
   addUser,
   updateUser,
   deleteUser,
-} from '@/lib/api/services';
+} from '@amberops/api/client';
 import { MoreHorizontal, UserPlus, Trash, Edit, Search } from 'lucide-react';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';

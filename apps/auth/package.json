@@ -1,0 +1,6 @@
+{
+  "name": "auth",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Placeholder for a dedicated authentication service like Keycloak."
+}
