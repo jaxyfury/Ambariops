@@ -4,26 +4,15 @@ import bcrypt from 'bcryptjs';
 import type { User as IUser } from '@amberops/lib';
 import mongoose from 'mongoose';
 
-const toUserResponse = (user: any): IUser => {
-    const userObject = user.toObject();
-    return {
-        ...userObject,
-        id: userObject._id.toString(),
-    };
-};
-
-
 export const findAllUsers = async () => {
-    const users = await User.find({});
-    return users.map(toUserResponse);
+    return User.find({}).lean();
 };
 
 export const findUserById = async (id: string) => {
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return null;
     }
-    const user = await User.findById(id);
-    return user ? toUserResponse(user) : null;
+    return User.findById(id).lean();
 };
 
 export const createUser = async (userData: any) => {
@@ -36,20 +25,19 @@ export const createUser = async (userData: any) => {
     }
     const newUser = new User(userData);
     await newUser.save();
-    return toUserResponse(newUser);
+    return newUser.toJSON();
 };
 
 export const updateUser = async (id: string, userData: Partial<IUser>) => {
      if (!mongoose.Types.ObjectId.isValid(id)) {
         return null;
     }
-    const updatedUser = await User.findByIdAndUpdate(id, userData, { new: true });
-    return updatedUser ? toUserResponse(updatedUser) : null;
+    return User.findByIdAndUpdate(id, userData, { new: true }).lean();
 };
 
 export const deleteUser = async (id: string) => {
      if (!mongoose.Types.ObjectId.isValid(id)) {
         return null;
     }
-    return User.findByIdAndDelete(id);
+    return User.findByIdAndDelete(id).lean();
 };

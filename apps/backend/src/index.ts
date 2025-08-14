@@ -13,6 +13,23 @@ import { errorHandler } from './utils/error-handler';
 // Load environment variables from the root .env file
 dotenv.config({ path: '../../.env' });
 
+// Global Mongoose settings for toJSON and toObject transformations
+mongoose.set('toJSON', {
+  virtuals: true,
+  transform: (doc, converted) => {
+    delete converted._id;
+    delete converted.__v;
+  }
+});
+mongoose.set('toObject', {
+  virtuals: true,
+  transform: (doc, converted) => {
+    delete converted._id;
+    delete converted.__v;
+  }
+});
+
+
 const app = express();
 const PORT = process.env.BACKEND_PORT || 3004;
 
