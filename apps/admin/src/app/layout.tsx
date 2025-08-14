@@ -29,6 +29,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
+      // This is a simple simulation. In a real app, you'd check a session.
+      // For this prototype, we'll assume if they get here, they are the admin.
       const timer = setTimeout(() => setIsLoading(false), 500);
       return () => clearTimeout(timer);
     }, []);

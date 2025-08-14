@@ -29,16 +29,16 @@ import Link from 'next/link';
 import toast from 'react-hot-toast';
 import { QuickAccessNav } from '@/components/quick-access-nav';
 import { GlobalSearch } from '@/components/global-search';
+import { signOut, useSession } from 'next-auth/react';
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
-    // NOTE: In a real application, user data would come from a global context
-    // or a hook that decodes a JWT from the dedicated auth service.
-    const user = { name: 'Dev User', email: 'dev@amberops.com', role: 'Operator', image: `https://avatar.vercel.sh/dev` };
-    const homeUrl = process.env.NEXT_PUBLIC_HOME_URL || 'http://localhost:3001';
+    const { data: session } = useSession();
+    const user = session?.user;
+    
     const adminUrl = process.env.NEXT_PUBLIC_ADMIN_URL || 'http://localhost:3003';
 
     const handleSignOut = async () => {
-        window.location.href = `${homeUrl}/auth`;
+        await signOut({ callbackUrl: '/' });
         toast.success('Successfully logged out!');
     }
 
@@ -71,17 +71,18 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
               >
                 <Avatar>
                   <AvatarImage
-                    src={user.image}
-                    alt={user.name}
+                    src={user?.image || ''}
+                    alt={user?.name || ''}
                   />
-                  <AvatarFallback>{user.name?.charAt(0) ?? 'U'}</AvatarFallback>
+                  <AvatarFallback>{user?.name?.charAt(0) ?? 'U'}</AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>{user.name}</DropdownMenuLabel>
+              <DropdownMenuLabel>{user?.name}</DropdownMenuLabel>
               <DropdownMenuSeparator />
-               {user.role === 'Admin' && (
+               {/* @ts-ignore */}
+               {user?.role === 'Admin' && (
                 <DropdownMenuItem asChild>
                     <Link href={adminUrl}>Admin Dashboard</Link>
                 </DropdownMenuItem>

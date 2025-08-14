@@ -9,9 +9,8 @@ import { cn } from '@amberops/lib';
 import { AmberOpsLogo } from '@amberops/ui/components/icons';
 import { Button } from '@amberops/ui/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@amberops/ui/components/ui/tooltip';
-
-const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL || 'http://localhost:3000';
-const ADMIN_URL = process.env.NEXT_PUBLIC_ADMIN_URL || 'http://localhost:3003';
+import { signIn } from 'next-auth/react';
+import { addUser } from '@amberops/api/client';
 
 const SocialButton = ({ icon, onClick, tooltip }: { icon: React.ReactNode, onClick?: () => void, tooltip: string }) => (
     <TooltipProvider>
@@ -35,13 +34,19 @@ const SignUpForm = ({ onSwitch }: { onSwitch: () => void }) => {
     const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsLoading(true);
-        // NOTE: In a real application, this would make an API call to your dedicated auth service's registration endpoint.
-        // For this prototype, we'll simulate a successful registration.
-        setTimeout(() => {
+        const name = e.currentTarget.name.value;
+        const email = e.currentTarget.email.value;
+        const password = e.currentTarget.password.value;
+        
+        try {
+            await addUser({ name, email, password, role: 'Viewer' });
             toast.success("Registration successful! Please sign in.");
+            onSwitch();
+        } catch (error: any) {
+            toast.error(error.message || 'Registration failed.');
+        } finally {
             setIsLoading(false);
-            onSwitch(); // Switch to the sign-in form
-        }, 1000);
+        }
     };
 
     return (
@@ -73,24 +78,33 @@ const SignUpForm = ({ onSwitch }: { onSwitch: () => void }) => {
 const SignInForm = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const callbackUrl = searchParams.get('callbackUrl');
 
     const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsLoading(true);
         const email = e.currentTarget.email.value;
+        const password = e.currentTarget.password.value;
         
-        // NOTE: In a real application, this form would submit to your dedicated auth service (e.g., Keycloak).
-        // The auth service would then handle the login and redirect back to the correct application with a session.
-        // For this prototype, we'll simulate the redirect based on email.
-        setTimeout(() => {
-            if (email.toLowerCase() === 'admin@amberops.com') {
-                toast.success('Admin login successful! Redirecting...');
-                window.location.href = ADMIN_URL;
+        const result = await signIn('credentials', {
+            redirect: false,
+            email,
+            password,
+        });
+
+        if (result?.error) {
+            toast.error(result.error);
+            setIsLoading(false);
+        } else if (result?.ok) {
+            toast.success('Login successful! Redirecting...');
+             if (email === 'admin@amberops.com') {
+                window.location.href = process.env.NEXT_PUBLIC_ADMIN_URL || '/';
             } else {
-                toast.success('Login successful! Redirecting...');
-                window.location.href = WEB_URL;
+                window.location.href = callbackUrl || process.env.NEXT_PUBLIC_WEB_URL || '/';
             }
-        }, 1000);
+        }
     }
 
     return (
