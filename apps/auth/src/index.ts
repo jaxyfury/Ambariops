@@ -2,10 +2,13 @@ import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import session from 'express-session';
+import passport from './config/passport';
 import authRoutes from './routes/auth';
 
 // Load environment variables
-dotenv.config();
+dotenv.config({ path: '../../.env' });
+
 
 const app = express();
 const PORT = process.env.AUTH_PORT || 3002;
@@ -16,9 +19,23 @@ app.use(cors({
     process.env.NEXT_PUBLIC_HOME_URL || 'http://localhost:3001',
     process.env.NEXT_PUBLIC_WEB_URL || 'http://localhost:3000',
     process.env.NEXT_PUBLIC_ADMIN_URL || 'http://localhost:3003',
-  ]
+  ],
+  credentials: true,
 }));
 app.use(express.json());
+
+// Session Middleware for Passport
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'your_default_session_secret',
+    resave: false,
+    saveUninitialized: false,
+}));
+
+
+// Passport Middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 // Connect to MongoDB
 const MONGODB_URI = process.env.MONGODB_URI;

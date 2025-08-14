@@ -12,13 +12,13 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@amber
 
 const AUTH_API_URL = process.env.NEXT_PUBLIC_AUTH_API_URL || 'http://localhost:3002/api';
 
-const SocialButton = ({ icon, onClick, tooltip }: { icon: React.ReactNode, onClick?: () => void, tooltip: string }) => (
+const SocialButton = ({ provider, icon, tooltip }: { provider: 'google' | 'github', icon: React.ReactNode, tooltip: string }) => (
     <TooltipProvider>
         <Tooltip>
             <TooltipTrigger asChild>
-                <button type="button" onClick={onClick} className="social-icon" aria-label={tooltip}>
+                 <a href={`${AUTH_API_URL}/auth/${provider}`} className="social-icon" aria-label={tooltip}>
                     {icon}
-                </button>
+                </a>
             </TooltipTrigger>
             <TooltipContent>
                 <p>{tooltip}</p>
@@ -64,8 +64,8 @@ const SignUpForm = ({ onSwitch }: { onSwitch: () => void }) => {
         <form onSubmit={handleSignup} data-testid="signup-form">
             <h1 className="text-3xl font-bold font-headline mb-3">Create Account</h1>
             <div className="social-icons">
-                 <SocialButton icon={<Chrome size={20} />} onClick={() => toast.error("OAuth is handled by the dedicated auth service.")} tooltip="Sign up with Google" />
-                 <SocialButton icon={<GitMerge size={20} />} onClick={() => toast.error("OAuth is handled by the dedicated auth service.")} tooltip="Sign up with GitHub" />
+                 <SocialButton provider="google" icon={<Chrome size={20} />} tooltip="Sign up with Google" />
+                 <SocialButton provider="github" icon={<GitMerge size={20} />} tooltip="Sign up with GitHub" />
             </div>
             <span>or use your email for registration</span>
             <input type="text" name="name" placeholder="Name" required autoComplete="name" />
@@ -109,8 +109,6 @@ const SignInForm = () => {
                 throw new Error(data.message || 'Login failed.');
             }
 
-            // In a real app, you'd securely store the JWT (e.g., in an httpOnly cookie or localStorage)
-            // and use it in an Authorization header for all subsequent API requests.
             localStorage.setItem('amberops_jwt', data.token);
             localStorage.setItem('amberops_user', JSON.stringify(data.user));
 
@@ -131,8 +129,8 @@ const SignInForm = () => {
         <form onSubmit={handleLogin} data-testid="login-form">
             <h1 className="text-3xl font-bold font-headline mb-3">Sign In</h1>
             <div className="social-icons">
-                 <SocialButton icon={<Chrome size={20} />} onClick={() => toast.error("OAuth is handled by the dedicated auth service.")} tooltip="Sign in with Google" />
-                 <SocialButton icon={<GitMerge size={20} />} onClick={() => toast.error("OAuth is handled by the dedicated auth service.")} tooltip="Sign in with GitHub" />
+                 <SocialButton provider="google" icon={<Chrome size={20} />} tooltip="Sign in with Google" />
+                 <SocialButton provider="github" icon={<GitMerge size={20} />} tooltip="Sign in with GitHub" />
             </div>
             <span>or use your email and password</span>
             <input type="email" name="email" placeholder="Email" required autoComplete="email" />
@@ -164,6 +162,32 @@ export default function AuthPage() {
         const action = searchParams.get('action');
         if (action === 'signup') {
             setIsActive(true);
+        }
+
+        const token = searchParams.get('token');
+        if (token) {
+            // This is a simplified way to handle the OAuth redirect for the prototype.
+            // A real app would likely exchange this token for user info and then set a session.
+            try {
+                const decoded = JSON.parse(atob(token.split('.')[1]));
+                localStorage.setItem('amberops_jwt', token);
+                const user = {
+                    id: decoded.id,
+                    name: decoded.name,
+                    email: decoded.email,
+                    role: decoded.role,
+                    image: decoded.image
+                };
+                localStorage.setItem('amberops_user', JSON.stringify(user));
+                toast.success('Login successful! Redirecting...');
+                if (user.role === 'Admin') {
+                    window.location.href = process.env.NEXT_PUBLIC_ADMIN_URL || 'http://localhost:3003';
+                } else {
+                    window.location.href = process.env.NEXT_PUBLIC_WEB_URL || 'http://localhost:3000';
+                }
+            } catch (e) {
+                toast.error("Invalid authentication token.");
+            }
         }
     }, [searchParams]);
 

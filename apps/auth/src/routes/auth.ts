@@ -2,8 +2,10 @@ import { Router, Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User, { IUser } from '../models/User';
+import passport from 'passport';
 
 const router = Router();
+const homeUrl = process.env.NEXT_PUBLIC_HOME_URL || 'http://localhost:3001';
 
 // POST /api/register
 router.post('/register', async (req: Request, res: Response) => {
@@ -82,6 +84,36 @@ router.post('/login', async (req: Request, res: Response) => {
     } catch (error: any) {
         res.status(500).json({ message: 'Server error during login.', error: error.message });
     }
+});
+
+
+// Google OAuth
+router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+router.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: `${homeUrl}/auth` }), (req: Request, res: Response) => {
+    const user = req.user as IUser;
+    const token = jwt.sign(
+        { id: user._id, name: user.name, email: user.email, role: user.role, image: user.image },
+        process.env.JWT_SECRET!,
+        { expiresIn: '1h' }
+    );
+    // Redirect with token. A real app might set a cookie or use a more secure method.
+    res.redirect(`${homeUrl}/auth?token=${token}`);
+});
+
+
+// GitHub OAuth
+router.get('/auth/github', passport.authenticate('github', { scope: ['user:email'] }));
+
+router.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: `${homeUrl}/auth` }), (req: Request, res: Response) => {
+    const user = req.user as IUser;
+    const token = jwt.sign(
+        { id: user._id, name: user.name, email: user.email, role: user.role, image: user.image },
+        process.env.JWT_SECRET!,
+        { expiresIn: '1h' }
+    );
+    // Redirect with token
+    res.redirect(`${homeUrl}/auth?token=${token}`);
 });
 
 
