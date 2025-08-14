@@ -1,3 +1,4 @@
+
 import { Router, Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
@@ -33,14 +34,17 @@ router.post('/register', async (req: Request, res: Response) => {
     });
 
     const savedUser = await newUser.save();
-
-    res.status(201).json({
+    
+    // Convert to object and create a response DTO to ensure no sensitive data is returned
+    const userResponse = {
         id: savedUser._id,
         name: savedUser.name,
         email: savedUser.email,
         role: savedUser.role,
-        avatar: savedUser.image,
-    });
+        image: savedUser.image,
+    };
+
+    res.status(201).json(userResponse);
   } catch (error: any) {
     res.status(500).json({ message: 'Server error during registration.', error: error.message });
   }
@@ -102,7 +106,7 @@ router.get('/auth/google/callback', passport.authenticate('google', { failureRed
         { expiresIn: '1h' }
     );
     // Redirect with token. A real app might set a cookie or use a more secure method.
-    res.redirect(`${homeUrl}/auth?token=${token}`);
+    res.redirect(`${homeUrl}/auth?token=${token}&user=${encodeURIComponent(JSON.stringify(userPayload))}`);
 });
 
 
@@ -118,7 +122,7 @@ router.get('/auth/github/callback', passport.authenticate('github', { failureRed
         { expiresIn: '1h' }
     );
     // Redirect with token
-    res.redirect(`${homeUrl}/auth?token=${token}`);
+    res.redirect(`${homeUrl}/auth?token=${token}&user=${encodeURIComponent(JSON.stringify(userPayload))}`);
 });
 
 

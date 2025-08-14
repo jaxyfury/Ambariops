@@ -1,9 +1,15 @@
-import mongoose, { Schema, Document } from 'mongoose';
-import type { User as IUserType } from '@amberops/lib';
 
-// Extend the shared User type for Mongoose, but omit the 'id' to avoid conflict with Mongoose's Document 'id'
-export interface IUser extends Omit<IUserType, 'id'>, Document {
-  password?: string; // Ensure password is part of the interface
+import mongoose, { Schema, Document } from 'mongoose';
+import type { User as UserType } from '@amberops/lib';
+
+// Define the interface for the Mongoose document, which may include methods and virtuals
+export interface IUser extends Document {
+  name: string;
+  email: string;
+  password?: string; // Password is included but often not selected
+  role: 'Admin' | 'Operator' | 'Viewer';
+  image?: string;
+  lastLogin: Date;
 }
 
 const UserSchema: Schema = new Schema({
@@ -15,7 +21,7 @@ const UserSchema: Schema = new Schema({
   lastLogin: { type: Date, default: Date.now },
 }, { timestamps: true });
 
-// When returning user data, ensure the password is not included unless explicitly requested.
+// When returning user data, ensure the password is not included.
 UserSchema.methods.toJSON = function() {
   const obj = this.toObject();
   delete obj.password;

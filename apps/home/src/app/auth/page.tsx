@@ -10,8 +10,6 @@ import { cn } from '@amberops/lib';
 import { AmberOpsLogo } from '@amberops/ui/components/icons';
 import { Button } from '@amberops/ui/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@amberops/ui/components/ui/tooltip';
-import jwt from 'jsonwebtoken';
-
 
 const AUTH_API_URL = process.env.NEXT_PUBLIC_AUTH_API_URL || 'http://localhost:3002/api';
 
@@ -30,32 +28,16 @@ const SocialButton = ({ provider, icon, tooltip }: { provider: 'google' | 'githu
     </TooltipProvider>
 );
 
-const handleSuccessfulLogin = (token: string) => {
-    try {
-        const decoded = jwt.decode(token);
-        if (typeof decoded !== 'object' || decoded === null) {
-            throw new Error('Invalid token payload');
-        }
-        localStorage.setItem('amberops_jwt', token);
-        const user = {
-            id: decoded.id,
-            name: decoded.name,
-            email: decoded.email,
-            role: decoded.role,
-            image: decoded.image
-        };
-        localStorage.setItem('amberops_user', JSON.stringify(user));
-        toast.success('Login successful! Redirecting...');
-        
-        const targetUrl = user.role === 'Admin'
-            ? (process.env.NEXT_PUBLIC_ADMIN_URL || 'http://localhost:3003')
-            : (process.env.NEXT_PUBLIC_WEB_URL || 'http://localhost:3000');
-        
-        window.location.href = targetUrl;
-    } catch (e) {
-        console.error("Token decoding failed:", e);
-        toast.error("Invalid authentication token.");
-    }
+const handleSuccessfulLogin = (token: string, user: any) => {
+    localStorage.setItem('amberops_jwt', token);
+    localStorage.setItem('amberops_user', JSON.stringify(user));
+    toast.success('Login successful! Redirecting...');
+    
+    const targetUrl = user.role === 'Admin'
+        ? (process.env.NEXT_PUBLIC_ADMIN_URL || 'http://localhost:3003')
+        : (process.env.NEXT_PUBLIC_WEB_URL || 'http://localhost:3000');
+    
+    window.location.href = targetUrl;
 };
 
 const SignUpForm = ({ onSwitch }: { onSwitch: () => void }) => {
@@ -140,7 +122,7 @@ const SignInForm = () => {
                 throw new Error(data.message || 'Login failed.');
             }
 
-            handleSuccessfulLogin(data.token);
+            handleSuccessfulLogin(data.token, data.user);
 
         } catch (error: any) {
             toast.error(error.message);
@@ -189,10 +171,18 @@ export default function AuthPage() {
         }
 
         const token = searchParams.get('token');
-        if (token) {
-            handleSuccessfulLogin(token);
-            // Clean the URL
-            router.replace('/auth');
+        const userParam = searchParams.get('user');
+
+        if (token && userParam) {
+            try {
+                const user = JSON.parse(decodeURIComponent(userParam));
+                handleSuccessfulLogin(token, user);
+                // Clean the URL
+                router.replace('/auth');
+            } catch (e) {
+                console.error("Failed to parse user from URL", e);
+                toast.error("An error occurred during social login.");
+            }
         }
     }, [searchParams, router]);
 
