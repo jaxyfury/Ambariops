@@ -1,23 +1,12 @@
 import type { Preview, Decorator } from '@storybook/react';
 import '@amberops/design-tokens/globals.css';
-import { Inter, Space_Grotesk } from 'next/font/google';
 import React from 'react';
-
-const fontBody = Inter({
-  subsets: ['latin'],
-  variable: '--font-body',
-});
-
-const fontHeadline = Space_Grotesk({
-  subsets: ['latin'],
-  variable: '--font-headline',
-});
 
 const withRootLayout: Decorator = (Story) => {
   const style: React.CSSProperties = {
-    fontFamily: `var(${fontBody.variable})`,
-    '--font-body': fontBody.style.fontFamily,
-    '--font-headline': fontHeadline.style.fontFamily,
+    fontFamily: 'Inter, sans-serif',
+    '--font-body': 'Inter, sans-serif',
+    '--font-headline': "'Space Grotesk', sans-serif",
   } as React.CSSProperties;
 
   return (
