@@ -37,7 +37,7 @@ const apiClient = {
     }
     return response.json();
   },
-  delete: async <T>(url: string): Promise<T> => {
+  delete: async (url: string): Promise<void> => {
     const response = await fetch(`${API_BASE_URL}${url}`, {
       method: 'DELETE',
     });
@@ -45,7 +45,8 @@ const apiClient = {
         const errorData = await response.json().catch(() => ({ message: 'An unknown error occurred' }));
       throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
     }
-    return response.json();
+    // A 204 No Content response has no body, so we don't try to parse it.
+    return;
   },
 };
 
@@ -53,7 +54,7 @@ const apiClient = {
 export const fetchUsers = (): Promise<User[]> => apiClient.get(`/users`);
 export const addUser = (userData: Omit<User, 'id' | 'lastLogin' | 'avatar' | 'password'> & { password?: string }): Promise<User> => apiClient.post(`/users`, userData);
 export const updateUser = (userId: string, userData: Partial<User>): Promise<User> => apiClient.put(`/users/${userId}`, userData);
-export const deleteUser = (userId: string): Promise<{ id: string }> => apiClient.delete(`/users/${userId}`);
+export const deleteUser = (userId: string): Promise<void> => apiClient.delete(`/users/${userId}`);
 
 // Cluster Service
 export const fetchClusters = (): Promise<Cluster[]> => apiClient.get(`/clusters`);
@@ -90,7 +91,7 @@ export const fetchConfigVersions = (): Promise<ConfigVersion[]> => apiClient.get
 export const fetchDocumentationArticles = (): Promise<DocumentationArticle[]> => apiClient.get(`/documentation`);
 export const addDocumentationArticle = (articleData: Omit<DocumentationArticle, 'id' | 'createdAt' | 'updatedAt'>): Promise<DocumentationArticle> => apiClient.post(`/documentation`, articleData);
 export const updateDocumentationArticle = (slug: string, articleData: Partial<DocumentationArticle>): Promise<DocumentationArticle> => apiClient.put(`/documentation/${slug}`, articleData);
-export const deleteDocumentationArticle = (slug: string): Promise<{ id: string }> => apiClient.delete(`/documentation/${slug}`);
+export const deleteDocumentationArticle = (slug: string): Promise<void> => apiClient.delete(`/documentation/${slug}`);
 
 // Legal Documents Service
 export const fetchLegalDocument = (type: 'terms' | 'privacy'): Promise<LegalDocument> => apiClient.get(`/legal/${type}`);
@@ -100,16 +101,16 @@ export const updateLegalDocument = (type: 'terms' | 'privacy', data: { content: 
 export const fetchPricingTiers = (): Promise<PricingTier[]> => apiClient.get(`/pricing`);
 export const addPricingTier = (tierData: Omit<PricingTier, 'id'>): Promise<PricingTier> => apiClient.post(`/pricing`, tierData);
 export const updatePricingTier = (tierId: string, tierData: Partial<PricingTier>): Promise<PricingTier> => apiClient.put(`/pricing/${tierId}`, tierData);
-export const deletePricingTier = (tierId: string): Promise<{ id: string }> => apiClient.delete(`/pricing/${tierId}`);
+export const deletePricingTier = (tierId: string): Promise<void> => apiClient.delete(`/pricing/${tierId}`);
 
 // Testimonials Service
 export const fetchTestimonials = (): Promise<Testimonial[]> => apiClient.get(`/testimonials`);
 export const addTestimonial = (testimonialData: Omit<Testimonial, 'id'>): Promise<Testimonial> => apiClient.post(`/testimonials`, testimonialData);
 export const updateTestimonial = (id: string, testimonialData: Partial<Testimonial>): Promise<Testimonial> => apiClient.put(`/testimonials/${id}`, testimonialData);
-export const deleteTestimonial = (id: string): Promise<{ id: string }> => apiClient.delete(`/testimonials/${id}`);
+export const deleteTestimonial = (id: string): Promise<void> => apiClient.delete(`/testimonials/${id}`);
 
 // FAQs Service
 export const fetchFaqs = (): Promise<FAQ[]> => apiClient.get(`/faqs`);
 export const addFaq = (faqData: Omit<FAQ, 'id'>): Promise<FAQ> => apiClient.post(`/faqs`, faqData);
 export const updateFaq = (id: string, faqData: Partial<FAQ>): Promise<FAQ> => apiClient.put(`/faqs/${id}`, faqData);
-export const deleteFaq = (id: string): Promise<{ id: string }> => apiClient.delete(`/faqs/${id}`);
+export const deleteFaq = (id: string): Promise<void> => apiClient.delete(`/faqs/${id}`);

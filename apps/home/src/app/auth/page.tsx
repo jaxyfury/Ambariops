@@ -10,6 +10,8 @@ import { cn } from '@amberops/lib';
 import { AmberOpsLogo } from '@amberops/ui/components/icons';
 import { Button } from '@amberops/ui/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@amberops/ui/components/ui/tooltip';
+import jwt from 'jsonwebtoken';
+
 
 const AUTH_API_URL = process.env.NEXT_PUBLIC_AUTH_API_URL || 'http://localhost:3002/api';
 
@@ -27,6 +29,34 @@ const SocialButton = ({ provider, icon, tooltip }: { provider: 'google' | 'githu
         </Tooltip>
     </TooltipProvider>
 );
+
+const handleSuccessfulLogin = (token: string) => {
+    try {
+        const decoded = jwt.decode(token);
+        if (typeof decoded !== 'object' || decoded === null) {
+            throw new Error('Invalid token payload');
+        }
+        localStorage.setItem('amberops_jwt', token);
+        const user = {
+            id: decoded.id,
+            name: decoded.name,
+            email: decoded.email,
+            role: decoded.role,
+            image: decoded.image
+        };
+        localStorage.setItem('amberops_user', JSON.stringify(user));
+        toast.success('Login successful! Redirecting...');
+        
+        const targetUrl = user.role === 'Admin'
+            ? (process.env.NEXT_PUBLIC_ADMIN_URL || 'http://localhost:3003')
+            : (process.env.NEXT_PUBLIC_WEB_URL || 'http://localhost:3000');
+        
+        window.location.href = targetUrl;
+    } catch (e) {
+        console.error("Token decoding failed:", e);
+        toast.error("Invalid authentication token.");
+    }
+};
 
 const SignUpForm = ({ onSwitch }: { onSwitch: () => void }) => {
     const [showPassword, setShowPassword] = useState(false);
@@ -110,16 +140,8 @@ const SignInForm = () => {
                 throw new Error(data.message || 'Login failed.');
             }
 
-            localStorage.setItem('amberops_jwt', data.token);
-            localStorage.setItem('amberops_user', JSON.stringify(data.user));
+            handleSuccessfulLogin(data.token);
 
-            toast.success('Login successful! Redirecting...');
-
-            if (data.user?.role === 'Admin') {
-                window.location.href = process.env.NEXT_PUBLIC_ADMIN_URL || 'http://localhost:3003';
-            } else {
-                window.location.href = process.env.NEXT_PUBLIC_WEB_URL || 'http://localhost:3000';
-            }
         } catch (error: any) {
             toast.error(error.message);
             setIsLoading(false);
@@ -158,6 +180,7 @@ const SignInForm = () => {
 export default function AuthPage() {
     const [isActive, setIsActive] = useState(false);
     const searchParams = useSearchParams();
+    const router = useRouter();
 
     useEffect(() => {
         const action = searchParams.get('action');
@@ -167,30 +190,11 @@ export default function AuthPage() {
 
         const token = searchParams.get('token');
         if (token) {
-            // This is a simplified way to handle the OAuth redirect for the prototype.
-            // A real app would likely exchange this token for user info and then set a session.
-            try {
-                const decoded = JSON.parse(atob(token.split('.')[1]));
-                localStorage.setItem('amberops_jwt', token);
-                const user = {
-                    id: decoded.id,
-                    name: decoded.name,
-                    email: decoded.email,
-                    role: decoded.role,
-                    image: decoded.image
-                };
-                localStorage.setItem('amberops_user', JSON.stringify(user));
-                toast.success('Login successful! Redirecting...');
-                if (user.role === 'Admin') {
-                    window.location.href = process.env.NEXT_PUBLIC_ADMIN_URL || 'http://localhost:3003';
-                } else {
-                    window.location.href = process.env.NEXT_PUBLIC_WEB_URL || 'http://localhost:3000';
-                }
-            } catch (e) {
-                toast.error("Invalid authentication token.");
-            }
+            handleSuccessfulLogin(token);
+            // Clean the URL
+            router.replace('/auth');
         }
-    }, [searchParams]);
+    }, [searchParams, router]);
 
     return (
         <div className="auth-body">
