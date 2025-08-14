@@ -1,7 +1,7 @@
 
 import { PageHeader } from '@amberops/ui/components/page-header';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@amberops/ui/components/ui/card';
-import { FileText, Users, Shield, Tag } from 'lucide-react';
+import { FileText, Users, Shield, Tag, MessageSquare, ListOrdered } from 'lucide-react';
 import Link from 'next/link';
 
 export default function AdminDashboardPage() {
@@ -18,7 +18,7 @@ export default function AdminDashboardPage() {
             <CardDescription>Add, edit, and remove users.</CardDescription>
           </CardHeader>
           <CardContent>
-            <Link href="/settings" className="text-primary hover:underline">
+            <Link href="/admin/users" className="text-primary hover:underline">
               Go to User Management
             </Link>
           </CardContent>
@@ -56,9 +56,29 @@ export default function AdminDashboardPage() {
             </Link>
           </CardContent>
         </Card>
+         <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2"><MessageSquare /> Testimonials</CardTitle>
+            <CardDescription>Manage customer testimonials.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Link href="/admin/testimonials" className="text-primary hover:underline">
+              Manage Testimonials
+            </Link>
+          </CardContent>
+        </Card>
+         <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2"><ListOrdered /> FAQs</CardTitle>
+            <CardDescription>Manage Frequently Asked Questions.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Link href="/admin/faqs" className="text-primary hover:underline">
+              Manage FAQs
+            </Link>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
 }
-
-    

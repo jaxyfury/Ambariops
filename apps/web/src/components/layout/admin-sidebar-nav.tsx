@@ -10,6 +10,8 @@ import {
   Users,
   LogOut,
   Tag,
+  MessageSquare,
+  ListOrdered,
 } from 'lucide-react';
 import {
   Sidebar,
@@ -26,13 +28,16 @@ import { AmberOpsLogo } from '@amberops/ui/components/icons';
 export function AdminSidebarNav() {
   const pathname = usePathname();
   const { state: sidebarState } = useSidebar();
+  const homeUrl = process.env.NEXT_PUBLIC_HOME_URL || 'http://localhost:3001';
 
   const navItems = [
     { href: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { href: '/admin/users', label: 'Users', icon: Users },
     { href: '/admin/documentation', label: 'Documentation', icon: FileText },
     { href: '/admin/legal', label: 'Legal Pages', icon: Shield },
     { href: '/admin/pricing', label: 'Pricing', icon: Tag },
-    { href: '/settings', label: 'User Management', icon: Users },
+    { href: '/admin/testimonials', label: 'Testimonials', icon: MessageSquare },
+    { href: '/admin/faqs', label: 'FAQs', icon: ListOrdered },
   ];
 
   const bottomNavItems = [
@@ -45,10 +50,10 @@ export function AdminSidebarNav() {
   return (
     <Sidebar>
       <SidebarHeader>
-        <div className="flex items-center gap-2">
+        <Link href={homeUrl} className="flex items-center gap-2">
             <AmberOpsLogo className="w-8 h-8"/>
             {sidebarState === 'expanded' && <h1 className="text-xl font-headline font-semibold">AmberOps Admin</h1>}
-        </div>
+        </Link>
       </SidebarHeader>
       <SidebarContent>
         <SidebarMenu className="flex-1 p-2">
