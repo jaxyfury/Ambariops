@@ -14,7 +14,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { cn } from '@amberops/lib';
 import type { PricingTier, Testimonial, FAQ } from '@amberops/lib';
-import { fetchPricingTiers, fetchTestimonials, fetchFaqs } from '@/lib/api/services';
+import { fetchPricingTiers, fetchTestimonials, fetchFaqs } from '@amberops/api/client';
 import { Skeleton } from '@amberops/ui/components/ui/skeleton';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
@@ -400,3 +400,5 @@ export default function HomePage() {
     </div>
   )
 }
+
+    
