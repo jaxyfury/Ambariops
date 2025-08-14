@@ -11,8 +11,6 @@ import {
 } from '../components/ui/sidebar';
 import { AmberOpsLogo } from '../components/icons';
 import { LayoutDashboard, Server, Settings } from 'lucide-react';
-import { Breadcrumbs } from '../../../../apps/web/src/components/breadcrumbs';
-import { AppLayout } from '../../../../apps/web/src/components/layout/app-layout';
 
 const meta: Meta<typeof Sidebar> = {
   title: 'Components/Sidebar',
@@ -24,15 +22,17 @@ const meta: Meta<typeof Sidebar> = {
       </SidebarProvider>
     ),
   ],
-  parameters: {
-    layout: 'fullscreen',
-  },
   tags: ['autodocs'],
 };
 
 export default meta;
 
 type Story = StoryObj<typeof Sidebar>;
+
+// A simple placeholder for the main content area to avoid importing from the app
+const MockAppLayout = ({ children }: { children: React.ReactNode }) => (
+    <div className="flex-1 p-6">{children}</div>
+);
 
 const SidebarContentComponent = () => (
   <>
@@ -73,35 +73,29 @@ const SidebarContentComponent = () => (
 
 export const Default: Story = {
   render: () => (
-    <div className="flex min-h-[600px]">
+    <div className="flex min-h-[600px] bg-background">
       <Sidebar>
         <SidebarContentComponent />
       </Sidebar>
-      <div className="flex-1 flex flex-col">
-        <AppLayout>
-            <Breadcrumbs />
-            <h1 className="text-2xl font-bold">Main Content</h1>
-            <p>This is the main content area. The sidebar can be toggled.</p>
-        </AppLayout>
-      </div>
+      <MockAppLayout>
+        <h1 className="text-2xl font-bold">Main Content</h1>
+        <p>This is the main content area. The sidebar can be toggled.</p>
+      </MockAppLayout>
     </div>
   ),
 };
 
 export const Collapsed: Story = {
   render: () => (
-     <div className="flex min-h-[600px]">
+     <div className="flex min-h-[600px] bg-background">
       <SidebarProvider defaultOpen={false}>
         <Sidebar>
           <SidebarContentComponent />
         </Sidebar>
-         <div className="flex-1 flex flex-col">
-            <AppLayout>
-                <Breadcrumbs />
-                <h1 className="text-2xl font-bold">Main Content</h1>
-                <p>The sidebar is collapsed by default.</p>
-            </AppLayout>
-        </div>
+        <MockAppLayout>
+            <h1 className="text-2xl font-bold">Main Content</h1>
+            <p>The sidebar is collapsed by default.</p>
+        </MockAppLayout>
       </SidebarProvider>
   ),
 };
