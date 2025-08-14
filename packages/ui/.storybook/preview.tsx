@@ -7,15 +7,14 @@ const withRootLayout: Decorator = (Story) => {
     fontFamily: 'Inter, sans-serif',
     '--font-body': 'Inter, sans-serif',
     '--font-headline': "'Space Grotesk', sans-serif",
-  } as React.CSSProperties;
+  };
 
   return (
-      <div style={style}>
-        <Story />
-      </div>
+    <div style={style}>
+      <Story />
+    </div>
   );
 };
-
 
 const preview: Preview = {
   parameters: {
