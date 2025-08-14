@@ -1,52 +1,38 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# Dependencies
-/node_modules
-/.pnpm-store
+# dependencies
+node_modules
+.pnpm-store
 
-# Build artifacts
-/dist
-/.next/
-/out/
-/build/
-/storybook-static/
+# next.js
+.next/
+out/
+
+# build output
+dist
+build
+.vercel
+
+# storybook
 /packages/ui/storybook-static/
 
-# Test results and coverage
-/coverage
-/test-results/
-/playwright-report/
-
-# Logs
-logs
+# misc
+.DS_Store
+*.pem
 *.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-
-# Local environment variables
 .env
-.env.local
+.env*.local
 .env.development.local
 .env.test.local
 .env.production.local
 
-# IDE and editor directories
-.idea
-.vscode/*
-!.vscode/settings.json
-!.vscode/extensions.json
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+# testing
+coverage
+test-results
 
-# OS-generated files
-.DS_Store
-Thumbs.db
-ehthumbs.db
+# vercel
+.vercel
 
-# Other
-pnpm-lock.yaml
+# typescript
+*.tsbuildinfo
+next-env.d.ts
