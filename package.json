@@ -24,7 +24,8 @@
     "build-storybook": "pnpm --filter @amberops/ui build-storybook",
     "test": "pnpm --filter '*' test",
     "test:e2e": "playwright test",
-    "seed": "tsx scripts/seed.ts"
+    "seed": "tsx scripts/seed.ts",
+    "clean": "sh clean-workspace.sh"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.3.0",
