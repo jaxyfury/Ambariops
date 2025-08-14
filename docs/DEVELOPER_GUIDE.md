@@ -22,9 +22,9 @@ This project is a `pnpm` workspace-based monorepo. This structure is ideal for m
 ├── .github/              # GitHub Actions workflows and issue/PR templates
 ├── apps/
 │   ├── home/             # Public-facing landing page and authentication app
-│   └── web/              # The core, protected application for cluster management
+│   └── web/              # The core, protected application and API backend
 ├── packages/
-│   ├── api/              # API client, mocking (MSW), and Genkit AI flows
+│   ├── api/              # Centralized API client and Genkit AI flows
 │   ├── design-tokens/    # Tailwind CSS configuration, theme, and global styles
 │   ├── lib/              # Shared TypeScript types and utility functions
 │   └── ui/               # Reusable React UI components with Storybook stories
@@ -57,13 +57,14 @@ This directory contains the runnable Next.js applications.
 *   **Key Files**:
     *   `src/app/page.tsx`: The main landing page component.
     *   `src/app/auth/page.tsx`: The unified user/admin login and signup form.
-    *   `next.config.js`: Contains a critical `rewrites` rule that proxies API requests to the `web` app's backend, enabling seamless authentication.
+    *   `next.config.js`: Contains a critical `rewrites` rule that proxies authentication API requests to the `web` app's backend.
 
 #### `apps/web`
-*   **Purpose**: The secure, core application that users access *after* logging in. This is a feature-rich Single-Page Application (SPA).
+*   **Purpose**: The secure, core application that users access *after* logging in. This is a feature-rich Single-Page Application (SPA) and also serves as the **API backend** for the entire project.
 *   **Technology**: A Next.js application that heavily relies on client-side rendering for its interactive dashboards.
 *   **Key Files**:
     *   `src/app/(app)/...`: All the protected pages of the dashboard, organized by feature (e.g., `clusters`, `services`, `alerts`).
+    *   `src/app/api/v1/...`: All backend API routes that connect to the database and serve data to both applications.
     *   `src/app/api/auth/[...nextauth]/route.ts`: The backend API endpoint for NextAuth.js. It handles session management, communication with OAuth providers (Google, GitHub), and the credentials provider.
     *   `src/lib/mongodb.ts`: A utility to manage the MongoDB connection pool.
 
@@ -82,8 +83,10 @@ This directory contains all the shared code, organized into distinct libraries.
 #### `packages/api`
 *   **Purpose**: Manages the application's data and AI layers.
 *   **Key Files**:
-    *   `src/mocks/handlers.ts`: Contains mock API handlers using **Mock Service Worker (MSW)** that simulate a real backend. This is crucial for independent frontend development.
-    *   `src/ai/flows/`: This is where the server-side AI logic is defined using **Google's Genkit**. It includes flows for summarizing cluster health and suggesting troubleshooting steps.
+    *   `src/client.ts`: The centralized API client used by both `home` and `web` apps to communicate with the backend.
+    *   `src/ai/`: This directory contains all the server-side AI logic built with **Google's Genkit**.
+        *   `genkit.ts`: Initializes and configures the Genkit instance with the necessary plugins (like `googleAI`).
+        *   `flows/`: Contains individual files for each AI-powered feature, such as summarizing cluster health.
 
 #### `packages/lib`
 *   **Purpose**: A foundational library for shared, non-React code.
@@ -112,7 +115,7 @@ The first and most important step is to set up your environment variables.
 
 ### Step 2: Database Seeding
 
-With your environment configured, you must seed the database with initial data. This script populates your MongoDB instance with mock users (including a default admin), clusters, services, and other essential data.
+With your environment configured, you must seed the database with initial data. This script populates your MongoDB instance with all the necessary data for clusters, services, users, etc.
 
 From the project root, run:
 ```bash
@@ -132,18 +135,6 @@ The servers will be available at:
 *   **Landing Page (`home`)**: `http://localhost:3001`
 *   **Dashboard App (`web`)**: `http://localhost:3000`
 
-### Switching Between Mock and Real Data
-
-The project is designed to easily switch between a local mock API and a real, live backend.
-
-*   **To Use Mock Data (Default)**:
-    *   In the `.env` file, set `NEXT_PUBLIC_ENABLE_MOCKING=true`.
-    *   This is the ideal mode for most frontend and UI development, as it requires no live backend. Mock Service Worker (MSW) will intercept API calls and return data from `packages/api/src/mocks/mock-data.ts`.
-
-*   **To Use a Real Backend API**:
-    1.  In the `.env` file, set `NEXT_PUBLIC_ENABLE_MOCKING=false`.
-    2.  Set the `NEXT_PUBLIC_API_URL` variable to the full URL of your live API (e.g., `https://api.your-amberops.com/api/v1`).
-
 ---
 
 ## 4. Testing Strategy
@@ -154,10 +145,6 @@ The project employs a multi-layered testing strategy:
     *   **Tool**: **Playwright**.
     *   **Location**: `tests/` directory.
     *   **Purpose**: These tests simulate real user journeys across both applications, such as the full authentication flow, navigation, and critical feature interactions (e.g., filtering a data table and exporting it). They are the ultimate guarantee that the applications work as a whole.
-
-*   **Unit & Integration Testing**:
-    *   **Tool**: **Jest** and **React Testing Library**.
-    *   **Purpose**: While not fully implemented yet, the plan is to add tests for individual components and hooks to verify their logic in isolation.
 
 *   **Static Analysis & Linting**:
     *   **Tool**: **ESLint** and **Prettier**.
@@ -185,7 +172,7 @@ The two-app structure requires a hosting solution with a reverse proxy or path-b
     *   The proxy must be configured to forward requests to the correct internal port based on the incoming request path.
 
 *   **Environment Variables**:
-    *   All environment variables from the root `.env` file (e.g., `MONGODB_URI`, `GOOGLE_CLIENT_ID`, `NEXTAUTH_SECRET`) must be securely set in the production environment for the `web` application.
+    *   All environment variables from the root `.env` file (e.g., `MONGODB_URI`, `GOOGLE_CLIENT_ID`, `NEXTAUTH_SECRET`) must be securely set in the production environment for both applications.
 
 ### Continuous Integration (CI/CD)
 
@@ -194,4 +181,3 @@ The GitHub Actions workflow in `.github/workflows/ci.yml` provides a template fo
 2.  Build production Docker images for each application.
 3.  Push the images to a container registry (e.g., Docker Hub, GCR).
 4.  Trigger a deployment to the hosting environment.
-```

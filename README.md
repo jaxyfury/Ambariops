@@ -11,9 +11,9 @@ This project is a `pnpm` workspace-based monorepo, a structure chosen for its ex
 ├── .github/              # GitHub Actions workflows and templates
 ├── apps/
 │   ├── home/             # Public-facing landing page and authentication app
-│   └── web/              # The core, protected dashboard application
+│   └── web/              # The core, protected dashboard application and API backend
 ├── packages/
-│   ├── api/              # API client, data mocking, and AI flows
+│   ├── api/              # Centralized API client and Genkit AI flows
 │   ├── design-tokens/    # Shared theme, global styles, and Tailwind config
 │   ├── lib/              # Shared TypeScript types and core utility functions
 │   └── ui/               # Reusable React UI components and Storybook
@@ -36,9 +36,9 @@ This directory contains the runnable Next.js applications.
     *   **Key Responsibilities**: User acquisition and authentication. After a user successfully authenticates, this application securely redirects them to the main `web` application. It contains all the UI for login/signup forms and social provider buttons.
 
 *   #### `apps/web`
-    *   **Purpose**: This is the secure, core application that users access after logging in. It contains all the functionality for cluster management and monitoring.
+    *   **Purpose**: This is the secure, core application that users access after logging in. It contains all the functionality for cluster management, monitoring, and also serves as the **central API backend** for the entire monorepo.
     *   **Technology**: A feature-rich Next.js application that heavily relies on client-side rendering for its interactive dashboards.
-    *   **Key Responsibilities**: Provides all the main features of AmberOps, including the dashboard, cluster/service/host views, alerting, and settings. It also contains the backend API routes for NextAuth.js.
+    *   **Key Responsibilities**: Provides all the main features of AmberOps, including the dashboard, cluster/service/host views, alerting, and settings. It also contains the backend API routes for NextAuth.js and all data-related endpoints under `/api/v1/`.
 
 ---
 
@@ -53,7 +53,7 @@ This directory contains all the shared code, organized into distinct libraries t
 *   #### `packages/api`
     *   **Purpose**: Manages the application's data and AI layers.
     *   **Contents**:
-        *   **Mock Service Worker (MSW)**: Contains mock API handlers that simulate a real backend. This allows for independent frontend development and robust testing.
+        *   **API Client**: A centralized, shared client for making requests to the backend API.
         *   **Genkit AI Flows**: This is where the server-side AI logic is defined using **Google's Genkit**. It includes flows for summarizing cluster health and suggesting troubleshooting steps.
 
 *   #### `packages/lib`
@@ -110,18 +110,6 @@ The servers will be available at:
 
 ---
 
-## Development Workflow
-
-### Using Mock Data vs. a Real Backend
-
-The application is configured to easily switch between using local mock data and a live backend API.
-
-*   **To use Mock Data**: Set `NEXT_PUBLIC_ENABLE_MOCKING=true` in your `.env` file. This is the default and recommended mode for most UI development, as it uses the in-memory data from `packages/api/src/mocks/` and does not require a running backend.
-
-*   **To use a Real Backend**:
-    1.  Set `NEXT_PUBLIC_ENABLE_MOCKING=false` in your `.env` file.
-    2.  Set `NEXT_PUBLIC_API_URL` to the full URL of your live backend API.
-
 ### Available Scripts
 
 - `pnpm dev`: Starts the Next.js development server for the `web` app.
@@ -131,4 +119,3 @@ The application is configured to easily switch between using local mock data and
 - `pnpm test:e2e`: Runs all Playwright E2E tests.
 - `pnpm storybook`: Starts the Storybook server for UI component development.
 - `pnpm seed`: Seeds the database with initial data.
-```
