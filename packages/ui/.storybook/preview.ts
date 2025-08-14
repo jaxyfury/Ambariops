@@ -16,29 +16,14 @@ const fontHeadline = Space_Grotesk({
 const withRootLayout: Decorator = (Story) => {
   const style: React.CSSProperties = {
     fontFamily: `var(${fontBody.variable})`,
-  };
-
-  // This is a workaround to apply the headline font variable globally for stories
-  const fontStyles = `
-    :root {
-      --font-body: ${fontBody.style.fontFamily};
-      --font-headline: ${fontHeadline.style.fontFamily};
-    }
-    body {
-        font-family: var(--font-body);
-    }
-    h1, h2, h3, h4, h5, h6 {
-        font-family: var(--font-headline);
-    }
-  `;
+    '--font-body': fontBody.style.fontFamily,
+    '--font-headline': fontHeadline.style.fontFamily,
+  } as React.CSSProperties;
 
   return (
-    <>
-      <style>{fontStyles}</style>
       <div style={style}>
         <Story />
       </div>
-    </>
   );
 };
 
