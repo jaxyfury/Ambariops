@@ -24,7 +24,7 @@ import {
   TooltipContent,
 } from '@amberops/ui/components/ui/tooltip';
 
-import { ThemeToggle } from '@/components/theme-toggle';
+import { ThemeToggle } from '@amberops/ui';
 import { LanguageSwitcher } from '@/components/language-switcher';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
@@ -61,7 +61,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex h-screen flex-col">
-      <header className="sticky top-0 flex h-16 shrink-0 items-center gap-4 border-b bg-background/80 px-4 py-2 backdrop-blur-lg sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
+      <header className="sticky top-0 z-50 flex h-16 shrink-0 items-center gap-4 border-b bg-background/80 px-4 py-2 backdrop-blur-lg sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
         <Tooltip>
           <TooltipTrigger asChild>
             <SidebarTrigger className="sm:hidden" />

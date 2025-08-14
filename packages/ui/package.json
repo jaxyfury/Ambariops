@@ -12,6 +12,7 @@
     "./components/breadcrumbs": "./src/components/breadcrumbs.tsx",
     "./components/preloader": "./src/components/preloader.tsx",
     "./components/quick-access-nav": "./src/components/quick-access-nav.tsx",
+    "./components/theme-toggle": "./src/components/theme-toggle.tsx",
     "./hooks/use-toast": "./src/hooks/use-toast.ts",
     "./hooks/use-mobile": "./src/hooks/use-mobile.tsx",
     "./hooks/use-sidebar": "./src/hooks/use-sidebar.tsx",
